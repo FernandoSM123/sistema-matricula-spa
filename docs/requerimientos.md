@@ -122,7 +122,7 @@ El cierre de sesión (RFF-04) no es una vista: es una acción del menú de la cu
 
 | Id | Vista | Rol(es) | Propósito | Endpoints | Backend | RFF |
 |---|---|---|---|---|---|---|
-| `V-01` | Oferta académica | Todos, incluido el visitante | Ver los grupos abiertos del periodo vigente y sus cupos disponibles | `GET /oferta-academica`; con sesión, también `GET /periodos/vigente` | RF-50, consulta 9 | RFF-07 |
+| `V-01` | Oferta académica | Todos, incluido el visitante | Ver los grupos abiertos del periodo vigente y sus cupos disponibles | `GET /oferta-academica`, `GET /periodos/vigente` | RF-38, RF-50, consulta 9 | RFF-07 |
 
 ### 3.3 Páginas del sistema
 
@@ -256,7 +256,8 @@ Lo que la interfaz hace además de llamar a los endpoints. Las reglas de negocio
   - Muestra los grupos `Abierto` del periodo vigente. Por grupo: curso (código y nombre), NRC, profesor (solo el nombre), modalidad, aula (si tiene), horarios (día y horas) y cupos disponibles de su cupo total.
   - Un grupo con 0 cupos disponibles se sigue mostrando, marcado como "Sin cupo" (verificación de `SPEC-grupos`).
   - Filtros: texto (busca en el nombre y el código del curso, y en el NRC) y modalidad. Paginada (§5).
-  - Con sesión, muestra arriba el nombre del periodo vigente y su rango de matrícula, desde `GET /periodos/vigente`. Para el visitante no se muestra (brecha B-01).
+  - Arriba muestra el nombre del periodo vigente y su rango de matrícula, desde `GET /periodos/vigente`, para todos los roles, incluido el visitante: la API lo permite sin sesión (B-01, resuelta).
+  - Si `GET /periodos/vigente` responde `404`, no hay periodo vigente: no es un error, sino el caso "no hay oferta" del punto siguiente, y no se muestra la barra del periodo.
   - Si no hay periodo vigente o ningún grupo abierto, la API responde una lista vacía: la vista muestra "No hay oferta disponible en este momento".
   - Acciones por rol:
     - Visitante: "Inicie sesión para matricular", que abre `V-02` y vuelve a la oferta después de iniciar sesión.
@@ -275,7 +276,7 @@ Lo que la interfaz hace además de llamar a los endpoints. Las reglas de negocio
     - Todos: "Cambiar contraseña" (`V-07`).
     - Estudiante: "Editar mis datos de contacto" (`V-08`). El resto de sus datos y su correo solo los cambia un administrador (decisiones 1 y 2 de `SPEC-estudiantes`); la vista lo indica.
     - Profesor: sin edición; sus datos los cambia un administrador (matriz §2.2).
-    - Administrador: "Editar mis datos", que abre la edición de su registro de administrador (`V-12`, RFF-13; brecha B-02).
+    - Administrador: "Editar mis datos", que abre la edición de su registro de administrador (`V-12`, RFF-13) con el `personaId` que devuelve `GET /me` (B-02, resuelta).
 
 - **RFF-09 Cambiar contraseña** (`V-07`, RF-09):
   - Pide la contraseña actual, la nueva y su confirmación, y muestra la política (RN-26).
@@ -308,7 +309,7 @@ Lo que la interfaz hace además de llamar a los endpoints. Las reglas de negocio
   - El formulario de registro, con los datos actuales. Se pueden editar registros inactivos.
   - Si cambia el correo, advierte antes de guardar que la persona iniciará sesión con el correo nuevo y que las temporales llegarán ahí (RN-31). Cambiar el correo no cierra la sesión de la persona (supuesto 7 de `SPEC-acceso`).
   - Con `409 RN-13`, como en RFF-12. Con un cambio correcto, vuelve al detalle con un mensaje de éxito.
-  - Un administrador edita sus propios datos con este mismo formulario, desde `V-06` (RFF-08, brecha B-02).
+  - Un administrador edita sus propios datos con este mismo formulario, desde `V-06`, con el `personaId` de su perfil (RFF-08).
 
 - **RFF-14 Detalle de una persona** (`V-13`, `V-16`, `V-19`):
   - Muestra los datos personales (los mismos del formulario), el correo, el estado, la fecha de creación y el último ingreso. Estudiante: además, la fecha de registro.
@@ -613,7 +614,9 @@ Todas las respuestas de error de la API son `ProblemDetails` (RFC 9457) con `tit
 - **RUI-10 Paginación:** todos los listados se paginan en la API (`page` y `pageSize`). Por defecto, 20 filas por página, con opciones de 10, 20 y 50 (la API admite hasta 100). Se muestran el rango y el total ("21–40 de 134") y los controles de página anterior y siguiente.
 
 - **RUI-11 Búsqueda y filtros:**
-  - La búsqueda por texto se aplica sola, después de una breve pausa al escribir, sin botón "Buscar".
+  - La búsqueda por texto no se ejecuta mientras se escribe. Se aplica al presionar Enter en el campo o el botón "Buscar", que está junto a él. Lo mismo vale para los demás filtros que se escriben, como el id del registro en la auditoría o el código de error.
+  - Los filtros que se eligen (listas, casillas y fechas) se aplican al cambiarlos, junto con el texto de búsqueda ya aplicado.
+  - Los selectores con búsqueda de los formularios (glosario) no siguen esta regla: sugieren opciones mientras se escribe.
   - Cambiar la búsqueda o un filtro vuelve a la página 1.
   - Hay una acción "Limpiar filtros" cuando hay alguno aplicado.
   - La búsqueda, los filtros y la página se reflejan en la dirección de la vista, así que se conservan al volver atrás, al recargar y al compartir el enlace.
@@ -632,9 +635,13 @@ Todas las respuestas de error de la API son `ProblemDetails` (RFC 9457) con `tit
 
 - **RUI-15 Fechas** (`DateOnly` de la API): se muestran como `dd/mm/aaaa` y **sin conversión de zona horaria**, porque ya están en la fecha local del instituto (decisión 9 del mapa del backend). Se ingresan con un selector de fecha que también permite escribirla.
 
-- **RUI-16 Fecha y hora** (marcas de tiempo en UTC: fecha de creación, último ingreso, último cambio de contraseña, auditoría, errores): se convierten a la zona horaria del instituto, `America/Costa_Rica`, y se muestran como `dd/mm/aaaa HH:mm`. Así coinciden con los filtros por fecha de la auditoría y los errores, que la API interpreta en esa zona.
+- **RUI-16 Fecha y hora** (marcas de tiempo en UTC: fecha de creación, último ingreso, último cambio de contraseña, auditoría, errores): se convierten a la zona horaria del instituto, `America/Costa_Rica`, y se muestran como `dd/mm/aaaa` seguido de la hora en el formato de RUI-17 (por ejemplo, `05/03/2026 6:30 p. m.`). Así coinciden con los filtros por fecha de la auditoría y los errores, que la API interpreta en esa zona.
 
-- **RUI-17 Horas** (`TimeOnly` de los horarios): formato de 24 horas, `HH:mm`, aunque la API las envíe con segundos. Se ingresan con un selector de hora de 24 horas.
+- **RUI-17 Horas** (`TimeOnly` de los horarios y la hora de las marcas de tiempo):
+  - Se muestran en formato de 12 horas con a. m. o p. m., sin segundos: `7:00 a. m.`, `12:30 p. m.`, `6:30 p. m.`. Las 12 del mediodía son `12:00 p. m.` y la medianoche, `12:00 a. m.`
+  - Se ingresan con un selector de hora de 12 horas con a. m. y p. m.
+  - Es solo presentación: la API envía y recibe las horas en formato de 24 horas (`"18:30:00"`). El frontend las convierte al mostrarlas y las devuelve a 24 horas al enviar un formulario. El backend no cambia.
+  - La grilla del horario (RFF-29) rotula sus filas con este formato.
 
 - **RUI-18 Números y moneda:** formato de Costa Rica (`es-CR`). El costo de los cursos, en colones con dos decimales (por ejemplo, ₡25 000,00).
 
@@ -722,7 +729,7 @@ Los 76 endpoints de los 14 controllers del backend, con las vistas que los usan.
 | 11 | `GET /me/horario` | Profesor o Estudiante | V-34 |
 | 12 | `GET /oferta-academica` | Anónimo | V-01 |
 | 13 | `POST /administradores` | Administrador | V-12 |
-| 14 | `GET /administradores` | Administrador | V-11; V-06 (rodeo de B-02) |
+| 14 | `GET /administradores` | Administrador | V-11 |
 | 15 | `GET /administradores/{id}` | Administrador | V-13, V-12 |
 | 16 | `PUT /administradores/{id}` | Administrador | V-12 |
 | 17 | `POST /usuarios/{id}/reenviar-temporal` | Administrador | V-13, V-16, V-19 |
@@ -757,7 +764,7 @@ Los 76 endpoints de los 14 controllers del backend, con las vistas que los usan.
 | 46 | `GET /cursos/{id}/grupos` | Con sesión | V-22; V-33 (grupos destino) |
 | 47 | `POST /periodos` | Administrador | V-24 |
 | 48 | `GET /periodos` | Con sesión | V-23; V-28, V-29 (selector); grilla RFF-29 (selector); V-31, V-16, V-35, V-19, V-22 (filtros por periodo) |
-| 49 | `GET /periodos/vigente` | Con sesión | V-01, V-23, V-28, V-31, V-35; grilla RFF-29 |
+| 49 | `GET /periodos/vigente` | Anónimo | V-01, V-23, V-28, V-31, V-35; grilla RFF-29 |
 | 50 | `GET /periodos/{id}` | Con sesión | V-24 |
 | 51 | `PUT /periodos/{id}` | Administrador | V-24 |
 | 52 | `DELETE /periodos/{id}` | Administrador | V-23 |
@@ -815,7 +822,7 @@ Todos los RF del backend que tienen interfaz están cubiertos. Los que no tienen
 | RF-28 Horario de un profesor | `V-34`, `V-19` | RFF-36, RFF-37 |
 | RF-29 a RF-33 Cursos: registrar, listar, detalle, modificar, desactivar o eliminar | `V-20`, `V-21`, `V-22` | RFF-18 a RFF-20 |
 | RF-34 Grupos de un curso | `V-22` | RFF-20 |
-| RF-35 a RF-38 Periodos: registrar, listar y modificar, eliminar, vigente | `V-23`, `V-24` | RFF-21 |
+| RF-35 a RF-38 Periodos: registrar, listar y modificar, eliminar, vigente | `V-23`, `V-24`; el vigente también en `V-01`, `V-28`, `V-31` y `V-35` | RFF-21 |
 | RF-39, RF-40 Aulas: registrar, listar, modificar, desactivar o eliminar | `V-25`, `V-26`, `V-27` | RFF-18, RFF-19, RFF-22 |
 | RF-41 Ocupación de un aula | `V-27` | RFF-22, RFF-29 |
 | RF-42 Crear un grupo | `V-29` | RFF-24 |
@@ -843,12 +850,14 @@ Todos los RF del backend que tienen interfaz están cubiertos. Los que no tienen
 
 Lo que el frontend necesita y la API no ofrece. Se registran aquí y se decide aparte si se resuelven en el backend o quedan fuera del alcance.
 
-| Id | Brecha | Impacto | Propuesta |
-|---|---|---|---|
-| B-01 | La oferta académica (`GET /oferta-academica`) no incluye el periodo, y `GET /periodos/vigente` exige sesión. | El visitante ve la oferta sin saber de qué periodo es ni hasta cuándo puede matricular. | Agregar el periodo vigente (nombre y rango de matrícula) a la respuesta de la oferta, o permitir `GET /periodos/vigente` sin sesión. Mientras tanto, la oferta del visitante no muestra el periodo. |
-| B-02 | `GET /me` devuelve el `usuarioId` del administrador, pero no el id de su registro de administrador, que es el que pide `PUT /administradores/{id}`. | Para "Editar mis datos" (RFF-08), el frontend debe buscar al administrador con `GET /administradores?search=<su correo>` y elegir el que tenga su `usuarioId`. Funciona, pero es una petición extra y un rodeo. | Agregar el id de la persona (administrador, estudiante o profesor) a `GET /me`. Mientras tanto, se usa el rodeo. |
-| B-03 | La API no expone la lista de entidades auditadas que acepta el filtro `entidad` de `GET /auditoria`; solo la nombra en el mensaje del `400`. | El frontend mantiene una lista fija (Usuario, Administrador, Estudiante, Profesor, Curso, Periodo, Aula, Grupo, Horario, Matricula), que habría que actualizar si el backend agrega entidades. | Un endpoint de solo lectura con las entidades auditadas, o incluirlas en el OpenAPI como enum. Mientras tanto, se usa la lista fija. |
-| B-04 | Los mensajes de la API tratan al usuario de usted ("Contacte a la administración", "Reactívelo"), salvo el del olvido de contraseña, que lo tutea ("recibirás una contraseña temporal"). | El frontend muestra ese mensaje tal cual (RFF-05, RN-28), así que en `V-04` el trato no coincide con el resto de la interfaz (RUI-22). Es solo de estilo. | Cambiar el mensaje en el backend a "recibirá". Mientras tanto, se muestra como llega. |
+Las cuatro brechas se decidieron en el backend, en [`correcciones/COR-01-brechas-frontend.md`](../../sistema-matricula-api/correcciones/COR-01-brechas-frontend.md) (2026-11-17): B-01, B-02 y B-04 se resolvieron en la API, y B-03 se descartó. Las vistas y los RFF de este documento ya reflejan esas decisiones.
+
+| Id | Brecha | Impacto | Propuesta | Estado |
+|---|---|---|---|---|
+| B-01 | La oferta académica (`GET /oferta-academica`) no incluye el periodo, y `GET /periodos/vigente` exige sesión. | El visitante ve la oferta sin saber de qué periodo es ni hasta cuándo puede matricular. | Agregar el periodo vigente (nombre y rango de matrícula) a la respuesta de la oferta, o permitir `GET /periodos/vigente` sin sesión. Mientras tanto, la oferta del visitante no muestra el periodo. | **Resuelta** (COR-01): `GET /periodos/vigente` ya no exige sesión. La oferta muestra el periodo a todos (RFF-07). |
+| B-02 | `GET /me` devuelve el `usuarioId` del administrador, pero no el id de su registro de administrador, que es el que pide `PUT /administradores/{id}`. | Para "Editar mis datos" (RFF-08), el frontend debe buscar al administrador con `GET /administradores?search=<su correo>` y elegir el que tenga su `usuarioId`. Funciona, pero es una petición extra y un rodeo. | Agregar el id de la persona (administrador, estudiante o profesor) a `GET /me`. Mientras tanto, se usa el rodeo. | **Resuelta** (COR-01): `GET /me` devuelve `personaId`, el id del administrador, estudiante o profesor. Ya no se usa el rodeo (RFF-08, RFF-13). |
+| B-03 | La API no expone la lista de entidades auditadas que acepta el filtro `entidad` de `GET /auditoria`; solo la nombra en el mensaje del `400`. | El frontend mantiene una lista fija (Usuario, Administrador, Estudiante, Profesor, Curso, Periodo, Aula, Grupo, Horario, Matricula), que habría que actualizar si el backend agrega entidades. | Un endpoint de solo lectura con las entidades auditadas, o incluirlas en el OpenAPI como enum. Mientras tanto, se usa la lista fija. | **Descartada** (COR-01): se mantiene la lista fija en el frontend. Agregar una entidad auditada exige una spec nueva en el backend, y en ese momento se actualiza la lista y sus etiquetas. |
+| B-04 | Los mensajes de la API tratan al usuario de usted ("Contacte a la administración", "Reactívelo"), salvo el del olvido de contraseña, que lo tutea ("recibirás una contraseña temporal"). | El frontend muestra ese mensaje tal cual (RFF-05, RN-28), así que en `V-04` el trato no coincide con el resto de la interfaz (RUI-22). Es solo de estilo. | Cambiar el mensaje en el backend a "recibirá". Mientras tanto, se muestra como llega. | **Resuelta** (COR-01): el mensaje dice "recibirá", y `V-04` lo muestra como llega (RFF-05). |
 
 ---
 

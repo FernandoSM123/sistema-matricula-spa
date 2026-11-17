@@ -143,7 +143,7 @@ Se aplican salvo que se corrijan en la revisión:
 3. **Inicio público = oferta académica** (RF-50), con accesos a iniciar sesión y registrarse.
 4. **Vencimiento del token:** sin renovación (la API no la ofrece). Al recibir un `401` con sesión iniciada, la aplicación avisa que la sesión venció, vuelve al login y, después de iniciar sesión, regresa a la vista donde estaba. No hay aviso previo al vencimiento.
 5. **Matrícula del administrador** desde el detalle del estudiante (matricular, retirar, cambiar de grupo) y consulta de inscritos desde el detalle del grupo.
-6. **Moneda en colones (₡)**, por la zona horaria configurada en el backend (`America/Costa_Rica`). Fechas como `dd/mm/aaaa` y horas en formato de 24 horas.
+6. **Moneda en colones (₡)**, por la zona horaria configurada en el backend (`America/Costa_Rica`). Fechas como `dd/mm/aaaa` y horas en formato de 12 horas con a. m. y p. m. (cambiado después de la aprobación; antes, 24 horas). La API sigue usando 24 horas.
 7. **Sin modo oscuro, exportaciones ni impresión** en esta versión (ver fuera de alcance diferido).
 
 ## Out of Scope (Deferred)

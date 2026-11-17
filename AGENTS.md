@@ -3,7 +3,7 @@
 Frontend web del sistema de matrícula de un instituto de cursos libres. Consume la API de `../sistema-matricula-api`.
 
 ## Fuentes de verdad
-- **Contrato y reglas de negocio:** la API. `../sistema-matricula-api/docs/requerimientos.md` (RF-01..RF-59, RN-01..RN-49), `../sistema-matricula-api/specs/SPEC-<modulo>.md` (endpoints, DTOs, códigos de error) y el OpenAPI en `http://localhost:5022/openapi/v1.json` con la API en marcha. El frontend **no redefine** esas reglas: las cita por código.
+- **Contrato y reglas de negocio:** la API. `../sistema-matricula-api/docs/requerimientos.md` (RF-01..RF-59, RN-01..RN-49), `../sistema-matricula-api/specs/SPEC-<modulo>.md` (endpoints, DTOs, códigos de error) y el OpenAPI en `http://localhost:5022/openapi/v1.json` con la API en marcha. El frontend **no redefine** esas reglas: las cita por código. Los ajustes a la API posteriores al cierre de sus módulos están en `../sistema-matricula-api/correcciones/` (por ejemplo, COR-01 resolvió las brechas B-01, B-02 y B-04).
 - **Fase 0 (fundamentos):** `specs/fase-0.md`.
 - **Qué construir en el frontend:** `docs/requerimientos.md` (cuando esté aprobado).
 - **Cómo se ven las vistas:** `docs/wireframes/` (guía, no contrato).

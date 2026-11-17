@@ -26,6 +26,9 @@ Entregable `requerimientos` de la [fase 0](../../specs/fase-0.md). Spec: [SPEC-r
   | Códigos únicos | `V-01`…`V-38`, `RFF-01`…`RFF-41`, `RUI-01`…`RUI-22`, sin repetidos ni huecos; todo código citado está definido |
   | Errores | Cada código HTTP (RUI-03) y cada `code` que devuelve la API (RUI-04, 33 códigos) tiene su presentación |
 - 2026-11-17: T7 completada y documento aprobado por el usuario. Entregable completado; commit único del entregable: `1394778`.
+- 2026-11-17: ajuste posterior a la aprobación, pedido por el usuario. Según RUI-11, la búsqueda por texto ya no se ejecuta al escribir: se aplica con Enter o con el botón "Buscar". Los filtros de selección se siguen aplicando al cambiarlos.
+- 2026-11-17: ajuste posterior a la aprobación, pedido por el usuario: las horas se muestran y se ingresan en formato de 12 horas con a. m. y p. m. (RUI-16, RUI-17 y supuesto 6 de la spec). La API sigue usando 24 horas y el frontend convierte en ambos sentidos.
+- 2026-11-17: el backend resolvió las brechas B-01, B-02 y B-04 y descartó B-03 (`correcciones/COR-01-brechas-frontend.md` de la API). §8 tiene ahora la columna "Estado". Se actualizaron `V-01`/RFF-07 (periodo visible para el visitante; el `404` de `/periodos/vigente` significa "no hay oferta"), RFF-08 y RFF-13 (`personaId` de `/me`, sin rodeo) y §7.1 y §7.2 (`/periodos/vigente` es anónimo y `GET /administradores` ya no lo usa `V-06`).
 
 ## Plan
 

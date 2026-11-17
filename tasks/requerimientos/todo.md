@@ -25,7 +25,7 @@ Entregable `requerimientos` de la [fase 0](../../specs/fase-0.md). Spec: [SPEC-r
   | Sin duplicar reglas | Las RN se citan por código; solo se copian los límites de formato de RUI-06, que no son RN |
   | Códigos únicos | `V-01`…`V-38`, `RFF-01`…`RFF-41`, `RUI-01`…`RUI-22`, sin repetidos ni huecos; todo código citado está definido |
   | Errores | Cada código HTTP (RUI-03) y cada `code` que devuelve la API (RUI-04, 33 códigos) tiene su presentación |
-- 2026-11-17: T7 completada y documento aprobado por el usuario. Entregable completado; commit único del entregable.
+- 2026-11-17: T7 completada y documento aprobado por el usuario. Entregable completado; commit único del entregable: `1394778`.
 
 ## Plan
 
@@ -53,13 +53,13 @@ Entregable `requerimientos` de la [fase 0](../../specs/fase-0.md). Spec: [SPEC-r
 
 | Tarea | Estado | Revisión del usuario | Commit |
 |---|---|---|---|
-| T1 Esqueleto, descripción general, roles y navegación | Completada | Aprobada | — |
-| T2 Vistas y RFF: acceso, cuenta y oferta pública | Completada | Aprobada | — |
-| T3 Vistas y RFF: personas | Completada | Aprobada | — |
-| T4 Vistas y RFF: catálogos, grupos y horarios | Completada | Aprobada | — |
-| T5 Vistas y RFF: matrícula, profesor, auditoría y errores | Completada | Aprobada | — |
-| T6 Reglas de interfaz y no funcionales | Completada | Aprobada | — |
-| T7 Trazabilidad, brechas, glosario y verificación final | Completada | Aprobada | — |
+| T1 Esqueleto, descripción general, roles y navegación | Completada | Aprobada | `1394778` |
+| T2 Vistas y RFF: acceso, cuenta y oferta pública | Completada | Aprobada | `1394778` |
+| T3 Vistas y RFF: personas | Completada | Aprobada | `1394778` |
+| T4 Vistas y RFF: catálogos, grupos y horarios | Completada | Aprobada | `1394778` |
+| T5 Vistas y RFF: matrícula, profesor, auditoría y errores | Completada | Aprobada | `1394778` |
+| T6 Reglas de interfaz y no funcionales | Completada | Aprobada | `1394778` |
+| T7 Trazabilidad, brechas, glosario y verificación final | Completada | Aprobada | `1394778` |
 
 **Estados de una tarea:** Pendiente · En progreso · Implementada (escrita, falta la revisión del usuario) · Bloqueada · Completada.
 **Commit:** uno solo al terminar todas las tareas del entregable (decisión del usuario, 2026-11-17); al hacerlo se anota su hash en todas las filas.

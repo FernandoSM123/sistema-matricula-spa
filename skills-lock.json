@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "skills": {
+    "spec-driven-development": {
+      "source": "addyosmani/agent-skills",
+      "commit": "39b723ceebf81474d0557c1fecd01eddab585563",
+      "sourceType": "github",
+      "skillPath": "skills/spec-driven-development/SKILL.md",
+      "computedHash": "504a76654a492c1ec1fa0e1c59387b8b2969fe2319191cd298c4e3482cf2582a"
+    }
+  }
+}

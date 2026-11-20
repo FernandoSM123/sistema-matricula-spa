@@ -4,7 +4,7 @@ Plan de la fase previa al [mapa de módulos](mapa-modulos.md) del frontend (SPA)
 
 | Estado | Avance |
 |---|---|
-| **Aprobado** | 2/3 entregables completados |
+| **Aprobado** | 3/3 entregables completados: **fase completada** (2026-11-20) |
 
 **Historial:**
 - 2026-11-17: v1 en revisión.
@@ -14,6 +14,10 @@ Plan de la fase previa al [mapa de módulos](mapa-modulos.md) del frontend (SPA)
 - 2026-11-19: spec de `wireframes` aprobada; la estructura de `docs/wireframes/` se ajusta a carpetas por área (supuesto 1 de la spec). Lista de tareas en revisión.
 - 2026-11-19: lista de tareas de `wireframes` aprobada; entregable en elaboración.
 - 2026-11-20: `wireframes` completado: `docs/wireframes/` aprobado, y RUI-23 (pie de página) agregada a `docs/requerimientos.md`. Siguiente entregable: `arquitectura` (sin empezar, a la espera del usuario).
+- 2026-11-20: empieza `arquitectura`, con Angular como framework (elegido por el usuario) y su spec en revisión.
+- 2026-11-20: spec de `arquitectura` aprobada (v2: Angular Material, token en `sessionStorage`, pruebas unitarias, pnpm y regla 60-30-10). Lista de tareas en revisión.
+- 2026-11-20: lista de tareas de `arquitectura` aprobada; entregable en elaboración.
+- 2026-11-20: `arquitectura` completado: `docs/arquitectura.md` aprobado (Angular 22, Angular Material, pnpm 12, FullCalendar 7), `AGENTS.md` completado con los comandos, la estructura y los límites técnicos, y la brecha B-05 agregada a `docs/requerimientos.md`. **Fase 0 completada.** Siguiente paso: `specs/mapa-modulos.md` (sin empezar, a la espera del usuario), con el orden de `docs/arquitectura.md` §12.
 
 ## Objetivo
 
@@ -51,7 +55,7 @@ Cada entregable pasa por el mismo flujo aprobado que los módulos, con aprobaci�
 |---|---|---|---|---|
 | `requerimientos` | [Aprobada](SPEC-requerimientos.md) | [Aprobadas](../tasks/requerimientos/todo.md) | 7/7 | Completado |
 | `wireframes` | [Aprobada](SPEC-wireframes.md) | [Aprobadas](../tasks/wireframes/todo.md) | 8/8 | Completado |
-| `arquitectura` | — | — | — | Sin empezar |
+| `arquitectura` | [Aprobada](SPEC-arquitectura.md) | [Aprobadas](../tasks/arquitectura/todo.md) | 6/6 | Completado |
 
 **Estados de un documento** (spec o lista de tareas): Borrador · En revisión · Aprobado/a · Obsoleto/a.
 **Estados de un entregable:** Sin empezar · Planificación · En elaboración · Completado.

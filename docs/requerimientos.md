@@ -1,6 +1,6 @@
 # Sistema de Matrícula — Requerimientos del frontend
 
-> **Estado:** aprobado (2026-11-17). Modificado el 2026-11-19: se agrega RUI-23 (pie de página), pedido durante los wireframes. Spec: [SPEC-requerimientos.md](../specs/SPEC-requerimientos.md) · Tareas: [tasks/requerimientos/todo.md](../tasks/requerimientos/todo.md).
+> **Estado:** aprobado (2026-11-17). Modificado el 2026-11-19: se agrega RUI-23 (pie de página), pedido durante los wireframes. Modificado el 2026-11-20: se agrega la brecha B-05 (`Retry-After` no expuesto por CORS), encontrada durante la arquitectura. Spec: [SPEC-requerimientos.md](../specs/SPEC-requerimientos.md) · Tareas: [tasks/requerimientos/todo.md](../tasks/requerimientos/todo.md).
 
 Este documento define qué hace el frontend (SPA) del sistema de matrícula. Las reglas de negocio, los datos y los permisos ya están definidos e implementados en la API, y aquí **se citan, no se repiten**: `RF-xx` y `RN-xx` se refieren a los [requerimientos del backend](../../sistema-matricula-api/docs/requerimientos.md). Los códigos propios del frontend son:
 
@@ -854,7 +854,7 @@ Todos los RF del backend que tienen interfaz están cubiertos. Los que no tienen
 
 Lo que el frontend necesita y la API no ofrece. Se registran aquí y se decide aparte si se resuelven en el backend o quedan fuera del alcance.
 
-Las cuatro brechas se decidieron en el backend, en [`correcciones/COR-01-brechas-frontend.md`](../../sistema-matricula-api/correcciones/COR-01-brechas-frontend.md) (2026-11-17): B-01, B-02 y B-04 se resolvieron en la API, y B-03 se descartó. Las vistas y los RFF de este documento ya reflejan esas decisiones.
+Las cuatro primeras brechas se decidieron en el backend, en [`correcciones/COR-01-brechas-frontend.md`](../../sistema-matricula-api/correcciones/COR-01-brechas-frontend.md) (2026-11-17): B-01, B-02 y B-04 se resolvieron en la API, y B-03 se descartó. Las vistas y los RFF de este documento ya reflejan esas decisiones. B-05 apareció durante la arquitectura (2026-11-20) y está pendiente de decidirse en el backend.
 
 | Id | Brecha | Impacto | Propuesta | Estado |
 |---|---|---|---|---|
@@ -862,6 +862,7 @@ Las cuatro brechas se decidieron en el backend, en [`correcciones/COR-01-brechas
 | B-02 | `GET /me` devuelve el `usuarioId` del administrador, pero no el id de su registro de administrador, que es el que pide `PUT /administradores/{id}`. | Para "Editar mis datos" (RFF-08), el frontend debe buscar al administrador con `GET /administradores?search=<su correo>` y elegir el que tenga su `usuarioId`. Funciona, pero es una petición extra y un rodeo. | Agregar el id de la persona (administrador, estudiante o profesor) a `GET /me`. Mientras tanto, se usa el rodeo. | **Resuelta** (COR-01): `GET /me` devuelve `personaId`, el id del administrador, estudiante o profesor. Ya no se usa el rodeo (RFF-08, RFF-13). |
 | B-03 | La API no expone la lista de entidades auditadas que acepta el filtro `entidad` de `GET /auditoria`; solo la nombra en el mensaje del `400`. | El frontend mantiene una lista fija (Usuario, Administrador, Estudiante, Profesor, Curso, Periodo, Aula, Grupo, Horario, Matricula), que habría que actualizar si el backend agrega entidades. | Un endpoint de solo lectura con las entidades auditadas, o incluirlas en el OpenAPI como enum. Mientras tanto, se usa la lista fija. | **Descartada** (COR-01): se mantiene la lista fija en el frontend. Agregar una entidad auditada exige una spec nueva en el backend, y en ese momento se actualiza la lista y sus etiquetas. |
 | B-04 | Los mensajes de la API tratan al usuario de usted ("Contacte a la administración", "Reactívelo"), salvo el del olvido de contraseña, que lo tutea ("recibirás una contraseña temporal"). | El frontend muestra ese mensaje tal cual (RFF-05, RN-28), así que en `V-04` el trato no coincide con el resto de la interfaz (RUI-22). Es solo de estilo. | Cambiar el mensaje en el backend a "recibirá". Mientras tanto, se muestra como llega. | **Resuelta** (COR-01): el mensaje dice "recibirá", y `V-04` lo muestra como llega (RFF-05). |
+| B-05 | Ante un `429`, la API envía el encabezado `Retry-After` con los segundos de espera, pero su CORS no lo expone (no tiene `WithExposedHeaders`). `Retry-After` no es un encabezado que el navegador deje leer desde otro origen, y el cuerpo del `429` no trae los segundos. | Desde otro origen (en desarrollo, `http://localhost:5173`) el frontend no puede leer N, así que no puede mostrar "Intente de nuevo en N segundos" ni deshabilitar el envío ese tiempo exacto (RUI-03). | Exponer el encabezado en el CORS de la API: `.WithExposedHeaders("Retry-After")`. Mientras tanto, el frontend muestra el `detail` del `429` ("Realizó demasiados intentos seguidos. Espere unos minutos e intente de nuevo") y deshabilita el envío 60 segundos (`docs/arquitectura.md` §3). En cuanto pueda leer el encabezado, aplica RUI-03 sin cambios. | **Pendiente**: se decide en el backend, como una corrección. |
 
 ---
 

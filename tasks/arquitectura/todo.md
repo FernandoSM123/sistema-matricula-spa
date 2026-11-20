@@ -177,12 +177,12 @@ Entregable `arquitectura` de la [fase 0](../../specs/fase-0.md). Spec: [SPEC-arq
 
 | Tarea | Estado | Revisión del usuario | Commit |
 |---|---|---|---|
-| T1 Verificación de las dependencias y pruebas desechables | Completada | Aprobada | — |
-| T2 Stack y arquitectura del código (§1 y §2) | Completada | Aprobada | — |
-| T3 Integración con la API y sesión (§3 y §4) | Completada | Aprobada | — |
-| T4 Formularios, componentes, estilo visual y formatos (§5 a §7) | Completada | Aprobada | — |
-| T5 Buenas prácticas, pruebas, convenciones, comandos y orden (§8 a §12) | Completada | Aprobada | — |
-| T6 Verificación final, `AGENTS.md` y cierre | Completada | Aprobada | — |
+| T1 Verificación de las dependencias y pruebas desechables | Completada | Aprobada | `7936f0a` |
+| T2 Stack y arquitectura del código (§1 y §2) | Completada | Aprobada | `7936f0a` |
+| T3 Integración con la API y sesión (§3 y §4) | Completada | Aprobada | `7936f0a` |
+| T4 Formularios, componentes, estilo visual y formatos (§5 a §7) | Completada | Aprobada | `7936f0a` |
+| T5 Buenas prácticas, pruebas, convenciones, comandos y orden (§8 a §12) | Completada | Aprobada | `7936f0a` |
+| T6 Verificación final, `AGENTS.md` y cierre | Completada | Aprobada | `7936f0a` |
 
 **Estados de una tarea:** Pendiente · En progreso · Implementada (hecha, falta la revisión del usuario) · Bloqueada · Completada.
 **Commit:** uno solo al terminar todas las tareas del entregable (supuesto 6 de la spec); al hacerlo se anota su hash en todas las filas.

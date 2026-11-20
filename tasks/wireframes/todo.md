@@ -123,17 +123,17 @@ Entregable `wireframes` de la [fase 0](../../specs/fase-0.md). Spec: [SPEC-wiref
 
 | Tarea | Estado | Revisión del usuario | Commit |
 |---|---|---|---|
-| T1 Base: estilos, interacciones, marco, datos de ejemplo e índice | Completada | Aprobada | — |
-| T2 Catálogo de componentes | Completada | Aprobada | — |
-| T3 Vistas: acceso, cuenta, oferta y páginas del sistema | Completada | Aprobada | — |
-| T4 Vistas: personas | Completada | Aprobada | — |
-| T5 Vistas: catálogos (cursos, periodos y aulas) | Completada | Aprobada | — |
-| T6 Vistas: grupos y horarios | Completada | Aprobada | — |
-| T7 Vistas: matrícula, horarios y grupos del profesor | Completada | Aprobada | — |
-| T8 Auditoría y errores, índice final y verificación | Completada | Aprobada | — |
+| T1 Base: estilos, interacciones, marco, datos de ejemplo e índice | Completada | Aprobada | `4cdb2c1`, `f65bbf5` |
+| T2 Catálogo de componentes | Completada | Aprobada | `4cdb2c1`, `f65bbf5` |
+| T3 Vistas: acceso, cuenta, oferta y páginas del sistema | Completada | Aprobada | `4cdb2c1`, `f65bbf5` |
+| T4 Vistas: personas | Completada | Aprobada | `4cdb2c1`, `f65bbf5` |
+| T5 Vistas: catálogos (cursos, periodos y aulas) | Completada | Aprobada | `4cdb2c1`, `f65bbf5` |
+| T6 Vistas: grupos y horarios | Completada | Aprobada | `4cdb2c1`, `f65bbf5` |
+| T7 Vistas: matrícula, horarios y grupos del profesor | Completada | Aprobada | `4cdb2c1`, `f65bbf5` |
+| T8 Auditoría y errores, índice final y verificación | Completada | Aprobada | `4cdb2c1`, `f65bbf5` |
 
 **Estados de una tarea:** Pendiente · En progreso · Implementada (hecha, falta la revisión del usuario) · Bloqueada · Completada.
-**Commit:** uno solo al terminar todas las tareas del entregable (supuesto 6 de la spec); al hacerlo se anota su hash en todas las filas.
+**Commit:** uno solo al terminar todas las tareas del entregable (supuesto 6 de la spec); al hacerlo se anota su hash en todas las filas. Quedaron dos: `4cdb2c1` (el entregable, hecho por el usuario antes de los últimos ajustes) y `f65bbf5` (los ajustes de la revisión de T8 y el cierre).
 
 ## Tareas
 

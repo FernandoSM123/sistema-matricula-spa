@@ -4,7 +4,7 @@ Plan de la fase previa al [mapa de módulos](mapa-modulos.md) del frontend (SPA)
 
 | Estado | Avance |
 |---|---|
-| **Aprobado** | 1/3 entregables completados |
+| **Aprobado** | 2/3 entregables completados |
 
 **Historial:**
 - 2026-11-17: v1 en revisión.
@@ -13,6 +13,7 @@ Plan de la fase previa al [mapa de módulos](mapa-modulos.md) del frontend (SPA)
 - 2026-11-19: empieza `wireframes`, con su spec en revisión.
 - 2026-11-19: spec de `wireframes` aprobada; la estructura de `docs/wireframes/` se ajusta a carpetas por área (supuesto 1 de la spec). Lista de tareas en revisión.
 - 2026-11-19: lista de tareas de `wireframes` aprobada; entregable en elaboración.
+- 2026-11-20: `wireframes` completado: `docs/wireframes/` aprobado, y RUI-23 (pie de página) agregada a `docs/requerimientos.md`. Siguiente entregable: `arquitectura` (sin empezar, a la espera del usuario).
 
 ## Objetivo
 
@@ -49,7 +50,7 @@ Cada entregable pasa por el mismo flujo aprobado que los módulos, con aprobaci�
 | Entregable | Spec | Tareas | Avance | Estado |
 |---|---|---|---|---|
 | `requerimientos` | [Aprobada](SPEC-requerimientos.md) | [Aprobadas](../tasks/requerimientos/todo.md) | 7/7 | Completado |
-| `wireframes` | [Aprobada](SPEC-wireframes.md) | [Aprobadas](../tasks/wireframes/todo.md) | 7/8 | En elaboración |
+| `wireframes` | [Aprobada](SPEC-wireframes.md) | [Aprobadas](../tasks/wireframes/todo.md) | 8/8 | Completado |
 | `arquitectura` | — | — | — | Sin empezar |
 
 **Estados de un documento** (spec o lista de tareas): Borrador · En revisión · Aprobado/a · Obsoleto/a.

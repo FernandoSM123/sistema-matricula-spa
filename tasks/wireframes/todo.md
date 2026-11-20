@@ -4,7 +4,7 @@ Entregable `wireframes` de la [fase 0](../../specs/fase-0.md). Spec: [SPEC-wiref
 
 | Estado de la lista | Avance |
 |---|---|
-| **Aprobada** | 7/8 tareas completadas |
+| **Aprobada** | 8/8 tareas completadas: **entregable completado** (2026-11-20) |
 
 **Historial:**
 - 2026-11-19: v1 en revisión.
@@ -75,7 +75,10 @@ Entregable `wireframes` de la [fase 0](../../specs/fase-0.md). Spec: [SPEC-wiref
   - `V-37`: el código de error va primero en los filtros y acepta el código completo o sus 32 caracteres. El origen `Peticion` se muestra como "Solicitud" y un usuario sin sesión como "Sin sesión". Estados: buscado por código, código inválido, sin errores, sin resultados, cargando y error.
   - `V-38`: los datos y debajo el detalle técnico en texto de ancho fijo con su propio desplazamiento, con "Copiar código" y "Copiar detalle" (única excepción de RUI-05). "Ver cambios de esta operación" abre `V-36` por operación: un `500` no deja cambios (estado "Operación sin cambios") y un correo fallido sí puede tenerlos (la creación de Luis Diego). Un error depurado o inexistente (`404`) lo indica.
   - Pie de página, pedido por el usuario en la revisión de T8: se agrega RUI-23 a `docs/requerimientos.md` (§5.6) y el pie al marco de todas las vistas en `wireframe.js` ("Sistema de Matrícula · [Nombre del instituto] · © 2026" y "Versión 0.1.0"; el nombre del instituto queda entre corchetes hasta definirlo). Queda al final de la ventana aunque la vista sea corta, sin quedar fijo; en celular se apila. `componentes.html` no lo lleva porque no tiene marco.
-  - Ancho del contenido, pedido por el usuario en la revisión de T8: con menú lateral, el contenido ocupa todo el ancho disponible, con 24 px a cada lado (antes tenía un máximo de 1100 px y en pantallas anchas sobraba espacio a la derecha). Sin menú (visitante y cambio obligatorio de contraseña), sigue centrado con ese máximo. Los formularios también usan todo el ancho: sus campos se reparten en tantas columnas de al menos 320 px como quepan (dos en una pantalla normal, tres o cuatro en una ancha) y en celular quedan en una. Se descartó limitarlos a un ancho fijo.
+  - Ancho del contenido, pedido por el usuario en la revisión de T8: el contenido ocupa todo el ancho disponible, con 24 px a cada lado, con o sin menú lateral (antes tenía un máximo de 1100 px y en pantallas anchas sobraba espacio; en `V-01` y `V-05`, a los dos lados). Los formularios también usan todo el ancho: sus campos van en dos columnas, y en cuatro cuando el formulario mide 1300 px o más (con una consulta de contenedor, así no depende de si hay menú). Siempre un número par de columnas, para que los pares de campos no queden separados; en celular, una. Se descartó limitarlos a un ancho fijo. Las vistas de un formulario corto o un mensaje (`wf-vista-angosta`: `V-02` a `V-04`, `V-09` y `V-10`) pasan de 460 a 700 px, centradas, a pedido del usuario. `V-07` y `V-08` dejan de ser angostas (cambio del usuario) y usan todo el ancho, como los demás formularios.
+  - Filtros, pedido por el usuario en la revisión de T8: se acomodan en una rejilla de cuatro columnas como máximo (por ejemplo, los seis de `V-28` en una fila de cuatro y otra de dos); con menos de cuatro se reparten el ancho, bajan a tres o dos en pantallas más angostas y a una en celular. Se alinean arriba, para que una ayuda bajo un campo no desacomode la fila, y la casilla "Incluir inactivos" baja lo que mide una etiqueta para quedar al nivel de los campos.
+  - `V-36`, pedido por el usuario en la revisión de T8: la cabecera de la lista usa el estilo de las tablas y va dentro del mismo marco que los registros; el marcador de expandir queda centrado en la altura de la fila.
+  - `V-16`, pedido por el usuario en la revisión de T8: en la pestaña Matrículas, "Matricular" va arriba de los filtros, a la derecha, y los filtros ocupan todo el ancho.
   - CSS: los selectores de la barra del wireframe se acortan para no desbordar a 360 px; los nombres de tipos y rutas se cortan en los puntos y barras.
   - Verificación de la spec:
 
@@ -91,6 +94,7 @@ Entregable `wireframes` de la [fase 0](../../specs/fase-0.md). Spec: [SPEC-wiref
     | Formatos y textos | `dd/mm/aaaa`, `6:30 p. m.`, `₡25 000,00`, trato de usted |
     | Anotaciones | Cada vista tiene sus notas con `RFF`, `RUI`, endpoints y decisiones |
     | Sin dependencias | Ningún `<script>` ni `<link>` externo; `node --check` del JS sin errores |
+- 2026-11-20: T8 completada (aprobada por el usuario, con los ajustes de la revisión). Entregable completado: 8/8 tareas.
 
 ## Plan
 
@@ -126,7 +130,7 @@ Entregable `wireframes` de la [fase 0](../../specs/fase-0.md). Spec: [SPEC-wiref
 | T5 Vistas: catálogos (cursos, periodos y aulas) | Completada | Aprobada | — |
 | T6 Vistas: grupos y horarios | Completada | Aprobada | — |
 | T7 Vistas: matrícula, horarios y grupos del profesor | Completada | Aprobada | — |
-| T8 Auditoría y errores, índice final y verificación | Implementada | En revisión | — |
+| T8 Auditoría y errores, índice final y verificación | Completada | Aprobada | — |
 
 **Estados de una tarea:** Pendiente · En progreso · Implementada (hecha, falta la revisión del usuario) · Bloqueada · Completada.
 **Commit:** uno solo al terminar todas las tareas del entregable (supuesto 6 de la spec); al hacerlo se anota su hash en todas las filas.
@@ -201,7 +205,7 @@ Entregable `wireframes` de la [fase 0](../../specs/fase-0.md). Spec: [SPEC-wiref
   - Verify: cada consulta de §3.7 tiene su vista o sección; los tres flujos se recorren con clics; las confirmaciones de matricular, retirar y cambiar de grupo son simples (RUI-07); enlaces rotos solo hacia `V-36` a `V-38`; revisión a 360 px.
   - Files: `docs/wireframes/estudiante/V-31-mis-matriculas.html`, `docs/wireframes/compartidas/` (`V-32`, `V-33`, `V-34`, y los cambios en `V-22`, `V-30`), `docs/wireframes/profesor/V-35-mis-grupos.html`, `docs/wireframes/publico/V-01-oferta.html`, `docs/wireframes/admin/` (`V-16`, `V-19`), `docs/wireframes/index.html`
 
-- [ ] **T8 Auditoría y errores, índice final y verificación**
+- [x] **T8 Auditoría y errores, índice final y verificación**
   - Acceptance:
     - `V-36` con sus filtros (RFF-39), el autor `null` como "Sistema" y el enlace al registro auditado (RFF-40); `V-37` con la búsqueda por `traceId`; `V-38` con el detalle técnico (única excepción de RUI-05).
     - Índice completo: las 38 vistas enlazadas, los 10 flujos del punto 6 de la spec y el enlace al catálogo de componentes.

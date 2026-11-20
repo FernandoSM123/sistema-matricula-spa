@@ -94,23 +94,23 @@
       </div>
       <div role="tabpanel" id="panel-matriculas" aria-labelledby="tab-matriculas">
         <div class="wf-pila">
-          <div class="wf-encabezado" style="margin:0">
-            <form class="wf-filtros" role="search" onsubmit="return false">
-              <div class="wf-campo wf-busqueda">
-                <label for="em-buscar">Buscar</label>
-                <div class="wf-con-boton"><input id="em-buscar" type="search" placeholder="Curso o NRC"><button type="submit" class="wf-boton">Buscar</button></div>
-              </div>
-              <div class="wf-campo">
-                <label for="em-periodo">Periodo</label>
-                <select id="em-periodo"><option selected>Todos</option><option>2026-III</option><option>2026-II</option></select>
-              </div>
-              <div class="wf-campo">
-                <label for="em-estado">Estado</label>
-                <select id="em-estado"><option selected>Todos</option><option>Activa</option><option>Retirada</option></select>
-              </div>
-            </form>
+          <div class="wf-fila" style="justify-content:flex-end">
             <a class="wf-boton wf-principal" href="../compartidas/V-32-matricular.html#estado=buscar&amp;rol=administrador">Matricular</a>
           </div>
+          <form class="wf-filtros" role="search" onsubmit="return false">
+            <div class="wf-campo wf-busqueda">
+              <label for="em-buscar">Buscar</label>
+              <div class="wf-con-boton"><input id="em-buscar" type="search" placeholder="Curso o NRC"><button type="submit" class="wf-boton">Buscar</button></div>
+            </div>
+            <div class="wf-campo">
+              <label for="em-periodo">Periodo</label>
+              <select id="em-periodo"><option selected>Todos</option><option>2026-III</option><option>2026-II</option></select>
+            </div>
+            <div class="wf-campo">
+              <label for="em-estado">Estado</label>
+              <select id="em-estado"><option selected>Todos</option><option>Activa</option><option>Retirada</option></select>
+            </div>
+          </form>
 
           <div class="wf-listado" data-wf-estado="activo inactivo guardado reactivado rechazos matriculado retirado cambiado">
             <table class="wf-tabla">

@@ -188,9 +188,8 @@ body.wf-con-marco > .wf-app { flex: 1 0 auto; min-height: 0; }
 .wf-menu-visitante a[aria-current="page"] { font-weight: 700; background: var(--wf-fondo-3); }
 
 .wf-contenido { min-width: 0; padding: 24px 24px 48px; }
-/* Con menú lateral, el contenido ocupa todo el ancho disponible (mismo margen a cada lado);
-   sin menú, se centra con un ancho máximo */
-.wf-sin-menu .wf-contenido > * { max-width: 1100px; margin-inline: auto; }
+/* El contenido ocupa todo el ancho disponible, con el mismo margen a cada lado, con o sin menú
+   lateral. Solo las vistas de un formulario corto (.wf-vista-angosta) se centran con un máximo */
 
 /* Pie de página (RUI-23): no queda fijo; en celular se apila */
 .wf-app-pie {
@@ -207,7 +206,8 @@ body.wf-con-marco > .wf-app { flex: 1 0 auto; min-height: 0; }
 
 /* 5. Vista ---------------------------------------------------------------- */
 .wf-vista { display: flex; flex-direction: column; gap: 20px; }
-.wf-vista-angosta { max-width: 460px; margin: 0 auto; width: 100%; }
+/* Vistas de un solo formulario corto o un mensaje (V-02 a V-04, V-09 y V-10) */
+.wf-contenido > .wf-vista-angosta { max-width: 700px; margin-inline: auto; width: 100%; }
 
 .wf-encabezado {
   display: flex;
@@ -433,12 +433,16 @@ body.wf-con-marco > .wf-app { flex: 1 0 auto; min-height: 0; }
 .wf-paginacion-controles select { font: inherit; min-height: 32px; padding: 2px 6px; border: 1px solid var(--wf-borde); border-radius: var(--wf-radio); background: var(--wf-fondo); }
 
 /* 14. Búsqueda y filtros (RUI-11, RUI-12) */
+/* Los filtros van en una rejilla de cuatro columnas como máximo; con menos de cuatro filtros, se reparten
+   el ancho. En pantallas más angostas bajan a tres o dos (por el ancho mínimo de 220 px) y en celular, a una. */
 .wf-filtros {
-  display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 16px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(max(220px, calc((100% - 48px) / 4)), 1fr));
+  align-items: start; gap: 12px 16px;
   padding: 12px; background: var(--wf-fondo); border: 1px solid var(--wf-borde-suave); border-radius: var(--wf-radio);
 }
 .wf-filtros .wf-campo { margin: 0; }
-.wf-busqueda { flex: 1 1 280px; }
+/* Una casilla no tiene etiqueta encima: se baja lo que mide la etiqueta para quedar al nivel de los campos */
+.wf-filtros > .wf-casilla { margin-top: calc(0.92rem * 1.5 + 4px); }
 .wf-casilla { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; cursor: pointer; }
 .wf-casilla input { width: 18px; height: 18px; margin: 0; }
 .wf-filtros-aplicados { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; font-size: 0.9rem; }
@@ -446,9 +450,14 @@ body.wf-con-marco > .wf-app { flex: 1 0 auto; min-height: 0; }
 
 /* 15. Formularios (RUI-02, RUI-06, RUI-08, RUI-09) */
 .wf-form { display: flex; flex-direction: column; gap: 20px; }
-/* Los campos se reparten en tantas columnas como quepan (de al menos 320 px): dos en una
-   pantalla normal y tres o cuatro en una ancha, para usar todo el ancho sin estirar los campos */
-.wf-form-seccion { border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 16px; }
+/* Los campos van en dos columnas, y en cuatro cuando el formulario mide 1300 px o más (pantallas
+   anchas), para usar todo el ancho sin estirar los campos. Siempre en número par, para que los pares
+   (nombre y apellidos, contraseña y confirmación) no queden separados. En celular, una columna. */
+.wf-form { container-type: inline-size; }
+.wf-form-seccion { border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@container (min-width: 1300px) {
+  .wf-form-seccion { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
 .wf-form-seccion > legend { font-weight: 700; padding: 0; margin-bottom: 12px; }
 .wf-form-seccion .wf-ancho-completo { grid-column: 1 / -1; }
 .wf-form-pie { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; padding-top: 12px; border-top: 1px solid var(--wf-borde-suave); }
@@ -641,8 +650,8 @@ body.wf-con-marco > .wf-app { flex: 1 0 auto; min-height: 0; }
   .wf-paginacion { flex-direction: column; align-items: stretch; }
   .wf-paginacion-controles { display: grid; grid-template-columns: 1fr 1fr; }
   .wf-paginacion-controles > label { grid-column: 1 / -1; }
-  .wf-filtros { flex-direction: column; align-items: stretch; }
-  .wf-filtros > * { flex: none; }
+  .wf-filtros { grid-template-columns: minmax(0, 1fr); }
+  .wf-filtros > .wf-casilla { margin-top: 0; }
   .wf-form-seccion { grid-template-columns: minmax(0, 1fr); }
   .wf-form-pie { flex-direction: column-reverse; }
   .wf-form-pie .wf-boton { width: 100%; }
@@ -653,7 +662,9 @@ body.wf-con-marco > .wf-app { flex: 1 0 auto; min-height: 0; }
 }
 
 /* Registros de auditoría (V-36): cada fila se expande para ver sus cambios */
-.wf-registros { list-style: none; margin: 0; padding: 0; background: var(--wf-fondo); border: 1px solid var(--wf-borde); border-radius: var(--wf-radio); }
+/* La cabecera y la lista van en un mismo marco, con la cabecera igual a la de .wf-tabla */
+.wf-registros-marco { background: var(--wf-fondo); border: 1px solid var(--wf-borde); border-radius: var(--wf-radio); overflow: hidden; }
+.wf-registros { list-style: none; margin: 0; padding: 0; }
 .wf-registros > li + li { border-top: 1px solid var(--wf-borde-suave); }
 .wf-registro > summary {
   display: grid; grid-template-columns: 11rem 8rem minmax(9rem, 1fr) minmax(12rem, 1.4fr) 7rem;
@@ -662,7 +673,11 @@ body.wf-con-marco > .wf-app { flex: 1 0 auto; min-height: 0; }
 .wf-registro > summary > span { min-width: 0; overflow-wrap: anywhere; }
 .wf-registro[open] > summary { background: var(--wf-fondo-3); }
 .wf-registro-cuerpo { padding: 12px; display: grid; gap: 12px; }
-.wf-registros-cabecera { display: grid; grid-template-columns: 11rem 8rem minmax(9rem, 1fr) minmax(12rem, 1.4fr) 7rem; gap: 12px; padding: 8px 12px 8px 28px; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+.wf-registros-cabecera {
+  display: grid; grid-template-columns: 11rem 8rem minmax(9rem, 1fr) minmax(12rem, 1.4fr) 7rem; gap: 12px;
+  padding: 10px 12px; background: var(--wf-fondo-3); border-bottom: 2px solid var(--wf-borde);
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+}
 .wf-registros-cabecera, .wf-registro > summary { padding-left: 28px; }
 .wf-protegido { font-style: italic; color: var(--wf-texto-2); }
 @media (max-width: 720px) {
@@ -674,7 +689,7 @@ body.wf-con-marco > .wf-app { flex: 1 0 auto; min-height: 0; }
 .wf-tecnico { margin: 0; padding: 12px; max-height: 360px; overflow: auto; font-family: var(--wf-mono); font-size: 12px; line-height: 1.5; white-space: pre; background: var(--wf-fondo-3); border: 1px solid var(--wf-borde); border-radius: var(--wf-radio); }
 .wf-registro > summary { position: relative; list-style: none; }
 .wf-registro > summary::-webkit-details-marker { display: none; }
-.wf-registro > summary::before { content: "▸"; position: absolute; left: 10px; top: 10px; }
+/* Marcador de expandir, centrado en la altura de la fila */
+.wf-registro > summary::before { content: "▸"; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); }
 .wf-registro[open] > summary::before { content: "▾"; }
 .wf-tabla code, .wf-datos code { overflow-wrap: break-word; }
-.wf-registros-cabecera { border: 1px solid transparent; }

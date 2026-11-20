@@ -4,12 +4,13 @@ Entregable `wireframes` de la [fase 0](fase-0.md). Depende de `requerimientos` (
 
 | Estado | Tareas | Avance |
 |---|---|---|
-| **Aprobada** | [Aprobadas](../tasks/wireframes/todo.md) | 7/8 tareas completadas |
+| **Aprobada** | [Aprobadas](../tasks/wireframes/todo.md) | 8/8 tareas completadas: **entregable completado** (2026-11-20) |
 
 **Historial:**
 - 2026-11-19: v1 en revisión.
 - 2026-11-19: v1 aprobada, con sus seis supuestos. Lista de 8 tareas en revisión.
 - 2026-11-19: lista de tareas aprobada; T1 en progreso.
+- 2026-11-20: entregable completado (8/8 tareas). `docs/wireframes/` con las 38 vistas, el catálogo de componentes, los 10 flujos y el índice. Cambios fuera de la spec, pedidos en la revisión de T8: el pie de página (RUI-23, nueva en `docs/requerimientos.md`) y ajustes de ancho y de filtros (historial de la lista de tareas).
 
 ## Objetivo
 

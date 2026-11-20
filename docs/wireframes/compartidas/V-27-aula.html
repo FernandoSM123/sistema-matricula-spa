@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-27 Detalle de aula — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-27"
+      data-wf-nombre="Detalle de aula"
+      data-wf-raiz="../"
+      data-wf-marco="rol"
+      data-wf-menu="V-25"
+      data-wf-estados="activo:Activa|inactivo:Inactiva (administrador)|creado:Recién registrada, sin ocupación (administrador)|guardado:Después de editar (administrador)|reactivado:Después de reactivar (administrador)|rechazos:Con rechazos de la API en las ventanas (administrador)|cargando:Cargando|no-existe:Registro inexistente (404)|error:Error"
+      data-wf-roles="administrador:Administrador|profesor:Profesor">
+
+  <main class="wf-vista">
+    <div class="wf-cargando" role="status" aria-label="Cargando el aula" data-wf-estado="cargando">
+      <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+    </div>
+    <div class="wf-caja wf-estado-contenido" data-wf-estado="no-existe">
+      <p class="wf-estado-titulo">El aula que busca no existe.</p>
+      <a class="wf-boton" href="V-25-aulas.html">Ir a Aulas</a>
+    </div>
+    <div class="wf-caja wf-estado-contenido" role="alert" data-wf-estado="error">
+      <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+      <button type="button" class="wf-boton">Reintentar</button>
+    </div>
+
+    <header class="wf-encabezado" data-wf-estado="activo inactivo creado guardado reactivado rechazos">
+      <div>
+        <p class="wf-migas"><a href="V-25-aulas.html">Aulas</a> / Detalle</p>
+        <div class="wf-detalle-titulo">
+          <h1 style="margin:0" data-wf-estado="activo inactivo guardado reactivado rechazos">Aula B-201</h1>
+          <h1 style="margin:0" data-wf-estado="creado">Aula D-105</h1>
+          <span class="wf-etiqueta" data-wf-rol="administrador" data-wf-estado="activo creado guardado reactivado rechazos">Activa</span>
+          <span class="wf-etiqueta wf-e-apagada" data-wf-rol="administrador" data-wf-estado="inactivo">Inactiva</span>
+        </div>
+      </div>
+      <div class="wf-acciones" data-wf-rol="administrador">
+        <a class="wf-boton" href="../admin/V-26-aula-form.html#estado=edicion">Editar</a>
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-desactivar" data-wf-estado="activo creado guardado reactivado rechazos">Desactivar</button>
+        <button type="button" class="wf-boton wf-principal" data-wf-abrir="dlg-reactivar" data-wf-estado="inactivo">Reactivar</button>
+        <button type="button" class="wf-boton wf-peligro" data-wf-abrir="dlg-eliminar">Eliminar</button>
+        <a class="wf-boton wf-enlace" href="../admin/V-36-auditoria.html#estado=filtrado">Ver historial de cambios</a>
+      </div>
+    </header>
+
+    <div class="wf-mensaje" role="note" data-wf-estado="rechazos" data-wf-rol="administrador">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>En este estado, las ventanas de Desactivar y Eliminar muestran la respuesta de rechazo de la API.</p></div>
+    </div>
+
+    <section class="wf-caja" aria-labelledby="t-datos" data-wf-estado="activo inactivo creado guardado reactivado rechazos">
+      <h2 id="t-datos">Datos del aula</h2>
+      <dl class="wf-datos" data-wf-estado="activo inactivo guardado reactivado rechazos">
+        <div><dt>Código</dt><dd>B-201</dd></div>
+        <div><dt>Capacidad</dt><dd>18 estudiantes</dd></div>
+        <div class="wf-ancho-completo"><dt>Ubicación</dt><dd>Edificio B, laboratorio de cómputo</dd></div>
+      </dl>
+      <dl class="wf-datos" data-wf-estado="creado">
+        <div><dt>Código</dt><dd>D-105</dd></div>
+        <div><dt>Capacidad</dt><dd>22 estudiantes</dd></div>
+        <div class="wf-ancho-completo"><dt>Ubicación</dt><dd>—</dd></div>
+      </dl>
+    </section>
+
+    <section class="wf-horario" id="ocupacion" aria-labelledby="t-ocupacion" data-wf-rol="administrador" data-wf-estado="activo inactivo creado guardado reactivado rechazos">
+      <div class="wf-horario-cabecera">
+        <h2 id="t-ocupacion" style="margin:0">Ocupación</h2>
+        <div class="wf-campo">
+          <label for="o-periodo">Periodo</label>
+          <select id="o-periodo"><option selected>2026-III (vigente)</option><option>2026-II</option><option>2027-I</option></select>
+        </div>
+      </div>
+
+      <div data-wf-estado="activo guardado reactivado rechazos">
+        <div class="wf-grilla" style="--wf-dias: 6; --wf-filas: 7" aria-hidden="true">
+          <div class="wf-grilla-col" style="grid-column: 2"></div>
+          <div class="wf-grilla-col" style="grid-column: 3"></div>
+          <div class="wf-grilla-col" style="grid-column: 4"></div>
+          <div class="wf-grilla-col" style="grid-column: 5"></div>
+          <div class="wf-grilla-col" style="grid-column: 6"></div>
+          <div class="wf-grilla-col" style="grid-column: 7"></div>
+          <div class="wf-grilla-dia" style="grid-column: 2">Lunes</div>
+          <div class="wf-grilla-dia" style="grid-column: 3">Martes</div>
+          <div class="wf-grilla-dia" style="grid-column: 4">Miércoles</div>
+          <div class="wf-grilla-dia" style="grid-column: 5">Jueves</div>
+          <div class="wf-grilla-dia" style="grid-column: 6">Viernes</div>
+          <div class="wf-grilla-dia" style="grid-column: 7">Sábado</div>
+          <div class="wf-grilla-hora" style="grid-row: 2 / span 2">5:00 p. m.</div>
+          <div class="wf-grilla-hora" style="grid-row: 4 / span 2">6:00 p. m.</div>
+          <div class="wf-grilla-hora" style="grid-row: 6 / span 2">7:00 p. m.</div>
+          <div class="wf-grilla-hora" style="grid-row: 8 / span 2">8:00 p. m.</div>
+          <a class="wf-bloque" style="grid-column: 2; grid-row: 3 / 9" href="V-30-grupo.html" tabindex="-1"><strong>1005</strong><span>Programación en Python</span><span>Carlos Vargas</span></a>
+          <a class="wf-bloque" style="grid-column: 4; grid-row: 3 / 9" href="V-30-grupo.html" tabindex="-1"><strong>1005</strong><span>Programación en Python</span><span>Carlos Vargas</span></a>
+          <a class="wf-bloque" style="grid-column: 3; grid-row: 2 / 6" href="V-30-grupo.html" tabindex="-1"><strong>1004</strong><span>Excel para la oficina</span><span>Carlos Vargas</span></a>
+          <a class="wf-bloque" style="grid-column: 5; grid-row: 2 / 6" href="V-30-grupo.html" tabindex="-1"><strong>1004</strong><span>Excel para la oficina</span><span>Carlos Vargas</span></a>
+        </div>
+
+        <div class="wf-horario-lista">
+          <h3>Lunes</h3>
+          <ul><li><a href="V-30-grupo.html"><strong>5:30 p. m. – 8:30 p. m. · 1005</strong><span>Programación en Python · Carlos Vargas</span></a></li></ul>
+          <h3>Martes</h3>
+          <ul><li><a href="V-30-grupo.html"><strong>5:00 p. m. – 7:00 p. m. · 1004</strong><span>Excel para la oficina · Carlos Vargas</span></a></li></ul>
+          <h3>Miércoles</h3>
+          <ul><li><a href="V-30-grupo.html"><strong>5:30 p. m. – 8:30 p. m. · 1005</strong><span>Programación en Python · Carlos Vargas</span></a></li></ul>
+          <h3>Jueves</h3>
+          <ul><li><a href="V-30-grupo.html"><strong>5:00 p. m. – 7:00 p. m. · 1004</strong><span>Excel para la oficina · Carlos Vargas</span></a></li></ul>
+        </div>
+      </div>
+
+      <div class="wf-estado-contenido" data-wf-estado="inactivo creado">
+        <p class="wf-estado-titulo">El aula no tiene clases en 2026-III.</p>
+        <p class="wf-texto-2">Cambie el periodo para ver la ocupación de otros periodos.</p>
+      </div>
+    </section>
+
+    <div class="wf-toast" role="status" data-wf-estado="creado">Aula registrada</div>
+    <div class="wf-toast" role="status" data-wf-estado="guardado">Cambios guardados</div>
+    <div class="wf-toast" role="status" data-wf-estado="reactivado">Aula reactivada</div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-27</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-27 Detalle de aula · administrador y profesor</dd>
+        <dt>Requerimientos</dt><dd>RFF-22 · RFF-29 (grilla) · RFF-40 (historial)</dd>
+        <dt>Reglas</dt><dd>RUI-03 (<code>404</code>), RUI-04 (<code>RN-34</code>, <code>RN-37</code>), RUI-07, RUI-17 (grilla), RUI-21</dd>
+        <dt>Endpoints</dt><dd><code>GET /aulas/{id}</code>, <code>GET /aulas/{id}/ocupacion</code>, <code>POST /aulas/{id}/desactivar</code>, <code>POST /aulas/{id}/reactivar</code>, <code>DELETE /aulas/{id}</code></dd>
+        <dt>Backend</dt><dd>RF-40, RF-41, RN-34, RN-37, consulta 8</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>El profesor ve solo los datos del aula. El administrador ve además las acciones y la sección "Ocupación".</li>
+            <li>"Ocupación" usa la grilla del componente 10: bloques con NRC, curso y profesor, que abren V-30. En celular, lista por día.</li>
+            <li>El rechazo <code>409 RN-37</code> lleva a la sección "Ocupación", donde se ven los grupos vigentes; el <code>409 RN-34</code> ofrece desactivar en su lugar.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <dialog class="wf-dialogo" id="dlg-desactivar" aria-labelledby="dlg-desactivar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-desactivar-t">¿Desactivar el aula B-201?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <ul>
+        <li>No se podrá asignar a grupos nuevos.</li>
+        <li>Sus grupos anteriores se conservan. Puede reactivarla después.</li>
+      </ul>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rechazos">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p>No se puede desactivar el aula porque tiene grupos vigentes.</p></div>
+        <div class="wf-mensaje-acciones"><button type="button" class="wf-boton wf-boton-pequeno" data-wf-pestana="ocupacion">Ver la ocupación</button></div>
+      </div>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="#estado=inactivo" data-wf-estado="activo creado guardado reactivado">Desactivar aula</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-reactivar" aria-labelledby="dlg-reactivar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-reactivar-t">¿Reactivar el aula B-201?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>Volverá a aparecer en los listados y se podrá asignar a grupos nuevos.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="#estado=reactivado">Reactivar aula</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo wf-reforzada" id="dlg-eliminar" aria-labelledby="dlg-eliminar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-eliminar-t">¿Eliminar el aula B-201?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <p><strong>Esta acción no se puede deshacer.</strong></p>
+      <p>Solo es posible si el aula nunca se asignó a un grupo, por ejemplo si se registró por error. Para dejar de usarla, desactívela.</p>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rechazos">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p>No se puede eliminar el aula porque tiene grupos registrados.</p></div>
+        <div class="wf-mensaje-acciones"><button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-desactivar">Desactivar en su lugar</button></div>
+      </div>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Cancelar</button>
+      <a class="wf-boton wf-peligro" href="V-25-aulas.html#estado=eliminado&amp;rol=administrador" data-wf-estado="activo inactivo creado guardado reactivado">Eliminar aula</a>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

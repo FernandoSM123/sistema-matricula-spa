@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-18 Registrar o editar profesor — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-18"
+      data-wf-nombre="Registrar o editar profesor"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-menu="V-17"
+      data-wf-estados="registro:Registrar|validacion:Registrar con errores|duplicado:Registrar: ya existe (409 RN-13)|reactivar:Registrar: registro inactivo (409 RN-39)|edicion:Editar|enviando:Guardando">
+
+  <main class="wf-vista">
+    <header>
+      <p class="wf-migas"><a href="V-17-profesores.html">Profesores</a> / <span data-wf-estado="registro validacion duplicado reactivar">Registrar</span><span data-wf-estado="edicion enviando">Editar</span></p>
+      <h1 data-wf-estado="registro validacion duplicado reactivar">Registrar profesor</h1>
+      <h1 data-wf-estado="edicion enviando">Editar profesor</h1>
+    </header>
+
+    <div class="wf-mensaje" role="note" data-wf-estado="registro validacion duplicado reactivar">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>No necesita definir una contraseña: el sistema genera una contraseña temporal y la envía al correo del profesor, que deberá cambiarla al ingresar.</p></div>
+    </div>
+
+    <div class="wf-errores-generales" role="alert" data-wf-estado="validacion">
+      <strong>No se pudo registrar el profesor.</strong>
+      <ul><li>Revise los campos marcados.</li></ul>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="duplicado">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto"><p>Ya existe un profesor con esa cédula o ese correo.</p></div>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="reactivar">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto">
+        <p>Ya existe un profesor inactivo con esa cédula.</p>
+        <p class="wf-texto-2">Al reactivarlo se recuperan sus datos anteriores, no los de este formulario. Después puede editarlos.</p>
+      </div>
+      <div class="wf-mensaje-acciones"><a class="wf-boton wf-boton-pequeno" href="V-19-profesor.html#estado=reactivado">Reactivar profesor</a></div>
+    </div>
+
+    <form class="wf-caja wf-form" onsubmit="return false" novalidate>
+      <p class="wf-nota-obligatorios">Los campos con * son obligatorios.</p>
+
+      <fieldset class="wf-form-seccion" data-wf-estado="registro validacion">
+        <legend>Datos personales</legend>
+        <div class="wf-campo">
+          <label for="v-cedula" class="wf-obligatorio">Cédula</label>
+          <input id="v-cedula">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique la cédula.</p>
+        </div>
+        <div class="wf-campo">
+          <label for="v-telefono" class="wf-obligatorio">Teléfono</label>
+          <input id="v-telefono" type="tel">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique el teléfono.</p>
+        </div>
+        <div class="wf-campo">
+          <label for="v-nombre" class="wf-obligatorio">Nombre</label>
+          <input id="v-nombre">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique el nombre.</p>
+        </div>
+        <div class="wf-campo">
+          <label for="v-apellidos" class="wf-obligatorio">Apellidos</label>
+          <input id="v-apellidos">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique los apellidos.</p>
+        </div>
+      </fieldset>
+      <fieldset class="wf-form-seccion" data-wf-estado="registro validacion">
+        <legend>Cuenta y datos laborales</legend>
+        <div class="wf-campo wf-ancho-completo">
+          <label for="v-correo" class="wf-obligatorio">Correo</label>
+          <input id="v-correo" type="email">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique el correo.</p>
+        </div>
+        <div class="wf-campo">
+          <label for="v-especialidad">Especialidad</label>
+          <input id="v-especialidad">
+        </div>
+        <div class="wf-campo">
+          <label for="v-contratacion">Fecha de contratación</label>
+          <div class="wf-con-boton"><input id="v-contratacion" inputmode="numeric" placeholder="dd/mm/aaaa"><button type="button" class="wf-boton" aria-label="Abrir calendario">▦</button></div>
+        </div>
+      </fieldset>
+
+      <fieldset class="wf-form-seccion" data-wf-estado="duplicado reactivar edicion enviando">
+        <legend>Datos personales</legend>
+        <div class="wf-campo">
+          <label for="e-cedula" class="wf-obligatorio">Cédula</label>
+          <input id="e-cedula" value="2-0567-0891">
+        </div>
+        <div class="wf-campo">
+          <label for="e-telefono" class="wf-obligatorio">Teléfono</label>
+          <input id="e-telefono" type="tel" value="8778-1122">
+        </div>
+        <div class="wf-campo">
+          <label for="e-nombre" class="wf-obligatorio">Nombre</label>
+          <input id="e-nombre" value="Carlos">
+        </div>
+        <div class="wf-campo">
+          <label for="e-apellidos" class="wf-obligatorio">Apellidos</label>
+          <input id="e-apellidos" value="Vargas Solís">
+        </div>
+      </fieldset>
+      <fieldset class="wf-form-seccion" data-wf-estado="duplicado reactivar edicion enviando">
+        <legend>Cuenta y datos laborales</legend>
+        <div class="wf-campo wf-ancho-completo">
+          <label for="e-correo" class="wf-obligatorio">Correo</label>
+          <input id="e-correo" type="email" value="carlos.vargas@correo.test">
+          <span class="wf-ayuda" data-wf-estado="edicion enviando">Es el correo con el que inicia sesión.</span>
+        </div>
+        <div class="wf-campo">
+          <label for="e-especialidad">Especialidad</label>
+          <input id="e-especialidad" value="Informática y ofimática">
+        </div>
+        <div class="wf-campo">
+          <label for="e-contratacion">Fecha de contratación</label>
+          <div class="wf-con-boton"><input id="e-contratacion" inputmode="numeric" placeholder="dd/mm/aaaa" value="01/02/2021"><button type="button" class="wf-boton" aria-label="Abrir calendario">▦</button></div>
+        </div>
+      </fieldset>
+
+      <div class="wf-form-pie">
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-descartar">Cancelar</button>
+        <a class="wf-boton wf-principal" href="V-19-profesor.html#estado=creado" data-wf-estado="registro validacion duplicado reactivar">Registrar profesor</a>
+        <a class="wf-boton wf-principal" href="V-19-profesor.html#estado=guardado" data-wf-estado="edicion">Guardar cambios</a>
+        <button type="button" class="wf-boton wf-principal wf-girando" data-wf-estado="enviando" disabled>Guardando…</button>
+      </div>
+    </form>
+
+    <details class="wf-notas">
+      <summary>Notas de V-18</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-18 Registrar o editar profesor · administrador (desde V-17 y V-19)</dd>
+        <dt>Requerimientos</dt><dd>RFF-12 (registro), RFF-13 (edición)</dd>
+        <dt>Reglas</dt><dd>RUI-02, RUI-04 (<code>409 RN-39</code>), RUI-06, RUI-07, RUI-08, RUI-09, RUI-15</dd>
+        <dt>Endpoints</dt><dd><code>POST /profesores</code>, <code>PUT /profesores/{id}</code>, <code>POST /profesores/{id}/reactivar</code> (RN-39)</dd>
+        <dt>Backend</dt><dd>RF-03, RF-05, RF-22, RF-25, RN-13, RN-20, RN-22, RN-31, RN-39</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Mismo formulario que V-15, con "Especialidad" (texto libre) y "Fecha de contratación" en lugar de fecha de nacimiento y dirección.</li>
+            <li>En la edición del ejemplo no cambia el correo, así que "Guardar cambios" no pide confirmación. La confirmación del cambio de correo se ve en V-15.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <dialog class="wf-dialogo" id="dlg-descartar" aria-labelledby="dlg-descartar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-descartar-t">¿Descartar los cambios?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>Hay cambios sin guardar en el formulario. Si sale, se perderán.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Seguir editando</button>
+      <a class="wf-boton wf-principal" href="V-17-profesores.html">Descartar cambios</a>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

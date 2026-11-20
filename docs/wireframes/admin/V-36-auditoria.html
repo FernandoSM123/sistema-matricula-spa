@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-36 Auditoría — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-36"
+      data-wf-nombre="Auditoría"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-menu="V-36"
+      data-wf-estados="datos:Con datos|filtrado:Historial de un registro (desde un detalle)|operacion:Filtrado por una operación|operacion-vacia:Operación sin cambios (error 500)|autor:Filtrado por un autor|validacion:Filtro inválido (400)|vacio-filtros:Sin resultados para los filtros|cargando:Cargando|error:Error">
+
+  <main class="wf-vista">
+    <header class="wf-encabezado">
+      <div>
+        <p class="wf-migas">Sistema / Auditoría</p>
+        <h1>Auditoría</h1>
+        <p class="wf-encabezado-subtitulo">Los cambios de datos, del más reciente al más antiguo. Expanda un registro para ver qué cambió.</p>
+      </div>
+    </header>
+
+    <form class="wf-filtros" role="search" onsubmit="return false">
+      <div class="wf-campo">
+        <label for="a-entidad">Entidad</label>
+        <select id="a-entidad" data-wf-estado="datos operacion operacion-vacia autor validacion vacio-filtros cargando error"><option selected>Todas</option><option>Administrador</option><option>Aula</option><option>Curso</option><option>Estudiante</option><option>Grupo</option><option>Horario</option><option>Matrícula</option><option>Periodo</option><option>Profesor</option><option>Usuario</option></select>
+        <select aria-label="Entidad" data-wf-estado="filtrado"><option>Administrador</option><option>Aula</option><option>Curso</option><option selected>Estudiante</option><option>Grupo</option><option>Horario</option><option>Matrícula</option><option>Periodo</option><option>Profesor</option><option>Usuario</option></select>
+      </div>
+      <div class="wf-campo">
+        <label for="a-id">Id del registro</label>
+        <input id="a-id" inputmode="numeric" disabled data-wf-estado="datos operacion operacion-vacia autor validacion vacio-filtros cargando error">
+        <input aria-label="Id del registro" inputmode="numeric" value="12" data-wf-estado="filtrado">
+        <span class="wf-ayuda" data-wf-estado="datos operacion operacion-vacia autor validacion vacio-filtros cargando error">Elija primero una entidad.</span>
+      </div>
+      <div class="wf-campo">
+        <label for="a-accion">Acción</label>
+        <select id="a-accion"><option selected>Todas</option><option>Creación</option><option>Modificación</option><option>Eliminación</option></select>
+      </div>
+      <div class="wf-campo">
+        <label for="a-desde">Desde</label>
+        <input id="a-desde" inputmode="numeric" placeholder="dd/mm/aaaa" data-wf-estado="datos filtrado operacion operacion-vacia autor vacio-filtros cargando error">
+        <input aria-label="Desde" inputmode="numeric" value="20/11/2026" data-wf-estado="validacion">
+      </div>
+      <div class="wf-campo">
+        <label for="a-hasta">Hasta</label>
+        <input id="a-hasta" inputmode="numeric" placeholder="dd/mm/aaaa" data-wf-estado="datos filtrado operacion operacion-vacia autor vacio-filtros cargando error">
+        <input aria-label="Hasta" inputmode="numeric" value="01/11/2026" aria-invalid="true" aria-describedby="a-hasta-error" data-wf-estado="validacion">
+        <p class="wf-error-campo" id="a-hasta-error" data-wf-estado="validacion">Debe ser igual o posterior a la fecha "Desde".</p>
+      </div>
+      <div class="wf-campo">
+        <label for="a-operacion">Operación</label>
+        <input id="a-operacion" data-wf-estado="datos filtrado autor validacion vacio-filtros cargando error">
+        <input aria-label="Operación" value="c3d7e1a95b2f48e6a0d4b7c9e2f1a385" data-wf-estado="operacion">
+        <input aria-label="Operación" value="4bf92f3577b34da6a3ce929d0e0e4736" data-wf-estado="operacion-vacia">
+      </div>
+      <div class="wf-campo wf-busqueda">
+        <label for="a-buscar">Correo del autor</label>
+        <div class="wf-con-boton">
+          <input id="a-buscar" type="search" placeholder="Buscar por correo" data-wf-estado="datos filtrado operacion operacion-vacia autor validacion cargando error">
+          <input type="search" aria-label="Correo del autor" value="patricia" data-wf-estado="vacio-filtros">
+          <button type="submit" class="wf-boton">Buscar</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="wf-mensaje" role="status" data-wf-estado="filtrado">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>Historial de cambios del registro Estudiante #12 (María Fernanda Quesada Rojas).</p></div>
+      <div class="wf-mensaje-acciones"><a class="wf-boton wf-boton-pequeno" href="#estado=datos">Quitar el filtro</a></div>
+    </div>
+    <div class="wf-mensaje" role="status" data-wf-estado="operacion operacion-vacia">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>Cambios de una operación: todos los registros que guardó una misma petición.</p></div>
+      <div class="wf-mensaje-acciones"><a class="wf-boton wf-boton-pequeno" href="#estado=datos">Quitar el filtro</a></div>
+    </div>
+    <div class="wf-mensaje" role="status" data-wf-estado="autor">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>Cambios hechos por sofia.mendez@correo.test.</p></div>
+      <div class="wf-mensaje-acciones"><a class="wf-boton wf-boton-pequeno" href="#estado=datos">Quitar el filtro</a></div>
+    </div>
+
+    <div data-wf-estado="datos filtrado operacion autor" class="wf-pila">
+      <div class="wf-registros-cabecera" aria-hidden="true"><span>Fecha y hora</span><span>Acción</span><span>Registro</span><span>Autor</span><span>Operación</span></div>
+      <ol class="wf-registros" aria-label="Registros de auditoría">
+      <li data-wf-estado="datos autor">
+        <details class="wf-registro" open>
+          <summary>
+            <span class="wf-nowrap">19/11/2026 10:12 a. m.</span>
+            <span><span class="wf-etiqueta wf-e-gris">Modificación</span></span>
+            <span>Matrícula <span class="wf-texto-2">#2047</span></span>
+            <span>sofia.mendez@correo.test<br><span class="wf-texto-2">Administrador</span></span>
+            <span><code title="9a41c0e2b7d84f15a3e6c8d2f0b1a7e4">9a41c0e2…</code></span>
+          </summary>
+          <div class="wf-registro-cuerpo">
+            <div class="wf-desplazable"><table class="wf-tabla-simple"><thead><tr><th scope="col">Propiedad</th><th scope="col">Valor anterior</th><th scope="col">Valor nuevo</th></tr></thead><tbody><tr><td>Estado</td><td>Activa</td><td>Retirada</td></tr><tr><td>Fecha de retiro</td><td>—</td><td>19/11/2026</td></tr><tr><td>Motivo de retiro</td><td>—</td><td>Retiro voluntario</td></tr></tbody></table></div>
+            <div class="wf-acciones">
+              <a class="wf-boton wf-boton-pequeno" href="#estado=autor">Ver los cambios de este autor</a>
+              <a class="wf-boton wf-boton-pequeno" href="#estado=operacion">Ver toda la operación</a>
+            </div>
+          </div>
+        </details>
+      </li>
+      <li data-wf-estado="datos autor">
+        <details class="wf-registro">
+          <summary>
+            <span class="wf-nowrap">19/11/2026 10:12 a. m.</span>
+            <span><span class="wf-etiqueta wf-e-gris">Modificación</span></span>
+            <span>Grupo <span class="wf-texto-2">#5</span></span>
+            <span>sofia.mendez@correo.test<br><span class="wf-texto-2">Administrador</span></span>
+            <span><code title="9a41c0e2b7d84f15a3e6c8d2f0b1a7e4">9a41c0e2…</code></span>
+          </summary>
+          <div class="wf-registro-cuerpo">
+            <div class="wf-desplazable"><table class="wf-tabla-simple"><thead><tr><th scope="col">Propiedad</th><th scope="col">Valor anterior</th><th scope="col">Valor nuevo</th></tr></thead><tbody><tr><td>Cupos ocupados</td><td>18</td><td>17</td></tr></tbody></table></div>
+            <div class="wf-acciones">
+              <a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=cerrado">Abrir registro</a>
+              <a class="wf-boton wf-boton-pequeno" href="#estado=autor">Ver los cambios de este autor</a>
+              <a class="wf-boton wf-boton-pequeno" href="#estado=operacion">Ver toda la operación</a>
+            </div>
+          </div>
+        </details>
+      </li>
+      <li data-wf-estado="datos autor operacion">
+        <details class="wf-registro">
+          <summary>
+            <span class="wf-nowrap">19/11/2026 9:40 a. m.</span>
+            <span><span class="wf-etiqueta ">Creación</span></span>
+            <span>Usuario <span class="wf-texto-2">#58</span></span>
+            <span>sofia.mendez@correo.test<br><span class="wf-texto-2">Administrador</span></span>
+            <span><code title="c3d7e1a95b2f48e6a0d4b7c9e2f1a385">c3d7e1a9…</code></span>
+          </summary>
+          <div class="wf-registro-cuerpo">
+            <div class="wf-desplazable"><table class="wf-tabla-simple"><thead><tr><th scope="col">Propiedad</th><th scope="col">Valor</th></tr></thead><tbody><tr><td>Correo</td><td>luis.navarro@correo.test</td></tr><tr><td>Rol</td><td>Estudiante</td></tr><tr><td>Contraseña</td><td><span class="wf-protegido">Valor protegido</span></td></tr><tr><td>Debe cambiar la contraseña</td><td>Sí</td></tr><tr><td>Activo</td><td>Sí</td></tr></tbody></table></div>
+            <div class="wf-acciones">
+              <a class="wf-boton wf-boton-pequeno" href="#estado=autor">Ver los cambios de este autor</a>
+              <a class="wf-boton wf-boton-pequeno" href="#estado=operacion">Ver toda la operación</a>
+            </div>
+          </div>
+        </details>
+      </li>
+      <li data-wf-estado="datos autor operacion">
+        <details class="wf-registro">
+          <summary>
+            <span class="wf-nowrap">19/11/2026 9:40 a. m.</span>
+            <span><span class="wf-etiqueta ">Creación</span></span>
+            <span>Estudiante <span class="wf-texto-2">#31</span></span>
+            <span>sofia.mendez@correo.test<br><span class="wf-texto-2">Administrador</span></span>
+            <span><code title="c3d7e1a95b2f48e6a0d4b7c9e2f1a385">c3d7e1a9…</code></span>
+          </summary>
+          <div class="wf-registro-cuerpo">
+            <div class="wf-desplazable"><table class="wf-tabla-simple"><thead><tr><th scope="col">Propiedad</th><th scope="col">Valor</th></tr></thead><tbody><tr><td>Cédula</td><td>4-0256-0789</td></tr><tr><td>Nombre</td><td>Luis Diego</td></tr><tr><td>Apellidos</td><td>Navarro Pérez</td></tr><tr><td>Teléfono</td><td>8367-8901</td></tr></tbody></table></div>
+            <div class="wf-acciones">
+              <a class="wf-boton wf-boton-pequeno" href="../admin/V-16-estudiante.html#estado=creado">Abrir registro</a>
+              <a class="wf-boton wf-boton-pequeno" href="#estado=autor">Ver los cambios de este autor</a>
+              <a class="wf-boton wf-boton-pequeno" href="#estado=operacion">Ver toda la operación</a>
+            </div>
+          </div>
+        </details>
+      </li>
+      <li data-wf-estado="datos">
+        <details class="wf-registro">
+          <summary>
+            <span class="wf-nowrap">18/11/2026 5:02 p. m.</span>
+            <span><span class="wf-etiqueta wf-e-gris">Modificación</span></span>
+            <span>Curso <span class="wf-texto-2">#4</span></span>
+            <span>roberto.castillo@correo.test<br><span class="wf-texto-2">Administrador</span></span>
+            <span><code title="e5b20f7c41d9a8e36b2c0f4d7a1e9b53">e5b20f7c…</code></span>
+          </summary>
+          <div class="wf-registro-cuerpo">
+            <div class="wf-desplazable"><table class="wf-tabla-simple"><thead><tr><th scope="col">Propiedad</th><th scope="col">Valor anterior</th><th scope="col">Valor nuevo</th></tr></thead><tbody><tr><td>Costo</td><td>₡32 000,00</td><td>₡35 000,00</td></tr></tbody></table></div>
+            <div class="wf-acciones">
+              <a class="wf-boton wf-boton-pequeno" href="../compartidas/V-22-curso.html#estado=activo&amp;rol=administrador">Abrir registro</a>
+              <a class="wf-boton wf-boton-pequeno" href="#estado=autor">Ver los cambios de este autor</a>
+              <a class="wf-boton wf-boton-pequeno" href="#estado=operacion">Ver toda la operación</a>
+            </div>
+          </div>
+        </details>
+      </li>
+      <li data-wf-estado="datos autor">
+        <details class="wf-registro">
+          <summary>
+            <span class="wf-nowrap">15/11/2026 11:20 a. m.</span>
+            <span><span class="wf-etiqueta wf-e-tachada">Eliminación</span></span>
+            <span>Aula <span class="wf-texto-2">#9</span></span>
+            <span>sofia.mendez@correo.test<br><span class="wf-texto-2">Administrador</span></span>
+            <span><code title="1f8e3b6a2c9d47e0b5a1c8f3e6d2b704">1f8e3b6a…</code></span>
+          </summary>
+          <div class="wf-registro-cuerpo">
+            <div class="wf-desplazable"><table class="wf-tabla-simple"><thead><tr><th scope="col">Propiedad</th><th scope="col">Valor</th></tr></thead><tbody><tr><td>Código</td><td>D-010</td></tr><tr><td>Capacidad</td><td>12</td></tr><tr><td>Activa</td><td>No</td></tr></tbody></table></div>
+            <div class="wf-acciones">
+              <a class="wf-boton wf-boton-pequeno" href="../compartidas/V-27-aula.html#estado=no-existe&amp;rol=administrador">Abrir registro</a>
+              <a class="wf-boton wf-boton-pequeno" href="#estado=autor">Ver los cambios de este autor</a>
+              <a class="wf-boton wf-boton-pequeno" href="#estado=operacion">Ver toda la operación</a>
+            </div>
+          </div>
+        </details>
+      </li>
+      <li data-wf-estado="datos">
+        <details class="wf-registro">
+          <summary>
+            <span class="wf-nowrap">01/07/2026 2:00 a. m.</span>
+            <span><span class="wf-etiqueta ">Creación</span></span>
+            <span>Periodo <span class="wf-texto-2">#5</span></span>
+            <span><strong>Sistema</strong></span>
+            <span><code title="7d2a9c4e1b8f30a6c5e2d9b4f7a1c068">7d2a9c4e…</code></span>
+          </summary>
+          <div class="wf-registro-cuerpo">
+            <div class="wf-desplazable"><table class="wf-tabla-simple"><thead><tr><th scope="col">Propiedad</th><th scope="col">Valor</th></tr></thead><tbody><tr><td>Nombre</td><td>2026-II</td></tr><tr><td>Inicio de la matrícula</td><td>29/06/2026</td></tr><tr><td>Fin de la matrícula</td><td>17/07/2026</td></tr><tr><td>Inicio de clases</td><td>20/07/2026</td></tr><tr><td>Fin de clases</td><td>16/10/2026</td></tr><tr><td>Límite de retiro</td><td>07/08/2026</td></tr></tbody></table></div>
+            <div class="wf-acciones">
+              <a class="wf-boton wf-boton-pequeno" href="#estado=operacion">Ver toda la operación</a>
+            </div>
+          </div>
+        </details>
+      </li>
+      <li data-wf-estado="filtrado">
+        <details class="wf-registro" open>
+          <summary>
+            <span class="wf-nowrap">15/11/2026 7:30 p. m.</span>
+            <span><span class="wf-etiqueta wf-e-gris">Modificación</span></span>
+            <span>Estudiante <span class="wf-texto-2">#12</span></span>
+            <span>maria.quesada@correo.test<br><span class="wf-texto-2">Estudiante</span></span>
+            <span><code title="2c6e8a0b4d1f93e7a5c2b8d6f0e4a913">2c6e8a0b…</code></span>
+          </summary>
+          <div class="wf-registro-cuerpo">
+            <div class="wf-desplazable"><table class="wf-tabla-simple"><thead><tr><th scope="col">Propiedad</th><th scope="col">Valor anterior</th><th scope="col">Valor nuevo</th></tr></thead><tbody><tr><td>Teléfono</td><td>8890-1234</td><td>8812-3456</td></tr></tbody></table></div>
+            <div class="wf-acciones">
+              <a class="wf-boton wf-boton-pequeno" href="../admin/V-16-estudiante.html">Abrir registro</a>
+              <a class="wf-boton wf-boton-pequeno" href="#estado=autor">Ver los cambios de este autor</a>
+              <a class="wf-boton wf-boton-pequeno" href="#estado=operacion">Ver toda la operación</a>
+            </div>
+          </div>
+        </details>
+      </li>
+      <li data-wf-estado="filtrado">
+        <details class="wf-registro">
+          <summary>
+            <span class="wf-nowrap">03/07/2026 9:12 a. m.</span>
+            <span><span class="wf-etiqueta ">Creación</span></span>
+            <span>Estudiante <span class="wf-texto-2">#12</span></span>
+            <span>sofia.mendez@correo.test<br><span class="wf-texto-2">Administrador</span></span>
+            <span><code title="6b0d4f8a2e7c15b9d3a6e0c4f8b2d571">6b0d4f8a…</code></span>
+          </summary>
+          <div class="wf-registro-cuerpo">
+            <div class="wf-desplazable"><table class="wf-tabla-simple"><thead><tr><th scope="col">Propiedad</th><th scope="col">Valor</th></tr></thead><tbody><tr><td>Cédula</td><td>1-1789-0345</td></tr><tr><td>Nombre</td><td>María Fernanda</td></tr><tr><td>Apellidos</td><td>Quesada Rojas</td></tr><tr><td>Teléfono</td><td>8890-1234</td></tr></tbody></table></div>
+            <div class="wf-acciones">
+              <a class="wf-boton wf-boton-pequeno" href="../admin/V-16-estudiante.html">Abrir registro</a>
+              <a class="wf-boton wf-boton-pequeno" href="#estado=autor">Ver los cambios de este autor</a>
+              <a class="wf-boton wf-boton-pequeno" href="#estado=operacion">Ver toda la operación</a>
+            </div>
+          </div>
+        </details>
+      </li>
+      </ol>
+      <div class="wf-paginacion">
+        <span class="wf-paginacion-rango" data-wf-estado="datos">1–20 de 1 284</span>
+        <span class="wf-paginacion-rango" data-wf-estado="filtrado">1–2 de 2</span>
+        <span class="wf-paginacion-rango" data-wf-estado="operacion">1–2 de 2</span>
+        <span class="wf-paginacion-rango" data-wf-estado="autor">1–20 de 412</span>
+        <div class="wf-paginacion-controles">
+          <label>Filas por página <select><option>10</option><option selected>20</option><option>50</option></select></label>
+          <button type="button" class="wf-boton wf-boton-pequeno" disabled>← Anterior</button>
+          <button type="button" class="wf-boton wf-boton-pequeno" data-wf-estado="datos autor">Siguiente →</button>
+          <button type="button" class="wf-boton wf-boton-pequeno" disabled data-wf-estado="filtrado operacion">Siguiente →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="wf-caja wf-estado-contenido" data-wf-estado="operacion-vacia">
+      <p class="wf-estado-titulo">Esta operación no dejó cambios.</p>
+      <p class="wf-texto-2">Una operación que falla no guarda nada, así que un error inesperado no tiene cambios asociados.</p>
+    </div>
+    <div class="wf-caja wf-estado-contenido" data-wf-estado="vacio-filtros">
+      <p class="wf-estado-titulo">No hay resultados para los filtros aplicados.</p>
+      <button type="button" class="wf-boton">Limpiar filtros</button>
+    </div>
+    <div class="wf-caja wf-estado-contenido" data-wf-estado="validacion">
+      <p class="wf-estado-titulo">Corrija el filtro marcado para ver los resultados.</p>
+    </div>
+    <div class="wf-cargando" role="status" aria-label="Cargando la auditoría" data-wf-estado="cargando">
+      <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+    </div>
+    <div class="wf-caja wf-estado-contenido" role="alert" data-wf-estado="error">
+      <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+      <button type="button" class="wf-boton">Reintentar</button>
+    </div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-36</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-36 Auditoría · administrador</dd>
+        <dt>Requerimientos</dt><dd>RFF-39, RFF-40 (destino de "Ver historial de cambios")</dd>
+        <dt>Reglas</dt><dd>RUI-10, RUI-11, RUI-13, RUI-14, RUI-19</dd>
+        <dt>Endpoints</dt><dd><code>GET /auditoria</code> (<code>entidad</code>, <code>entidadId</code>, <code>usuarioId</code>, <code>accion</code>, <code>desde</code>, <code>hasta</code>, <code>operacionId</code>, <code>search</code>)</dd>
+        <dt>Backend</dt><dd>RF-57, RN-42 a RN-45, consulta 11; <code>SPEC-auditoria</code></dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Lista de registros que se expanden (no tabla), porque cada uno lleva su propia tabla de cambios. En celular, la fila resumida pasa a una columna.</li>
+            <li>La entidad es una lista fija (brecha B-03, descartada en COR-01). El id del registro se habilita al elegir una entidad.</li>
+            <li>El autor muestra el correo y el rol del momento del cambio; sin autor, "Sistema" (RN-45). La operación se muestra abreviada y completa al pasar el cursor.</li>
+            <li>Desde cada registro: "Abrir registro" si la entidad tiene vista (una matrícula, un usuario o un periodo no la tienen); "Ver los cambios de este autor" y "Ver toda la operación" filtran por ese valor.</li>
+            <li>Un registro eliminado se puede abrir: el detalle muestra que no existe (§2.5), como el aula D-010.</li>
+            <li>Una contraseña o temporal (<code>"***"</code>) se muestra como "Valor protegido" (RN-44).</li>
+            <li>Todos los "Ver historial de cambios" de los detalles (V-13, V-16, V-19, V-22, V-27, V-30) llegan al estado "Historial de un registro"; la muestra usa el estudiante de María.</li>
+            <li>Un filtro inválido (<code>400</code>) muestra el mensaje en su campo.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

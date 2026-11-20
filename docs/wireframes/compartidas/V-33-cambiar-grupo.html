@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-33 Cambiar de grupo — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-33"
+      data-wf-nombre="Cambiar de grupo"
+      data-wf-raiz="../"
+      data-wf-marco="rol"
+      data-wf-estados="elegir:Elegir el grupo destino|confirmar:Destino elegido|rn-06:Rechazo: choque de horario (RN-06)|rn-10:Rechazo: fuera de la fecha límite (RN-10)|concurrencia:Rechazo: otro tomó el último cupo (409 CONCURRENCIA)|sin-destinos:Sin otros grupos disponibles|enviando:Enviando"
+      data-wf-roles="estudiante:Estudiante (sobre V-31)|administrador:Administrador (sobre V-16)">
+
+  <main class="wf-vista">
+    <div class="wf-pila" inert>
+      <div data-wf-rol="estudiante" class="wf-pila">
+        <header><h1>Mis matrículas</h1><p class="wf-encabezado-subtitulo">Sus cursos del periodo y su historial.</p></header>
+        <div class="wf-periodo"><strong>Periodo 2026-III</strong><span>Retiros hasta el 11/12/2026</span></div>
+        <div class="wf-caja wf-cargando"><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div></div>
+      </div>
+      <div data-wf-rol="administrador" class="wf-pila">
+        <header>
+          <p class="wf-migas">Estudiantes / Detalle</p>
+          <div class="wf-detalle-titulo"><h1 style="margin:0">María Fernanda Quesada Rojas</h1><span class="wf-etiqueta">Activo</span></div>
+        </header>
+        <div class="wf-caja wf-cargando"><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div></div>
+      </div>
+    </div>
+    <p class="wf-texto-2" data-wf-rol="estudiante">Vista de fondo: <a href="../estudiante/V-31-mis-matriculas.html">V-31 Mis matrículas</a>.</p>
+    <p class="wf-texto-2" data-wf-rol="administrador">Vista de fondo: <a href="../admin/V-16-estudiante.html">V-16 Detalle de estudiante</a>, pestaña Matrículas.</p>
+
+    <details class="wf-notas">
+      <summary>Notas de V-33</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-33 Cambiar de grupo · estudiante (sobre V-31) y administrador (sobre V-16) · ventana (supuesto 2 de la spec)</dd>
+        <dt>Requerimientos</dt><dd>RFF-34</dd>
+        <dt>Reglas</dt><dd>RUI-04, RUI-07 (cambiar de grupo: simple), RUI-08</dd>
+        <dt>Endpoints</dt><dd><code>POST /matriculas/{id}/cambio-grupo</code>; para elegir el destino, <code>GET /cursos/{cursoId}/grupos?periodoId=</code></dd>
+        <dt>Backend</dt><dd>RF-53, RN-02…RN-06, RN-10, RN-11</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>La ventana es la confirmación: muestra el grupo actual, los destinos del mismo curso y periodo, y aclara que el cambio se hace completo o no se hace.</li>
+            <li>Los destinos son opciones con su horario, cupos y estado. Un destino sin cupo se ve pero no se puede elegir. Al estudiante solo le llegan los grupos <code>Abierto</code>; el administrador ve todos los estados.</li>
+            <li>Los rechazos se muestran como en V-32. Los textos de los mensajes son ilustrativos.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <dialog class="wf-dialogo wf-dialogo-ancho" id="dlg-cambiar" aria-labelledby="dlg-cambiar-t" data-wf-abierta>
+    <div class="wf-dialogo-encabezado">
+      <h2 id="dlg-cambiar-t">Cambiar de grupo en ING-101 · Inglés conversacional I</h2>
+    </div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rn-06">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p><strong>Choque de horario</strong></p><p>El horario del grupo 1008 choca con el de otra matrícula activa del estudiante. Conserva su matrícula en el grupo 1001.</p></div>
+      </div>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rn-10">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p><strong>Fuera de la fecha límite de retiro</strong></p><p>La fecha límite del periodo 2026-III fue el 11/12/2026. Conserva su matrícula en el grupo 1001.</p></div>
+      </div>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="concurrencia">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p><strong>Otra persona tomó el cupo</strong></p><p>Otra matrícula ocupó el último cupo del grupo 1008 al mismo tiempo. Conserva su matrícula en el grupo 1001.</p></div>
+      </div>
+
+      <section class="wf-caja" aria-labelledby="t-actual">
+        <h3 id="t-actual" style="margin-top:0">Grupo actual</h3>
+        <p style="margin:0"><strong>1001</strong> · Laura Jiménez Mora · Presencial, A-101 · Lunes y miércoles, <span class="wf-nowrap">6:00 p. m. – 8:00 p. m.</span></p>
+      </section>
+
+      <fieldset class="wf-form-seccion" data-wf-estado="elegir confirmar rn-06 rn-10 concurrencia enviando" style="margin:0">
+        <legend>Grupo destino</legend>
+        <label class="wf-caja wf-casilla" style="align-items:flex-start">
+          <input type="radio" name="destino" data-wf-estado="confirmar rn-06 rn-10 concurrencia enviando" checked>
+          <input type="radio" name="destino-v" data-wf-estado="elegir">
+          <span><strong>1008</strong> · Laura Jiménez Mora · Presencial, A-101<br>Viernes, <span class="wf-nowrap">5:00 p. m. – 8:00 p. m.</span> · <span data-wf-estado="elegir confirmar rn-06 rn-10 enviando">15 de 25 cupos disponibles</span><span data-wf-estado="concurrencia">0 de 25 cupos disponibles</span> <span class="wf-etiqueta wf-e-llena">Abierto</span></span>
+        </label>
+        <label class="wf-caja wf-casilla" style="align-items:flex-start">
+          <input type="radio" name="destino" disabled>
+          <span><strong>1002</strong> · Laura Jiménez Mora · Virtual<br>Sábado, <span class="wf-nowrap">8:00 a. m. – 11:00 a. m.</span> · 0 de 30 cupos disponibles <span class="wf-etiqueta wf-e-doble">Sin cupo</span></span>
+        </label>
+        <p class="wf-texto-2" data-wf-rol="administrador">Como administrador ve los grupos de todos los estados. En este curso y periodo no hay otros.</p>
+      </fieldset>
+
+      <div class="wf-caja wf-estado-contenido" data-wf-estado="sin-destinos">
+        <p class="wf-estado-titulo">No hay otros grupos de ING-101 con cupo en el periodo 2026-III.</p>
+      </div>
+
+      <p data-wf-estado="elegir confirmar"><strong>El cambio se hace completo o no se hace:</strong> si no se puede matricular en el grupo destino, conserva su matrícula en el grupo 1001.</p>
+    </div>
+
+    <div class="wf-dialogo-pie">
+      <a class="wf-boton" href="../estudiante/V-31-mis-matriculas.html" data-wf-rol="estudiante">Cancelar</a>
+      <a class="wf-boton" href="../admin/V-16-estudiante.html" data-wf-rol="administrador">Cancelar</a>
+      <button type="button" class="wf-boton wf-principal" disabled data-wf-estado="elegir">Cambiar de grupo</button>
+      <a class="wf-boton wf-principal" href="../estudiante/V-31-mis-matriculas.html#estado=cambiado" data-wf-rol="estudiante" data-wf-estado="confirmar">Cambiar al grupo 1008</a>
+      <a class="wf-boton wf-principal" href="../admin/V-16-estudiante.html#estado=cambiado" data-wf-rol="administrador" data-wf-estado="confirmar">Cambiar al grupo 1008</a>
+      <a class="wf-boton wf-principal" href="#estado=elegir" data-wf-estado="concurrencia">Volver a cargar los grupos</a>
+      <button type="button" class="wf-boton wf-principal wf-girando" disabled data-wf-estado="enviando">Cambiando…</button>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-35 Mis grupos — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-35"
+      data-wf-nombre="Mis grupos"
+      data-wf-raiz="../"
+      data-wf-marco="profesor"
+      data-wf-estados="datos:Con datos|vacio:Sin grupos en el periodo|sin-vigente:Sin periodo vigente|cargando:Cargando|error:Error">
+
+  <main class="wf-vista">
+    <header class="wf-encabezado">
+      <div>
+        <h1>Mis grupos</h1>
+        <p class="wf-encabezado-subtitulo">Los grupos que imparte. Cada uno abre su detalle con los estudiantes inscritos.</p>
+      </div>
+      <div class="wf-acciones"><a class="wf-boton" href="../compartidas/V-34-mi-horario.html#rol=profesor">Ver mi horario</a></div>
+    </header>
+
+    <div class="wf-periodo" data-wf-estado="datos vacio cargando error">
+      <strong>Periodo 2026-III</strong>
+      <span>Clases del 30/11/2026 al 26/02/2027</span>
+    </div>
+
+    <form class="wf-filtros" onsubmit="return false" data-wf-estado="datos vacio sin-vigente">
+      <div class="wf-campo" data-wf-estado="datos vacio">
+        <label for="p-periodo">Periodo</label>
+        <select id="p-periodo"><option selected>2026-III (vigente)</option><option>2027-I</option><option>2026-II</option><option>Todos los periodos</option></select>
+      </div>
+      <div class="wf-campo" data-wf-estado="sin-vigente">
+        <label for="p-periodo2">Periodo</label>
+        <select id="p-periodo2"><option>2027-I</option><option>2026-III</option><option>2026-II</option><option selected>Todos los periodos</option></select>
+      </div>
+    </form>
+
+    <div class="wf-listado" data-wf-estado="datos sin-vigente">
+        <table class="wf-tabla">
+          <thead>
+            <tr><th scope="col">NRC</th><th scope="col">Curso</th><th scope="col">Periodo</th><th scope="col">Modalidad</th><th scope="col">Aula</th><th scope="col">Horario</th><th scope="col">Cupos ocupados</th><th scope="col">Estado</th><th scope="col"><span class="wf-solo-lector">Acciones</span></th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="wf-celda-principal" data-etiqueta="NRC">1001</td><td data-etiqueta="Curso"><span class="wf-nowrap">ING-101</span> · Inglés conversacional I</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Modalidad">Presencial</td><td data-etiqueta="Aula" class="wf-nowrap">A-101</td><td data-etiqueta="Horario">Lunes y miércoles<br><span class="wf-nowrap">6:00 p. m. – 8:00 p. m.</span></td><td data-etiqueta="Cupos" class="wf-nowrap">18 de 25</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-llena">Abierto</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=profesor">Ver grupo</a></td></tr>
+            <tr><td class="wf-celda-principal" data-etiqueta="NRC">1002</td><td data-etiqueta="Curso"><span class="wf-nowrap">ING-101</span> · Inglés conversacional I</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Modalidad">Virtual</td><td data-etiqueta="Aula" class="wf-nowrap">—</td><td data-etiqueta="Horario">Sábado<br><span class="wf-nowrap">8:00 a. m. – 11:00 a. m.</span></td><td data-etiqueta="Cupos" class="wf-nowrap">30 de 30</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-llena">Abierto</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=profesor">Ver grupo</a></td></tr>
+            <tr><td class="wf-celda-principal" data-etiqueta="NRC">1003</td><td data-etiqueta="Curso"><span class="wf-nowrap">ING-201</span> · Inglés conversacional II</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Modalidad">Híbrida</td><td data-etiqueta="Aula" class="wf-nowrap">A-102</td><td data-etiqueta="Horario">Martes y jueves<br><span class="wf-nowrap">6:00 p. m. – 8:00 p. m.</span></td><td data-etiqueta="Cupos" class="wf-nowrap">0 de 20</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-discontinua">Planificado</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=planificado&amp;rol=profesor">Ver grupo</a></td></tr>
+            <tr><td class="wf-celda-principal" data-etiqueta="NRC">1008</td><td data-etiqueta="Curso"><span class="wf-nowrap">ING-101</span> · Inglés conversacional I</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Modalidad">Presencial</td><td data-etiqueta="Aula" class="wf-nowrap">A-101</td><td data-etiqueta="Horario">Viernes<br><span class="wf-nowrap">5:00 p. m. – 8:00 p. m.</span></td><td data-etiqueta="Cupos" class="wf-nowrap">10 de 25</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-llena">Abierto</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=profesor">Ver grupo</a></td></tr>
+          </tbody>
+        </table>
+        <div class="wf-paginacion">
+          <span class="wf-paginacion-rango">1–4 de 4</span>
+          <div class="wf-paginacion-controles">
+            <label>Filas por página <select><option>10</option><option selected>20</option><option>50</option></select></label>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>← Anterior</button>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>Siguiente →</button>
+          </div>
+        </div>
+    </div>
+
+    <div class="wf-caja wf-estado-contenido" data-wf-estado="vacio">
+      <p class="wf-estado-titulo">No tiene grupos en el periodo 2026-III.</p>
+      <p class="wf-texto-2">Elija "Todos los periodos" para ver sus grupos anteriores.</p>
+    </div>
+    <div class="wf-cargando" role="status" aria-label="Cargando sus grupos" data-wf-estado="cargando">
+      <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+    </div>
+    <div class="wf-caja wf-estado-contenido" role="alert" data-wf-estado="error">
+      <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+      <button type="button" class="wf-boton">Reintentar</button>
+    </div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-35</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-35 Mis grupos · profesor · su página de inicio</dd>
+        <dt>Requerimientos</dt><dd>RFF-37</dd>
+        <dt>Reglas</dt><dd>RUI-10, RUI-13, RUI-14, RUI-17</dd>
+        <dt>Endpoints</dt><dd><code>GET /me/grupos</code> (con <code>periodoId</code>), <code>GET /periodos/vigente</code></dd>
+        <dt>Backend</dt><dd>RF-27, RN-18, consulta 6</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>El filtro de periodo empieza en el vigente; "Todos los periodos" muestra el historial. Sin periodo vigente, empieza en "Todos los periodos".</li>
+            <li>"Ver grupo" abre V-30, donde el profesor ve los estudiantes inscritos sin acciones.</li>
+            <li>Los cupos se muestran como ocupados de total, porque al profesor le interesa cuántos estudiantes tiene.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

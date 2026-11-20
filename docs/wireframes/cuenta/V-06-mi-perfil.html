@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-06 Mi perfil — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-06"
+      data-wf-nombre="Mi perfil"
+      data-wf-raiz="../"
+      data-wf-marco="rol"
+      data-wf-estados="datos:Con datos|cargando:Cargando|error:Error|guardado:Después de editar los datos"
+      data-wf-roles="estudiante:Estudiante|profesor:Profesor|administrador:Administrador">
+
+  <main class="wf-vista">
+    <header class="wf-encabezado">
+      <div>
+        <h1>Mi perfil</h1>
+        <p class="wf-encabezado-subtitulo">Sus datos de cuenta y personales.</p>
+      </div>
+      <div class="wf-acciones" data-wf-estado="datos guardado">
+        <a class="wf-boton" href="V-07-cambiar-contrasena.html">Cambiar contraseña</a>
+        <a class="wf-boton wf-principal" href="V-08-datos-contacto.html" data-wf-rol="estudiante">Editar mis datos de contacto</a>
+        <a class="wf-boton wf-principal" href="../admin/V-12-administrador-form.html#estado=propio" data-wf-rol="administrador">Editar mis datos</a>
+      </div>
+    </header>
+
+    <div class="wf-cargando" role="status" aria-label="Cargando el perfil" data-wf-estado="cargando">
+      <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+    </div>
+
+    <div class="wf-caja wf-estado-contenido" role="alert" data-wf-estado="error">
+      <p class="wf-estado-titulo">Ocurrió un error inesperado.</p>
+      <p>Si el problema continúa, reporte este código: <span class="wf-traceid">00-7c1e…-01</span> <button type="button" class="wf-boton wf-boton-pequeno" data-wf-copiar>Copiar código</button></p>
+      <button type="button" class="wf-boton">Reintentar</button>
+    </div>
+
+    <section class="wf-caja" aria-labelledby="t-cuenta" data-wf-estado="datos guardado">
+      <h2 id="t-cuenta">Cuenta</h2>
+      <dl class="wf-datos" data-wf-rol="estudiante">
+        <div><dt>Correo</dt><dd>maria.quesada@correo.test</dd></div>
+        <div><dt>Rol</dt><dd>Estudiante</dd></div>
+        <div><dt>Cuenta creada</dt><dd>03/07/2026 9:12 a. m.</dd></div>
+        <div><dt>Último ingreso</dt><dd>19/11/2026 8:15 a. m.</dd></div>
+        <div><dt>Último cambio de contraseña</dt><dd>03/07/2026 9:20 a. m.</dd></div>
+      </dl>
+      <dl class="wf-datos" data-wf-rol="profesor">
+        <div><dt>Correo</dt><dd>laura.jimenez@correo.test</dd></div>
+        <div><dt>Rol</dt><dd>Profesor</dd></div>
+        <div><dt>Cuenta creada</dt><dd>10/01/2026 2:40 p. m.</dd></div>
+        <div><dt>Último ingreso</dt><dd>18/11/2026 5:02 p. m.</dd></div>
+        <div><dt>Último cambio de contraseña</dt><dd>11/01/2026 7:45 a. m.</dd></div>
+      </dl>
+      <dl class="wf-datos" data-wf-rol="administrador">
+        <div><dt>Correo</dt><dd>sofia.mendez@correo.test</dd></div>
+        <div><dt>Rol</dt><dd>Administrador</dd></div>
+        <div><dt>Cuenta creada</dt><dd>05/01/2026 10:00 a. m.</dd></div>
+        <div><dt>Último ingreso</dt><dd>19/11/2026 7:30 a. m.</dd></div>
+        <div><dt>Último cambio de contraseña</dt><dd>02/09/2026 4:18 p. m.</dd></div>
+      </dl>
+    </section>
+
+    <section class="wf-caja" aria-labelledby="t-personales" data-wf-estado="datos guardado">
+      <h2 id="t-personales">Datos personales</h2>
+      <dl class="wf-datos" data-wf-rol="estudiante">
+        <div><dt>Cédula</dt><dd>1-1789-0345</dd></div>
+        <div><dt>Nombre</dt><dd>María Fernanda</dd></div>
+        <div><dt>Apellidos</dt><dd>Quesada Rojas</dd></div>
+        <div><dt>Teléfono</dt><dd>8812-3456</dd></div>
+        <div><dt>Fecha de nacimiento</dt><dd>22/05/2002</dd></div>
+        <div><dt>Dirección</dt><dd>Barrio Escalante, San José</dd></div>
+        <div><dt>Fecha de registro</dt><dd>03/07/2026</dd></div>
+      </dl>
+      <dl class="wf-datos" data-wf-rol="profesor">
+        <div><dt>Cédula</dt><dd>1-1023-0456</dd></div>
+        <div><dt>Nombre</dt><dd>Laura</dd></div>
+        <div><dt>Apellidos</dt><dd>Jiménez Mora</dd></div>
+        <div><dt>Teléfono</dt><dd>8890-1234</dd></div>
+        <div><dt>Especialidad</dt><dd>Inglés</dd></div>
+        <div><dt>Fecha de contratación</dt><dd>15/01/2020</dd></div>
+      </dl>
+      <dl class="wf-datos" data-wf-rol="administrador">
+        <div><dt>Cédula</dt><dd>1-0876-0543</dd></div>
+        <div><dt>Nombre</dt><dd>Sofía</dd></div>
+        <div><dt>Apellidos</dt><dd>Méndez Arias</dd></div>
+        <div><dt>Teléfono</dt><dd>8901-2345</dd></div>
+      </dl>
+      <p class="wf-texto-2" style="margin:16px 0 0" data-wf-rol="estudiante">Solo puede cambiar su teléfono y su dirección. Para cambiar otros datos o su correo, contacte a la administración del instituto.</p>
+      <p class="wf-texto-2" style="margin:16px 0 0" data-wf-rol="profesor">Sus datos los actualiza la administración del instituto.</p>
+    </section>
+
+    <div class="wf-toast" role="status" data-wf-estado="guardado" data-wf-rol="estudiante">Datos de contacto actualizados</div>
+    <div class="wf-toast" role="status" data-wf-estado="guardado" data-wf-rol="administrador">Cambios guardados</div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-06</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-06 Mi perfil · estudiante, profesor y administrador (menú de la cuenta)</dd>
+        <dt>Requerimientos</dt><dd>RFF-08 · RFF-10 (mensaje al volver de V-08)</dd>
+        <dt>Reglas</dt><dd>RUI-03, RUI-13, RUI-15, RUI-16, RUI-21</dd>
+        <dt>Endpoints</dt><dd><code>GET /me</code></dd>
+        <dt>Backend</dt><dd>RF-13; matriz §2.2</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Dos bloques: "Cuenta" y "Datos personales". Las fechas con hora usan RUI-16; las fechas solas, RUI-15.</li>
+            <li>El administrador edita sus datos en V-12 con el <code>personaId</code> de <code>GET /me</code>.</li>
+            <li>El profesor no tiene edición; la vista lo indica.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

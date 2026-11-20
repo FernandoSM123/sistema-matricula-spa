@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-20 Cursos — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-20"
+      data-wf-nombre="Cursos"
+      data-wf-raiz="../"
+      data-wf-marco="rol"
+      data-wf-estados="datos:Con datos|inactivos:Con &quot;Incluir inactivos&quot; (administrador)|cargando:Cargando|vacio:Vacío sin filtros|vacio-filtros:Vacío con filtros|error:Error|eliminado:Después de eliminar (administrador)"
+      data-wf-roles="administrador:Administrador|estudiante:Estudiante|profesor:Profesor">
+
+  <main class="wf-vista">
+    <header class="wf-encabezado">
+      <div>
+        <p class="wf-migas" data-wf-rol="administrador">Académico</p>
+        <h1>Cursos</h1>
+        <p class="wf-encabezado-subtitulo" data-wf-rol="estudiante profesor">Cursos que ofrece el instituto. Abra uno para ver sus grupos abiertos.</p>
+      </div>
+      <div class="wf-acciones" data-wf-rol="administrador">
+        <a class="wf-boton wf-principal" href="../admin/V-21-curso-form.html">Registrar curso</a>
+      </div>
+    </header>
+
+    <form class="wf-filtros" role="search" onsubmit="return false">
+      <div class="wf-campo wf-busqueda">
+        <label for="f-buscar">Buscar</label>
+        <div class="wf-con-boton">
+          <input id="f-buscar" type="search" placeholder="Nombre o código">
+          <button type="submit" class="wf-boton">Buscar</button>
+        </div>
+      </div>
+      <div class="wf-campo">
+        <label for="f-nivel">Nivel</label>
+        <select id="f-nivel"><option selected>Todos</option><option>Básico</option><option>Intermedio</option><option>Avanzado</option></select>
+      </div>
+      <label class="wf-casilla" data-wf-rol="administrador"><input type="checkbox" data-wf-estado="datos cargando vacio vacio-filtros error eliminado"> <input type="checkbox" checked data-wf-estado="inactivos"> Incluir inactivos</label>
+    </form>
+    <div class="wf-filtros-aplicados" data-wf-estado="inactivos vacio-filtros">
+      <span>Filtros aplicados:</span>
+      <span class="wf-chip" data-wf-estado="inactivos">Incluir inactivos</span>
+      <span class="wf-chip" data-wf-estado="vacio-filtros">Buscar: "francés"</span>
+      <button type="button" class="wf-boton wf-enlace">Limpiar filtros</button>
+    </div>
+
+    <div class="wf-listado">
+      <div data-wf-estado="datos inactivos eliminado">
+        <table class="wf-tabla">
+          <thead>
+            <tr><th scope="col">Código</th><th scope="col">Nombre</th><th scope="col">Nivel</th><th scope="col">Duración</th><th scope="col">Costo</th><th scope="col" data-wf-rol="administrador">Estado</th><th scope="col"><span class="wf-solo-lector">Acciones</span></th></tr>
+          </thead>
+          <tbody>
+            <tr><td data-etiqueta="Código" class="wf-nowrap">EXC-110</td><td class="wf-celda-principal" data-etiqueta="Nombre">Excel para la oficina</td><td data-etiqueta="Nivel">Básico</td><td data-etiqueta="Duración" class="wf-nowrap">32 horas</td><td data-etiqueta="Costo" class="wf-nowrap">₡35 000,00</td><td data-etiqueta="Estado" data-wf-rol="administrador"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-22-curso.html">Ver detalle</a></td></tr>
+            <tr data-wf-estado="inactivos"><td data-etiqueta="Código" class="wf-nowrap">FRA-100</td><td class="wf-celda-principal" data-etiqueta="Nombre">Francés básico</td><td data-etiqueta="Nivel">Básico</td><td data-etiqueta="Duración" class="wf-nowrap">40 horas</td><td data-etiqueta="Costo" class="wf-nowrap">₡42 000,00</td><td data-etiqueta="Estado" data-wf-rol="administrador"><span class="wf-etiqueta wf-e-apagada">Inactivo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-22-curso.html#estado=inactivo">Ver detalle</a></td></tr>
+            <tr data-wf-estado="datos inactivos"><td data-etiqueta="Código" class="wf-nowrap">FOT-300</td><td class="wf-celda-principal" data-etiqueta="Nombre">Fotografía digital avanzada</td><td data-etiqueta="Nivel">Avanzado</td><td data-etiqueta="Duración" class="wf-nowrap">40 horas</td><td data-etiqueta="Costo" class="wf-nowrap">₡52 000,00</td><td data-etiqueta="Estado" data-wf-rol="administrador"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-22-curso.html">Ver detalle</a></td></tr>
+            <tr><td data-etiqueta="Código" class="wf-nowrap">ING-101</td><td class="wf-celda-principal" data-etiqueta="Nombre">Inglés conversacional I</td><td data-etiqueta="Nivel">Básico</td><td data-etiqueta="Duración" class="wf-nowrap">48 horas</td><td data-etiqueta="Costo" class="wf-nowrap">₡45 000,00</td><td data-etiqueta="Estado" data-wf-rol="administrador"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-22-curso.html">Ver detalle</a></td></tr>
+            <tr><td data-etiqueta="Código" class="wf-nowrap">ING-201</td><td class="wf-celda-principal" data-etiqueta="Nombre">Inglés conversacional II</td><td data-etiqueta="Nivel">Intermedio</td><td data-etiqueta="Duración" class="wf-nowrap">48 horas</td><td data-etiqueta="Costo" class="wf-nowrap">₡48 000,00</td><td data-etiqueta="Estado" data-wf-rol="administrador"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-22-curso.html">Ver detalle</a></td></tr>
+            <tr><td data-etiqueta="Código" class="wf-nowrap">PRG-210</td><td class="wf-celda-principal" data-etiqueta="Nombre">Programación en Python</td><td data-etiqueta="Nivel">Intermedio</td><td data-etiqueta="Duración" class="wf-nowrap">60 horas</td><td data-etiqueta="Costo" class="wf-nowrap">₡60 000,00</td><td data-etiqueta="Estado" data-wf-rol="administrador"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-22-curso.html">Ver detalle</a></td></tr>
+          </tbody>
+        </table>
+        <div class="wf-paginacion">
+          <span class="wf-paginacion-rango" data-wf-estado="datos">1–5 de 5</span>
+          <span class="wf-paginacion-rango" data-wf-estado="inactivos">1–6 de 6</span>
+          <span class="wf-paginacion-rango" data-wf-estado="eliminado">1–4 de 4</span>
+          <div class="wf-paginacion-controles">
+            <label>Filas por página <select><option>10</option><option selected>20</option><option>50</option></select></label>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>← Anterior</button>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>Siguiente →</button>
+          </div>
+        </div>
+      </div>
+
+      <div data-wf-estado="cargando" class="wf-cargando" role="status" aria-label="Cargando cursos">
+        <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+      </div>
+      <div data-wf-estado="vacio" class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay cursos registrados.</p>
+        <a class="wf-boton wf-principal" href="../admin/V-21-curso-form.html" data-wf-rol="administrador">Registrar curso</a>
+      </div>
+      <div data-wf-estado="vacio-filtros" class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay resultados para los filtros aplicados.</p>
+        <button type="button" class="wf-boton">Limpiar filtros</button>
+      </div>
+      <div data-wf-estado="error" class="wf-estado-contenido" role="alert">
+        <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+        <button type="button" class="wf-boton">Reintentar</button>
+      </div>
+    </div>
+
+    <div class="wf-toast" role="status" data-wf-estado="eliminado">Curso eliminado</div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-20</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-20 Cursos · todos con sesión</dd>
+        <dt>Requerimientos</dt><dd>RFF-18 · RFF-20 (mensaje después de eliminar)</dd>
+        <dt>Reglas</dt><dd>RUI-10 a RUI-14, RUI-21</dd>
+        <dt>Endpoints</dt><dd><code>GET /cursos</code> (<code>search</code>, <code>nivel</code>, <code>incluirInactivos</code>)</dd>
+        <dt>Backend</dt><dd>RF-30, RN-41</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Con "Ver como": el administrador ve "Registrar curso", "Incluir inactivos" y la columna Estado. Estudiante y profesor ven solo los activos, sin acciones; la columna Estado sobra porque todos son activos.</li>
+            <li>Los estados "Incluir inactivos" y "Después de eliminar" solo aplican al administrador.</li>
+            <li>El curso inactivo de ejemplo es FRA-100, Francés básico.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-23 Periodos — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-23"
+      data-wf-nombre="Periodos"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-estados="datos:Con datos|sin-vigente:Sin periodo vigente|rechazos:Con rechazo de la API al eliminar (409 RN-34)|cargando:Cargando|vacio:Vacío sin filtros|vacio-filtros:Vacío con filtros|error:Error|creado:Después de registrar|guardado:Después de editar|eliminado:Después de eliminar">
+
+  <main class="wf-vista">
+    <header class="wf-encabezado">
+      <div>
+        <p class="wf-migas">Académico</p>
+        <h1>Periodos</h1>
+      </div>
+      <div class="wf-acciones">
+        <a class="wf-boton wf-principal" href="V-24-periodo-form.html">Registrar periodo</a>
+      </div>
+    </header>
+
+    <div class="wf-mensaje" role="note" data-wf-estado="rechazos">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>En este estado, la ventana de Eliminar de 2026-II muestra la respuesta de rechazo de la API.</p></div>
+    </div>
+
+    <form class="wf-filtros" role="search" onsubmit="return false">
+      <div class="wf-campo wf-busqueda">
+        <label for="f-buscar">Buscar</label>
+        <div class="wf-con-boton">
+          <input id="f-buscar" type="search" placeholder="Nombre del periodo">
+          <button type="submit" class="wf-boton">Buscar</button>
+        </div>
+      </div>
+    </form>
+    <div class="wf-filtros-aplicados" data-wf-estado="vacio-filtros">
+      <span>Filtros aplicados:</span>
+      <span class="wf-chip">Buscar: "2025"</span>
+      <button type="button" class="wf-boton wf-enlace">Limpiar filtros</button>
+    </div>
+
+    <div class="wf-listado">
+      <div data-wf-estado="datos sin-vigente rechazos creado guardado eliminado">
+        <table class="wf-tabla">
+          <thead>
+            <tr><th scope="col">Nombre</th><th scope="col">Matrícula</th><th scope="col">Clases</th><th scope="col">Límite de retiro</th><th scope="col"><span class="wf-solo-lector">Acciones</span></th></tr>
+          </thead>
+          <tbody>
+            <tr data-wf-estado="datos sin-vigente rechazos creado guardado">
+              <td class="wf-celda-principal" data-etiqueta="Nombre">2027-I <span class="wf-etiqueta wf-e-gris" data-wf-estado="creado">Nuevo</span></td>
+              <td data-etiqueta="Matrícula"><span class="wf-nowrap">01/02/2027 –</span> <span class="wf-nowrap">19/02/2027</span></td>
+              <td data-etiqueta="Clases"><span class="wf-nowrap">01/03/2027 –</span> <span class="wf-nowrap">28/05/2027</span></td>
+              <td data-etiqueta="Límite de retiro" class="wf-nowrap">12/03/2027</td>
+              <td class="wf-col-acciones"><span class="wf-acciones">
+                <a class="wf-boton wf-boton-pequeno" href="V-24-periodo-form.html#estado=edicion">Editar</a>
+                <a class="wf-boton wf-boton-pequeno" href="V-28-grupos.html#estado=periodo">Ver grupos</a>
+                <button type="button" class="wf-boton wf-boton-pequeno wf-peligro" data-wf-abrir="dlg-eliminar-a">Eliminar</button>
+              </span></td>
+            </tr>
+            <tr>
+              <td class="wf-celda-principal" data-etiqueta="Nombre">2026-III <span class="wf-etiqueta" data-wf-estado="datos rechazos creado guardado eliminado">Vigente</span></td>
+              <td data-etiqueta="Matrícula"><span class="wf-nowrap">09/11/2026 –</span> <span class="wf-nowrap">28/11/2026</span></td>
+              <td data-etiqueta="Clases"><span class="wf-nowrap">30/11/2026 –</span> <span class="wf-nowrap">26/02/2027</span></td>
+              <td data-etiqueta="Límite de retiro" class="wf-nowrap">11/12/2026</td>
+              <td class="wf-col-acciones"><span class="wf-acciones">
+                <a class="wf-boton wf-boton-pequeno" href="V-24-periodo-form.html#estado=edicion">Editar</a>
+                <a class="wf-boton wf-boton-pequeno" href="V-28-grupos.html#estado=periodo">Ver grupos</a>
+                <button type="button" class="wf-boton wf-boton-pequeno wf-peligro" data-wf-abrir="dlg-eliminar-b">Eliminar</button>
+              </span></td>
+            </tr>
+            <tr>
+              <td class="wf-celda-principal" data-etiqueta="Nombre">2026-II</td>
+              <td data-etiqueta="Matrícula"><span class="wf-nowrap">06/07/2026 –</span> <span class="wf-nowrap">24/07/2026</span></td>
+              <td data-etiqueta="Clases"><span class="wf-nowrap">27/07/2026 –</span> <span class="wf-nowrap">13/11/2026</span></td>
+              <td data-etiqueta="Límite de retiro" class="wf-nowrap">14/08/2026</td>
+              <td class="wf-col-acciones"><span class="wf-acciones">
+                <a class="wf-boton wf-boton-pequeno" href="V-24-periodo-form.html#estado=edicion">Editar</a>
+                <a class="wf-boton wf-boton-pequeno" href="V-28-grupos.html#estado=periodo">Ver grupos</a>
+                <button type="button" class="wf-boton wf-boton-pequeno wf-peligro" data-wf-abrir="dlg-eliminar-c">Eliminar</button>
+              </span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="wf-paginacion">
+          <span class="wf-paginacion-rango" data-wf-estado="datos sin-vigente rechazos creado guardado">1–3 de 3</span>
+          <span class="wf-paginacion-rango" data-wf-estado="eliminado">1–2 de 2</span>
+          <div class="wf-paginacion-controles">
+            <label>Filas por página <select><option>10</option><option selected>20</option><option>50</option></select></label>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>← Anterior</button>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>Siguiente →</button>
+          </div>
+        </div>
+      </div>
+
+      <div data-wf-estado="cargando" class="wf-cargando" role="status" aria-label="Cargando periodos">
+        <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+      </div>
+      <div data-wf-estado="vacio" class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay periodos registrados.</p>
+        <a class="wf-boton wf-principal" href="V-24-periodo-form.html">Registrar periodo</a>
+      </div>
+      <div data-wf-estado="vacio-filtros" class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay resultados para los filtros aplicados.</p>
+        <button type="button" class="wf-boton">Limpiar filtros</button>
+      </div>
+      <div data-wf-estado="error" class="wf-estado-contenido" role="alert">
+        <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+        <button type="button" class="wf-boton">Reintentar</button>
+      </div>
+    </div>
+
+    <div class="wf-toast" role="status" data-wf-estado="creado">Periodo registrado</div>
+    <div class="wf-toast" role="status" data-wf-estado="guardado">Cambios guardados</div>
+    <div class="wf-toast" role="status" data-wf-estado="eliminado">Periodo eliminado</div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-23</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-23 Periodos · administrador</dd>
+        <dt>Requerimientos</dt><dd>RFF-21</dd>
+        <dt>Reglas</dt><dd>RUI-04 (<code>RN-34</code>), RUI-07 (eliminar: reforzada), RUI-10 a RUI-14, RUI-21</dd>
+        <dt>Endpoints</dt><dd><code>GET /periodos</code> (<code>search</code>), <code>GET /periodos/vigente</code>, <code>DELETE /periodos/{id}</code></dd>
+        <dt>Backend</dt><dd>RF-36, RF-37, RF-38, RN-34</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Sin detalle propio: las acciones van en cada fila. Sin "Desactivar" ni "Incluir inactivos": los periodos no se desactivan (RF-37).</li>
+            <li>"Vigente" es una etiqueta, según <code>GET /periodos/vigente</code>. En "Sin periodo vigente" ninguna fila la lleva.</li>
+            <li>Registrar y editar vuelven a este listado con el mensaje de éxito, porque no hay detalle.</li>
+            <li>"Ver grupos" abre V-28 filtrado por el periodo (T6).</li>
+            <li>El periodo 2027-I de ejemplo no tiene grupos, así que se puede eliminar.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <dialog class="wf-dialogo wf-reforzada" id="dlg-eliminar-a" aria-labelledby="dlg-eliminar-a-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-eliminar-a-t">¿Eliminar el periodo 2027-I?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p><strong>Esta acción no se puede deshacer.</strong> Solo es posible si el periodo no tiene grupos.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Cancelar</button>
+      <a class="wf-boton wf-peligro" href="#estado=eliminado">Eliminar periodo</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo wf-reforzada" id="dlg-eliminar-b" aria-labelledby="dlg-eliminar-b-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-eliminar-b-t">¿Eliminar el periodo 2026-III?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p><strong>Esta acción no se puede deshacer.</strong> Solo es posible si el periodo no tiene grupos.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Cancelar</button>
+      <button type="button" class="wf-boton wf-peligro" data-wf-enviando="Eliminando…">Eliminar periodo</button>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo wf-reforzada" id="dlg-eliminar-c" aria-labelledby="dlg-eliminar-c-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-eliminar-c-t">¿Eliminar el periodo 2026-II?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <p><strong>Esta acción no se puede deshacer.</strong> Solo es posible si el periodo no tiene grupos.</p>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rechazos">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p>No se puede eliminar el periodo porque tiene grupos registrados.</p></div>
+      </div>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Cancelar</button>
+      <button type="button" class="wf-boton wf-peligro" data-wf-enviando="Eliminando…" data-wf-estado="datos sin-vigente creado guardado eliminado">Eliminar periodo</button>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-08 Editar mis datos de contacto — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-08"
+      data-wf-nombre="Editar mis datos de contacto"
+      data-wf-raiz="../"
+      data-wf-marco="estudiante"
+      data-wf-estados="datos:Formulario|validacion:Errores de validación|enviando:Enviando">
+
+  <main class="wf-vista wf-vista-angosta">
+    <header>
+      <p class="wf-migas"><a href="V-06-mi-perfil.html#rol=estudiante">Mi perfil</a> / Datos de contacto</p>
+      <h1>Editar mis datos de contacto</h1>
+      <p class="wf-encabezado-subtitulo">Solo puede cambiar su teléfono y su dirección.</p>
+    </header>
+
+    <form class="wf-caja wf-form" onsubmit="return false" novalidate>
+      <p class="wf-nota-obligatorios">Los campos con * son obligatorios.</p>
+      <div class="wf-campo">
+        <label for="d-telefono" class="wf-obligatorio">Teléfono</label>
+        <input id="d-telefono" type="tel" value="8812-3456">
+        <p class="wf-error-campo" data-wf-estado="validacion">El teléfono debe tener de 8 a 20 caracteres: dígitos, espacios, + y -.</p>
+      </div>
+      <div class="wf-campo">
+        <label for="d-direccion">Dirección</label>
+        <textarea id="d-direccion">Barrio Escalante, San José</textarea>
+        <span class="wf-ayuda">Opcional, hasta 250 caracteres.</span>
+      </div>
+      <div class="wf-form-pie">
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-descartar">Cancelar</button>
+        <a class="wf-boton wf-principal" href="V-06-mi-perfil.html#estado=guardado&amp;rol=estudiante" data-wf-estado="datos validacion">Guardar cambios</a>
+        <button type="submit" class="wf-boton wf-principal wf-girando" data-wf-estado="enviando" disabled>Guardando…</button>
+      </div>
+    </form>
+
+    <details class="wf-notas">
+      <summary>Notas de V-08</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-08 Editar mis datos de contacto · estudiante (desde V-06)</dd>
+        <dt>Requerimientos</dt><dd>RFF-10</dd>
+        <dt>Reglas</dt><dd>RUI-02, RUI-06, RUI-08, RUI-09, RUI-21</dd>
+        <dt>Endpoints</dt><dd><code>PUT /me/datos-contacto</code></dd>
+        <dt>Backend</dt><dd>Matriz §2.2</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Página propia y angosta, no ventana: son solo dos campos, pero así sigue el patrón de los formularios y el aviso de cambios sin guardar.</li>
+            <li>Con éxito vuelve a V-06 con el perfil actualizado y el mensaje "Datos de contacto actualizados". "Guardar cambios" lo simula.</li>
+            <li>"Cancelar" muestra el aviso de cambios sin guardar como ejemplo; sin cambios, vuelve directo a V-06.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <dialog class="wf-dialogo" id="dlg-descartar" aria-labelledby="dlg-descartar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-descartar-t">¿Descartar los cambios?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>Hay cambios sin guardar en sus datos de contacto. Si sale, se perderán.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Seguir editando</button>
+      <a class="wf-boton wf-principal" href="V-06-mi-perfil.html#rol=estudiante">Descartar cambios</a>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

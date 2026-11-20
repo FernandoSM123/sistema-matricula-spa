@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-13 Detalle de administrador — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-13"
+      data-wf-nombre="Detalle de administrador"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-menu="V-11"
+      data-wf-estados="activo:Activo|propio:El administrador de la sesión|inactivo:Inactivo|creado:Recién registrado (temporal no enviada)|guardado:Después de editar|reactivado:Después de reactivar|rechazos:Activo, con rechazos de la API en las ventanas|cargando:Cargando|no-existe:Registro inexistente (404)|error:Error">
+
+  <main class="wf-vista">
+    <div class="wf-cargando" role="status" aria-label="Cargando el administrador" data-wf-estado="cargando">
+      <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+    </div>
+    <div class="wf-caja wf-estado-contenido" data-wf-estado="no-existe">
+      <p class="wf-estado-titulo">El administrador que busca no existe.</p>
+      <a class="wf-boton" href="V-11-administradores.html">Ir a Administradores</a>
+    </div>
+    <div class="wf-caja wf-estado-contenido" role="alert" data-wf-estado="error">
+      <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+      <button type="button" class="wf-boton">Reintentar</button>
+    </div>
+
+    <header class="wf-encabezado" data-wf-estado="activo propio inactivo creado guardado reactivado rechazos">
+      <div>
+        <p class="wf-migas"><a href="V-11-administradores.html">Administradores</a> / Detalle</p>
+        <div class="wf-detalle-titulo">
+          <h1 style="margin:0" data-wf-estado="activo inactivo creado guardado reactivado rechazos">Roberto Castillo Vega</h1>
+          <h1 style="margin:0" data-wf-estado="propio">Sofía Méndez Arias</h1>
+          <span class="wf-etiqueta wf-e-gris" data-wf-estado="propio">Usted</span>
+          <span class="wf-etiqueta" data-wf-estado="activo propio creado guardado reactivado rechazos">Activo</span>
+          <span class="wf-etiqueta wf-e-apagada" data-wf-estado="inactivo">Inactivo</span>
+        </div>
+      </div>
+      <div class="wf-acciones">
+        <a class="wf-boton" href="V-12-administrador-form.html#estado=edicion" data-wf-estado="activo inactivo creado guardado reactivado rechazos">Editar</a>
+        <a class="wf-boton" href="V-12-administrador-form.html#estado=propio" data-wf-estado="propio">Editar</a>
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-reenviar" data-wf-estado="activo propio creado guardado reactivado rechazos">Reenviar temporal</button>
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-desactivar" data-wf-estado="activo creado guardado reactivado rechazos">Desactivar</button>
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-desactivar-propio" data-wf-estado="propio">Desactivar</button>
+        <button type="button" class="wf-boton wf-principal" data-wf-abrir="dlg-reactivar" data-wf-estado="inactivo">Reactivar</button>
+        <a class="wf-boton wf-enlace" href="V-36-auditoria.html#estado=filtrado">Ver historial de cambios</a>
+      </div>
+    </header>
+
+    <div class="wf-mensaje wf-aviso" role="status" data-wf-estado="creado">
+      <span class="wf-mensaje-icono" aria-hidden="true">[!]</span>
+      <div class="wf-mensaje-texto">
+        <p><strong>La cuenta se creó, pero no se pudo enviar la contraseña temporal.</strong></p>
+        <p>Revise que el correo sea correcto y reenvíela.</p>
+      </div>
+      <div class="wf-mensaje-acciones">
+        <button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-reenviar">Reenviar temporal</button>
+        <button type="button" class="wf-boton wf-boton-pequeno wf-enlace">Cerrar</button>
+      </div>
+    </div>
+
+    <div class="wf-mensaje" role="note" data-wf-estado="rechazos">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>En este estado, las ventanas de Reenviar temporal y Desactivar muestran la respuesta de rechazo de la API. Para el rechazo de Desactivar se supone que es el último administrador activo.</p></div>
+    </div>
+
+    <div class="wf-pila" data-wf-estado="activo propio inactivo creado guardado reactivado rechazos">
+      <section class="wf-caja" aria-labelledby="t-personales">
+        <h2 id="t-personales">Datos personales</h2>
+        <dl class="wf-datos" data-wf-estado="activo inactivo creado guardado reactivado rechazos">
+          <div><dt>Cédula</dt><dd>2-0645-0321</dd></div>
+          <div><dt>Nombre</dt><dd>Roberto</dd></div>
+          <div><dt>Apellidos</dt><dd>Castillo Vega</dd></div>
+          <div><dt>Teléfono</dt><dd>8712-9087</dd></div>
+        </dl>
+        <dl class="wf-datos" data-wf-estado="propio">
+          <div><dt>Cédula</dt><dd>1-0876-0543</dd></div>
+          <div><dt>Nombre</dt><dd>Sofía</dd></div>
+          <div><dt>Apellidos</dt><dd>Méndez Arias</dd></div>
+          <div><dt>Teléfono</dt><dd>8901-2345</dd></div>
+        </dl>
+      </section>
+      <section class="wf-caja" aria-labelledby="t-cuenta">
+        <h2 id="t-cuenta">Cuenta</h2>
+        <dl class="wf-datos">
+          <div><dt>Correo</dt><dd><span data-wf-estado="activo inactivo creado guardado reactivado rechazos">roberto.castillo@correo.test</span><span data-wf-estado="propio">sofia.mendez@correo.test</span></dd></div>
+          <div><dt>Estado</dt><dd><span data-wf-estado="activo propio creado guardado reactivado rechazos">Activo</span><span data-wf-estado="inactivo">Inactivo</span></dd></div>
+          <div><dt>Cuenta creada</dt><dd><span data-wf-estado="activo inactivo guardado reactivado rechazos">10/03/2023 2:05 p. m.</span><span data-wf-estado="creado">19/11/2026 9:40 a. m.</span><span data-wf-estado="propio">02/02/2021 8:00 a. m.</span></dd></div>
+          <div><dt>Último ingreso</dt><dd><span data-wf-estado="creado">Nunca ha ingresado</span><span data-wf-estado="activo inactivo guardado reactivado rechazos">17/11/2026 4:22 p. m.</span><span data-wf-estado="propio">19/11/2026 7:58 a. m.</span></dd></div>
+        </dl>
+      </section>
+    </div>
+
+    <div class="wf-toast" role="status" data-wf-estado="creado">Administrador registrado</div>
+    <div class="wf-toast" role="status" data-wf-estado="guardado">Cambios guardados</div>
+    <div class="wf-toast" role="status" data-wf-estado="reactivado">Administrador reactivado</div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-13</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-13 Detalle de administrador · administrador</dd>
+        <dt>Requerimientos</dt><dd>RFF-14 a RFF-16 · RFF-12 (aviso de <code>correoEnviado: false</code>) · RFF-40 (historial)</dd>
+        <dt>Reglas</dt><dd>RUI-03 (<code>404</code>), RUI-04 (<code>RN-30</code>), RUI-07, RUI-16, RUI-21</dd>
+        <dt>Endpoints</dt><dd><code>GET /administradores/{id}</code>, <code>POST /usuarios/{id}/reenviar-temporal</code>, <code>POST /usuarios/{id}/desactivar</code>, <code>POST /usuarios/{id}/reactivar</code></dd>
+        <dt>Backend</dt><dd>RF-12, RF-14, RF-55, RN-29, RN-30, RN-35, RN-38</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Sin pestañas: solo datos y cuenta. Sin "Eliminar": los administradores nunca se eliminan (RN-35).</li>
+            <li>El rechazo <code>409 RN-30</code> (último administrador activo) no ofrece enlace.</li>
+            <li>Si el administrador abre su propio detalle, "Desactivar" advierte que su sesión terminará; al confirmar se abre el inicio de sesión con el aviso de RFF-03.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <dialog class="wf-dialogo" id="dlg-reenviar" aria-labelledby="dlg-reenviar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-reenviar-t">¿Reenviar la contraseña temporal?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <p>Se enviará una contraseña temporal nueva a <strong><span data-wf-estado="activo inactivo creado guardado reactivado rechazos">roberto.castillo@correo.test</span><span data-wf-estado="propio">sofia.mendez@correo.test</span></strong>. Vence en 72 horas y reemplaza a cualquier otra pendiente.</p>
+      <p class="wf-texto-2">Antes de reenviar, confirme que el administrador todavía usa ese correo.</p>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rechazos">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p>No se pudo enviar el correo con la contraseña temporal. Intente de nuevo.</p></div>
+      </div>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <button type="button" class="wf-boton wf-principal" data-wf-enviando="Enviando…" data-wf-estado="activo propio inactivo creado guardado reactivado">Reenviar temporal</button>
+      <button type="button" class="wf-boton wf-principal" data-wf-enviando="Enviando…" data-wf-estado="rechazos">Intentar de nuevo</button>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-desactivar" aria-labelledby="dlg-desactivar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-desactivar-t">¿Desactivar a Roberto Castillo Vega?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <ul>
+        <li>No podrá iniciar sesión, y sus sesiones abiertas se cerrarán.</li>
+        <li>Su historial se conserva.</li>
+        <li>Puede reactivarlo después.</li>
+      </ul>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rechazos">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p>No se puede desactivar al último administrador activo.</p></div>
+      </div>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="#estado=inactivo" data-wf-estado="activo creado guardado reactivado">Desactivar administrador</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-desactivar-propio" aria-labelledby="dlg-desactivar-propio-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-desactivar-propio-t">¿Desactivar su propia cuenta?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <p><strong>Su sesión terminará en cuanto confirme</strong> y no podrá volver a iniciar sesión hasta que otro administrador la reactive.</p>
+      <ul>
+        <li>Sus sesiones abiertas en otros dispositivos también se cerrarán.</li>
+        <li>Su historial se conserva.</li>
+      </ul>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="../publico/V-02-inicio-sesion.html#estado=sesion-vencida&amp;rol=visitante">Desactivar mi cuenta</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-reactivar" aria-labelledby="dlg-reactivar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-reactivar-t">¿Reactivar a Roberto Castillo Vega?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>Podrá iniciar sesión de nuevo con su contraseña y volverá a aparecer en los listados.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="#estado=reactivado">Reactivar administrador</a>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

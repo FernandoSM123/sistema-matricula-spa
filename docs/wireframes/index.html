@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wireframes — Sistema de Matrícula</title>
+  <link rel="stylesheet" href="css/wireframe.css">
+</head>
+<body>
+  <div class="wf-barra" role="region" aria-label="Controles del wireframe">
+    <span class="wf-barra-marca">Wireframe</span>
+    <span class="wf-barra-vista">Índice</span>
+  </div>
+
+  <main class="wf-indice">
+    <header>
+      <h1>Wireframes del Sistema de Matrícula</h1>
+      <p class="wf-texto-2">Bocetos de baja fidelidad del frontend (SPA). Fijan la estructura, la posición de los elementos, los componentes y los estados de cada vista; no el estilo visual. Son una guía, no un contrato: el comportamiento lo definen los <code>RFF</code> y las <code>RUI</code> de <a href="../requerimientos.md">docs/requerimientos.md</a>.</p>
+      <p class="wf-texto-2">Spec: <a href="../../specs/SPEC-wireframes.md">specs/SPEC-wireframes.md</a> · Tareas: <a href="../../tasks/wireframes/todo.md">tasks/wireframes/todo.md</a></p>
+    </header>
+
+    <section aria-labelledby="t-uso">
+      <h2 id="t-uso">Cómo recorrerlos</h2>
+      <ul>
+        <li>Cada vista tiene arriba la <strong>barra del wireframe</strong> (franja oscura con borde punteado), que no es parte del producto:
+          <ul>
+            <li><strong>Estado:</strong> cambia el contenido entre con datos, cargando, vacío, error y los estados propios de la vista.</li>
+            <li><strong>Ver como:</strong> en las vistas que cambian según el rol, muestra lo que ve cada uno.</li>
+            <li><strong>Notas:</strong> abre las anotaciones del final de la página: <code>RFF</code>, <code>RUI</code>, endpoints y decisiones del boceto.</li>
+          </ul>
+        </li>
+        <li>El estado y el rol quedan en la dirección (<code>#estado=vacio&amp;rol=profesor</code>), así se puede enlazar a un estado concreto.</li>
+        <li>Para revisar en celular, angoste la ventana a 360 px o use el modo de dispositivo de las herramientas del navegador.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="t-componentes">
+      <h2 id="t-componentes">Componentes</h2>
+      <p><a href="componentes.html">Catálogo de componentes</a>: listado paginado, filtros, formularios, fecha y hora, selector con búsqueda, confirmaciones, mensajes, estados, etiquetas, grilla del horario y encabezado de detalle.</p>
+    </section>
+
+    <section aria-labelledby="t-vistas">
+      <h2 id="t-vistas">Vistas por rol</h2>
+      <p class="wf-texto-2">Una vista aparece en cada rol que la usa (§2.3 y §3 de los requerimientos). Las 38 vistas son <code>V-01</code> a <code>V-38</code>.</p>
+
+      <h3>Visitante (sin sesión)</h3>
+      <ul class="wf-lista-vistas">
+        <li><a href="publico/V-01-oferta.html#rol=visitante"><span class="wf-id">V-01</span>Oferta académica</a></li>
+        <li><a href="publico/V-02-inicio-sesion.html#rol=visitante"><span class="wf-id">V-02</span>Inicio de sesión</a></li>
+        <li><a href="publico/V-04-olvido-contrasena.html#rol=visitante"><span class="wf-id">V-04</span>Olvido de contraseña</a></li>
+        <li><a href="publico/V-05-registro.html#rol=visitante"><span class="wf-id">V-05</span>Registro de estudiante</a></li>
+        <li><a href="publico/V-10-no-encontrada.html#rol=visitante"><span class="wf-id">V-10</span>Página no encontrada</a></li>
+      </ul>
+
+      <h3>Cualquier rol con sesión</h3>
+      <ul class="wf-lista-vistas">
+        <li><a href="publico/V-03-cambio-obligatorio.html"><span class="wf-id">V-03</span>Cambio obligatorio de contraseña</a></li>
+        <li><a href="cuenta/V-06-mi-perfil.html"><span class="wf-id">V-06</span>Mi perfil</a></li>
+        <li><a href="cuenta/V-07-cambiar-contrasena.html"><span class="wf-id">V-07</span>Cambiar contraseña</a></li>
+        <li><a href="publico/V-09-sin-permiso.html"><span class="wf-id">V-09</span>Sin permiso</a></li>
+        <li><a href="publico/V-10-no-encontrada.html"><span class="wf-id">V-10</span>Página no encontrada</a></li>
+      </ul>
+
+      <h3>Estudiante</h3>
+      <ul class="wf-lista-vistas">
+        <li><a href="estudiante/V-31-mis-matriculas.html#rol=estudiante"><span class="wf-id">V-31</span>Mis matrículas (inicio)</a></li>
+        <li><a href="compartidas/V-32-matricular.html#rol=estudiante"><span class="wf-id">V-32</span>Matricular en un grupo</a></li>
+        <li><a href="compartidas/V-33-cambiar-grupo.html#rol=estudiante"><span class="wf-id">V-33</span>Cambiar de grupo</a></li>
+        <li><a href="compartidas/V-34-mi-horario.html#rol=estudiante"><span class="wf-id">V-34</span>Mi horario</a></li>
+        <li><a href="publico/V-01-oferta.html#rol=estudiante"><span class="wf-id">V-01</span>Oferta académica</a></li>
+        <li><a href="compartidas/V-20-cursos.html#rol=estudiante"><span class="wf-id">V-20</span>Cursos</a></li>
+        <li><a href="compartidas/V-22-curso.html#rol=estudiante"><span class="wf-id">V-22</span>Detalle de curso</a></li>
+        <li><a href="compartidas/V-30-grupo.html#rol=estudiante"><span class="wf-id">V-30</span>Detalle de grupo</a></li>
+        <li><a href="cuenta/V-08-datos-contacto.html#rol=estudiante"><span class="wf-id">V-08</span>Editar mis datos de contacto</a></li>
+      </ul>
+
+      <h3>Profesor</h3>
+      <ul class="wf-lista-vistas">
+        <li><a href="profesor/V-35-mis-grupos.html#rol=profesor"><span class="wf-id">V-35</span>Mis grupos (inicio)</a></li>
+        <li><a href="compartidas/V-34-mi-horario.html#rol=profesor"><span class="wf-id">V-34</span>Mi horario</a></li>
+        <li><a href="compartidas/V-30-grupo.html#rol=profesor"><span class="wf-id">V-30</span>Detalle de grupo (con inscritos)</a></li>
+        <li><a href="publico/V-01-oferta.html#rol=profesor"><span class="wf-id">V-01</span>Oferta académica</a></li>
+        <li><a href="compartidas/V-20-cursos.html#rol=profesor"><span class="wf-id">V-20</span>Cursos</a></li>
+        <li><a href="compartidas/V-22-curso.html#rol=profesor"><span class="wf-id">V-22</span>Detalle de curso</a></li>
+        <li><a href="compartidas/V-25-aulas.html#rol=profesor"><span class="wf-id">V-25</span>Aulas</a></li>
+        <li><a href="compartidas/V-27-aula.html#rol=profesor"><span class="wf-id">V-27</span>Detalle de aula</a></li>
+      </ul>
+
+      <h3>Administrador</h3>
+      <p class="wf-texto-2">Académico</p>
+      <ul class="wf-lista-vistas">
+        <li><a href="admin/V-28-grupos.html#rol=administrador"><span class="wf-id">V-28</span>Grupos (inicio)</a></li>
+        <li><a href="admin/V-29-grupo-form.html#rol=administrador"><span class="wf-id">V-29</span>Registrar o editar grupo</a></li>
+        <li><a href="compartidas/V-30-grupo.html#rol=administrador"><span class="wf-id">V-30</span>Detalle de grupo</a></li>
+        <li><a href="compartidas/V-20-cursos.html#rol=administrador"><span class="wf-id">V-20</span>Cursos</a></li>
+        <li><a href="admin/V-21-curso-form.html#rol=administrador"><span class="wf-id">V-21</span>Registrar o editar curso</a></li>
+        <li><a href="compartidas/V-22-curso.html#rol=administrador"><span class="wf-id">V-22</span>Detalle de curso</a></li>
+        <li><a href="admin/V-23-periodos.html#rol=administrador"><span class="wf-id">V-23</span>Periodos</a></li>
+        <li><a href="admin/V-24-periodo-form.html#rol=administrador"><span class="wf-id">V-24</span>Registrar o editar periodo</a></li>
+        <li><a href="compartidas/V-25-aulas.html#rol=administrador"><span class="wf-id">V-25</span>Aulas</a></li>
+        <li><a href="admin/V-26-aula-form.html#rol=administrador"><span class="wf-id">V-26</span>Registrar o editar aula</a></li>
+        <li><a href="compartidas/V-27-aula.html#rol=administrador"><span class="wf-id">V-27</span>Detalle de aula (con ocupación)</a></li>
+        <li><a href="publico/V-01-oferta.html#rol=administrador"><span class="wf-id">V-01</span>Oferta académica</a></li>
+      </ul>
+      <p class="wf-texto-2">Personas y matrícula</p>
+      <ul class="wf-lista-vistas">
+        <li><a href="admin/V-14-estudiantes.html#rol=administrador"><span class="wf-id">V-14</span>Estudiantes</a></li>
+        <li><a href="admin/V-15-estudiante-form.html#rol=administrador"><span class="wf-id">V-15</span>Registrar o editar estudiante</a></li>
+        <li><a href="admin/V-16-estudiante.html#rol=administrador"><span class="wf-id">V-16</span>Detalle de estudiante (con matrícula)</a></li>
+        <li><a href="compartidas/V-32-matricular.html#rol=administrador"><span class="wf-id">V-32</span>Matricular en un grupo</a></li>
+        <li><a href="compartidas/V-33-cambiar-grupo.html#rol=administrador"><span class="wf-id">V-33</span>Cambiar de grupo</a></li>
+        <li><a href="admin/V-17-profesores.html#rol=administrador"><span class="wf-id">V-17</span>Profesores</a></li>
+        <li><a href="admin/V-18-profesor-form.html#rol=administrador"><span class="wf-id">V-18</span>Registrar o editar profesor</a></li>
+        <li><a href="admin/V-19-profesor.html#rol=administrador"><span class="wf-id">V-19</span>Detalle de profesor</a></li>
+        <li><a href="admin/V-11-administradores.html#rol=administrador"><span class="wf-id">V-11</span>Administradores</a></li>
+        <li><a href="admin/V-12-administrador-form.html#rol=administrador"><span class="wf-id">V-12</span>Registrar o editar administrador</a></li>
+        <li><a href="admin/V-13-administrador.html#rol=administrador"><span class="wf-id">V-13</span>Detalle de administrador</a></li>
+      </ul>
+      <p class="wf-texto-2">Sistema</p>
+      <ul class="wf-lista-vistas">
+        <li><a href="admin/V-36-auditoria.html#rol=administrador"><span class="wf-id">V-36</span>Auditoría</a></li>
+        <li><a href="admin/V-37-errores.html#rol=administrador"><span class="wf-id">V-37</span>Errores</a></li>
+        <li><a href="admin/V-38-error.html#rol=administrador"><span class="wf-id">V-38</span>Detalle de error</a></li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="t-flujos">
+      <h2 id="t-flujos">Flujos</h2>
+      <p class="wf-texto-2">Recorridos del punto 6 de la spec: cada uno empieza en el enlace y sigue con los botones de las vistas.</p>
+      <ul class="wf-lista-vistas">
+        <li><a href="publico/V-01-oferta.html#rol=visitante">Acceso</a>: V-01 → V-02 → V-03 (con temporal) → inicio del rol</li>
+        <li><a href="publico/V-05-registro.html">Registro y olvido</a>: V-01 → V-05 → V-02; V-02 → V-04 → V-02</li>
+        <li><a href="estudiante/V-31-mis-matriculas.html#rol=estudiante">Matrícula del estudiante</a>: V-31 → <a href="publico/V-01-oferta.html#rol=estudiante">V-01</a> → V-32 → V-31; V-31 → V-33 → V-31; V-31 → retiro</li>
+        <li><a href="admin/V-14-estudiantes.html#rol=administrador">Matrícula del administrador</a>: V-14 → <a href="admin/V-16-estudiante.html#rol=administrador">V-16</a> (pestaña Matrículas) → V-32 / V-33 / retiro → V-16</li>
+        <li><a href="admin/V-14-estudiantes.html#rol=administrador">Gestión de una persona</a>: V-14 → V-15 → V-16 → editar / desactivar / reactivar / eliminar; igual con <a href="admin/V-17-profesores.html#rol=administrador">profesores</a> y <a href="admin/V-11-administradores.html#rol=administrador">administradores</a></li>
+        <li><a href="admin/V-28-grupos.html#rol=administrador">Grupos</a>: V-28 → V-29 → V-30 (estado, horarios); cada estado de V-30 con sus acciones</li>
+        <li><a href="compartidas/V-20-cursos.html#rol=administrador">Catálogos</a>: V-20 → V-21 → V-22; <a href="admin/V-23-periodos.html">V-23</a> → V-24 → V-23; <a href="compartidas/V-25-aulas.html#rol=administrador">V-25</a> → V-26 → V-27 con la ocupación</li>
+        <li><a href="profesor/V-35-mis-grupos.html#rol=profesor">Profesor</a>: V-35 → <a href="compartidas/V-30-grupo.html#rol=profesor">V-30</a> con los inscritos; <a href="compartidas/V-34-mi-horario.html#rol=profesor">V-34</a></li>
+        <li><a href="admin/V-36-auditoria.html#rol=administrador">Sistema</a>: V-36 → detalle del registro auditado (o el aviso de que ya no existe); <a href="admin/V-37-errores.html#rol=administrador">V-37</a> → V-38 → V-36 con los cambios de la operación</li>
+        <li><a href="publico/V-02-inicio-sesion.html#estado=sesion-vencida">Sesión y permisos</a>: sesión terminada en V-02, <a href="publico/V-09-sin-permiso.html">V-09</a>, <a href="publico/V-10-no-encontrada.html">V-10</a></li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="t-datos">
+      <h2 id="t-datos">Datos de ejemplo</h2>
+      <p class="wf-texto-2">Conjunto ficticio y coherente que usan todas las vistas (supuesto 4 de la spec). La fecha de referencia es el <strong>19/11/2026</strong>: el periodo <code>2026-III</code> está vigente y en matrícula. Correos de dominio ficticio <code>correo.test</code>.</p>
+
+      <h3>Personas con sesión en el marco</h3>
+      <div class="wf-desplazable">
+        <table class="wf-tabla-simple">
+          <thead><tr><th>Rol</th><th>Nombre</th><th>Correo</th></tr></thead>
+          <tbody>
+            <tr><td>Estudiante</td><td>María Fernanda Quesada Rojas</td><td>maria.quesada@correo.test</td></tr>
+            <tr><td>Profesor</td><td>Laura Jiménez Mora</td><td>laura.jimenez@correo.test</td></tr>
+            <tr><td>Administrador</td><td>Sofía Méndez Arias</td><td>sofia.mendez@correo.test</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Administradores</h3>
+      <div class="wf-desplazable">
+        <table class="wf-tabla-simple">
+          <thead><tr><th>Cédula</th><th>Nombre</th><th>Teléfono</th><th>Correo</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>1-0876-0543</td><td>Sofía Méndez Arias</td><td>8901-2345</td><td>sofia.mendez@correo.test</td><td>Activo (con sesión en el marco)</td></tr>
+            <tr><td>2-0645-0321</td><td>Roberto Castillo Vega</td><td>8712-9087</td><td>roberto.castillo@correo.test</td><td>Activo</td></tr>
+            <tr><td>1-0999-0876</td><td>Patricia Rojas Soto</td><td>8634-1209</td><td>patricia.rojas@correo.test</td><td>Inactivo</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Periodos</h3>
+      <div class="wf-desplazable">
+        <table class="wf-tabla-simple">
+          <thead><tr><th>Nombre</th><th>Inicio de matrícula</th><th>Fin de matrícula</th><th>Inicio de clases</th><th>Límite de retiro</th><th>Fin de clases</th><th>Nota</th></tr></thead>
+          <tbody>
+            <tr><td>2027-I</td><td>01/02/2027</td><td>19/02/2027</td><td>01/03/2027</td><td>12/03/2027</td><td>28/05/2027</td><td>Futuro, sin grupos</td></tr>
+            <tr><td>2026-III</td><td>09/11/2026</td><td>28/11/2026</td><td>30/11/2026</td><td>11/12/2026</td><td>26/02/2027</td><td>Vigente, en matrícula</td></tr>
+            <tr><td>2026-II</td><td>06/07/2026</td><td>24/07/2026</td><td>27/07/2026</td><td>14/08/2026</td><td>13/11/2026</td><td>Anterior</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Cursos</h3>
+      <div class="wf-desplazable">
+        <table class="wf-tabla-simple">
+          <thead><tr><th>Código</th><th>Nombre</th><th>Nivel</th><th>Duración</th><th>Costo</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>ING-101</td><td>Inglés conversacional I</td><td>Básico</td><td>48 horas</td><td>₡45 000,00</td><td>Activo</td></tr>
+            <tr><td>ING-201</td><td>Inglés conversacional II</td><td>Intermedio</td><td>48 horas</td><td>₡48 000,00</td><td>Activo</td></tr>
+            <tr><td>EXC-110</td><td>Excel para la oficina</td><td>Básico</td><td>32 horas</td><td>₡35 000,00</td><td>Activo</td></tr>
+            <tr><td>PRG-210</td><td>Programación en Python</td><td>Intermedio</td><td>60 horas</td><td>₡60 000,00</td><td>Activo</td></tr>
+            <tr><td>FOT-300</td><td>Fotografía digital avanzada</td><td>Avanzado</td><td>40 horas</td><td>₡52 000,00</td><td>Activo</td></tr>
+            <tr><td>FRA-100</td><td>Francés básico</td><td>Básico</td><td>40 horas</td><td>₡42 000,00</td><td>Inactivo</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Aulas</h3>
+      <div class="wf-desplazable">
+        <table class="wf-tabla-simple">
+          <thead><tr><th>Código</th><th>Ubicación</th><th>Capacidad</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>A-101</td><td>Edificio A, primer piso</td><td>25</td><td>Activa</td></tr>
+            <tr><td>A-102</td><td>Edificio A, primer piso</td><td>20</td><td>Activa</td></tr>
+            <tr><td>B-201</td><td>Edificio B, laboratorio de cómputo</td><td>18</td><td>Activa</td></tr>
+            <tr><td>C-001</td><td>Sala multiuso</td><td>30</td><td>Inactiva</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Profesores</h3>
+      <div class="wf-desplazable">
+        <table class="wf-tabla-simple">
+          <thead><tr><th>Cédula</th><th>Nombre</th><th>Especialidad</th><th>Correo</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>1-1023-0456</td><td>Laura Jiménez Mora</td><td>Inglés</td><td>laura.jimenez@correo.test</td><td>Activo</td></tr>
+            <tr><td>2-0567-0891</td><td>Carlos Vargas Solís</td><td>Informática</td><td>carlos.vargas@correo.test</td><td>Activo</td></tr>
+            <tr><td>1-0988-0234</td><td>Ana Rodríguez Castro</td><td>Fotografía</td><td>ana.rodriguez@correo.test</td><td>Activo</td></tr>
+            <tr><td>3-0377-0456</td><td>Jorge Herrera Quirós</td><td>Matemáticas</td><td>jorge.herrera@correo.test</td><td>Inactivo</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Estudiantes</h3>
+      <div class="wf-desplazable">
+        <table class="wf-tabla-simple">
+          <thead><tr><th>Cédula</th><th>Nombre</th><th>Teléfono</th><th>Correo</th><th>Estado</th><th>Matrículas en 2026-III</th></tr></thead>
+          <tbody>
+            <tr><td>1-1789-0345</td><td>María Fernanda Quesada Rojas</td><td>8812-3456</td><td>maria.quesada@correo.test</td><td>Activo</td><td>1001, 1004</td></tr>
+            <tr><td>2-0812-0567</td><td>José Pablo Araya Brenes</td><td>8723-4567</td><td>jose.araya@correo.test</td><td>Activo</td><td>1001, 1005</td></tr>
+            <tr><td>1-1856-0912</td><td>Valeria Chaves Mora</td><td>8634-5678</td><td>valeria.chaves@correo.test</td><td>Activo</td><td>1002</td></tr>
+            <tr><td>3-0498-0123</td><td>Andrés Salazar Ulate</td><td>8545-6789</td><td>andres.salazar@correo.test</td><td>Activo</td><td>1004</td></tr>
+            <tr><td>1-1734-0678</td><td>Daniela Campos Herrera</td><td>8456-7890</td><td>daniela.campos@correo.test</td><td>Inactivo</td><td>—</td></tr>
+            <tr><td>4-0256-0789</td><td>Luis Diego Navarro Pérez</td><td>8367-8901</td><td>luis.navarro@correo.test</td><td>Activo</td><td>— (temporal sin usar)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Grupos</h3>
+      <div class="wf-desplazable">
+        <table class="wf-tabla-simple">
+          <thead><tr><th>NRC</th><th>Curso</th><th>Periodo</th><th>Profesor</th><th>Modalidad</th><th>Aula</th><th>Horario</th><th>Cupos</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>1001</td><td>ING-101</td><td>2026-III</td><td>Laura Jiménez Mora</td><td>Presencial</td><td>A-101</td><td>Lunes y miércoles, 6:00 p. m. – 8:00 p. m.</td><td>18 de 25</td><td>Abierto</td></tr>
+            <tr><td>1002</td><td>ING-101</td><td>2026-III</td><td>Laura Jiménez Mora</td><td>Virtual</td><td>—</td><td>Sábado, 8:00 a. m. – 11:00 a. m.</td><td>30 de 30 (lleno)</td><td>Abierto</td></tr>
+            <tr><td>1003</td><td>ING-201</td><td>2026-III</td><td>Laura Jiménez Mora</td><td>Híbrida</td><td>A-102</td><td>Martes y jueves, 6:00 p. m. – 8:00 p. m.</td><td>0 de 20</td><td>Planificado</td></tr>
+            <tr><td>1004</td><td>EXC-110</td><td>2026-III</td><td>Carlos Vargas Solís</td><td>Presencial</td><td>B-201</td><td>Martes y jueves, 5:00 p. m. – 7:00 p. m.</td><td>12 de 18</td><td>Abierto</td></tr>
+            <tr><td>1005</td><td>PRG-210</td><td>2026-III</td><td>Carlos Vargas Solís</td><td>Presencial</td><td>B-201</td><td>Lunes y miércoles, 5:30 p. m. – 8:30 p. m.</td><td>18 de 18</td><td>Cerrado</td></tr>
+            <tr><td>1006</td><td>FOT-300</td><td>2026-III</td><td>Ana Rodríguez Castro</td><td>Presencial</td><td>A-102</td><td>Sábado, 1:00 p. m. – 4:00 p. m.</td><td>0 de 15</td><td>Cancelado</td></tr>
+            <tr><td>1007</td><td>FOT-300</td><td>2026-III</td><td>Ana Rodríguez Castro</td><td>Presencial</td><td>A-102</td><td>Sábado, 9:00 a. m. – 12:00 p. m.</td><td>9 de 15</td><td>Abierto</td></tr>
+            <tr><td>1008</td><td>ING-101</td><td>2026-III</td><td>Laura Jiménez Mora</td><td>Presencial</td><td>A-101</td><td>Viernes, 5:00 p. m. – 8:00 p. m.</td><td>10 de 25</td><td>Abierto</td></tr>
+            <tr><td>0901</td><td>FOT-300</td><td>2026-II</td><td>Ana Rodríguez Castro</td><td>Presencial</td><td>A-102</td><td>Sábado, 1:00 p. m. – 4:00 p. m.</td><td>12 de 15</td><td>Finalizado</td></tr>
+            <tr><td>0902</td><td>EXC-110</td><td>2026-II</td><td>Carlos Vargas Solís</td><td>Presencial</td><td>B-201</td><td>Martes y jueves, 5:00 p. m. – 7:00 p. m.</td><td>15 de 18</td><td>Finalizado</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Matrículas de María Fernanda Quesada Rojas</h3>
+      <div class="wf-desplazable">
+        <table class="wf-tabla-simple">
+          <thead><tr><th>Grupo</th><th>Curso</th><th>Periodo</th><th>Fecha de matrícula</th><th>Estado</th><th>Retiro</th></tr></thead>
+          <tbody>
+            <tr><td>1001</td><td>Inglés conversacional I</td><td>2026-III</td><td>10/11/2026</td><td>Activa</td><td>—</td></tr>
+            <tr><td>1004</td><td>Excel para la oficina</td><td>2026-III</td><td>10/11/2026</td><td>Activa</td><td>—</td></tr>
+            <tr><td>0901</td><td>Fotografía digital avanzada</td><td>2026-II</td><td>08/07/2026</td><td>Activa</td><td>—</td></tr>
+            <tr><td>0902</td><td>Excel para la oficina</td><td>2026-II</td><td>08/07/2026</td><td>Retirada</td><td>05/08/2026 · Retiro voluntario</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="wf-texto-2">María retiró Excel en 2026-II y lo matriculó de nuevo en 2026-III. Sus dos grupos de 2026-III no se traslapan (lunes y miércoles / martes y jueves).</p>
+    </section>
+  </main>
+</body>
+</html>

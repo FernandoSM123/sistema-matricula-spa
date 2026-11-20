@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-28 Grupos — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-28"
+      data-wf-nombre="Grupos"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-estados="datos:Con datos (periodo vigente)|todos:Sin periodo vigente (todos los periodos)|periodo:Filtrado por un periodo (desde Periodos)|cargando:Cargando|vacio:Vacío sin filtros|vacio-filtros:Vacío con filtros|error:Error|eliminado:Después de eliminar">
+
+  <main class="wf-vista">
+    <header class="wf-encabezado">
+      <div>
+        <p class="wf-migas">Académico</p>
+        <h1>Grupos</h1>
+      </div>
+      <div class="wf-acciones">
+        <a class="wf-boton wf-principal" href="V-29-grupo-form.html">Registrar grupo</a>
+      </div>
+    </header>
+
+    <form class="wf-filtros" role="search" onsubmit="return false">
+      <div class="wf-campo wf-busqueda">
+        <label for="f-nrc">NRC</label>
+        <div class="wf-con-boton">
+          <input id="f-nrc" type="search" inputmode="numeric" placeholder="Buscar por NRC">
+          <button type="submit" class="wf-boton">Buscar</button>
+        </div>
+      </div>
+      <div class="wf-campo">
+        <label for="f-periodo">Periodo</label>
+        <select id="f-periodo" data-wf-estado="datos cargando vacio vacio-filtros error eliminado"><option>Todos</option><option>2027-I</option><option selected>2026-III (vigente)</option><option>2026-II</option></select>
+        <select data-wf-estado="todos" aria-label="Periodo"><option selected>Todos</option><option>2027-I</option><option>2026-III</option><option>2026-II</option></select>
+        <select data-wf-estado="periodo" aria-label="Periodo"><option>Todos</option><option>2027-I</option><option>2026-III (vigente)</option><option selected>2026-II</option></select>
+      </div>
+      <div class="wf-campo">
+        <label for="f-curso">Curso</label>
+        <select id="f-curso"><option selected>Todos</option><option>ING-101</option><option>ING-201</option><option>EXC-110</option><option>PRG-210</option><option>FOT-300</option></select>
+      </div>
+      <div class="wf-campo">
+        <label for="f-profesor">Profesor</label>
+        <select id="f-profesor"><option selected>Todos</option><option>Ana Rodríguez Castro</option><option>Carlos Vargas Solís</option><option>Laura Jiménez Mora</option></select>
+      </div>
+      <div class="wf-campo">
+        <label for="f-estado">Estado</label>
+        <select id="f-estado"><option selected>Todos</option><option>Planificado</option><option>Abierto</option><option>Cerrado</option><option>En curso</option><option>Finalizado</option><option>Cancelado</option></select>
+      </div>
+      <div class="wf-campo">
+        <label for="f-modalidad">Modalidad</label>
+        <select id="f-modalidad"><option selected>Todas</option><option>Presencial</option><option>Virtual</option><option>Híbrida</option></select>
+      </div>
+    </form>
+    <div class="wf-filtros-aplicados" data-wf-estado="datos periodo vacio-filtros eliminado">
+      <span>Filtros aplicados:</span>
+      <span class="wf-chip" data-wf-estado="datos vacio-filtros eliminado">Periodo: 2026-III</span>
+      <span class="wf-chip" data-wf-estado="periodo">Periodo: 2026-II</span>
+      <span class="wf-chip" data-wf-estado="vacio-filtros">Estado: En curso</span>
+      <button type="button" class="wf-boton wf-enlace">Limpiar filtros</button>
+    </div>
+
+    <div class="wf-mensaje" role="note" data-wf-estado="todos">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>No hay un periodo vigente. Se muestran los grupos de todos los periodos.</p></div>
+    </div>
+
+    <div class="wf-listado">
+      <div data-wf-estado="datos todos periodo eliminado">
+        <table class="wf-tabla">
+          <thead>
+            <tr><th scope="col">NRC</th><th scope="col">Curso</th><th scope="col">Profesor</th><th scope="col">Periodo</th><th scope="col">Modalidad</th><th scope="col">Aula</th><th scope="col">Cupos</th><th scope="col">Estado</th><th scope="col"><span class="wf-solo-lector">Acciones</span></th></tr>
+          </thead>
+          <tbody>
+            <tr data-wf-estado="datos todos eliminado"><td class="wf-celda-principal" data-etiqueta="NRC">1001</td><td data-etiqueta="Curso"><span class="wf-nowrap">ING-101</span> · Inglés conversacional I</td><td data-etiqueta="Profesor">Laura Jiménez Mora</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Modalidad">Presencial</td><td data-etiqueta="Aula" class="wf-nowrap">A-101</td><td data-etiqueta="Cupos" class="wf-nowrap">18 de 25</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-llena">Abierto</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=abierto">Ver detalle</a></td></tr>
+            <tr data-wf-estado="datos todos eliminado"><td class="wf-celda-principal" data-etiqueta="NRC">1002</td><td data-etiqueta="Curso"><span class="wf-nowrap">ING-101</span> · Inglés conversacional I</td><td data-etiqueta="Profesor">Laura Jiménez Mora</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Modalidad">Virtual</td><td data-etiqueta="Aula">—</td><td data-etiqueta="Cupos" class="wf-nowrap">30 de 30</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-llena">Abierto</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=abierto">Ver detalle</a></td></tr>
+            <tr data-wf-estado="datos todos"><td class="wf-celda-principal" data-etiqueta="NRC">1003</td><td data-etiqueta="Curso"><span class="wf-nowrap">ING-201</span> · Inglés conversacional II</td><td data-etiqueta="Profesor">Laura Jiménez Mora</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Modalidad">Híbrida</td><td data-etiqueta="Aula" class="wf-nowrap">A-102</td><td data-etiqueta="Cupos" class="wf-nowrap">0 de 20</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-discontinua">Planificado</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=planificado">Ver detalle</a></td></tr>
+            <tr data-wf-estado="datos todos eliminado"><td class="wf-celda-principal" data-etiqueta="NRC">1004</td><td data-etiqueta="Curso"><span class="wf-nowrap">EXC-110</span> · Excel para la oficina</td><td data-etiqueta="Profesor">Carlos Vargas Solís</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Modalidad">Presencial</td><td data-etiqueta="Aula" class="wf-nowrap">B-201</td><td data-etiqueta="Cupos" class="wf-nowrap">12 de 18</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-llena">Abierto</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=abierto">Ver detalle</a></td></tr>
+            <tr data-wf-estado="datos todos eliminado"><td class="wf-celda-principal" data-etiqueta="NRC">1005</td><td data-etiqueta="Curso"><span class="wf-nowrap">PRG-210</span> · Programación en Python</td><td data-etiqueta="Profesor">Carlos Vargas Solís</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Modalidad">Presencial</td><td data-etiqueta="Aula" class="wf-nowrap">B-201</td><td data-etiqueta="Cupos" class="wf-nowrap">18 de 18</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-doble">Cerrado</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=cerrado">Ver detalle</a></td></tr>
+            <tr data-wf-estado="datos todos eliminado"><td class="wf-celda-principal" data-etiqueta="NRC">1006</td><td data-etiqueta="Curso"><span class="wf-nowrap">FOT-300</span> · Fotografía digital avanzada</td><td data-etiqueta="Profesor">Ana Rodríguez Castro</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Modalidad">Presencial</td><td data-etiqueta="Aula" class="wf-nowrap">A-102</td><td data-etiqueta="Cupos" class="wf-nowrap">0 de 15</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-tachada">Cancelado</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=cancelado">Ver detalle</a></td></tr>
+            <tr data-wf-estado="datos todos eliminado"><td class="wf-celda-principal" data-etiqueta="NRC">1007</td><td data-etiqueta="Curso"><span class="wf-nowrap">FOT-300</span> · Fotografía digital avanzada</td><td data-etiqueta="Profesor">Ana Rodríguez Castro</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Modalidad">Presencial</td><td data-etiqueta="Aula" class="wf-nowrap">A-102</td><td data-etiqueta="Cupos" class="wf-nowrap">9 de 15</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-llena">Abierto</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=abierto">Ver detalle</a></td></tr>
+            <tr data-wf-estado="datos todos eliminado"><td class="wf-celda-principal" data-etiqueta="NRC">1008</td><td data-etiqueta="Curso"><span class="wf-nowrap">ING-101</span> · Inglés conversacional I</td><td data-etiqueta="Profesor">Laura Jiménez Mora</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Modalidad">Presencial</td><td data-etiqueta="Aula" class="wf-nowrap">A-101</td><td data-etiqueta="Cupos" class="wf-nowrap">10 de 25</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-llena">Abierto</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=abierto">Ver detalle</a></td></tr>
+            <tr data-wf-estado="todos periodo"><td class="wf-celda-principal" data-etiqueta="NRC">0901</td><td data-etiqueta="Curso"><span class="wf-nowrap">FOT-300</span> · Fotografía digital avanzada</td><td data-etiqueta="Profesor">Ana Rodríguez Castro</td><td data-etiqueta="Periodo">2026-II</td><td data-etiqueta="Modalidad">Presencial</td><td data-etiqueta="Aula" class="wf-nowrap">A-102</td><td data-etiqueta="Cupos" class="wf-nowrap">12 de 15</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-apagada">Finalizado</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=finalizado">Ver detalle</a></td></tr>
+            <tr data-wf-estado="todos periodo"><td class="wf-celda-principal" data-etiqueta="NRC">0902</td><td data-etiqueta="Curso"><span class="wf-nowrap">EXC-110</span> · Excel para la oficina</td><td data-etiqueta="Profesor">Carlos Vargas Solís</td><td data-etiqueta="Periodo">2026-II</td><td data-etiqueta="Modalidad">Presencial</td><td data-etiqueta="Aula" class="wf-nowrap">B-201</td><td data-etiqueta="Cupos" class="wf-nowrap">15 de 18</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-apagada">Finalizado</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=finalizado">Ver detalle</a></td></tr>
+          </tbody>
+        </table>
+        <div class="wf-paginacion">
+          <span class="wf-paginacion-rango" data-wf-estado="datos">1–8 de 8</span>
+          <span class="wf-paginacion-rango" data-wf-estado="todos">1–10 de 10</span>
+          <span class="wf-paginacion-rango" data-wf-estado="periodo">1–2 de 2</span>
+          <span class="wf-paginacion-rango" data-wf-estado="eliminado">1–7 de 7</span>
+          <div class="wf-paginacion-controles">
+            <label>Filas por página <select><option>10</option><option selected>20</option><option>50</option></select></label>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>← Anterior</button>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>Siguiente →</button>
+          </div>
+        </div>
+      </div>
+
+      <div data-wf-estado="cargando" class="wf-cargando" role="status" aria-label="Cargando grupos">
+        <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+      </div>
+      <div data-wf-estado="vacio" class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay grupos en el periodo 2026-III.</p>
+        <a class="wf-boton wf-principal" href="V-29-grupo-form.html">Registrar grupo</a>
+      </div>
+      <div data-wf-estado="vacio-filtros" class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay resultados para los filtros aplicados.</p>
+        <button type="button" class="wf-boton">Limpiar filtros</button>
+      </div>
+      <div data-wf-estado="error" class="wf-estado-contenido" role="alert">
+        <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+        <button type="button" class="wf-boton">Reintentar</button>
+      </div>
+    </div>
+
+    <div class="wf-toast" role="status" data-wf-estado="eliminado">Grupo eliminado</div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-28</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-28 Grupos · administrador. Es su página de inicio.</dd>
+        <dt>Requerimientos</dt><dd>RFF-23 · RFF-21 ("Ver grupos" desde V-23) · RFF-28 (mensaje después de eliminar)</dd>
+        <dt>Reglas</dt><dd>RUI-10 a RUI-14, RUI-20 (etiquetas de estado), RUI-21</dd>
+        <dt>Endpoints</dt><dd><code>GET /grupos</code> (<code>periodoId</code>, <code>cursoId</code>, <code>profesorId</code>, <code>estado</code>, <code>modalidad</code>, <code>search</code> por NRC), <code>GET /periodos/vigente</code></dd>
+        <dt>Backend</dt><dd>RF-43</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Al entrar, el filtro de periodo está en el vigente; sin vigente, en "Todos", con un aviso.</li>
+            <li>Desde V-23, "Ver grupos" abre este listado con el periodo de la fila.</li>
+            <li>"Cupos" es ocupados de total. Cada estado del grupo tiene su etiqueta (componente 9).</li>
+            <li>Los filtros de curso y profesor son listas; si crecen mucho, pueden pasar a selectores con búsqueda (se decide en <code>arquitectura</code>).</li>
+            <li>"Después de eliminar" supone que se eliminó el 1003, que no tiene matrículas.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

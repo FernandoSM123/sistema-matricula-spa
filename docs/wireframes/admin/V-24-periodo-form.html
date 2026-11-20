@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-24 Registrar o editar periodo — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-24"
+      data-wf-nombre="Registrar o editar periodo"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-menu="V-23"
+      data-wf-estados="registro:Registrar|validacion:Fechas incoherentes (RN-16)|duplicado:Nombre repetido (409 RN-13)|edicion:Editar|enviando:Guardando">
+
+  <main class="wf-vista">
+    <header>
+      <p class="wf-migas"><a href="V-23-periodos.html">Periodos</a> / <span data-wf-estado="registro validacion duplicado">Registrar</span><span data-wf-estado="edicion enviando">Editar</span></p>
+      <h1 data-wf-estado="registro validacion duplicado">Registrar periodo</h1>
+      <h1 data-wf-estado="edicion enviando">Editar periodo 2026-III</h1>
+    </header>
+
+    <div class="wf-errores-generales" role="alert" data-wf-estado="validacion">
+      <strong>Las fechas del periodo no son coherentes.</strong>
+      <ul><li>Revise las fechas marcadas.</li></ul>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="duplicado">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto"><p>Ya existe un periodo con el nombre 2026-III.</p></div>
+    </div>
+
+    <form class="wf-caja wf-form" onsubmit="return false" novalidate>
+      <p class="wf-nota-obligatorios">Todos los campos son obligatorios.</p>
+
+      <fieldset class="wf-form-seccion">
+        <legend>Periodo</legend>
+        <div class="wf-campo">
+          <label for="p-nombre" class="wf-obligatorio">Nombre</label>
+          <input id="p-nombre" data-wf-estado="registro" placeholder="2027-I">
+          <input id="p-nombre-v" data-wf-estado="validacion" value="2027-I">
+          <input id="p-nombre-d" data-wf-estado="duplicado edicion enviando" value="2026-III">
+        </div>
+      </fieldset>
+
+      <fieldset class="wf-form-seccion">
+        <legend>Matrícula</legend>
+        <div class="wf-campo">
+          <label for="m-inicio" class="wf-obligatorio">Inicio de la matrícula</label>
+          <div class="wf-con-boton"><input id="m-inicio" inputmode="numeric" placeholder="dd/mm/aaaa" data-wf-estado="registro"><input inputmode="numeric" value="01/02/2027" data-wf-estado="validacion" aria-label="Inicio de la matrícula"><input inputmode="numeric" value="09/11/2026" data-wf-estado="duplicado edicion enviando" aria-label="Inicio de la matrícula"><button type="button" class="wf-boton" aria-label="Abrir calendario">▦</button></div>
+        </div>
+        <div class="wf-campo">
+          <label for="m-fin" class="wf-obligatorio">Fin de la matrícula</label>
+          <div class="wf-con-boton"><input id="m-fin" inputmode="numeric" placeholder="dd/mm/aaaa" data-wf-estado="registro"><input inputmode="numeric" value="25/01/2027" data-wf-estado="validacion" aria-label="Fin de la matrícula" aria-invalid="true"><input inputmode="numeric" value="28/11/2026" data-wf-estado="duplicado edicion enviando" aria-label="Fin de la matrícula"><button type="button" class="wf-boton" aria-label="Abrir calendario">▦</button></div>
+          <p class="wf-error-campo" data-wf-estado="validacion">Debe ser posterior al inicio de la matrícula.</p>
+        </div>
+      </fieldset>
+
+      <fieldset class="wf-form-seccion">
+        <legend>Clases</legend>
+        <div class="wf-campo">
+          <label for="c-inicio" class="wf-obligatorio">Inicio de clases</label>
+          <div class="wf-con-boton"><input id="c-inicio" inputmode="numeric" placeholder="dd/mm/aaaa" data-wf-estado="registro"><input inputmode="numeric" value="01/03/2027" data-wf-estado="validacion" aria-label="Inicio de clases"><input inputmode="numeric" value="30/11/2026" data-wf-estado="duplicado edicion enviando" aria-label="Inicio de clases"><button type="button" class="wf-boton" aria-label="Abrir calendario">▦</button></div>
+        </div>
+        <div class="wf-campo">
+          <label for="c-fin" class="wf-obligatorio">Fin de clases</label>
+          <div class="wf-con-boton"><input id="c-fin" inputmode="numeric" placeholder="dd/mm/aaaa" data-wf-estado="registro"><input inputmode="numeric" value="28/05/2027" data-wf-estado="validacion" aria-label="Fin de clases"><input inputmode="numeric" value="26/02/2027" data-wf-estado="duplicado edicion enviando" aria-label="Fin de clases"><button type="button" class="wf-boton" aria-label="Abrir calendario">▦</button></div>
+          <span class="wf-ayuda">No puede ser anterior al fin de la matrícula.</span>
+        </div>
+      </fieldset>
+
+      <fieldset class="wf-form-seccion">
+        <legend>Retiro</legend>
+        <div class="wf-campo">
+          <label for="r-limite" class="wf-obligatorio">Fecha límite de retiro</label>
+          <div class="wf-con-boton"><input id="r-limite" inputmode="numeric" placeholder="dd/mm/aaaa" data-wf-estado="registro"><input inputmode="numeric" value="15/06/2027" data-wf-estado="validacion" aria-label="Fecha límite de retiro" aria-invalid="true"><input inputmode="numeric" value="11/12/2026" data-wf-estado="duplicado edicion enviando" aria-label="Fecha límite de retiro"><button type="button" class="wf-boton" aria-label="Abrir calendario">▦</button></div>
+          <span class="wf-ayuda" data-wf-estado="registro duplicado edicion enviando">Entre el inicio de la matrícula y el fin de clases.</span>
+          <p class="wf-error-campo" data-wf-estado="validacion">Debe estar entre el inicio de la matrícula y el fin de clases.</p>
+        </div>
+      </fieldset>
+
+      <div class="wf-form-pie">
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-descartar">Cancelar</button>
+        <a class="wf-boton wf-principal" href="V-23-periodos.html#estado=creado" data-wf-estado="registro validacion duplicado">Registrar periodo</a>
+        <a class="wf-boton wf-principal" href="V-23-periodos.html#estado=guardado" data-wf-estado="edicion">Guardar cambios</a>
+        <button type="button" class="wf-boton wf-principal wf-girando" data-wf-estado="enviando" disabled>Guardando…</button>
+      </div>
+    </form>
+
+    <details class="wf-notas">
+      <summary>Notas de V-24</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-24 Registrar o editar periodo · administrador (desde V-23)</dd>
+        <dt>Requerimientos</dt><dd>RFF-21</dd>
+        <dt>Reglas</dt><dd>RUI-02 (<code>400</code> por campo), RUI-06, RUI-08, RUI-09, RUI-16 (fechas)</dd>
+        <dt>Endpoints</dt><dd><code>POST /periodos</code>, <code>GET /periodos/{id}</code>, <code>PUT /periodos/{id}</code></dd>
+        <dt>Backend</dt><dd>RF-35, RF-36, RN-13, RN-16 (decisión 5 de <code>SPEC-catalogos</code>)</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Las cinco fechas, agrupadas en matrícula, clases y retiro.</li>
+            <li>El cliente valida las cuatro condiciones de RN-16 y marca la fecha que falla: fin de matrícula después del inicio; fin de clases después del inicio; fin de matrícula no posterior al fin de clases; límite de retiro entre el inicio de la matrícula y el fin de clases. La API vuelve a validarlas (<code>400</code>).</li>
+            <li>No se exige que la matrícula termine antes de las clases (matrícula tardía); por eso no hay error entre esas fechas.</li>
+            <li>Con éxito vuelve a V-23, que no tiene detalle.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <dialog class="wf-dialogo" id="dlg-descartar" aria-labelledby="dlg-descartar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-descartar-t">¿Descartar los cambios?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>Hay cambios sin guardar en el formulario. Si sale, se perderán.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Seguir editando</button>
+      <a class="wf-boton wf-principal" href="V-23-periodos.html">Descartar cambios</a>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

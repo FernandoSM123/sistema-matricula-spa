@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-11 Administradores — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-11"
+      data-wf-nombre="Administradores"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-estados="datos:Con datos|inactivos:Con &quot;Incluir inactivos&quot;|reactivado:Después de reactivar desde el registro (RN-39)|cargando:Cargando|vacio-filtros:Vacío con filtros|error:Error">
+
+  <main class="wf-vista">
+    <header class="wf-encabezado">
+      <div>
+        <p class="wf-migas">Personas</p>
+        <h1>Administradores</h1>
+      </div>
+      <div class="wf-acciones">
+        <a class="wf-boton wf-principal" href="V-12-administrador-form.html">Registrar administrador</a>
+      </div>
+    </header>
+
+    <form class="wf-filtros" role="search" onsubmit="return false">
+      <div class="wf-campo wf-busqueda">
+        <label for="f-buscar">Buscar</label>
+        <div class="wf-con-boton">
+          <input id="f-buscar" type="search" placeholder="Nombre, apellidos, cédula o correo" data-wf-estado="datos inactivos cargando vacio-filtros error">
+          <input id="f-buscar-ced" type="search" value="1-0999-0876" data-wf-estado="reactivado" aria-label="Buscar">
+          <button type="submit" class="wf-boton">Buscar</button>
+        </div>
+      </div>
+      <label class="wf-casilla"><input type="checkbox" data-wf-estado="datos cargando vacio-filtros error"> <input type="checkbox" checked data-wf-estado="inactivos reactivado"> Incluir inactivos</label>
+    </form>
+    <div class="wf-filtros-aplicados" data-wf-estado="inactivos vacio-filtros reactivado">
+      <span>Filtros aplicados:</span>
+      <span class="wf-chip" data-wf-estado="reactivado">Buscar: "1-0999-0876"</span>
+      <span class="wf-chip" data-wf-estado="inactivos reactivado">Incluir inactivos</span>
+      <span class="wf-chip" data-wf-estado="vacio-filtros">Buscar: "garcía"</span>
+      <button type="button" class="wf-boton wf-enlace">Limpiar filtros</button>
+    </div>
+
+    <div class="wf-listado">
+      <div data-wf-estado="datos inactivos reactivado">
+        <table class="wf-tabla">
+          <thead>
+            <tr><th scope="col">Cédula</th><th scope="col">Nombre</th><th scope="col">Correo</th><th scope="col">Teléfono</th><th scope="col">Estado</th><th scope="col"><span class="wf-solo-lector">Acciones</span></th></tr>
+          </thead>
+          <tbody>
+            <tr data-wf-estado="datos inactivos"><td data-etiqueta="Cédula" class="wf-nowrap">2-0645-0321</td><td class="wf-celda-principal" data-etiqueta="Nombre">Roberto Castillo Vega</td><td data-etiqueta="Correo">roberto.castillo@correo.test</td><td data-etiqueta="Teléfono" class="wf-nowrap">8712-9087</td><td data-etiqueta="Estado"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-13-administrador.html">Ver detalle</a></td></tr>
+            <tr data-wf-estado="datos inactivos"><td data-etiqueta="Cédula" class="wf-nowrap">1-0876-0543</td><td class="wf-celda-principal" data-etiqueta="Nombre">Sofía Méndez Arias <span class="wf-etiqueta wf-e-gris">Usted</span></td><td data-etiqueta="Correo">sofia.mendez@correo.test</td><td data-etiqueta="Teléfono" class="wf-nowrap">8901-2345</td><td data-etiqueta="Estado"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-13-administrador.html#estado=propio">Ver detalle</a></td></tr>
+            <tr data-wf-estado="inactivos"><td data-etiqueta="Cédula" class="wf-nowrap">1-0999-0876</td><td class="wf-celda-principal" data-etiqueta="Nombre">Patricia Rojas Soto</td><td data-etiqueta="Correo">patricia.rojas@correo.test</td><td data-etiqueta="Teléfono" class="wf-nowrap">8634-1209</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-apagada">Inactivo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-13-administrador.html#estado=inactivo">Ver detalle</a></td></tr>
+            <tr data-wf-estado="reactivado"><td data-etiqueta="Cédula" class="wf-nowrap">1-0999-0876</td><td class="wf-celda-principal" data-etiqueta="Nombre">Patricia Rojas Soto</td><td data-etiqueta="Correo">patricia.rojas@correo.test</td><td data-etiqueta="Teléfono" class="wf-nowrap">8634-1209</td><td data-etiqueta="Estado"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-13-administrador.html">Ver detalle</a></td></tr>
+          </tbody>
+        </table>
+        <div class="wf-paginacion">
+          <span class="wf-paginacion-rango" data-wf-estado="datos">1–2 de 2</span>
+          <span class="wf-paginacion-rango" data-wf-estado="inactivos">1–3 de 3</span>
+          <span class="wf-paginacion-rango" data-wf-estado="reactivado">1–1 de 1</span>
+          <div class="wf-paginacion-controles">
+            <label>Filas por página <select><option>10</option><option selected>20</option><option>50</option></select></label>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>← Anterior</button>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>Siguiente →</button>
+          </div>
+        </div>
+      </div>
+
+      <div data-wf-estado="cargando" class="wf-cargando" role="status" aria-label="Cargando administradores">
+        <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+      </div>
+      <div data-wf-estado="vacio-filtros" class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay resultados para los filtros aplicados.</p>
+        <button type="button" class="wf-boton">Limpiar filtros</button>
+      </div>
+      <div data-wf-estado="error" class="wf-estado-contenido" role="alert">
+        <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+        <button type="button" class="wf-boton">Reintentar</button>
+      </div>
+    </div>
+
+    <div class="wf-toast" role="status" data-wf-estado="reactivado">Administrador reactivado</div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-11</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-11 Administradores · administrador</dd>
+        <dt>Requerimientos</dt><dd>RFF-11 · RFF-12 (destino después de reactivar por RN-39)</dd>
+        <dt>Reglas</dt><dd>RUI-10 a RUI-14, RUI-21</dd>
+        <dt>Endpoints</dt><dd><code>GET /administradores</code> (<code>search</code>, <code>incluirInactivos</code>)</dd>
+        <dt>Backend</dt><dd>RF-55, RN-41</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Mismo patrón que V-14. Sin estado "Vacío sin filtros": siempre hay al menos un administrador activo (RN-30), el de la sesión.</li>
+            <li>La fila del administrador de la sesión lleva la etiqueta "Usted".</li>
+            <li>Después de reactivar desde el registro (RN-39), el listado se abre filtrado por la cédula, porque la respuesta solo trae el <code>usuarioId</code>.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

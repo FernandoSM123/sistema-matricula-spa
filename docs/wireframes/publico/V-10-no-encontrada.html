@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-10 Página no encontrada — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-10"
+      data-wf-nombre="Página no encontrada"
+      data-wf-raiz="../"
+      data-wf-marco="rol"
+      data-wf-roles="visitante:Visitante|estudiante:Estudiante|profesor:Profesor|administrador:Administrador">
+
+  <main class="wf-vista wf-vista-angosta">
+    <div class="wf-caja wf-estado-contenido">
+      <p class="wf-mensaje-icono" aria-hidden="true">[?]</p>
+      <h1>No encontramos esta página</h1>
+      <p>La dirección no existe o cambió. Revise que esté bien escrita.</p>
+      <a class="wf-boton wf-principal" href="V-01-oferta.html" data-wf-rol="visitante">Ir a la oferta académica</a>
+      <a class="wf-boton wf-principal" href="../estudiante/V-31-mis-matriculas.html" data-wf-rol="estudiante">Ir a Mis matrículas</a>
+      <a class="wf-boton wf-principal" href="../profesor/V-35-mis-grupos.html" data-wf-rol="profesor">Ir a Mis grupos</a>
+      <a class="wf-boton wf-principal" href="../admin/V-28-grupos.html" data-wf-rol="administrador">Ir a Grupos</a>
+    </div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-10</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-10 Página no encontrada · todos, incluido el visitante</dd>
+        <dt>Requerimientos</dt><dd>§2.5 (dirección que no corresponde a ninguna vista)</dd>
+        <dt>Endpoints</dt><dd>Ninguno</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Distinta del registro inexistente (<code>404</code> de la API), que se muestra dentro de la vista con un enlace a su listado (componente "Estados de contenido").</li>
+            <li>Mantiene el marco del rol y enlaza a su página de inicio.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

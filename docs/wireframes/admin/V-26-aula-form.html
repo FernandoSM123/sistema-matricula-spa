@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-26 Registrar o editar aula — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-26"
+      data-wf-nombre="Registrar o editar aula"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-menu="V-25"
+      data-wf-estados="registro:Registrar|validacion:Registrar con errores|duplicado:Registrar: código repetido (409 RN-13)|reactivar:Registrar: aula inactiva (409 RN-39)|edicion:Editar|capacidad:Editar: capacidad menor que un cupo (409 RN-09)|enviando:Guardando">
+
+  <main class="wf-vista">
+    <header>
+      <p class="wf-migas"><a href="../compartidas/V-25-aulas.html">Aulas</a> / <span data-wf-estado="registro validacion duplicado reactivar">Registrar</span><span data-wf-estado="edicion capacidad enviando">Editar</span></p>
+      <h1 data-wf-estado="registro validacion duplicado reactivar">Registrar aula</h1>
+      <h1 data-wf-estado="edicion capacidad enviando">Editar aula B-201</h1>
+    </header>
+
+    <div class="wf-errores-generales" role="alert" data-wf-estado="validacion">
+      <strong>No se pudo registrar el aula.</strong>
+      <ul><li>Revise los campos marcados.</li></ul>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="duplicado">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto"><p>Ya existe un aula con ese código.</p></div>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="reactivar">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto">
+        <p>Ya existe un aula inactiva con el código C-001.</p>
+        <p class="wf-texto-2">Al reactivarla se recuperan sus datos anteriores, no los de este formulario. Después puede editarlos.</p>
+      </div>
+      <div class="wf-mensaje-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-27-aula.html#estado=reactivado&amp;rol=administrador">Reactivar aula</a></div>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="capacidad">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto"><p>La capacidad no puede ser menor que el cupo de los grupos que usan el aula.</p></div>
+    </div>
+
+    <form class="wf-caja wf-form" onsubmit="return false" novalidate>
+      <p class="wf-nota-obligatorios">Los campos con * son obligatorios.</p>
+
+      <fieldset class="wf-form-seccion">
+        <legend>Datos del aula</legend>
+        <div class="wf-campo">
+          <label for="a-codigo" class="wf-obligatorio">Código</label>
+          <input id="a-codigo" style="text-transform: uppercase" placeholder="A-101" data-wf-estado="registro validacion">
+          <input value="C-001" data-wf-estado="duplicado reactivar" aria-label="Código">
+          <input value="B-201" data-wf-estado="edicion capacidad enviando" aria-label="Código">
+          <span class="wf-ayuda">Se guarda en mayúsculas.</span>
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique el código.</p>
+        </div>
+        <div class="wf-campo">
+          <label for="a-capacidad" class="wf-obligatorio">Capacidad</label>
+          <input id="a-capacidad" inputmode="numeric" data-wf-estado="registro validacion">
+          <input inputmode="numeric" value="30" data-wf-estado="duplicado reactivar" aria-label="Capacidad">
+          <input inputmode="numeric" value="18" data-wf-estado="edicion enviando" aria-label="Capacidad">
+          <input inputmode="numeric" value="15" data-wf-estado="capacidad" aria-label="Capacidad" aria-invalid="true">
+          <span class="wf-ayuda">Cantidad de estudiantes. No puede ser menor que el cupo de los grupos del aula.</span>
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique una capacidad mayor que cero.</p>
+        </div>
+        <div class="wf-campo wf-ancho-completo">
+          <label for="a-ubicacion">Ubicación</label>
+          <input id="a-ubicacion" data-wf-estado="registro validacion">
+          <input value="Sala multiuso, planta baja" data-wf-estado="duplicado reactivar" aria-label="Ubicación">
+          <input value="Edificio B, laboratorio de cómputo" data-wf-estado="edicion capacidad enviando" aria-label="Ubicación">
+        </div>
+      </fieldset>
+
+      <div class="wf-form-pie">
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-descartar">Cancelar</button>
+        <a class="wf-boton wf-principal" href="../compartidas/V-27-aula.html#estado=creado&amp;rol=administrador" data-wf-estado="registro validacion duplicado reactivar">Registrar aula</a>
+        <a class="wf-boton wf-principal" href="../compartidas/V-27-aula.html#estado=guardado&amp;rol=administrador" data-wf-estado="edicion capacidad">Guardar cambios</a>
+        <button type="button" class="wf-boton wf-principal wf-girando" data-wf-estado="enviando" disabled>Guardando…</button>
+      </div>
+    </form>
+
+    <details class="wf-notas">
+      <summary>Notas de V-26</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-26 Registrar o editar aula · administrador (desde V-25 y V-27)</dd>
+        <dt>Requerimientos</dt><dd>RFF-19</dd>
+        <dt>Reglas</dt><dd>RUI-02, RUI-04 (<code>409 RN-39</code>), RUI-06, RUI-08, RUI-09</dd>
+        <dt>Endpoints</dt><dd><code>POST /aulas</code>, <code>GET /aulas/{id}</code>, <code>PUT /aulas/{id}</code>, <code>POST /aulas/{id}/reactivar</code> (RN-39)</dd>
+        <dt>Backend</dt><dd>RF-39, RF-40, RN-09, RN-13, RN-39</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Mismo patrón que V-21: código en mayúsculas al escribir y "Reactivar aula" con el <code>aulaId</code> de la respuesta.</li>
+            <li>El ejemplo de <code>409 RN-09</code> baja B-201 a 15, por debajo del cupo de 18 de los grupos 1004 y 1005. El mensaje es de la API.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <dialog class="wf-dialogo" id="dlg-descartar" aria-labelledby="dlg-descartar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-descartar-t">¿Descartar los cambios?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>Hay cambios sin guardar en el formulario. Si sale, se perderán.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Seguir editando</button>
+      <a class="wf-boton wf-principal" href="../compartidas/V-25-aulas.html#rol=administrador">Descartar cambios</a>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

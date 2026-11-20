@@ -11,6 +11,7 @@ Entregable `requerimientos` de la [fase 0](fase-0.md). Sin dependencias.
 - 2026-11-17: v1 aprobada, con sus siete supuestos. Preguntas abiertas resueltas (decisiones 1 a 3). Lista de 7 tareas en revisión.
 - 2026-11-17: lista de tareas aprobada; T1 implementada, en revisión del usuario.
 - 2026-11-17: entregable completado (7/7 tareas). `docs/requerimientos.md` aprobado: 38 vistas, 41 RFF, 22 RUI y 4 brechas con el backend (B-01 a B-04). Desviación: el inventario de endpoints quedó en §7.1 desde T1 en lugar de un anexo.
+- 2026-11-19: cambio pedido por el usuario durante T8 de [wireframes](SPEC-wireframes.md): se agrega RUI-23 (pie de página, §5.6). Quedan 23 RUI.
 
 ## Objetivo
 

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-37 Errores — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-37"
+      data-wf-nombre="Errores"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-menu="V-37"
+      data-wf-estados="datos:Con datos|buscado:Buscado por código de error|validacion:Código inválido (400)|vacio:Sin errores registrados|vacio-filtros:Sin resultados para los filtros|cargando:Cargando|error:Error">
+
+  <main class="wf-vista">
+    <header class="wf-encabezado">
+      <div>
+        <p class="wf-migas">Sistema / Errores</p>
+        <h1>Errores</h1>
+        <p class="wf-encabezado-subtitulo">Los errores inesperados de la API y los correos que no se pudieron enviar, del más reciente al más antiguo.</p>
+      </div>
+    </header>
+
+    <form class="wf-filtros" role="search" onsubmit="return false" data-wf-estado="datos buscado validacion vacio-filtros cargando error">
+      <div class="wf-campo">
+        <label for="e-codigo">Código de error</label>
+        <input id="e-codigo" class="wf-traceid-campo" placeholder="El código que reporta el usuario" data-wf-estado="datos vacio-filtros cargando error">
+        <input aria-label="Código de error" value="00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01" data-wf-estado="buscado">
+        <input aria-label="Código de error" value="4bf92f35" aria-invalid="true" aria-describedby="e-codigo-error" data-wf-estado="validacion">
+        <span class="wf-ayuda" data-wf-estado="datos buscado vacio-filtros cargando error">Completo, como lo ve el usuario, o sus 32 caracteres centrales.</span>
+        <p class="wf-error-campo" id="e-codigo-error" data-wf-estado="validacion">El código de error no tiene un formato válido.</p>
+      </div>
+      <div class="wf-campo">
+        <label for="e-origen">Origen</label>
+        <select id="e-origen"><option selected>Todos</option><option>Solicitud</option><option>Correo</option></select>
+      </div>
+      <div class="wf-campo">
+        <label for="e-desde">Desde</label>
+        <input id="e-desde" inputmode="numeric" placeholder="dd/mm/aaaa">
+      </div>
+      <div class="wf-campo">
+        <label for="e-hasta">Hasta</label>
+        <input id="e-hasta" inputmode="numeric" placeholder="dd/mm/aaaa">
+      </div>
+      <div class="wf-campo wf-busqueda">
+        <label for="e-buscar">Buscar</label>
+        <div class="wf-con-boton">
+          <input id="e-buscar" type="search" placeholder="Mensaje, tipo o ruta" data-wf-estado="datos buscado validacion cargando error">
+          <input type="search" aria-label="Buscar" value="smtp" data-wf-estado="vacio-filtros">
+          <button type="submit" class="wf-boton">Buscar</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="wf-listado" data-wf-estado="datos buscado">
+      <table class="wf-tabla">
+        <thead>
+          <tr><th scope="col">Fecha y hora</th><th scope="col">Origen</th><th scope="col">Descripción</th><th scope="col">Tipo de error</th><th scope="col">Método y ruta</th><th scope="col">Rol</th><th scope="col"><span class="wf-solo-lector">Acciones</span></th></tr>
+        </thead>
+        <tbody>
+            <tr data-wf-estado="datos buscado">
+              <td data-etiqueta="Fecha y hora" class="wf-nowrap">19/11/2026 9:40 a. m.</td>
+              <td data-etiqueta="Origen">Correo</td>
+              <td class="wf-celda-principal" data-etiqueta="Descripción">No se pudo enviar el correo de contraseña temporal a luis.navarro@correo.test</td>
+              <td data-etiqueta="Tipo de error"><code>MailKit.<wbr>Net.<wbr>Smtp.<wbr>SmtpCommandException</code></td>
+              <td data-etiqueta="Método y ruta">—</td>
+              <td data-etiqueta="Rol">Administrador</td>
+              <td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-38-error.html#estado=correo">Ver detalle</a></td>
+            </tr>
+            <tr data-wf-estado="datos">
+              <td data-etiqueta="Fecha y hora" class="wf-nowrap">18/11/2026 4:15 p. m.</td>
+              <td data-etiqueta="Origen">Solicitud</td>
+              <td class="wf-celda-principal" data-etiqueta="Descripción">Error no controlado en GET /api/v1/aulas</td>
+              <td data-etiqueta="Tipo de error"><code>Npgsql.<wbr>PostgresException</code></td>
+              <td data-etiqueta="Método y ruta"><code>GET /<wbr>api/<wbr>v1/<wbr>aulas</code></td>
+              <td data-etiqueta="Rol">Profesor</td>
+              <td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-38-error.html#estado=solicitud">Ver detalle</a></td>
+            </tr>
+            <tr data-wf-estado="datos">
+              <td data-etiqueta="Fecha y hora" class="wf-nowrap">17/11/2026 8:02 a. m.</td>
+              <td data-etiqueta="Origen">Solicitud</td>
+              <td class="wf-celda-principal" data-etiqueta="Descripción">Error no controlado en POST /api/v1/me/matriculas</td>
+              <td data-etiqueta="Tipo de error"><code>System.<wbr>TimeoutException</code></td>
+              <td data-etiqueta="Método y ruta"><code>POST /<wbr>api/<wbr>v1/<wbr>me/<wbr>matriculas</code></td>
+              <td data-etiqueta="Rol">Estudiante</td>
+              <td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-38-error.html#estado=solicitud">Ver detalle</a></td>
+            </tr>
+            <tr data-wf-estado="datos">
+              <td data-etiqueta="Fecha y hora" class="wf-nowrap">12/11/2026 7:48 p. m.</td>
+              <td data-etiqueta="Origen">Solicitud</td>
+              <td class="wf-celda-principal" data-etiqueta="Descripción">Error no controlado en GET /api/v1/oferta-academica</td>
+              <td data-etiqueta="Tipo de error"><code>System.<wbr>InvalidOperationException</code></td>
+              <td data-etiqueta="Método y ruta"><code>GET /<wbr>api/<wbr>v1/<wbr>oferta-academica</code></td>
+              <td data-etiqueta="Rol">Sin sesión</td>
+              <td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-38-error.html#estado=solicitud">Ver detalle</a></td>
+            </tr>
+        </tbody>
+      </table>
+      <div class="wf-paginacion">
+        <span class="wf-paginacion-rango" data-wf-estado="datos">1–4 de 4</span>
+        <span class="wf-paginacion-rango" data-wf-estado="buscado">1–1 de 1</span>
+        <div class="wf-paginacion-controles">
+          <label>Filas por página <select><option>10</option><option selected>20</option><option>50</option></select></label>
+          <button type="button" class="wf-boton wf-boton-pequeno" disabled>← Anterior</button>
+          <button type="button" class="wf-boton wf-boton-pequeno" disabled>Siguiente →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="wf-caja wf-estado-contenido" data-wf-estado="vacio">
+      <p class="wf-estado-titulo">No hay errores registrados.</p>
+      <p class="wf-texto-2">Los errores se conservan 90 días.</p>
+    </div>
+    <div class="wf-caja wf-estado-contenido" data-wf-estado="vacio-filtros">
+      <p class="wf-estado-titulo">No hay resultados para los filtros aplicados.</p>
+      <button type="button" class="wf-boton">Limpiar filtros</button>
+    </div>
+    <div class="wf-caja wf-estado-contenido" data-wf-estado="validacion">
+      <p class="wf-estado-titulo">Corrija el filtro marcado para ver los resultados.</p>
+    </div>
+    <div class="wf-cargando" role="status" aria-label="Cargando los errores" data-wf-estado="cargando">
+      <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+    </div>
+    <div class="wf-caja wf-estado-contenido" role="alert" data-wf-estado="error">
+      <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+      <button type="button" class="wf-boton">Reintentar</button>
+    </div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-37</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-37 Errores · administrador</dd>
+        <dt>Requerimientos</dt><dd>RFF-41</dd>
+        <dt>Reglas</dt><dd>RUI-03 (el código que reporta el usuario), RUI-10, RUI-11, RUI-13, RUI-14</dd>
+        <dt>Endpoints</dt><dd><code>GET /<wbr>errores</code> (<code>desde</code>, <code>hasta</code>, <code>origen</code>, <code>traceId</code>, <code>search</code>)</dd>
+        <dt>Backend</dt><dd>RF-58, RF-59, RN-47 a RN-49, consulta 12; <code>SPEC-errores</code></dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>El código de error va primero en los filtros, porque es lo que busca el administrador cuando alguien reporta un error. Acepta el código completo o sus 32 caracteres.</li>
+            <li>El origen <code>Peticion</code> se muestra como "Solicitud". Sin usuario, el rol se muestra como "Sin sesión". Los errores de correo no tienen método ni ruta.</li>
+            <li>La lista no trae el detalle técnico: se ve en V-38. Los errores no se marcan como revisados ni se eliminan (§1.3).</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

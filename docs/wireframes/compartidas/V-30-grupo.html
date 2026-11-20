@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-30 Detalle de grupo — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-30"
+      data-wf-nombre="Detalle de grupo"
+      data-wf-raiz="../"
+      data-wf-marco="rol"
+      data-wf-menu="V-28"
+      data-wf-estados="abierto:Abierto|creado:Recién registrado: Planificado sin horarios|planificado:Planificado con horarios|cerrado:Cerrado|en-curso:En curso|finalizado:Finalizado|cancelado:Cancelado|rechazos:Abierto, con rechazos de la API en las ventanas|retiro:Después de retirar a un estudiante (administrador)|cargando:Cargando|sin-permiso:Sin permiso (403 RN-18)|no-existe:Registro inexistente (404)|error:Error"
+      data-wf-roles="administrador:Administrador|profesor:Profesor del grupo|estudiante:Estudiante">
+
+  <main class="wf-vista">
+    <div class="wf-cargando" role="status" aria-label="Cargando el grupo" data-wf-estado="cargando">
+      <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+    </div>
+    <div class="wf-caja wf-estado-contenido" data-wf-estado="sin-permiso">
+      <p class="wf-estado-titulo">No tiene permiso para ver este grupo.</p>
+      <p class="wf-texto-2">Mismo aviso que V-09 (RN-18).</p>
+      <a class="wf-boton" href="../publico/V-09-sin-permiso.html">Ver V-09</a>
+    </div>
+    <div class="wf-caja wf-estado-contenido" data-wf-estado="no-existe">
+      <p class="wf-estado-titulo">El grupo que busca no existe.</p>
+      <a class="wf-boton" href="../admin/V-28-grupos.html" data-wf-rol="administrador">Ir a Grupos</a>
+    </div>
+    <div class="wf-caja wf-estado-contenido" role="alert" data-wf-estado="error">
+      <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+      <button type="button" class="wf-boton">Reintentar</button>
+    </div>
+
+    <!-- Encabezado ======================================================= -->
+    <header class="wf-encabezado" data-wf-estado="abierto creado planificado cerrado en-curso finalizado cancelado rechazos retiro">
+      <div>
+        <p class="wf-migas"><a href="../admin/V-28-grupos.html" data-wf-rol="administrador">Grupos</a><a href="../profesor/V-35-mis-grupos.html" data-wf-rol="profesor">Mis grupos</a><a href="V-22-curso.html" data-wf-rol="estudiante">Inglés conversacional I</a> / Grupo</p>
+        <div class="wf-detalle-titulo">
+          <h1 style="margin:0">Grupo 1001 · Inglés conversacional I</h1>
+          <span class="wf-etiqueta wf-e-llena" data-wf-estado="abierto rechazos retiro">Abierto</span>
+          <span class="wf-etiqueta wf-e-discontinua" data-wf-estado="creado planificado">Planificado</span>
+          <span class="wf-etiqueta wf-e-doble" data-wf-estado="cerrado">Cerrado</span>
+          <span class="wf-etiqueta wf-e-gris" data-wf-estado="en-curso">En curso</span>
+          <span class="wf-etiqueta wf-e-apagada" data-wf-estado="finalizado">Finalizado</span>
+          <span class="wf-etiqueta wf-e-tachada" data-wf-estado="cancelado">Cancelado</span>
+        </div>
+      </div>
+      <div class="wf-acciones" data-wf-rol="administrador">
+        <!-- Transiciones de RFF-26 según el estado -->
+        <button type="button" class="wf-boton wf-principal" data-wf-abrir="dlg-abrir" data-wf-estado="planificado">Abrir grupo</button>
+        <button type="button" class="wf-boton wf-principal" disabled aria-describedby="sin-horarios" data-wf-estado="creado">Abrir grupo</button>
+        <button type="button" class="wf-boton wf-principal" data-wf-abrir="dlg-cerrar" data-wf-estado="abierto rechazos retiro">Cerrar grupo</button>
+        <button type="button" class="wf-boton wf-principal" data-wf-abrir="dlg-iniciar" data-wf-estado="cerrado">Iniciar clases</button>
+        <button type="button" class="wf-boton wf-principal" data-wf-abrir="dlg-finalizar" data-wf-estado="en-curso">Finalizar grupo</button>
+        <a class="wf-boton" href="../admin/V-29-grupo-form.html#estado=planificado" data-wf-estado="creado planificado">Editar</a>
+        <a class="wf-boton" href="../admin/V-29-grupo-form.html#estado=abierto" data-wf-estado="abierto cerrado en-curso rechazos retiro">Editar</a>
+        <button type="button" class="wf-boton wf-peligro" data-wf-abrir="dlg-cancelar" data-wf-estado="abierto creado planificado cerrado en-curso rechazos retiro">Cancelar grupo</button>
+        <button type="button" class="wf-boton wf-peligro" data-wf-abrir="dlg-eliminar">Eliminar</button>
+        <a class="wf-boton wf-enlace" href="../admin/V-36-auditoria.html#estado=filtrado">Ver historial de cambios</a>
+      </div>
+    </header>
+
+    <div class="wf-mensaje wf-aviso" role="status" data-wf-estado="creado" data-wf-rol="administrador">
+      <span class="wf-mensaje-icono" aria-hidden="true">[!]</span>
+      <div class="wf-mensaje-texto">
+        <p><strong>El grupo se creó en estado Planificado.</strong></p>
+        <p id="sin-horarios">Para abrirlo a matrícula, agréguele al menos un horario.</p>
+      </div>
+      <div class="wf-mensaje-acciones"><button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-agregar">Agregar horario</button></div>
+    </div>
+
+    <div class="wf-mensaje" role="note" data-wf-estado="rechazos" data-wf-rol="administrador">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>En este estado, las ventanas de Agregar horario y Eliminar muestran la respuesta de rechazo de la API.</p></div>
+    </div>
+
+    <div class="wf-mensaje" role="note" data-wf-estado="cancelado">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>Este grupo fue cancelado. Sus matrículas se retiraron.</p></div>
+    </div>
+
+    <div class="wf-caja wf-fila" data-wf-rol="estudiante" data-wf-estado="abierto rechazos retiro" style="align-items:center; flex-wrap:wrap">
+      <span class="wf-etiqueta">Ya matriculado</span>
+      <span>Está matriculado en este grupo.</span>
+      <a class="wf-boton wf-boton-pequeno" href="../estudiante/V-31-mis-matriculas.html">Ver mis matrículas</a>
+    </div>
+
+    <!-- Datos ============================================================ -->
+    <section class="wf-caja" aria-labelledby="t-datos" data-wf-estado="abierto creado planificado cerrado en-curso finalizado cancelado rechazos retiro">
+      <h2 id="t-datos">Datos del grupo</h2>
+      <dl class="wf-datos">
+        <div><dt>NRC</dt><dd>1001</dd></div>
+        <div><dt>Curso</dt><dd><a href="V-22-curso.html">ING-101 · Inglés conversacional I</a></dd></div>
+        <div><dt>Profesor</dt><dd>Laura Jiménez Mora</dd></div>
+        <div><dt>Periodo</dt><dd>2026-III</dd></div>
+        <div><dt>Modalidad</dt><dd>Presencial</dd></div>
+        <div><dt>Aula</dt><dd>A-101 (capacidad 25)</dd></div>
+      </dl>
+    </section>
+
+    <section class="wf-caja" aria-labelledby="t-cupos" data-wf-estado="abierto creado planificado cerrado en-curso finalizado cancelado rechazos retiro">
+      <h2 id="t-cupos">Cupos</h2>
+      <dl class="wf-datos">
+        <div><dt>Total</dt><dd>25</dd></div>
+        <div><dt>Ocupados</dt><dd><span data-wf-estado="abierto cerrado en-curso finalizado rechazos retiro">18</span><span data-wf-estado="creado planificado cancelado">0</span></dd></div>
+        <div><dt>Disponibles</dt><dd><span data-wf-estado="abierto cerrado en-curso finalizado rechazos retiro">7</span><span data-wf-estado="creado planificado">25</span><span data-wf-estado="cancelado">—</span></dd></div>
+      </dl>
+    </section>
+
+    <!-- Horarios ========================================================= -->
+    <section class="wf-caja wf-pila" id="horarios" aria-labelledby="t-horarios" data-wf-estado="abierto creado planificado cerrado en-curso finalizado cancelado rechazos retiro">
+      <div class="wf-encabezado" style="margin:0">
+        <h2 id="t-horarios" style="margin:0">Horarios</h2>
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-agregar" data-wf-rol="administrador" data-wf-estado="abierto creado planificado cerrado en-curso rechazos retiro">Agregar horario</button>
+      </div>
+
+      <p class="wf-texto-2" data-wf-estado="creado">El grupo todavía no tiene horarios.</p>
+
+      <div class="wf-desplazable" data-wf-estado="abierto planificado cerrado en-curso finalizado cancelado rechazos retiro">
+        <table class="wf-tabla-simple">
+          <thead><tr><th scope="col">Día</th><th scope="col">Inicio</th><th scope="col">Fin</th><th scope="col" data-wf-rol="administrador" data-wf-estado="planificado"><span class="wf-solo-lector">Acciones</span></th></tr></thead>
+          <tbody>
+            <tr><td>Lunes</td><td class="wf-nowrap">6:00 p. m.</td><td class="wf-nowrap">8:00 p. m.</td><td data-wf-rol="administrador" data-wf-estado="planificado"><button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-quitar">Quitar</button></td></tr>
+            <tr><td>Miércoles</td><td class="wf-nowrap">6:00 p. m.</td><td class="wf-nowrap">8:00 p. m.</td><td data-wf-rol="administrador" data-wf-estado="planificado"><button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-quitar">Quitar</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="wf-texto-2" data-wf-rol="administrador" data-wf-estado="abierto cerrado en-curso rechazos retiro">Los horarios solo se pueden quitar mientras el grupo está Planificado.</p>
+      <p class="wf-texto-2" data-wf-rol="administrador" data-wf-estado="finalizado cancelado">Un grupo Finalizado o Cancelado no admite cambios de horario.</p>
+    </section>
+
+    <!-- Inscritos ======================================================== -->
+    <section class="wf-pila" aria-labelledby="t-inscritos" data-wf-rol="administrador profesor" data-wf-estado="abierto planificado cerrado en-curso finalizado cancelado rechazos retiro">
+      <h2 id="t-inscritos" style="margin:0">Estudiantes inscritos</h2>
+      <form class="wf-filtros" role="search" onsubmit="return false">
+        <div class="wf-campo wf-busqueda">
+          <label for="i-buscar">Buscar</label>
+          <div class="wf-con-boton"><input id="i-buscar" type="search" placeholder="Nombre, apellidos o cédula"><button type="submit" class="wf-boton">Buscar</button></div>
+        </div>
+        <div class="wf-campo">
+          <label for="i-estado">Matrículas</label>
+          <select id="i-estado"><option selected>Activas</option><option>Retiradas</option><option>Todas</option></select>
+        </div>
+      </form>
+
+      <div class="wf-listado" data-wf-estado="abierto cerrado en-curso finalizado rechazos retiro">
+        <table class="wf-tabla">
+          <thead>
+            <tr><th scope="col">Cédula</th><th scope="col">Nombre</th><th scope="col">Apellidos</th><th scope="col">Correo</th><th scope="col">Matriculado el</th><th scope="col" data-wf-rol="administrador"><span class="wf-solo-lector">Acciones</span></th></tr>
+          </thead>
+          <tbody>
+              <tr data-wf-estado="abierto cerrado en-curso finalizado rechazos">
+                <td data-etiqueta="Cédula" class="wf-nowrap">2-0812-0567</td>
+                <td class="wf-celda-principal" data-etiqueta="Nombre">José Pablo</td>
+                <td data-etiqueta="Apellidos">Araya Brenes</td>
+                <td data-etiqueta="Correo">jose.araya@correo.test</td>
+                <td data-etiqueta="Matriculado el" class="wf-nowrap">09/11/2026</td>
+                <td class="wf-col-acciones" data-wf-rol="administrador"><span class="wf-acciones">
+                  <a class="wf-boton wf-boton-pequeno" href="../admin/V-16-estudiante.html">Ver estudiante</a>
+                  <button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-retirar-a" data-wf-estado="abierto planificado cerrado en-curso rechazos retiro">Retirar</button>
+                </span></td>
+              </tr>
+              <tr>
+                <td data-etiqueta="Cédula" class="wf-nowrap">1-1789-0345</td>
+                <td class="wf-celda-principal" data-etiqueta="Nombre">María Fernanda</td>
+                <td data-etiqueta="Apellidos">Quesada Rojas</td>
+                <td data-etiqueta="Correo">maria.quesada@correo.test</td>
+                <td data-etiqueta="Matriculado el" class="wf-nowrap">10/11/2026</td>
+                <td class="wf-col-acciones" data-wf-rol="administrador"><span class="wf-acciones">
+                  <a class="wf-boton wf-boton-pequeno" href="../admin/V-16-estudiante.html">Ver estudiante</a>
+                  <button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-retirar-b" data-wf-estado="abierto planificado cerrado en-curso rechazos retiro">Retirar</button>
+                </span></td>
+              </tr>
+          </tbody>
+        </table>
+        <div class="wf-paginacion">
+          <span class="wf-paginacion-rango" data-wf-estado="abierto cerrado en-curso finalizado rechazos">1–10 de 18</span>
+          <span class="wf-paginacion-rango" data-wf-estado="retiro">1–10 de 17</span>
+          <div class="wf-paginacion-controles">
+            <label>Filas por página <select><option selected>10</option><option>20</option><option>50</option></select></label>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>← Anterior</button>
+            <button type="button" class="wf-boton wf-boton-pequeno">Siguiente →</button>
+          </div>
+        </div>
+        <p class="wf-texto-2">Con el filtro "Retiradas" o "Todas", la tabla agrega la fecha y el motivo del retiro.</p>
+      </div>
+
+      <div class="wf-caja wf-estado-contenido" data-wf-estado="planificado">
+        <p class="wf-estado-titulo">Todavía no hay estudiantes inscritos.</p>
+      </div>
+      <div class="wf-caja wf-estado-contenido" data-wf-estado="cancelado">
+        <p class="wf-estado-titulo">No hay matrículas activas: se retiraron al cancelar el grupo.</p>
+        <p class="wf-texto-2">Elija "Retiradas" para verlas, con el motivo "Cancelación del grupo".</p>
+      </div>
+    </section>
+
+    <div class="wf-toast" role="status" data-wf-estado="creado" data-wf-rol="administrador">Grupo registrado</div>
+    <div class="wf-toast" role="status" data-wf-estado="retiro" data-wf-rol="administrador">Matrícula retirada</div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-30</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-30 Detalle de grupo · todos con sesión, según RN-18</dd>
+        <dt>Requerimientos</dt><dd>RFF-25 a RFF-28 · RFF-40 (historial) · RFF-30 (marca "Ya matriculado") y RFF-38 (inscritos)</dd>
+        <dt>Reglas</dt><dd>RUI-03 (<code>403</code>, <code>404</code>), RUI-04, RUI-07 (cancelar y eliminar: reforzada; cambiar el estado y quitar un bloque: simple), RUI-17 (horas), RUI-20</dd>
+        <dt>Endpoints</dt><dd><code>GET /grupos/{id}</code>, <code>POST /grupos/{id}/estado</code>, <code>POST /grupos/{id}/horarios</code>, <code>DELETE /grupos/{id}/horarios/{horarioId}</code>, <code>DELETE /grupos/{id}</code>, <code>GET /grupos/{id}/estudiantes</code>, <code>POST /matriculas/{id}/retiro</code></dd>
+        <dt>Backend</dt><dd>RF-44, RF-46, RF-47, RF-48, RN-06, RN-07, RN-08, RN-12, RN-14, RN-15, RN-18, RN-34; supuestos 5, 6 y 7 de <code>SPEC-grupos</code></dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Para comparar, todos los estados usan el grupo 1001. En la realidad, un grupo Planificado o Cancelado no tiene cupos ocupados.</li>
+            <li>El administrador ve una sola acción de avance (Abrir, Cerrar, Iniciar clases o Finalizar), "Cancelar grupo" en los estados que lo permiten, y "Editar" salvo en Finalizado y Cancelado.</li>
+            <li>"Abrir grupo" se ve deshabilitado sin horarios, con la explicación en el aviso.</li>
+            <li>Profesor del grupo: sin acciones, con la sección de inscritos, solo de consulta. Estudiante: sin acciones de gestión; ve "Matricular" (abre V-32) si el grupo está abierto y con cupo, o "Ya matriculado", como María en el 1001.</li>
+            <li>Inscritos (RFF-38): el filtro empieza en "Activas". El administrador abre el detalle del estudiante (V-16) y retira una matrícula activa con una confirmación simple.</li>
+            <li>Los horarios van en una tabla; la grilla queda para los horarios de personas y aulas, que reúnen varios grupos.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <!-- Ventanas ============================================================ -->
+  <dialog class="wf-dialogo" id="dlg-retirar-a" aria-labelledby="dlg-retirar-a-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-retirar-a-t">¿Retirar a José Pablo Araya Brenes del grupo 1001?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <ul>
+        <li>Se libera su cupo y no se puede deshacer.</li>
+        <li>Como administrador, no se le aplican la fecha límite de retiro ni el estado del grupo.</li>
+      </ul>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rechazos">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p><strong>La matrícula ya no está activa</strong></p><p>Esta matrícula ya fue retirada. Actualice la lista.</p></div>
+      </div>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="#estado=retiro" data-wf-estado="abierto planificado cerrado en-curso retiro">Retirar</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-retirar-b" aria-labelledby="dlg-retirar-b-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-retirar-b-t">¿Retirar a María Fernanda Quesada Rojas del grupo 1001?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <ul>
+        <li>Se libera su cupo y no se puede deshacer.</li>
+        <li>Como administrador, no se le aplican la fecha límite de retiro ni el estado del grupo.</li>
+      </ul>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rechazos">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p><strong>La matrícula ya no está activa</strong></p><p>Esta matrícula ya fue retirada. Actualice la lista.</p></div>
+      </div>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="#estado=retiro" data-wf-estado="abierto planificado cerrado en-curso retiro">Retirar</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-abrir" aria-labelledby="dlg-abrir-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-abrir-t">¿Abrir el grupo 1001?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>Los estudiantes podrán matricularse. No se puede volver a Planificado.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="#estado=abierto">Abrir grupo</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-cerrar" aria-labelledby="dlg-cerrar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-cerrar-t">¿Cerrar el grupo 1001?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>No se aceptarán matrículas nuevas. No se puede volver a Abierto.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="#estado=cerrado">Cerrar grupo</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-iniciar" aria-labelledby="dlg-iniciar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-iniciar-t">¿Iniciar las clases del grupo 1001?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>El grupo pasa a En curso. No se puede volver a Cerrado.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="#estado=en-curso">Iniciar clases</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-finalizar" aria-labelledby="dlg-finalizar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-finalizar-t">¿Finalizar el grupo 1001?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>El grupo queda cerrado para siempre: no admite cambios de datos ni de horarios. No se puede volver a En curso.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="#estado=finalizado">Finalizar grupo</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo wf-reforzada" id="dlg-cancelar" aria-labelledby="dlg-cancelar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-cancelar-t">¿Cancelar el grupo 1001?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <p><strong>Esta acción no se puede deshacer.</strong></p>
+      <p data-wf-estado="abierto cerrado en-curso rechazos retiro">Se retirarán las <strong>18 matrículas activas</strong> del grupo (RN-12).</p>
+      <p data-wf-estado="creado planificado">El grupo no tiene matrículas activas.</p>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Volver</button>
+      <a class="wf-boton wf-peligro" href="#estado=cancelado">Cancelar grupo</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo wf-reforzada" id="dlg-eliminar" aria-labelledby="dlg-eliminar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-eliminar-t">¿Eliminar el grupo 1001?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <p><strong>Esta acción no se puede deshacer.</strong> También se eliminan sus horarios.</p>
+      <p>Solo es posible si el grupo nunca tuvo matrículas, por ejemplo si se creó por error. Para dejar de ofrecerlo, cancélelo.</p>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rechazos">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p>No se puede eliminar el grupo porque tiene matrículas registradas.</p></div>
+        <div class="wf-mensaje-acciones"><button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-cancelar">Cancelar el grupo en su lugar</button></div>
+      </div>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Volver</button>
+      <a class="wf-boton wf-peligro" href="../admin/V-28-grupos.html#estado=eliminado" data-wf-estado="abierto creado planificado cerrado en-curso finalizado cancelado retiro">Eliminar grupo</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-agregar" aria-labelledby="dlg-agregar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-agregar-t">Agregar horario al grupo 1001</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rechazos">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p>La profesora Laura Jiménez Mora ya tiene el grupo 1002 en ese horario.</p></div>
+      </div>
+      <div class="wf-campo">
+        <label for="h-dia" class="wf-obligatorio">Día</label>
+        <select id="h-dia"><option>Lunes</option><option>Martes</option><option>Miércoles</option><option>Jueves</option><option>Viernes</option><option selected>Sábado</option><option>Domingo</option></select>
+      </div>
+      <fieldset class="wf-campo" style="border:0;margin:0;padding:0">
+        <legend class="wf-etiqueta-campo wf-obligatorio">Hora de inicio</legend>
+        <div class="wf-hora">
+          <select aria-label="Hora"><option>12</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option selected>8</option><option>9</option><option>10</option><option>11</option></select>
+          <span>:</span>
+          <select aria-label="Minutos"><option selected>00</option><option>15</option><option>30</option><option>45</option></select>
+          <select aria-label="a. m. o p. m."><option selected>a. m.</option><option>p. m.</option></select>
+        </div>
+      </fieldset>
+      <fieldset class="wf-campo" style="border:0;margin:0;padding:0">
+        <legend class="wf-etiqueta-campo wf-obligatorio">Hora de fin</legend>
+        <div class="wf-hora">
+          <select aria-label="Hora"><option>12</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option selected>10</option><option>11</option></select>
+          <span>:</span>
+          <select aria-label="Minutos"><option selected>00</option><option>15</option><option>30</option><option>45</option></select>
+          <select aria-label="a. m. o p. m."><option selected>a. m.</option><option>p. m.</option></select>
+        </div>
+        <span class="wf-ayuda">Debe ser posterior a la hora de inicio (RN-15).</span>
+      </fieldset>
+      <p class="wf-texto-2">Si el bloque choca con otro del grupo, del profesor, del aula o de los estudiantes matriculados, el mensaje de la API indica con qué NRC.</p>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <button type="button" class="wf-boton wf-principal" data-wf-enviando="Agregando…">Agregar horario</button>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-quitar" aria-labelledby="dlg-quitar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-quitar-t">¿Quitar el horario del lunes?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>Se quita el bloque de lunes de 6:00 p. m. a 8:00 p. m. del grupo 1001.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <button type="button" class="wf-boton wf-principal" data-wf-enviando="Quitando…">Quitar horario</button>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

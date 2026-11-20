@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-22 Detalle de curso — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-22"
+      data-wf-nombre="Detalle de curso"
+      data-wf-raiz="../"
+      data-wf-marco="rol"
+      data-wf-menu="V-20"
+      data-wf-estados="activo:Activo|inactivo:Inactivo (administrador)|creado:Recién registrado, sin grupos (administrador)|guardado:Después de editar (administrador)|reactivado:Después de reactivar (administrador)|rechazos:Con rechazos de la API en las ventanas (administrador)|cargando:Cargando|no-existe:Registro inexistente (404)|error:Error"
+      data-wf-roles="administrador:Administrador|estudiante:Estudiante|profesor:Profesor">
+
+  <main class="wf-vista">
+    <div class="wf-cargando" role="status" aria-label="Cargando el curso" data-wf-estado="cargando">
+      <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+    </div>
+    <div class="wf-caja wf-estado-contenido" data-wf-estado="no-existe">
+      <p class="wf-estado-titulo">El curso que busca no existe.</p>
+      <a class="wf-boton" href="V-20-cursos.html">Ir a Cursos</a>
+    </div>
+    <div class="wf-caja wf-estado-contenido" role="alert" data-wf-estado="error">
+      <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+      <button type="button" class="wf-boton">Reintentar</button>
+    </div>
+
+    <header class="wf-encabezado" data-wf-estado="activo inactivo creado guardado reactivado rechazos">
+      <div>
+        <p class="wf-migas"><a href="V-20-cursos.html">Cursos</a> / Detalle</p>
+        <div class="wf-detalle-titulo">
+          <h1 style="margin:0" data-wf-estado="activo inactivo guardado reactivado rechazos">EXC-110 · Excel para la oficina</h1>
+          <h1 style="margin:0" data-wf-estado="creado">FRA-110 · Francés intermedio</h1>
+          <span class="wf-etiqueta" data-wf-rol="administrador" data-wf-estado="activo creado guardado reactivado rechazos">Activo</span>
+          <span class="wf-etiqueta wf-e-apagada" data-wf-rol="administrador" data-wf-estado="inactivo">Inactivo</span>
+        </div>
+      </div>
+      <div class="wf-acciones" data-wf-rol="administrador">
+        <a class="wf-boton" href="../admin/V-21-curso-form.html#estado=edicion">Editar</a>
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-desactivar" data-wf-estado="activo creado guardado reactivado rechazos">Desactivar</button>
+        <button type="button" class="wf-boton wf-principal" data-wf-abrir="dlg-reactivar" data-wf-estado="inactivo">Reactivar</button>
+        <button type="button" class="wf-boton wf-peligro" data-wf-abrir="dlg-eliminar">Eliminar</button>
+        <a class="wf-boton wf-enlace" href="../admin/V-36-auditoria.html#estado=filtrado">Ver historial de cambios</a>
+      </div>
+    </header>
+
+    <div class="wf-mensaje" role="note" data-wf-estado="rechazos" data-wf-rol="administrador">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>En este estado, las ventanas de Desactivar y Eliminar muestran la respuesta de rechazo de la API.</p></div>
+    </div>
+
+    <section class="wf-caja" aria-labelledby="t-datos" data-wf-estado="activo inactivo creado guardado reactivado rechazos">
+      <h2 id="t-datos">Datos del curso</h2>
+      <dl class="wf-datos" data-wf-estado="activo inactivo guardado reactivado rechazos">
+        <div><dt>Código</dt><dd>EXC-110</dd></div>
+        <div><dt>Nivel</dt><dd>Básico</dd></div>
+        <div><dt>Duración</dt><dd>32 horas</dd></div>
+        <div><dt>Costo</dt><dd>₡35 000,00</dd></div>
+        <div class="wf-ancho-completo"><dt>Descripción</dt><dd>Fórmulas, tablas y gráficos para el trabajo diario.</dd></div>
+      </dl>
+      <dl class="wf-datos" data-wf-estado="creado">
+        <div><dt>Código</dt><dd>FRA-110</dd></div>
+        <div><dt>Nivel</dt><dd>Intermedio</dd></div>
+        <div><dt>Duración</dt><dd>40 horas</dd></div>
+        <div><dt>Costo</dt><dd>₡44 000,00</dd></div>
+        <div class="wf-ancho-completo"><dt>Descripción</dt><dd>—</dd></div>
+      </dl>
+    </section>
+
+    <section class="wf-pila" id="grupos" aria-labelledby="t-grupos" data-wf-estado="activo inactivo creado guardado reactivado rechazos">
+      <h2 id="t-grupos" style="margin-bottom:0">Grupos</h2>
+      <p class="wf-texto-2" data-wf-rol="estudiante profesor" style="margin:0">Grupos abiertos de este curso.</p>
+
+      <form class="wf-filtros" onsubmit="return false" data-wf-estado="activo inactivo guardado reactivado rechazos">
+        <div class="wf-campo">
+          <label for="g-periodo">Periodo</label>
+          <select id="g-periodo"><option selected>2026-III (vigente)</option><option>2026-II</option><option>Todos los periodos</option></select>
+        </div>
+        <div class="wf-campo" data-wf-rol="administrador">
+          <label for="g-estado">Estado</label>
+          <select id="g-estado"><option selected>Todos</option><option>Planificado</option><option>Abierto</option><option>Cerrado</option><option>Cancelado</option><option>Finalizado</option></select>
+        </div>
+      </form>
+
+      <div class="wf-listado" data-wf-estado="activo guardado reactivado rechazos">
+        <table class="wf-tabla">
+          <thead>
+            <tr><th scope="col">NRC</th><th scope="col">Periodo</th><th scope="col">Profesor</th><th scope="col">Modalidad</th><th scope="col">Horario</th><th scope="col">Cupos disponibles</th><th scope="col" data-wf-rol="administrador">Estado</th><th scope="col"><span class="wf-solo-lector">Acciones</span></th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="wf-celda-principal" data-etiqueta="NRC">1004</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Profesor">Carlos Vargas Solís</td><td data-etiqueta="Modalidad">Presencial · <span class="wf-nowrap">B-201</span></td><td data-etiqueta="Horario">Martes y jueves<br><span class="wf-nowrap">5:00 p. m. – 7:00 p. m.</span></td><td data-etiqueta="Cupos disponibles">6 de 18</td><td data-etiqueta="Estado" data-wf-rol="administrador"><span class="wf-etiqueta wf-e-llena">Abierto</span></td><td class="wf-col-acciones"><span class="wf-acciones"><span class="wf-etiqueta" data-wf-rol="estudiante">Ya matriculado</span><a class="wf-boton wf-boton-pequeno" href="V-30-grupo.html">Ver grupo</a></span></td></tr>
+          </tbody>
+        </table>
+        <div class="wf-paginacion">
+          <span class="wf-paginacion-rango">1–1 de 1</span>
+          <div class="wf-paginacion-controles">
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>← Anterior</button>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>Siguiente →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="wf-caja wf-estado-contenido" data-wf-estado="inactivo">
+        <p class="wf-estado-titulo">No hay grupos de este curso en 2026-III.</p>
+        <p class="wf-texto-2">Cambie el periodo para ver los grupos anteriores, como el 0902 de 2026-II.</p>
+      </div>
+      <div class="wf-caja wf-estado-contenido" data-wf-estado="creado">
+        <p class="wf-estado-titulo">Este curso todavía no tiene grupos.</p>
+      </div>
+    </section>
+
+    <div class="wf-toast" role="status" data-wf-estado="creado">Curso registrado</div>
+    <div class="wf-toast" role="status" data-wf-estado="guardado">Cambios guardados</div>
+    <div class="wf-toast" role="status" data-wf-estado="reactivado">Curso reactivado</div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-22</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-22 Detalle de curso · todos con sesión</dd>
+        <dt>Requerimientos</dt><dd>RFF-20 · RFF-40 (historial) · RFF-30 (Matricular)</dd>
+        <dt>Reglas</dt><dd>RUI-03 (<code>404</code>), RUI-04 (<code>RN-34</code>, <code>RN-37</code>), RUI-07, RUI-13, RUI-21</dd>
+        <dt>Endpoints</dt><dd><code>GET /cursos/{id}</code>, <code>GET /cursos/{id}/grupos</code>, <code>POST /cursos/{id}/desactivar</code>, <code>POST /cursos/{id}/reactivar</code>, <code>DELETE /cursos/{id}</code></dd>
+        <dt>Backend</dt><dd>RF-31, RF-33, RF-34, RN-18, RN-34, RN-37, consulta 4</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Sin pestañas: los datos del curso son pocos y los grupos van debajo, porque son lo que buscan estudiante y profesor.</li>
+            <li>Con "Ver como": el administrador ve las acciones, la etiqueta de estado y el filtro por estado de los grupos; estudiante y profesor solo ven los grupos <code>Abierto</code>, sin columna de estado.</li>
+            <li>El rechazo <code>409 RN-37</code> lleva a la sección "Grupos"; el <code>409 RN-34</code> ofrece desactivar en su lugar.</li>
+            <li>Estudiante: cada grupo lleva "Matricular" o "Ya matriculado", igual que en V-01. María ya está en el 1004, el único grupo abierto de EXC-110, así que aquí se ve la marca; "Matricular" se ve en V-01.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <dialog class="wf-dialogo" id="dlg-desactivar" aria-labelledby="dlg-desactivar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-desactivar-t">¿Desactivar el curso EXC-110?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <ul>
+        <li>No se podrán crear grupos nuevos de este curso.</li>
+        <li>Deja de aparecer en el listado para estudiantes y profesores.</li>
+        <li>Sus grupos anteriores se conservan. Puede reactivarlo después.</li>
+      </ul>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rechazos">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p>No se puede desactivar el curso porque tiene grupos vigentes.</p></div>
+        <div class="wf-mensaje-acciones"><button type="button" class="wf-boton wf-boton-pequeno" data-wf-pestana="grupos">Ver sus grupos</button></div>
+      </div>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="#estado=inactivo" data-wf-estado="activo creado guardado reactivado">Desactivar curso</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-reactivar" aria-labelledby="dlg-reactivar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-reactivar-t">¿Reactivar el curso EXC-110?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>Volverá a aparecer en los listados y se podrán crear grupos nuevos.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="#estado=reactivado">Reactivar curso</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo wf-reforzada" id="dlg-eliminar" aria-labelledby="dlg-eliminar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-eliminar-t">¿Eliminar el curso EXC-110?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <p><strong>Esta acción no se puede deshacer.</strong></p>
+      <p>Solo es posible si el curso nunca tuvo grupos, por ejemplo si se registró por error. Para dejar de ofrecerlo, desactívelo.</p>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rechazos">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p>No se puede eliminar el curso porque tiene grupos registrados.</p></div>
+        <div class="wf-mensaje-acciones"><button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-desactivar">Desactivar en su lugar</button></div>
+      </div>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Cancelar</button>
+      <a class="wf-boton wf-peligro" href="V-20-cursos.html#estado=eliminado&amp;rol=administrador" data-wf-estado="activo inactivo creado guardado reactivado">Eliminar curso</a>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

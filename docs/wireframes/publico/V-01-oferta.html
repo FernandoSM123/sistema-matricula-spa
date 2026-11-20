@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-01 Oferta académica — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-01"
+      data-wf-nombre="Oferta académica"
+      data-wf-raiz="../"
+      data-wf-marco="rol"
+      data-wf-estados="datos:Con datos|cargando:Cargando|sin-oferta:Sin oferta (sin periodo vigente)|vacio-filtros:Vacío con filtros|error:Error|sesion-cerrada:Después de cerrar sesión"
+      data-wf-roles="visitante:Visitante|estudiante:Estudiante|profesor:Profesor|administrador:Administrador">
+
+  <main class="wf-vista">
+    <div class="wf-mensaje wf-aviso" role="status" data-wf-estado="sesion-cerrada">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>Cerró sesión. La sesión se cerró en todos sus dispositivos.</p></div>
+      <div class="wf-mensaje-acciones"><button type="button" class="wf-boton wf-boton-pequeno wf-enlace">Cerrar</button></div>
+    </div>
+
+    <header class="wf-encabezado">
+      <div>
+        <h1>Oferta académica</h1>
+        <p class="wf-encabezado-subtitulo">Grupos abiertos del periodo vigente y sus cupos disponibles.</p>
+      </div>
+      <div class="wf-acciones" data-wf-rol="visitante">
+        <a class="wf-boton wf-principal" href="V-02-inicio-sesion.html">Iniciar sesión</a>
+        <a class="wf-boton" href="V-05-registro.html">Registrarse</a>
+      </div>
+    </header>
+
+    <div class="wf-periodo" data-wf-estado="datos cargando vacio-filtros error sesion-cerrada">
+      <strong>Periodo 2026-III</strong>
+      <span>Matrícula del 09/11/2026 al 28/11/2026</span>
+    </div>
+
+
+    <form class="wf-filtros" role="search" onsubmit="return false" data-wf-estado="datos cargando vacio-filtros error sesion-cerrada">
+      <div class="wf-campo wf-busqueda">
+        <label for="f-buscar">Buscar</label>
+        <div class="wf-con-boton">
+          <input id="f-buscar" type="search" placeholder="Curso, código o NRC">
+          <button type="submit" class="wf-boton">Buscar</button>
+        </div>
+      </div>
+      <div class="wf-campo">
+        <label for="f-modalidad">Modalidad</label>
+        <select id="f-modalidad"><option selected>Todas</option><option>Presencial</option><option>Virtual</option><option>Híbrida</option></select>
+      </div>
+    </form>
+    <div class="wf-filtros-aplicados" data-wf-estado="vacio-filtros">
+      <span>Filtros aplicados:</span>
+      <span class="wf-chip">Buscar: "fotografía"</span>
+      <button type="button" class="wf-boton wf-enlace">Limpiar filtros</button>
+    </div>
+
+    <div class="wf-listado">
+      <div data-wf-estado="datos sesion-cerrada">
+        <table class="wf-tabla">
+          <thead>
+            <tr><th scope="col">Curso</th><th scope="col">NRC</th><th scope="col">Profesor</th><th scope="col">Modalidad</th><th scope="col">Aula</th><th scope="col">Horario</th><th scope="col">Cupos disponibles</th><th scope="col" data-wf-rol="visitante estudiante"><span class="wf-solo-lector">Acciones</span></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="wf-celda-principal" data-etiqueta="Curso">ING-101 · Inglés conversacional I</td>
+              <td data-etiqueta="NRC">1001</td>
+              <td data-etiqueta="Profesor">Laura Jiménez Mora</td>
+              <td data-etiqueta="Modalidad">Presencial</td>
+              <td data-etiqueta="Aula" class="wf-nowrap">A-101</td>
+              <td data-etiqueta="Horario">Lunes y miércoles<br><span class="wf-nowrap">6:00 p. m. – 8:00 p. m.</span></td>
+              <td data-etiqueta="Cupos disponibles">7 de 25</td>
+              <td class="wf-col-acciones" data-wf-rol="visitante"><a class="wf-boton wf-boton-pequeno" href="V-02-inicio-sesion.html">Inicie sesión para matricular</a></td>
+              <td class="wf-col-acciones" data-wf-rol="estudiante"><span class="wf-etiqueta">Ya matriculado</span></td>
+            </tr>
+            <tr>
+              <td class="wf-celda-principal" data-etiqueta="Curso">ING-101 · Inglés conversacional I</td>
+              <td data-etiqueta="NRC">1002</td>
+              <td data-etiqueta="Profesor">Laura Jiménez Mora</td>
+              <td data-etiqueta="Modalidad">Virtual</td>
+              <td data-etiqueta="Aula">—</td>
+              <td data-etiqueta="Horario">Sábado<br><span class="wf-nowrap">8:00 a. m. – 11:00 a. m.</span></td>
+              <td data-etiqueta="Cupos disponibles">0 de 30 <span class="wf-etiqueta wf-e-doble">Sin cupo</span></td>
+              <td class="wf-col-acciones" data-wf-rol="visitante"><a class="wf-boton wf-boton-pequeno" href="V-02-inicio-sesion.html">Inicie sesión para matricular</a></td>
+              <td class="wf-col-acciones" data-wf-rol="estudiante">—</td>
+            </tr>
+            <tr>
+              <td class="wf-celda-principal" data-etiqueta="Curso">EXC-110 · Excel para la oficina</td>
+              <td data-etiqueta="NRC">1004</td>
+              <td data-etiqueta="Profesor">Carlos Vargas Solís</td>
+              <td data-etiqueta="Modalidad">Presencial</td>
+              <td data-etiqueta="Aula" class="wf-nowrap">B-201</td>
+              <td data-etiqueta="Horario">Martes y jueves<br><span class="wf-nowrap">5:00 p. m. – 7:00 p. m.</span></td>
+              <td data-etiqueta="Cupos disponibles">6 de 18</td>
+              <td class="wf-col-acciones" data-wf-rol="visitante"><a class="wf-boton wf-boton-pequeno" href="V-02-inicio-sesion.html">Inicie sesión para matricular</a></td>
+              <td class="wf-col-acciones" data-wf-rol="estudiante"><span class="wf-etiqueta">Ya matriculado</span></td>
+            </tr>
+            <tr>
+              <td class="wf-celda-principal" data-etiqueta="Curso">FOT-300 · Fotografía digital avanzada</td>
+              <td data-etiqueta="NRC">1007</td>
+              <td data-etiqueta="Profesor">Ana Rodríguez Castro</td>
+              <td data-etiqueta="Modalidad">Presencial</td>
+              <td data-etiqueta="Aula" class="wf-nowrap">A-102</td>
+              <td data-etiqueta="Horario">Sábado<br><span class="wf-nowrap">9:00 a. m. – 12:00 p. m.</span></td>
+              <td data-etiqueta="Cupos disponibles">6 de 15</td>
+              <td class="wf-col-acciones" data-wf-rol="visitante"><a class="wf-boton wf-boton-pequeno" href="V-02-inicio-sesion.html">Inicie sesión para matricular</a></td>
+              <td class="wf-col-acciones" data-wf-rol="estudiante"><a class="wf-boton wf-boton-pequeno wf-principal" href="../compartidas/V-32-matricular.html#estado=confirmar&amp;rol=estudiante">Matricular</a></td>
+            </tr>
+            <tr>
+              <td class="wf-celda-principal" data-etiqueta="Curso">ING-101 · Inglés conversacional I</td>
+              <td data-etiqueta="NRC">1008</td>
+              <td data-etiqueta="Profesor">Laura Jiménez Mora</td>
+              <td data-etiqueta="Modalidad">Presencial</td>
+              <td data-etiqueta="Aula" class="wf-nowrap">A-101</td>
+              <td data-etiqueta="Horario">Viernes<br><span class="wf-nowrap">5:00 p. m. – 8:00 p. m.</span></td>
+              <td data-etiqueta="Cupos disponibles">15 de 25</td>
+              <td class="wf-col-acciones" data-wf-rol="visitante"><a class="wf-boton wf-boton-pequeno" href="V-02-inicio-sesion.html">Inicie sesión para matricular</a></td>
+              <td class="wf-col-acciones" data-wf-rol="estudiante"><a class="wf-boton wf-boton-pequeno wf-principal" href="../compartidas/V-32-matricular.html#estado=rn-05&amp;rol=estudiante">Matricular</a></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="wf-paginacion">
+          <span class="wf-paginacion-rango">1–5 de 5</span>
+          <div class="wf-paginacion-controles">
+            <label>Filas por página <select><option>10</option><option selected>20</option><option>50</option></select></label>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>← Anterior</button>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>Siguiente →</button>
+          </div>
+        </div>
+      </div>
+
+      <div data-wf-estado="cargando" class="wf-cargando" role="status" aria-label="Cargando la oferta">
+        <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+      </div>
+
+      <div data-wf-estado="sin-oferta" class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay oferta disponible en este momento.</p>
+        <p class="wf-texto-2">Sin periodo vigente o sin grupos abiertos. No se muestra la barra del periodo.</p>
+      </div>
+
+      <div data-wf-estado="vacio-filtros" class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay resultados para los filtros aplicados.</p>
+        <button type="button" class="wf-boton">Limpiar filtros</button>
+      </div>
+
+      <div data-wf-estado="error" class="wf-estado-contenido" role="alert">
+        <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+        <button type="button" class="wf-boton">Reintentar</button>
+      </div>
+    </div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-01</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-01 Oferta académica · todos los roles, incluido el visitante · página de inicio del visitante (§2.2)</dd>
+        <dt>Requerimientos</dt><dd>RFF-07 · RFF-04 (aviso después de cerrar sesión) · RFF-30 (matricular)</dd>
+        <dt>Reglas</dt><dd>RUI-10, RUI-11, RUI-13, RUI-14, RUI-15, RUI-17</dd>
+        <dt>Endpoints</dt><dd><code>GET /oferta-academica</code>, <code>GET /periodos/vigente</code> (anónimo; <code>404</code> = sin oferta)</dd>
+        <dt>Backend</dt><dd>RF-38, RF-50, consulta 9</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Listado en tabla que pasa a tarjetas en celular, aunque el visitante y el estudiante se piensan primero para celular: la tarjeta muestra el curso como título.</li>
+            <li>El profesor y el administrador ven la misma vista, sin acciones.</li>
+            <li>"Inicie sesión para matricular" abre V-02 y, después de iniciar sesión, vuelve a la oferta (§2.5).</li>
+            <li>Estudiante: "Matricular" en los grupos con cupo, que abre V-32 como ventana; "Ya matriculado" en los grupos con matrícula activa (1001 y 1004); nada en los grupos sin cupo. El 1008 es del mismo curso que el 1001: su "Matricular" lleva al rechazo RN-05, que da la API.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

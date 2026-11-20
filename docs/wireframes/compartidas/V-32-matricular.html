@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-32 Matricular en un grupo — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-32"
+      data-wf-nombre="Matricular en un grupo"
+      data-wf-raiz="../"
+      data-wf-marco="rol"
+      data-wf-estados="confirmar:Confirmar (grupo elegido)|buscar:Elegir el grupo (administrador)|rn-01:Rechazo: estudiante inactivo (RN-01)|rn-02:Rechazo: grupo no abierto (RN-02, RN-11)|rn-03:Rechazo: sin cupo (RN-03)|rn-04:Rechazo: fuera de fechas (RN-04)|rn-05:Rechazo: ya matriculado en el curso (RN-05)|rn-06:Rechazo: choque de horario (RN-06)|concurrencia:Rechazo: otro tomó el último cupo (409 CONCURRENCIA)|enviando:Enviando"
+      data-wf-roles="estudiante:Estudiante (sobre V-01)|administrador:Administrador (sobre V-16)">
+
+  <!-- Vista anfitriona, de fondo ========================================== -->
+  <main class="wf-vista">
+    <div class="wf-pila" inert>
+    <div data-wf-rol="estudiante" class="wf-pila">
+      <header><h1>Oferta académica</h1><p class="wf-encabezado-subtitulo">Grupos abiertos del periodo vigente y sus cupos disponibles.</p></header>
+      <div class="wf-periodo"><strong>Periodo 2026-III</strong><span>Matrícula del 09/11/2026 al 28/11/2026</span></div>
+      <div class="wf-caja wf-cargando"><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div></div>
+      <p class="wf-texto-2">Vista de fondo: <a href="../publico/V-01-oferta.html">V-01 Oferta académica</a>.</p>
+    </div>
+    <div data-wf-rol="administrador" class="wf-pila">
+      <header>
+        <p class="wf-migas">Estudiantes / Detalle</p>
+        <div class="wf-detalle-titulo"><h1 style="margin:0">María Fernanda Quesada Rojas</h1><span class="wf-etiqueta">Activo</span></div>
+      </header>
+      <div class="wf-caja wf-cargando"><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div></div>
+      <p class="wf-texto-2">Vista de fondo: <a href="../admin/V-16-estudiante.html">V-16 Detalle de estudiante</a>, pestaña Matrículas.</p>
+    </div>
+
+    </div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-32</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-32 Matricular en un grupo · estudiante (sobre V-01, V-22 o V-30) y administrador (sobre V-16) · ventana (supuesto 2 de la spec)</dd>
+        <dt>Requerimientos</dt><dd>RFF-30 (estudiante), RFF-31 (administrador)</dd>
+        <dt>Reglas</dt><dd>RUI-04 (título según el <code>code</code>), RUI-07 (matricular: simple), RUI-08, RUI-11 (buscador de grupo)</dd>
+        <dt>Endpoints</dt><dd><code>POST /me/matriculas</code> (estudiante), <code>POST /matriculas</code> (administrador); para elegir el grupo, <code>GET /grupos</code></dd>
+        <dt>Backend</dt><dd>RF-51, RN-01…RN-06, RN-11; supuesto 1 de <code>SPEC-matriculas</code></dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>La ventana muestra el resumen del grupo y pide confirmar. El estudiante no elige estudiante: la API toma su identidad de la sesión (RN-18).</li>
+            <li>El administrador elige el grupo con un buscador por NRC o curso, que empieza en el periodo vigente y muestra todos los estados, con el aviso de que no se le aplican las restricciones de estado ni de fechas.</li>
+            <li>Los rechazos van arriba del resumen, con un título según el <code>code</code> y el mensaje de la API. Los textos de los mensajes son ilustrativos.</li>
+            <li>En los rechazos, "Matricular" desaparece; con <code>CONCURRENCIA</code>, "Intentar de nuevo" vuelve a cargar el grupo.</li>
+            <li>El rechazo RN-05 usa el grupo 1008, del mismo curso que el 1001 de María.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <!-- La ventana ========================================================== -->
+  <dialog class="wf-dialogo wf-dialogo-ancho" id="dlg-matricular" aria-labelledby="dlg-matricular-t" data-wf-abierta>
+    <div class="wf-dialogo-encabezado">
+      <h2 id="dlg-matricular-t" data-wf-rol="estudiante">Matricular en un grupo</h2>
+      <h2 data-wf-rol="administrador">Matricular a María Fernanda Quesada Rojas</h2>
+    </div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+
+      <!-- Administrador: aviso y buscador -->
+      <div class="wf-mensaje" role="note" data-wf-rol="administrador">
+        <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+        <div class="wf-mensaje-texto"><p>Como administrador, no se le aplican las restricciones del estado del grupo ni de las fechas del periodo. Se aplican las demás reglas.</p></div>
+      </div>
+      <div class="wf-pila" data-wf-rol="administrador">
+        <div class="wf-campo">
+          <label for="m-periodo">Periodo</label>
+          <select id="m-periodo"><option selected>2026-III (vigente)</option><option>2026-II</option><option>2027-I</option></select>
+        </div>
+        <div class="wf-campo wf-combo">
+          <label for="m-grupo" class="wf-obligatorio">Grupo</label>
+          <input id="m-grupo" role="combobox" aria-expanded="true" aria-controls="m-grupo-opciones" aria-autocomplete="list" value="fot" data-wf-estado="buscar">
+          <ul class="wf-opciones" id="m-grupo-opciones" role="listbox" aria-label="Grupos" data-wf-estado="buscar">
+            <li role="option" aria-selected="true">1007 · FOT-300 Fotografía digital avanzada<span class="wf-opcion-sec">Abierto · Sábado 9:00 a. m. – 12:00 p. m. · 6 cupos disponibles</span></li>
+            <li role="option" aria-selected="false">1006 · FOT-300 Fotografía digital avanzada<span class="wf-opcion-sec">Cancelado · Sábado 1:00 p. m. – 4:00 p. m.</span></li>
+          </ul>
+          <div class="wf-con-boton" data-wf-estado="confirmar rn-01 rn-02 rn-03 rn-04 rn-06 concurrencia enviando"><input role="combobox" aria-expanded="false" aria-label="Grupo" value="1007 · FOT-300 Fotografía digital avanzada"><button type="button" class="wf-boton" aria-label="Quitar grupo">✕</button></div>
+          <div class="wf-con-boton" data-wf-estado="rn-05"><input role="combobox" aria-expanded="false" aria-label="Grupo" value="1008 · ING-101 Inglés conversacional I"><button type="button" class="wf-boton" aria-label="Quitar grupo">✕</button></div>
+          <span class="wf-ayuda" data-wf-estado="buscar">Por NRC o curso. Muestra los grupos de todos los estados.</span>
+        </div>
+      </div>
+
+      <!-- Rechazos (RFF-30) -->
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rn-01">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p><strong>Estudiante inactivo</strong></p><p>La cuenta del estudiante está inactiva y no puede matricularse.</p></div>
+      </div>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rn-02">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p><strong>El grupo no está abierto</strong></p><p>El grupo 1007 ya no está abierto a matrícula.</p></div>
+      </div>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rn-03">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p><strong>Sin cupo</strong></p><p>El grupo 1007 no tiene cupos disponibles.</p></div>
+      </div>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rn-04">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p><strong>Fuera de las fechas de matrícula</strong></p><p>La matrícula del periodo 2026-III es del 09/11/2026 al 28/11/2026.</p></div>
+      </div>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rn-05">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p><strong>Ya matriculado en el curso</strong></p><p>Ya tiene una matrícula activa en ING-101 en el periodo 2026-III (grupo 1001).</p></div>
+        <div class="wf-mensaje-acciones" data-wf-rol="estudiante"><a class="wf-boton wf-boton-pequeno" href="V-33-cambiar-grupo.html#estado=elegir&amp;rol=estudiante">Cambiar de grupo</a></div>
+      </div>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rn-06">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p><strong>Choque de horario</strong></p><p>El horario del grupo 1007 choca con el de otra matrícula activa del estudiante.</p></div>
+      </div>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="concurrencia">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p><strong>Otra persona tomó el cupo</strong></p><p>Otra matrícula ocupó el último cupo al mismo tiempo. Vuelva a cargar el grupo para ver sus cupos actuales.</p></div>
+      </div>
+
+      <!-- Resumen del grupo -->
+      <section class="wf-caja" aria-label="Resumen del grupo" data-wf-estado="confirmar rn-01 rn-02 rn-03 rn-04 rn-06 concurrencia enviando">
+        <h3 style="margin-top:0">FOT-300 · Fotografía digital avanzada</h3>
+        <dl class="wf-datos">
+          <div><dt>NRC</dt><dd>1007</dd></div>
+          <div><dt>Profesor</dt><dd>Ana Rodríguez Castro</dd></div>
+          <div><dt>Modalidad</dt><dd>Presencial · A-102</dd></div>
+          <div><dt>Horario</dt><dd>Sábado, <span class="wf-nowrap">9:00 a. m. – 12:00 p. m.</span></dd></div>
+          <div><dt>Cupos disponibles</dt><dd>6 de 15</dd></div>
+        </dl>
+      </section>
+      <section class="wf-caja" aria-label="Resumen del grupo" data-wf-estado="rn-05">
+        <h3 style="margin-top:0">ING-101 · Inglés conversacional I</h3>
+        <dl class="wf-datos">
+          <div><dt>NRC</dt><dd>1008</dd></div>
+          <div><dt>Profesor</dt><dd>Laura Jiménez Mora</dd></div>
+          <div><dt>Modalidad</dt><dd>Presencial · A-101</dd></div>
+          <div><dt>Horario</dt><dd>Viernes, <span class="wf-nowrap">5:00 p. m. – 8:00 p. m.</span></dd></div>
+          <div><dt>Cupos disponibles</dt><dd>15 de 25</dd></div>
+        </dl>
+      </section>
+      <p class="wf-texto-2" data-wf-estado="buscar">Elija un grupo para ver su resumen.</p>
+    </div>
+
+    <div class="wf-dialogo-pie">
+      <a class="wf-boton" href="../publico/V-01-oferta.html#rol=estudiante" data-wf-rol="estudiante">Cancelar</a>
+      <a class="wf-boton" href="../admin/V-16-estudiante.html" data-wf-rol="administrador">Cancelar</a>
+      <a class="wf-boton wf-principal" href="../estudiante/V-31-mis-matriculas.html#estado=matriculado" data-wf-rol="estudiante" data-wf-estado="confirmar">Matricular</a>
+      <a class="wf-boton wf-principal" href="../admin/V-16-estudiante.html#estado=matriculado" data-wf-rol="administrador" data-wf-estado="confirmar">Matricular</a>
+      <button type="button" class="wf-boton wf-principal" disabled data-wf-estado="buscar">Matricular</button>
+      <a class="wf-boton wf-principal" href="#estado=confirmar" data-wf-estado="concurrencia">Intentar de nuevo</a>
+      <button type="button" class="wf-boton wf-principal wf-girando" disabled data-wf-estado="enviando">Matriculando…</button>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

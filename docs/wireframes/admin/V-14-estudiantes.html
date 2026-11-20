@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-14 Estudiantes — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-14"
+      data-wf-nombre="Estudiantes"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-estados="datos:Con datos|inactivos:Con &quot;Incluir inactivos&quot;|cargando:Cargando|vacio:Vacío sin filtros|vacio-filtros:Vacío con filtros|error:Error|eliminado:Después de eliminar">
+
+  <main class="wf-vista">
+    <header class="wf-encabezado">
+      <div>
+        <p class="wf-migas">Personas</p>
+        <h1>Estudiantes</h1>
+      </div>
+      <div class="wf-acciones">
+        <a class="wf-boton wf-principal" href="V-15-estudiante-form.html">Registrar estudiante</a>
+      </div>
+    </header>
+
+    <form class="wf-filtros" role="search" onsubmit="return false">
+      <div class="wf-campo wf-busqueda">
+        <label for="f-buscar">Buscar</label>
+        <div class="wf-con-boton">
+          <input id="f-buscar" type="search" placeholder="Nombre, apellidos, cédula o correo">
+          <button type="submit" class="wf-boton">Buscar</button>
+        </div>
+      </div>
+      <label class="wf-casilla"><input type="checkbox" data-wf-estado="datos cargando vacio vacio-filtros error eliminado"> <input type="checkbox" checked data-wf-estado="inactivos"> Incluir inactivos</label>
+    </form>
+    <div class="wf-filtros-aplicados" data-wf-estado="inactivos vacio-filtros">
+      <span>Filtros aplicados:</span>
+      <span class="wf-chip" data-wf-estado="inactivos">Incluir inactivos</span>
+      <span class="wf-chip" data-wf-estado="vacio-filtros">Buscar: "rodríguez"</span>
+      <button type="button" class="wf-boton wf-enlace">Limpiar filtros</button>
+    </div>
+
+    <div class="wf-listado">
+      <div data-wf-estado="datos inactivos eliminado">
+        <table class="wf-tabla">
+          <thead>
+            <tr><th scope="col">Cédula</th><th scope="col">Nombre</th><th scope="col">Correo</th><th scope="col">Teléfono</th><th scope="col">Estado</th><th scope="col"><span class="wf-solo-lector">Acciones</span></th></tr>
+          </thead>
+          <tbody>
+            <tr><td data-etiqueta="Cédula" class="wf-nowrap">2-0812-0567</td><td class="wf-celda-principal" data-etiqueta="Nombre">José Pablo Araya Brenes</td><td data-etiqueta="Correo">jose.araya@correo.test</td><td data-etiqueta="Teléfono" class="wf-nowrap">8723-4567</td><td data-etiqueta="Estado"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-16-estudiante.html">Ver detalle</a></td></tr>
+            <tr data-wf-estado="inactivos"><td data-etiqueta="Cédula" class="wf-nowrap">1-1734-0678</td><td class="wf-celda-principal" data-etiqueta="Nombre">Daniela Campos Herrera</td><td data-etiqueta="Correo">daniela.campos@correo.test</td><td data-etiqueta="Teléfono" class="wf-nowrap">8456-7890</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-apagada">Inactivo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-16-estudiante.html#estado=inactivo">Ver detalle</a></td></tr>
+            <tr><td data-etiqueta="Cédula" class="wf-nowrap">1-1856-0912</td><td class="wf-celda-principal" data-etiqueta="Nombre">Valeria Chaves Mora</td><td data-etiqueta="Correo">valeria.chaves@correo.test</td><td data-etiqueta="Teléfono" class="wf-nowrap">8634-5678</td><td data-etiqueta="Estado"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-16-estudiante.html">Ver detalle</a></td></tr>
+            <tr data-wf-estado="datos inactivos"><td data-etiqueta="Cédula" class="wf-nowrap">4-0256-0789</td><td class="wf-celda-principal" data-etiqueta="Nombre">Luis Diego Navarro Pérez</td><td data-etiqueta="Correo">luis.navarro@correo.test</td><td data-etiqueta="Teléfono" class="wf-nowrap">8367-8901</td><td data-etiqueta="Estado"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-16-estudiante.html">Ver detalle</a></td></tr>
+            <tr><td data-etiqueta="Cédula" class="wf-nowrap">1-1789-0345</td><td class="wf-celda-principal" data-etiqueta="Nombre">María Fernanda Quesada Rojas</td><td data-etiqueta="Correo">maria.quesada@correo.test</td><td data-etiqueta="Teléfono" class="wf-nowrap">8812-3456</td><td data-etiqueta="Estado"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-16-estudiante.html">Ver detalle</a></td></tr>
+            <tr><td data-etiqueta="Cédula" class="wf-nowrap">3-0498-0123</td><td class="wf-celda-principal" data-etiqueta="Nombre">Andrés Salazar Ulate</td><td data-etiqueta="Correo">andres.salazar@correo.test</td><td data-etiqueta="Teléfono" class="wf-nowrap">8545-6789</td><td data-etiqueta="Estado"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-16-estudiante.html">Ver detalle</a></td></tr>
+          </tbody>
+        </table>
+        <div class="wf-paginacion">
+          <span class="wf-paginacion-rango" data-wf-estado="datos">1–5 de 5</span>
+          <span class="wf-paginacion-rango" data-wf-estado="inactivos">1–6 de 6</span>
+          <span class="wf-paginacion-rango" data-wf-estado="eliminado">1–4 de 4</span>
+          <div class="wf-paginacion-controles">
+            <label>Filas por página <select><option>10</option><option selected>20</option><option>50</option></select></label>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>← Anterior</button>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>Siguiente →</button>
+          </div>
+        </div>
+      </div>
+
+      <div data-wf-estado="cargando" class="wf-cargando" role="status" aria-label="Cargando estudiantes">
+        <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+      </div>
+      <div data-wf-estado="vacio" class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay estudiantes registrados.</p>
+        <a class="wf-boton wf-principal" href="V-15-estudiante-form.html">Registrar estudiante</a>
+      </div>
+      <div data-wf-estado="vacio-filtros" class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay resultados para los filtros aplicados.</p>
+        <button type="button" class="wf-boton">Limpiar filtros</button>
+      </div>
+      <div data-wf-estado="error" class="wf-estado-contenido" role="alert">
+        <p class="wf-estado-titulo">Ocurrió un error inesperado.</p>
+        <p>Si el problema continúa, reporte este código: <span class="wf-traceid">00-9a3d…-01</span> <button type="button" class="wf-boton wf-boton-pequeno" data-wf-copiar>Copiar código</button></p>
+        <button type="button" class="wf-boton">Reintentar</button>
+      </div>
+    </div>
+
+    <div class="wf-toast" role="status" data-wf-estado="eliminado">Estudiante eliminado</div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-14</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-14 Estudiantes · administrador</dd>
+        <dt>Requerimientos</dt><dd>RFF-11 · RFF-17 (mensaje después de eliminar)</dd>
+        <dt>Reglas</dt><dd>RUI-10 a RUI-14, RUI-21</dd>
+        <dt>Endpoints</dt><dd><code>GET /estudiantes</code> (<code>search</code>, <code>incluirInactivos</code>)</dd>
+        <dt>Backend</dt><dd>RF-16, RN-41, consulta 1</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Mismo patrón para administradores (V-11) y profesores (V-17): búsqueda, "Incluir inactivos", tabla, "Ver detalle" y "Registrar" arriba a la derecha.</li>
+            <li>Cada fila abre el detalle con "Ver detalle", que también es el acceso por teclado.</li>
+            <li>El orden de las filas lo da la API.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

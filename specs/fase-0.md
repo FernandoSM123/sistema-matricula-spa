@@ -10,6 +10,9 @@ Plan de la fase previa al [mapa de módulos](mapa-modulos.md) del frontend (SPA)
 - 2026-11-17: v1 en revisión.
 - 2026-11-17: v1 aprobada, con sus seis supuestos. Se crean `AGENTS.md` y `CLAUDE.md`, y empieza `requerimientos` con su spec en revisión.
 - 2026-11-17: `requerimientos` completado: `docs/requerimientos.md` aprobado. Siguiente entregable: `wireframes` (sin empezar, a la espera del usuario).
+- 2026-11-19: empieza `wireframes`, con su spec en revisión.
+- 2026-11-19: spec de `wireframes` aprobada; la estructura de `docs/wireframes/` se ajusta a carpetas por área (supuesto 1 de la spec). Lista de tareas en revisión.
+- 2026-11-19: lista de tareas de `wireframes` aprobada; entregable en elaboración.
 
 ## Objetivo
 
@@ -46,7 +49,7 @@ Cada entregable pasa por el mismo flujo aprobado que los módulos, con aprobaci�
 | Entregable | Spec | Tareas | Avance | Estado |
 |---|---|---|---|---|
 | `requerimientos` | [Aprobada](SPEC-requerimientos.md) | [Aprobadas](../tasks/requerimientos/todo.md) | 7/7 | Completado |
-| `wireframes` | — | — | — | Sin empezar |
+| `wireframes` | [Aprobada](SPEC-wireframes.md) | [Aprobadas](../tasks/wireframes/todo.md) | 7/8 | En elaboración |
 | `arquitectura` | — | — | — | Sin empezar |
 
 **Estados de un documento** (spec o lista de tareas): Borrador · En revisión · Aprobado/a · Obsoleto/a.
@@ -60,9 +63,10 @@ docs/
   requerimientos.md         Entregable `requerimientos`
   wireframes/               Entregable `wireframes`
     index.html              Índice de vistas por rol
+    componentes.html        Catálogo de componentes
     css/wireframe.css       Estilos compartidos en escala de grises
     js/wireframe.js         Interacciones mínimas
-    <rol>/<vista>.html      Una página por vista
+    <area>/V-xx-<vista>.html  Una página por vista; áreas: publico, cuenta, admin, estudiante, profesor, compartidas (SPEC-wireframes, supuesto 1)
   arquitectura.md           Entregable `arquitectura`
 specs/
   fase-0.md                 Este documento

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-38 Detalle de error — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-38"
+      data-wf-nombre="Detalle de error"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-menu="V-37"
+      data-wf-estados="solicitud:Error de una solicitud (500)|correo:Correo no enviado|no-existe:Depurado o inexistente (404)|cargando:Cargando|error:Error">
+
+  <main class="wf-vista">
+    <div class="wf-caja wf-estado-contenido" data-wf-estado="no-existe">
+      <p class="wf-estado-titulo">Este error ya no existe.</p>
+      <p class="wf-texto-2">Los errores se depuran a los 90 días, o el enlace no es válido.</p>
+      <a class="wf-boton" href="V-37-errores.html">Volver a Errores</a>
+    </div>
+    <div class="wf-cargando" role="status" aria-label="Cargando el error" data-wf-estado="cargando">
+      <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+    </div>
+    <div class="wf-caja wf-estado-contenido" role="alert" data-wf-estado="error">
+      <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+      <button type="button" class="wf-boton">Reintentar</button>
+    </div>
+
+    <header class="wf-encabezado" data-wf-estado="solicitud correo">
+      <div>
+        <p class="wf-migas"><a href="V-37-errores.html">Errores</a> / Detalle</p>
+        <h1 data-wf-estado="solicitud">Error no controlado en GET /api/v1/aulas</h1>
+        <h1 data-wf-estado="correo">No se pudo enviar el correo de contraseña temporal a luis.navarro@correo.test</h1>
+      </div>
+      <div class="wf-acciones">
+        <a class="wf-boton" href="V-36-auditoria.html#estado=operacion-vacia" data-wf-estado="solicitud">Ver cambios de esta operación</a>
+        <a class="wf-boton" href="V-36-auditoria.html#estado=operacion" data-wf-estado="correo">Ver cambios de esta operación</a>
+      </div>
+    </header>
+
+    <section class="wf-caja" aria-labelledby="t-datos" data-wf-estado="solicitud correo">
+      <h2 id="t-datos">Datos del error</h2>
+      <dl class="wf-datos">
+          <div data-wf-estado="solicitud"><dt>Fecha y hora</dt><dd>18/11/2026 4:15 p. m.</dd></div>
+          <div data-wf-estado="correo"><dt>Fecha y hora</dt><dd>19/11/2026 9:40 a. m.</dd></div>
+          <div data-wf-estado="solicitud"><dt>Origen</dt><dd>Solicitud</dd></div>
+          <div data-wf-estado="correo"><dt>Origen</dt><dd>Correo</dd></div>
+          <div data-wf-estado="solicitud"><dt>Tipo de error</dt><dd><code>Npgsql.<wbr>PostgresException</code></dd></div>
+          <div data-wf-estado="correo"><dt>Tipo de error</dt><dd><code>MailKit.<wbr>Net.<wbr>Smtp.<wbr>SmtpCommandException</code></dd></div>
+          <div data-wf-estado="solicitud"><dt>Método y ruta</dt><dd><code>GET /<wbr>api/<wbr>v1/<wbr>aulas</code></dd></div>
+          <div data-wf-estado="correo"><dt>Método y ruta</dt><dd>— (los correos no tienen)</dd></div>
+          <div data-wf-estado="solicitud"><dt>Usuario</dt><dd>Usuario #3 · Profesor</dd></div>
+          <div data-wf-estado="correo"><dt>Usuario</dt><dd>Usuario #1 · Administrador</dd></div>
+        <div class="wf-ancho-completo"><dt>Código de error</dt><dd><span class="wf-traceid" data-wf-estado="solicitud">4bf92f3577b34da6a3ce929d0e0e4736</span><span class="wf-traceid" data-wf-estado="correo">c3d7e1a95b2f48e6a0d4b7c9e2f1a385</span> <button type="button" class="wf-boton wf-boton-pequeno" data-wf-copiar>Copiar código</button></dd></div>
+          <div class="wf-ancho-completo" data-wf-estado="solicitud"><dt>Mensaje</dt><dd><code>42703: column a.<wbr>nombre does not exist</code></dd></div>
+          <div class="wf-ancho-completo" data-wf-estado="correo"><dt>Mensaje</dt><dd><code>550 5.1.1 Mailbox unavailable</code></dd></div>
+      </dl>
+    </section>
+
+    <section class="wf-caja wf-pila" aria-labelledby="t-tecnico" data-wf-estado="solicitud correo">
+      <div class="wf-encabezado" style="margin:0">
+        <h2 id="t-tecnico" style="margin:0">Detalle técnico</h2>
+        <button type="button" class="wf-boton wf-boton-pequeno" data-wf-copiar>Copiar detalle</button>
+      </div>
+      <pre class="wf-tecnico" data-wf-estado="solicitud" tabindex="0" aria-label="Detalle técnico">Npgsql.PostgresException (0x80004005): 42703: column a.nombre does not exist
+
+POSITION: 8
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Matricula.Application.Catalogos.AulaService.ListarAsync(ListarAulasRequest request, CancellationToken ct)
+   at Matricula.Api.Endpoints.AulasEndpoints.&lt;&gt;c.&lt;&lt;MapAulas&gt;b__0_0&gt;d.MoveNext()</pre>
+      <pre class="wf-tecnico" data-wf-estado="correo" tabindex="0" aria-label="Detalle técnico">MailKit.Net.Smtp.SmtpCommandException: 550 5.1.1 Mailbox unavailable
+   at MailKit.Net.Smtp.SmtpClient.SendAsync(FormatOptions options, MimeMessage message, CancellationToken cancellationToken)
+   at Matricula.Infrastructure.Correo.ProveedorSmtp.EnviarAsync(Correo correo, CancellationToken ct)
+   at Matricula.Infrastructure.Correo.EnvioCorreos.EnviarAsync(Correo correo, CancellationToken ct)</pre>
+    </section>
+
+    <details class="wf-notas">
+      <summary>Notas de V-38</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-38 Detalle de error · administrador</dd>
+        <dt>Requerimientos</dt><dd>RFF-41</dd>
+        <dt>Reglas</dt><dd>RUI-05 (única excepción: aquí sí se muestra el detalle técnico), RUI-03 (<code>404</code>)</dd>
+        <dt>Endpoints</dt><dd><code>GET /<wbr>errores/{id}</code>; el enlace a <code>GET /<wbr>auditoria?operacionId=</code></dd>
+        <dt>Backend</dt><dd>RF-59, RN-47, RN-49; <code>SPEC-errores</code></dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Todos los datos arriba y el detalle técnico debajo, en texto de ancho fijo con su propio desplazamiento, para que la página no se desplace a lo ancho en celular.</li>
+            <li>"Ver cambios de esta operación" abre V-36 filtrado por el código. Un <code>500</code> no deja cambios (una operación que falla no guarda nada); un correo que falló sí puede tenerlos, como el registro de Luis Diego.</li>
+            <li>El usuario se muestra por id y rol, que es lo que guarda la API (sin enlace: la API no dice a qué persona corresponde el id).</li>
+            <li>Un error depurado (90 días, RN-49) o inexistente responde <code>404</code>: la vista lo indica y vuelve a V-37.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

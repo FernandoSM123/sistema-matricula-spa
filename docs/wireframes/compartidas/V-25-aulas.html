@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-25 Aulas — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-25"
+      data-wf-nombre="Aulas"
+      data-wf-raiz="../"
+      data-wf-marco="rol"
+      data-wf-estados="datos:Con datos|inactivos:Con &quot;Incluir inactivos&quot; (administrador)|cargando:Cargando|vacio:Vacío sin filtros|vacio-filtros:Vacío con filtros|error:Error|eliminado:Después de eliminar (administrador)"
+      data-wf-roles="administrador:Administrador|profesor:Profesor">
+
+  <main class="wf-vista">
+    <header class="wf-encabezado">
+      <div>
+        <p class="wf-migas" data-wf-rol="administrador">Académico</p>
+        <h1>Aulas</h1>
+      </div>
+      <div class="wf-acciones" data-wf-rol="administrador">
+        <a class="wf-boton wf-principal" href="../admin/V-26-aula-form.html">Registrar aula</a>
+      </div>
+    </header>
+
+    <form class="wf-filtros" role="search" onsubmit="return false">
+      <div class="wf-campo wf-busqueda">
+        <label for="f-buscar">Buscar</label>
+        <div class="wf-con-boton">
+          <input id="f-buscar" type="search" placeholder="Código o ubicación">
+          <button type="submit" class="wf-boton">Buscar</button>
+        </div>
+      </div>
+      <label class="wf-casilla" data-wf-rol="administrador"><input type="checkbox" data-wf-estado="datos cargando vacio vacio-filtros error eliminado"> <input type="checkbox" checked data-wf-estado="inactivos"> Incluir inactivos</label>
+    </form>
+    <div class="wf-filtros-aplicados" data-wf-estado="inactivos vacio-filtros">
+      <span>Filtros aplicados:</span>
+      <span class="wf-chip" data-wf-estado="inactivos">Incluir inactivos</span>
+      <span class="wf-chip" data-wf-estado="vacio-filtros">Buscar: "edificio D"</span>
+      <button type="button" class="wf-boton wf-enlace">Limpiar filtros</button>
+    </div>
+
+    <div class="wf-listado">
+      <div data-wf-estado="datos inactivos eliminado">
+        <table class="wf-tabla">
+          <thead>
+            <tr><th scope="col">Código</th><th scope="col">Ubicación</th><th scope="col">Capacidad</th><th scope="col" data-wf-rol="administrador">Estado</th><th scope="col"><span class="wf-solo-lector">Acciones</span></th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="wf-celda-principal wf-nowrap" data-etiqueta="Código">A-101</td><td data-etiqueta="Ubicación">Edificio A, primer piso</td><td data-etiqueta="Capacidad">25</td><td data-etiqueta="Estado" data-wf-rol="administrador"><span class="wf-etiqueta">Activa</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-27-aula.html">Ver detalle</a></td></tr>
+            <tr><td class="wf-celda-principal wf-nowrap" data-etiqueta="Código">A-102</td><td data-etiqueta="Ubicación">Edificio A, primer piso</td><td data-etiqueta="Capacidad">20</td><td data-etiqueta="Estado" data-wf-rol="administrador"><span class="wf-etiqueta">Activa</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-27-aula.html">Ver detalle</a></td></tr>
+            <tr><td class="wf-celda-principal wf-nowrap" data-etiqueta="Código">B-201</td><td data-etiqueta="Ubicación">Edificio B, laboratorio de cómputo</td><td data-etiqueta="Capacidad">18</td><td data-etiqueta="Estado" data-wf-rol="administrador"><span class="wf-etiqueta">Activa</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-27-aula.html">Ver detalle</a></td></tr>
+            <tr data-wf-estado="inactivos"><td class="wf-celda-principal wf-nowrap" data-etiqueta="Código">C-001</td><td data-etiqueta="Ubicación">Sala multiuso</td><td data-etiqueta="Capacidad">30</td><td data-etiqueta="Estado" data-wf-rol="administrador"><span class="wf-etiqueta wf-e-apagada">Inactiva</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-27-aula.html#estado=inactivo">Ver detalle</a></td></tr>
+          </tbody>
+        </table>
+        <div class="wf-paginacion">
+          <span class="wf-paginacion-rango" data-wf-estado="datos eliminado">1–3 de 3</span>
+          <span class="wf-paginacion-rango" data-wf-estado="inactivos">1–4 de 4</span>
+          <div class="wf-paginacion-controles">
+            <label>Filas por página <select><option>10</option><option selected>20</option><option>50</option></select></label>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>← Anterior</button>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>Siguiente →</button>
+          </div>
+        </div>
+      </div>
+
+      <div data-wf-estado="cargando" class="wf-cargando" role="status" aria-label="Cargando aulas">
+        <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+      </div>
+      <div data-wf-estado="vacio" class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay aulas registradas.</p>
+        <a class="wf-boton wf-principal" href="../admin/V-26-aula-form.html" data-wf-rol="administrador">Registrar aula</a>
+      </div>
+      <div data-wf-estado="vacio-filtros" class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay resultados para los filtros aplicados.</p>
+        <button type="button" class="wf-boton">Limpiar filtros</button>
+      </div>
+      <div data-wf-estado="error" class="wf-estado-contenido" role="alert">
+        <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+        <button type="button" class="wf-boton">Reintentar</button>
+      </div>
+    </div>
+
+    <div class="wf-toast" role="status" data-wf-estado="eliminado">Aula eliminada</div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-25</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-25 Aulas · administrador y profesor. El estudiante no tiene acceso: si entra por la dirección, ve V-09.</dd>
+        <dt>Requerimientos</dt><dd>RFF-18 · RFF-22 (mensaje después de eliminar)</dd>
+        <dt>Reglas</dt><dd>RUI-10 a RUI-14, RUI-21</dd>
+        <dt>Endpoints</dt><dd><code>GET /aulas</code> (<code>search</code>, <code>incluirInactivos</code>)</dd>
+        <dt>Backend</dt><dd>RF-40, RN-41</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Mismo patrón que V-20. Con "Ver como" solo hay administrador y profesor.</li>
+            <li>Las aulas usan el femenino en las etiquetas: "Activa" e "Inactiva".</li>
+            <li>"Después de eliminar" supone que se eliminó un aula sin grupos (no aparece en los datos de ejemplo).</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

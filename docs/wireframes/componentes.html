@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Componentes — Wireframes</title>
+  <link rel="stylesheet" href="css/wireframe.css">
+</head>
+<body data-wf-id="Componentes"
+      data-wf-nombre="Catálogo de componentes"
+      data-wf-raiz=""
+      data-wf-marco="ninguno"
+      data-wf-estados="datos:Con datos|cargando:Cargando|vacio:Vacío sin filtros|vacio-filtros:Vacío con filtros|error:Error">
+
+  <main class="wf-indice">
+    <header>
+      <h1>Catálogo de componentes</h1>
+      <p class="wf-texto-2">Piezas reutilizables que usan todas las vistas (punto 2 de la spec). Cada componente cita la regla de <a href="../requerimientos.md">docs/requerimientos.md</a> que lo gobierna. Los datos son los de ejemplo del <a href="index.html">índice</a>.</p>
+      <p class="wf-texto-2">El selector <strong>Estado</strong> de la barra cambia el listado del punto 1; el punto 8 muestra todos los estados juntos.</p>
+      <nav aria-label="Componentes">
+        <ol class="wf-toc">
+          <li><a href="#c-listado">Listado paginado</a></li>
+          <li><a href="#c-filtros">Búsqueda y filtros</a></li>
+          <li><a href="#c-formulario">Formulario</a></li>
+          <li><a href="#c-fecha-hora">Selectores de fecha y hora</a></li>
+          <li><a href="#c-combo">Selector con búsqueda</a></li>
+          <li><a href="#c-confirmacion">Ventanas de confirmación</a></li>
+          <li><a href="#c-mensajes">Mensajes</a></li>
+          <li><a href="#c-estados">Estados de contenido</a></li>
+          <li><a href="#c-etiquetas">Etiquetas de estado</a></li>
+          <li><a href="#c-horario">Grilla del horario semanal</a></li>
+          <li><a href="#c-detalle">Encabezado de detalle y pestañas</a></li>
+        </ol>
+      </nav>
+    </header>
+
+    <!-- 1. Listado paginado ============================================== -->
+    <section class="wf-componente" id="c-listado" aria-labelledby="t-listado">
+      <h2 id="t-listado">1. Listado paginado</h2>
+      <p class="wf-componente-regla">RUI-10 · RUI-13 · RUI-14 · ejemplo: listado de estudiantes (V-14)</p>
+      <p>En escritorio es una tabla; en pantallas angostas cada fila pasa a ser una tarjeta con los datos principales y el acceso al detalle. Debajo, el rango, el total, el tamaño de página (10, 20 o 50; 20 por defecto) y los controles de página anterior y siguiente.</p>
+
+      <div class="wf-listado">
+        <div data-wf-estado="datos">
+          <table class="wf-tabla">
+            <thead>
+              <tr><th scope="col">Cédula</th><th scope="col">Nombre</th><th scope="col">Correo</th><th scope="col">Teléfono</th><th scope="col">Estado</th><th scope="col"><span class="wf-solo-lector">Acciones</span></th></tr>
+            </thead>
+            <tbody>
+              <tr><td data-etiqueta="Cédula">1-1789-0345</td><td class="wf-celda-principal" data-etiqueta="Nombre">María Fernanda Quesada Rojas</td><td data-etiqueta="Correo">maria.quesada@correo.test</td><td data-etiqueta="Teléfono">8812-3456</td><td data-etiqueta="Estado"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="admin/V-16-estudiante.html">Ver detalle</a></td></tr>
+              <tr><td data-etiqueta="Cédula">2-0812-0567</td><td class="wf-celda-principal" data-etiqueta="Nombre">José Pablo Araya Brenes</td><td data-etiqueta="Correo">jose.araya@correo.test</td><td data-etiqueta="Teléfono">8723-4567</td><td data-etiqueta="Estado"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="admin/V-16-estudiante.html">Ver detalle</a></td></tr>
+              <tr><td data-etiqueta="Cédula">1-1856-0912</td><td class="wf-celda-principal" data-etiqueta="Nombre">Valeria Chaves Mora</td><td data-etiqueta="Correo">valeria.chaves@correo.test</td><td data-etiqueta="Teléfono">8634-5678</td><td data-etiqueta="Estado"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="admin/V-16-estudiante.html">Ver detalle</a></td></tr>
+              <tr><td data-etiqueta="Cédula">3-0498-0123</td><td class="wf-celda-principal" data-etiqueta="Nombre">Andrés Salazar Ulate</td><td data-etiqueta="Correo">andres.salazar@correo.test</td><td data-etiqueta="Teléfono">8545-6789</td><td data-etiqueta="Estado"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="admin/V-16-estudiante.html">Ver detalle</a></td></tr>
+              <tr><td data-etiqueta="Cédula">4-0256-0789</td><td class="wf-celda-principal" data-etiqueta="Nombre">Luis Diego Navarro Pérez</td><td data-etiqueta="Correo">luis.navarro@correo.test</td><td data-etiqueta="Teléfono">8367-8901</td><td data-etiqueta="Estado"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="admin/V-16-estudiante.html">Ver detalle</a></td></tr>
+            </tbody>
+          </table>
+          <div class="wf-paginacion">
+            <span class="wf-paginacion-rango">1–5 de 5</span>
+            <div class="wf-paginacion-controles">
+              <label>Filas por página
+                <select><option>10</option><option selected>20</option><option>50</option></select>
+              </label>
+              <button type="button" class="wf-boton wf-boton-pequeno" disabled>← Anterior</button>
+              <button type="button" class="wf-boton wf-boton-pequeno" disabled>Siguiente →</button>
+            </div>
+          </div>
+        </div>
+
+        <div data-wf-estado="cargando" class="wf-cargando" role="status" aria-label="Cargando estudiantes">
+          <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+        </div>
+
+        <div data-wf-estado="vacio" class="wf-estado-contenido">
+          <p class="wf-estado-titulo">No hay estudiantes registrados.</p>
+          <a class="wf-boton wf-principal" href="admin/V-15-estudiante-form.html">Registrar estudiante</a>
+        </div>
+
+        <div data-wf-estado="vacio-filtros" class="wf-estado-contenido">
+          <p class="wf-estado-titulo">No hay resultados para los filtros aplicados.</p>
+          <button type="button" class="wf-boton">Limpiar filtros</button>
+        </div>
+
+        <div data-wf-estado="error" class="wf-estado-contenido" role="alert">
+          <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+          <button type="button" class="wf-boton">Reintentar</button>
+        </div>
+      </div>
+
+      <h3 class="wf-variante">Variante: paginación con varias páginas (ilustrativa)</h3>
+      <div class="wf-listado">
+        <div class="wf-paginacion" style="border-top: 0">
+          <span class="wf-paginacion-rango">21–40 de 134</span>
+          <div class="wf-paginacion-controles">
+            <label>Filas por página
+              <select><option>10</option><option selected>20</option><option>50</option></select>
+            </label>
+            <button type="button" class="wf-boton wf-boton-pequeno">← Anterior</button>
+            <button type="button" class="wf-boton wf-boton-pequeno">Siguiente →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Búsqueda y filtros ============================================ -->
+    <section class="wf-componente" id="c-filtros" aria-labelledby="t-filtros">
+      <h2 id="t-filtros">2. Búsqueda y filtros</h2>
+      <p class="wf-componente-regla">RUI-11 · RUI-12 · ejemplo: grupos (V-28) y estudiantes (V-14)</p>
+      <ul>
+        <li>El texto se busca con Enter o con el botón "Buscar", no mientras se escribe.</li>
+        <li>Las listas, casillas y fechas se aplican al cambiarlas. Cambiar un filtro vuelve a la página 1.</li>
+        <li>"Incluir inactivos" está desmarcado por defecto. "Limpiar filtros" aparece cuando hay alguno aplicado.</li>
+      </ul>
+
+      <h3 class="wf-variante">Filtros de un listado</h3>
+      <form class="wf-filtros" role="search" onsubmit="return false">
+        <div class="wf-campo wf-busqueda">
+          <label for="f-buscar">Buscar</label>
+          <div class="wf-con-boton">
+            <input id="f-buscar" type="search" value="inglés" placeholder="NRC o nombre del curso">
+            <button type="submit" class="wf-boton">Buscar</button>
+          </div>
+        </div>
+        <div class="wf-campo">
+          <label for="f-periodo">Periodo</label>
+          <select id="f-periodo"><option selected>2026-III (vigente)</option><option>2026-II</option><option>Todos los periodos</option></select>
+        </div>
+        <div class="wf-campo">
+          <label for="f-estado">Estado</label>
+          <select id="f-estado"><option>Todos</option><option>Planificado</option><option selected>Abierto</option><option>Cerrado</option><option>En curso</option><option>Finalizado</option><option>Cancelado</option></select>
+        </div>
+        <div class="wf-campo">
+          <label for="f-modalidad">Modalidad</label>
+          <select id="f-modalidad"><option selected>Todas</option><option>Presencial</option><option>Virtual</option><option>Híbrida</option></select>
+        </div>
+      </form>
+      <div class="wf-filtros-aplicados" aria-label="Filtros aplicados">
+        <span>Filtros aplicados:</span>
+        <span class="wf-chip">Buscar: "inglés"</span>
+        <span class="wf-chip">Periodo: 2026-III</span>
+        <span class="wf-chip">Estado: Abierto</span>
+        <button type="button" class="wf-boton wf-enlace">Limpiar filtros</button>
+      </div>
+
+      <h3 class="wf-variante">Con "Incluir inactivos" y fechas (personas, catálogos, auditoría)</h3>
+      <form class="wf-filtros" role="search" onsubmit="return false">
+        <div class="wf-campo wf-busqueda">
+          <label for="f-buscar2">Buscar</label>
+          <div class="wf-con-boton">
+            <input id="f-buscar2" type="search" placeholder="Nombre, apellidos o cédula">
+            <button type="submit" class="wf-boton">Buscar</button>
+          </div>
+        </div>
+        <div class="wf-campo">
+          <label for="f-desde">Desde</label>
+          <div class="wf-con-boton">
+            <input id="f-desde" type="text" inputmode="numeric" placeholder="dd/mm/aaaa">
+            <button type="button" class="wf-boton" aria-label="Abrir calendario">▦</button>
+          </div>
+        </div>
+        <label class="wf-casilla"><input type="checkbox"> Incluir inactivos</label>
+      </form>
+    </section>
+
+    <!-- 3. Formulario ===================================================== -->
+    <section class="wf-componente" id="c-formulario" aria-labelledby="t-formulario">
+      <h2 id="t-formulario">3. Formulario</h2>
+      <p class="wf-componente-regla">RUI-02 · RUI-06 · RUI-08 · RUI-09 · ejemplo: registrar estudiante (V-15)</p>
+      <ul>
+        <li>Los obligatorios se marcan con <strong>*</strong>. Los errores aparecen al salir del campo o al enviar, debajo del campo; el foco va al primer campo con error.</li>
+        <li>Los errores de la API sin campo en el formulario van arriba. Lo escrito nunca se borra.</li>
+        <li>Mientras se envía, el botón se deshabilita y dice que está trabajando. Salir con cambios sin guardar pide confirmación.</li>
+      </ul>
+
+      <div class="wf-caja">
+        <form class="wf-form" onsubmit="return false" novalidate>
+          <div class="wf-errores-generales" role="alert">
+            <strong>No se pudo registrar el estudiante.</strong>
+            <ul><li>Revise los campos marcados.</li></ul>
+          </div>
+          <p class="wf-nota-obligatorios">Los campos con * son obligatorios.</p>
+
+          <fieldset class="wf-form-seccion">
+            <legend>Datos personales</legend>
+            <div class="wf-campo">
+              <label for="e-cedula" class="wf-obligatorio">Cédula</label>
+              <input id="e-cedula" value="4-0256-0789" required>
+            </div>
+            <div class="wf-campo">
+              <label for="e-nacimiento">Fecha de nacimiento</label>
+              <div class="wf-con-boton">
+                <input id="e-nacimiento" inputmode="numeric" placeholder="dd/mm/aaaa" value="14/03/2001">
+                <button type="button" class="wf-boton" aria-label="Abrir calendario">▦</button>
+              </div>
+            </div>
+            <div class="wf-campo">
+              <label for="e-nombre" class="wf-obligatorio">Nombre</label>
+              <input id="e-nombre" value="Luis Diego" required>
+            </div>
+            <div class="wf-campo">
+              <label for="e-apellidos" class="wf-obligatorio">Apellidos</label>
+              <input id="e-apellidos" value="" required aria-invalid="true" aria-describedby="e-apellidos-error">
+              <p class="wf-error-campo" id="e-apellidos-error">Indique los apellidos.</p>
+            </div>
+          </fieldset>
+
+          <fieldset class="wf-form-seccion">
+            <legend>Contacto y cuenta</legend>
+            <div class="wf-campo">
+              <label for="e-correo" class="wf-obligatorio">Correo</label>
+              <input id="e-correo" type="email" value="luis.navarro@correo" required aria-invalid="true" aria-describedby="e-correo-error">
+              <p class="wf-error-campo" id="e-correo-error">El correo no tiene un formato válido.</p>
+            </div>
+            <div class="wf-campo">
+              <label for="e-telefono" class="wf-obligatorio">Teléfono</label>
+              <input id="e-telefono" type="tel" value="8367-8901" required aria-describedby="e-telefono-ayuda">
+              <span class="wf-ayuda" id="e-telefono-ayuda">De 8 a 20 caracteres: dígitos, espacios, + y -.</span>
+            </div>
+            <div class="wf-campo wf-ancho-completo">
+              <label for="e-direccion">Dirección</label>
+              <textarea id="e-direccion">San Pedro de Montes de Oca, San José</textarea>
+            </div>
+          </fieldset>
+
+          <div class="wf-form-pie">
+            <button type="button" class="wf-boton" data-wf-abrir="dlg-descartar">Cancelar</button>
+            <button type="submit" class="wf-boton wf-principal" data-wf-enviando="Registrando…">Registrar estudiante</button>
+          </div>
+        </form>
+      </div>
+
+      <h3 class="wf-variante">Contraseña con "Mostrar" y botón en envío</h3>
+      <div class="wf-muestras">
+        <div class="wf-caja wf-pila">
+          <div class="wf-campo">
+            <label for="c-nueva" class="wf-obligatorio">Contraseña nueva</label>
+            <div class="wf-con-boton">
+              <input id="c-nueva" type="password" value="Secreta2026" autocomplete="new-password" aria-describedby="c-nueva-ayuda">
+              <button type="button" class="wf-boton" data-wf-mostrar="c-nueva" aria-pressed="false">Mostrar</button>
+            </div>
+            <span class="wf-ayuda" id="c-nueva-ayuda">Requisitos de RN-26.</span>
+          </div>
+          <div class="wf-campo">
+            <label for="c-confirmar" class="wf-obligatorio">Confirmar contraseña</label>
+            <div class="wf-con-boton">
+              <input id="c-confirmar" type="password" value="Secreta2025" autocomplete="new-password" aria-invalid="true" aria-describedby="c-confirmar-error">
+              <button type="button" class="wf-boton" data-wf-mostrar="c-confirmar" aria-pressed="false">Mostrar</button>
+            </div>
+            <p class="wf-error-campo" id="c-confirmar-error">Las contraseñas no coinciden.</p>
+          </div>
+        </div>
+        <div class="wf-caja wf-pila">
+          <p>Envío en curso (RUI-08):</p>
+          <div><button type="button" class="wf-boton wf-principal wf-girando" disabled>Guardando…</button></div>
+          <p class="wf-texto-2">El botón "Registrar estudiante" del formulario simula este estado durante 2 segundos.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Fecha y hora =================================================== -->
+    <section class="wf-componente" id="c-fecha-hora" aria-labelledby="t-fecha-hora">
+      <h2 id="t-fecha-hora">4. Selectores de fecha y hora</h2>
+      <p class="wf-componente-regla">RUI-15 · RUI-17 · ejemplo: periodo (V-24) y bloque de horario (V-30)</p>
+      <ul>
+        <li>Fecha como <code>dd/mm/aaaa</code>: se escribe o se elige en el calendario, que se abre con el botón. Semana de lunes a domingo; hoy, con borde.</li>
+        <li>Hora en formato de 12 horas con a. m. y p. m., sin segundos. La API recibe 24 horas; el frontend convierte.</li>
+      </ul>
+
+      <div class="wf-muestras">
+        <div class="wf-caja">
+          <div class="wf-campo">
+            <label for="p-inicio" class="wf-obligatorio">Inicio de clases</label>
+            <div class="wf-con-boton">
+              <input id="p-inicio" inputmode="numeric" placeholder="dd/mm/aaaa" value="30/11/2026">
+              <button type="button" class="wf-boton" aria-label="Cerrar calendario" aria-expanded="true">▦</button>
+            </div>
+          </div>
+          <div class="wf-calendario" role="dialog" aria-label="Elegir fecha">
+            <div class="wf-calendario-mes">
+              <button type="button" class="wf-boton wf-boton-pequeno" aria-label="Mes anterior">‹</button>
+              <span>Noviembre 2026</span>
+              <button type="button" class="wf-boton wf-boton-pequeno" aria-label="Mes siguiente">›</button>
+            </div>
+            <table>
+              <thead><tr><th abbr="Lunes">L</th><th abbr="Martes">K</th><th abbr="Miércoles">M</th><th abbr="Jueves">J</th><th abbr="Viernes">V</th><th abbr="Sábado">S</th><th abbr="Domingo">D</th></tr></thead>
+              <tbody>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td><button type="button">1</button></td></tr>
+                <tr><td><button type="button">2</button></td><td><button type="button">3</button></td><td><button type="button">4</button></td><td><button type="button">5</button></td><td><button type="button">6</button></td><td><button type="button">7</button></td><td><button type="button">8</button></td></tr>
+                <tr><td><button type="button">9</button></td><td><button type="button">10</button></td><td><button type="button">11</button></td><td><button type="button">12</button></td><td><button type="button">13</button></td><td><button type="button">14</button></td><td><button type="button">15</button></td></tr>
+                <tr><td><button type="button">16</button></td><td><button type="button">17</button></td><td><button type="button">18</button></td><td><button type="button" class="wf-hoy" aria-label="19, hoy">19</button></td><td><button type="button">20</button></td><td><button type="button">21</button></td><td><button type="button">22</button></td></tr>
+                <tr><td><button type="button">23</button></td><td><button type="button">24</button></td><td><button type="button">25</button></td><td><button type="button">26</button></td><td><button type="button">27</button></td><td><button type="button">28</button></td><td><button type="button">29</button></td></tr>
+                <tr><td><button type="button" aria-pressed="true">30</button></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="wf-caja wf-pila">
+          <fieldset class="wf-campo" style="border:0;margin:0;padding:0">
+            <legend class="wf-etiqueta-campo wf-obligatorio">Hora de inicio</legend>
+            <div class="wf-hora">
+              <select aria-label="Hora"><option>12</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option selected>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option></select>
+              <span>:</span>
+              <select aria-label="Minutos"><option selected>00</option><option>15</option><option>30</option><option>45</option></select>
+              <select aria-label="a. m. o p. m."><option>a. m.</option><option selected>p. m.</option></select>
+            </div>
+          </fieldset>
+          <fieldset class="wf-campo" style="border:0;margin:0;padding:0">
+            <legend class="wf-etiqueta-campo wf-obligatorio">Hora de fin</legend>
+            <div class="wf-hora">
+              <select aria-label="Hora" aria-invalid="true" aria-describedby="h-fin-error"><option>12</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option selected>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option></select>
+              <span>:</span>
+              <select aria-label="Minutos"><option selected>00</option><option>15</option><option>30</option><option>45</option></select>
+              <select aria-label="a. m. o p. m."><option>a. m.</option><option selected>p. m.</option></select>
+            </div>
+            <p class="wf-error-campo" id="h-fin-error">La hora de fin debe ser posterior a la de inicio (RN-15).</p>
+          </fieldset>
+          <p class="wf-texto-2">Los minutos van de 15 en 15 en el boceto; el paso definitivo lo fija <code>arquitectura</code> con el componente elegido.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Selector con búsqueda ========================================== -->
+    <section class="wf-componente" id="c-combo" aria-labelledby="t-combo">
+      <h2 id="t-combo">5. Selector con búsqueda</h2>
+      <p class="wf-componente-regla">RUI-11 (excepción) · glosario · ejemplo: curso, profesor y aula del grupo (V-29); grupo al matricular (V-32)</p>
+      <p>A diferencia de los filtros, sugiere opciones mientras se escribe. Cada opción muestra un dato principal y uno secundario.</p>
+
+      <div class="wf-muestras">
+        <div class="wf-caja">
+          <div class="wf-campo wf-combo">
+            <label for="g-curso" class="wf-obligatorio">Curso</label>
+            <input id="g-curso" role="combobox" aria-expanded="true" aria-controls="g-curso-opciones" aria-autocomplete="list" value="ing">
+            <ul class="wf-opciones" id="g-curso-opciones" role="listbox" aria-label="Cursos">
+              <li role="option" aria-selected="true">ING-101 · Inglés conversacional I<span class="wf-opcion-sec">Básico · 48 horas</span></li>
+              <li role="option" aria-selected="false">ING-201 · Inglés conversacional II<span class="wf-opcion-sec">Intermedio · 48 horas</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="wf-caja">
+          <div class="wf-campo wf-combo">
+            <label for="g-profesor" class="wf-obligatorio">Profesor</label>
+            <input id="g-profesor" role="combobox" aria-expanded="true" aria-controls="g-profesor-opciones" aria-autocomplete="list" value="zúñiga">
+            <ul class="wf-opciones" id="g-profesor-opciones" role="listbox" aria-label="Profesores">
+              <li class="wf-sin-opciones">No hay profesores activos que coincidan.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="wf-caja">
+          <div class="wf-campo">
+            <label for="g-aula">Aula</label>
+            <div class="wf-con-boton">
+              <input id="g-aula" role="combobox" aria-expanded="false" value="B-201 · Edificio B, laboratorio de cómputo (capacidad 18)">
+              <button type="button" class="wf-boton" aria-label="Quitar aula">✕</button>
+            </div>
+            <span class="wf-ayuda">Opción elegida, con la acción para quitarla.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Confirmaciones ================================================= -->
+    <section class="wf-componente" id="c-confirmacion" aria-labelledby="t-confirmacion">
+      <h2 id="t-confirmacion">6. Ventanas de confirmación</h2>
+      <p class="wf-componente-regla">RUI-07 · RUI-09 · RUI-01 (errores junto a la acción) · RUI-08</p>
+      <ul>
+        <li>Nombran la acción y el registro, y explican la consecuencia. El botón repite el verbo ("Desactivar estudiante", no "Aceptar").</li>
+        <li><strong>Reforzada</strong> (eliminar, cancelar un grupo): franja superior gruesa, "Esta acción no se puede deshacer" y foco inicial en "Cancelar".</li>
+        <li>Si la API rechaza la acción, el mensaje aparece dentro de la ventana, con la acción alternativa si la hay.</li>
+      </ul>
+      <div class="wf-fila">
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-simple">Confirmación simple</button>
+        <button type="button" class="wf-boton wf-peligro" data-wf-abrir="dlg-reforzada">Confirmación reforzada</button>
+        <button type="button" class="wf-boton wf-peligro" data-wf-abrir="dlg-rechazo">Reforzada con rechazo (409 RN-34)</button>
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-descartar">Cambios sin guardar</button>
+      </div>
+    </section>
+
+    <!-- 7. Mensajes ======================================================= -->
+    <section class="wf-componente" id="c-mensajes" aria-labelledby="t-mensajes">
+      <h2 id="t-mensajes">7. Mensajes</h2>
+      <p class="wf-componente-regla">RUI-01 · RUI-03 · RUI-04 · RUI-21</p>
+      <p>Cada tipo se distingue por su ícono de texto y su borde, no por el color. El texto de los errores es el <code>detail</code> de la API, salvo los fijados en RUI-03.</p>
+
+      <h3 class="wf-variante">Éxito: breve y no bloqueante, desaparece solo</h3>
+      <div class="wf-fila">
+        <div class="wf-toast wf-toast-muestra">Estudiante registrado</div>
+        <button type="button" class="wf-boton" data-wf-toast="Estudiante registrado">Mostrar mensaje de éxito</button>
+      </div>
+
+      <h3 class="wf-variante">Aviso fijo: queda hasta que se resuelve o se cierra</h3>
+      <div class="wf-mensaje wf-aviso" role="status">
+        <span class="wf-mensaje-icono" aria-hidden="true">[!]</span>
+        <div class="wf-mensaje-texto">
+          <p><strong>El estudiante se registró, pero no se pudo enviar el correo con la contraseña temporal.</strong></p>
+          <p>Puede reenviarla ahora o más tarde desde el detalle del estudiante.</p>
+        </div>
+        <div class="wf-mensaje-acciones">
+          <button type="button" class="wf-boton wf-boton-pequeno">Reenviar temporal</button>
+          <button type="button" class="wf-boton wf-boton-pequeno wf-enlace">Cerrar</button>
+        </div>
+      </div>
+
+      <h3 class="wf-variante">Error de una acción (detail de la API)</h3>
+      <div class="wf-mensaje wf-error" role="alert">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p>El grupo no tiene cupos disponibles.</p></div>
+      </div>
+
+      <h3 class="wf-variante">409 con acción adicional (RUI-04)</h3>
+      <div class="wf-pila">
+        <div class="wf-mensaje wf-error" role="alert">
+          <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+          <div class="wf-mensaje-texto"><p>Ya existe un estudiante inactivo con esa cédula o ese correo.</p><p class="wf-texto-2"><code>RN-39</code></p></div>
+          <div class="wf-mensaje-acciones"><button type="button" class="wf-boton wf-boton-pequeno">Reactivar estudiante</button></div>
+        </div>
+        <div class="wf-mensaje wf-error" role="alert">
+          <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+          <div class="wf-mensaje-texto"><p>Los datos cambiaron mientras se procesaba la solicitud.</p><p class="wf-texto-2"><code>CONCURRENCIA</code>: vuelve a cargar los datos actuales antes de reintentar.</p></div>
+          <div class="wf-mensaje-acciones"><button type="button" class="wf-boton wf-boton-pequeno">Intentar de nuevo</button></div>
+        </div>
+      </div>
+
+      <h3 class="wf-variante">Respuestas con texto fijo (RUI-03)</h3>
+      <div class="wf-pila">
+        <div class="wf-mensaje wf-error" role="alert">
+          <span class="wf-mensaje-icono" aria-hidden="true">[⏱]</span>
+          <div class="wf-mensaje-texto"><p>Demasiados intentos. Intente de nuevo en 60 segundos.</p><p class="wf-texto-2"><code>429</code>: el botón de envío queda deshabilitado durante ese tiempo.</p></div>
+          <div class="wf-mensaje-acciones"><button type="button" class="wf-boton wf-boton-pequeno" disabled>Iniciar sesión (60 s)</button></div>
+        </div>
+        <div class="wf-mensaje wf-error" role="alert">
+          <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+          <div class="wf-mensaje-texto"><p>Ocurrió un error inesperado. Si el problema continúa, reporte este código: <span class="wf-traceid">00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01</span></p><p class="wf-texto-2"><code>500</code>: el administrador busca el código en Errores (V-37).</p></div>
+          <div class="wf-mensaje-acciones"><button type="button" class="wf-boton wf-boton-pequeno" data-wf-copiar>Copiar código</button></div>
+        </div>
+        <div class="wf-mensaje wf-error" role="alert">
+          <span class="wf-mensaje-icono" aria-hidden="true">[⊘]</span>
+          <div class="wf-mensaje-texto"><p>No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p><p class="wf-texto-2">Sin respuesta: sin conexión, servidor caído o tiempo agotado.</p></div>
+          <div class="wf-mensaje-acciones"><button type="button" class="wf-boton wf-boton-pequeno">Reintentar</button></div>
+        </div>
+        <div class="wf-mensaje wf-aviso" role="status">
+          <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+          <div class="wf-mensaje-texto"><p>Su sesión terminó. Inicie sesión de nuevo.</p><p class="wf-texto-2"><code>401</code> con sesión: aparece en el inicio de sesión (RFF-03).</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Estados de contenido =========================================== -->
+    <section class="wf-componente" id="c-estados" aria-labelledby="t-estados">
+      <h2 id="t-estados">8. Estados de contenido</h2>
+      <p class="wf-componente-regla">RUI-13 · §2.5 (registro inexistente)</p>
+      <p>Ocupan el lugar del contenido de un listado o de una vista. La primera carga no muestra un listado vacío antes de recibir los datos.</p>
+      <div class="wf-muestras">
+        <div class="wf-listado">
+          <p class="wf-variante" style="margin: 12px 16px 0"><strong>Cargando</strong></p>
+          <div class="wf-cargando" role="status" aria-label="Cargando"><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div></div>
+        </div>
+        <div class="wf-listado">
+          <p class="wf-variante" style="margin: 12px 16px 0"><strong>Vacío sin filtros</strong></p>
+          <div class="wf-estado-contenido"><p class="wf-estado-titulo">No hay cursos registrados.</p><p class="wf-texto-2">Solo si el rol puede crear:</p><a class="wf-boton wf-principal" href="admin/V-21-curso-form.html">Registrar curso</a></div>
+        </div>
+        <div class="wf-listado">
+          <p class="wf-variante" style="margin: 12px 16px 0"><strong>Vacío con filtros</strong></p>
+          <div class="wf-estado-contenido"><p class="wf-estado-titulo">No hay resultados para los filtros aplicados.</p><button type="button" class="wf-boton">Limpiar filtros</button></div>
+        </div>
+        <div class="wf-listado">
+          <p class="wf-variante" style="margin: 12px 16px 0"><strong>Error</strong></p>
+          <div class="wf-estado-contenido" role="alert"><p class="wf-estado-titulo">Ocurrió un error inesperado.</p><p>Si el problema continúa, reporte este código: <span class="wf-traceid">00-4bf9…-01</span></p><button type="button" class="wf-boton">Reintentar</button></div>
+        </div>
+        <div class="wf-listado">
+          <p class="wf-variante" style="margin: 12px 16px 0"><strong>Registro inexistente (404)</strong></p>
+          <div class="wf-estado-contenido"><p class="wf-estado-titulo">El estudiante que busca no existe.</p><a class="wf-boton" href="admin/V-14-estudiantes.html">Ir a Estudiantes</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Etiquetas ====================================================== -->
+    <section class="wf-componente" id="c-etiquetas" aria-labelledby="t-etiquetas">
+      <h2 id="t-etiquetas">9. Etiquetas de estado</h2>
+      <p class="wf-componente-regla">RUI-19 · RUI-20 · RUI-12</p>
+      <p>El texto de la etiqueta es el estado legible de RUI-19. El borde y el relleno solo lo refuerzan.</p>
+      <div class="wf-desplazable">
+        <table class="wf-tabla-simple">
+          <thead><tr><th>Dato</th><th>Etiquetas</th><th>Refuerzo visual</th></tr></thead>
+          <tbody>
+            <tr><td>Estado del grupo</td>
+              <td><span class="wf-fila"><span class="wf-etiqueta wf-e-discontinua">Planificado</span><span class="wf-etiqueta wf-e-llena">Abierto</span><span class="wf-etiqueta wf-e-doble">Cerrado</span><span class="wf-etiqueta wf-e-gris">En curso</span><span class="wf-etiqueta wf-e-apagada">Finalizado</span><span class="wf-etiqueta wf-e-tachada">Cancelado</span></span></td>
+              <td>Discontinuo · relleno · doble · gris · apagado · tachado</td></tr>
+            <tr><td>Estado de la matrícula</td>
+              <td><span class="wf-fila"><span class="wf-etiqueta wf-e-llena">Activa</span><span class="wf-etiqueta wf-e-apagada">Retirada</span></span></td>
+              <td>Relleno · apagado</td></tr>
+            <tr><td>Registro (personas, cursos, aulas)</td>
+              <td><span class="wf-fila"><span class="wf-etiqueta">Activo</span><span class="wf-etiqueta wf-e-apagada">Inactivo</span></span></td>
+              <td>Normal · apagado. Los inactivos solo aparecen con "Incluir inactivos"</td></tr>
+            <tr><td>Otras marcas</td>
+              <td><span class="wf-fila"><span class="wf-etiqueta">Vigente</span><span class="wf-etiqueta">Ya matriculado</span><span class="wf-etiqueta wf-e-doble">Sin cupo</span><span class="wf-etiqueta">Sistema</span></span></td>
+              <td>Periodo vigente, oferta (RFF-30), cupos llenos, autor de auditoría <code>null</code> (RFF-39)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 10. Grilla del horario ============================================ -->
+    <section class="wf-componente" id="c-horario" aria-labelledby="t-horario">
+      <h2 id="t-horario">10. Grilla del horario semanal</h2>
+      <p class="wf-componente-regla">RFF-29 · RUI-17 · la usan V-27 (ocupación), V-34, V-16 y V-19</p>
+      <ul>
+        <li>Días como columnas (lunes a sábado; el domingo solo si hay bloques) y horas como filas, desde el primer bloque hasta el último.</li>
+        <li>Cada bloque muestra el NRC, el curso y, según la vista, el aula o el profesor, y abre el detalle del grupo (V-30).</li>
+        <li>Selector de periodo que empieza en el vigente. En pantallas angostas, lista agrupada por día.</li>
+      </ul>
+
+      <h3 class="wf-variante">Con bloques: horario de María Fernanda Quesada en 2026-III</h3>
+      <div class="wf-horario">
+        <div class="wf-horario-cabecera">
+          <h3 style="margin:0">Horario semanal</h3>
+          <div class="wf-campo">
+            <label for="h-periodo">Periodo</label>
+            <select id="h-periodo"><option selected>2026-III (vigente)</option><option>2026-II</option></select>
+          </div>
+        </div>
+
+        <div class="wf-grilla" style="--wf-dias: 6; --wf-filas: 7" aria-hidden="true">
+          <div class="wf-grilla-col" style="grid-column: 2"></div>
+          <div class="wf-grilla-col" style="grid-column: 3"></div>
+          <div class="wf-grilla-col" style="grid-column: 4"></div>
+          <div class="wf-grilla-col" style="grid-column: 5"></div>
+          <div class="wf-grilla-col" style="grid-column: 6"></div>
+          <div class="wf-grilla-col" style="grid-column: 7"></div>
+          <div class="wf-grilla-dia" style="grid-column: 2">Lunes</div>
+          <div class="wf-grilla-dia" style="grid-column: 3">Martes</div>
+          <div class="wf-grilla-dia" style="grid-column: 4">Miércoles</div>
+          <div class="wf-grilla-dia" style="grid-column: 5">Jueves</div>
+          <div class="wf-grilla-dia" style="grid-column: 6">Viernes</div>
+          <div class="wf-grilla-dia" style="grid-column: 7">Sábado</div>
+          <div class="wf-grilla-hora" style="grid-row: 2 / span 2">5:00 p. m.</div>
+          <div class="wf-grilla-hora" style="grid-row: 4 / span 2">6:00 p. m.</div>
+          <div class="wf-grilla-hora" style="grid-row: 6 / span 2">7:00 p. m.</div>
+          <a class="wf-bloque" style="grid-column: 2; grid-row: 4 / 8" href="compartidas/V-30-grupo.html" tabindex="-1"><strong>1001</strong><span>Inglés conversacional I</span><span>A-101 · Laura Jiménez</span></a>
+          <a class="wf-bloque" style="grid-column: 4; grid-row: 4 / 8" href="compartidas/V-30-grupo.html" tabindex="-1"><strong>1001</strong><span>Inglés conversacional I</span><span>A-101 · Laura Jiménez</span></a>
+          <a class="wf-bloque" style="grid-column: 3; grid-row: 2 / 6" href="compartidas/V-30-grupo.html" tabindex="-1"><strong>1004</strong><span>Excel para la oficina</span><span>B-201 · Carlos Vargas</span></a>
+          <a class="wf-bloque" style="grid-column: 5; grid-row: 2 / 6" href="compartidas/V-30-grupo.html" tabindex="-1"><strong>1004</strong><span>Excel para la oficina</span><span>B-201 · Carlos Vargas</span></a>
+        </div>
+
+        <!-- Lista por día: en celular reemplaza a la grilla, y es la versión accesible -->
+        <div class="wf-horario-lista">
+          <h3>Lunes</h3>
+          <ul><li><a href="compartidas/V-30-grupo.html"><strong>6:00 p. m. – 8:00 p. m. · 1001</strong><span>Inglés conversacional I · A-101 · Laura Jiménez</span></a></li></ul>
+          <h3>Martes</h3>
+          <ul><li><a href="compartidas/V-30-grupo.html"><strong>5:00 p. m. – 7:00 p. m. · 1004</strong><span>Excel para la oficina · B-201 · Carlos Vargas</span></a></li></ul>
+          <h3>Miércoles</h3>
+          <ul><li><a href="compartidas/V-30-grupo.html"><strong>6:00 p. m. – 8:00 p. m. · 1001</strong><span>Inglés conversacional I · A-101 · Laura Jiménez</span></a></li></ul>
+          <h3>Jueves</h3>
+          <ul><li><a href="compartidas/V-30-grupo.html"><strong>5:00 p. m. – 7:00 p. m. · 1004</strong><span>Excel para la oficina · B-201 · Carlos Vargas</span></a></li></ul>
+        </div>
+      </div>
+
+      <h3 class="wf-variante">Sin periodo vigente y sin bloques</h3>
+      <div class="wf-muestras">
+        <div class="wf-horario">
+          <div class="wf-estado-contenido">
+            <p class="wf-estado-titulo">No hay un periodo vigente.</p>
+            <p>Elija un periodo para ver el horario.</p>
+            <div class="wf-campo"><label for="h-periodo2">Periodo</label><select id="h-periodo2"><option selected>Elija un periodo</option><option>2026-III</option><option>2026-II</option></select></div>
+          </div>
+        </div>
+        <div class="wf-horario">
+          <div class="wf-estado-contenido">
+            <p class="wf-estado-titulo">No hay clases en el periodo 2026-III.</p>
+            <p class="wf-texto-2">El selector de periodo sigue disponible arriba de la grilla.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. Encabezado de detalle y pestañas ============================== -->
+    <section class="wf-componente" id="c-detalle" aria-labelledby="t-detalle">
+      <h2 id="t-detalle">11. Encabezado de detalle y pestañas</h2>
+      <p class="wf-componente-regla">Patrón de los detalles (V-13, V-16, V-19, V-22, V-27, V-30)</p>
+      <p>Migas hacia el listado, nombre del registro con su etiqueta de estado y las acciones que el rol y el estado permiten. Debajo, los datos y, si hay varias secciones, pestañas.</p>
+
+      <div class="wf-caja wf-pila">
+        <header class="wf-encabezado">
+          <div>
+            <p class="wf-migas"><a href="admin/V-14-estudiantes.html">Estudiantes</a> / Detalle</p>
+            <div class="wf-detalle-titulo"><h1 style="margin:0">María Fernanda Quesada Rojas</h1><span class="wf-etiqueta">Activo</span></div>
+          </div>
+          <div class="wf-acciones">
+            <a class="wf-boton" href="admin/V-15-estudiante-form.html">Editar</a>
+            <button type="button" class="wf-boton" data-wf-abrir="dlg-simple">Desactivar</button>
+            <button type="button" class="wf-boton wf-peligro" data-wf-abrir="dlg-reforzada">Eliminar</button>
+          </div>
+        </header>
+
+        <div class="wf-pestanas">
+          <div role="tablist" aria-label="Secciones del estudiante">
+            <button type="button" role="tab" id="d-tab-datos" aria-controls="d-datos" aria-selected="true">Datos</button>
+            <button type="button" role="tab" id="d-tab-mat" aria-controls="d-mat">Matrículas</button>
+            <button type="button" role="tab" id="d-tab-hor" aria-controls="d-hor">Horario</button>
+          </div>
+          <div role="tabpanel" id="d-datos" aria-labelledby="d-tab-datos">
+            <dl class="wf-datos">
+              <div><dt>Cédula</dt><dd>1-1789-0345</dd></div>
+              <div><dt>Correo</dt><dd>maria.quesada@correo.test</dd></div>
+              <div><dt>Teléfono</dt><dd>8812-3456</dd></div>
+              <div><dt>Fecha de nacimiento</dt><dd>22/05/2002</dd></div>
+              <div><dt>Fecha de registro</dt><dd>03/07/2026</dd></div>
+              <div><dt>Último ingreso</dt><dd>19/11/2026 8:15 a. m.</dd></div>
+            </dl>
+          </div>
+          <div role="tabpanel" id="d-mat" aria-labelledby="d-tab-mat"><div class="wf-relleno">Listado de matrículas (componente 1)</div></div>
+          <div role="tabpanel" id="d-hor" aria-labelledby="d-tab-hor"><div class="wf-relleno">Grilla del horario (componente 10)</div></div>
+        </div>
+      </div>
+    </section>
+
+    <details class="wf-notas">
+      <summary>Notas del catálogo</summary>
+      <dl>
+        <dt>Propósito</dt><dd>Fijar los componentes antes de dibujar las vistas (T2) y mostrarle a <code>arquitectura</code> qué librerías hacen falta: tabla paginada adaptable, selector de fecha con calendario, selector de hora de 12 horas, selector con búsqueda, ventanas modales y grilla semanal.</dd>
+        <dt>Uso en las vistas</dt><dd>Las vistas copian el HTML de estos ejemplos y solo usan las clases <code>wf-</code> definidas aquí.</dd>
+        <dt>Decisiones del boceto</dt><dd>
+          <ul>
+            <li>Tabla → tarjetas con el rótulo de cada celda tomado de <code>data-etiqueta</code>; la celda principal (nombre, NRC) encabeza la tarjeta.</li>
+            <li>Los filtros aplicados se muestran como fichas, con "Limpiar filtros" al final.</li>
+            <li>La grilla del horario es decorativa para lectores de pantalla (<code>aria-hidden</code>); la lista por día lleva la misma información y es la que se muestra en celular.</li>
+            <li>Íconos solo de texto o Unicode (supuesto 5 de la spec).</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <!-- Ventanas ============================================================ -->
+  <dialog class="wf-dialogo" id="dlg-simple" aria-labelledby="dlg-simple-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-simple-t">¿Desactivar a María Fernanda Quesada Rojas?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>No podrá iniciar sesión y dejará de aparecer en los listados. Puede reactivarla después.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <button type="button" class="wf-boton wf-principal" data-wf-enviando="Desactivando…">Desactivar estudiante</button>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo wf-reforzada" id="dlg-reforzada" aria-labelledby="dlg-reforzada-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-reforzada-t">¿Eliminar el curso ING-101?</h2></div>
+    <div class="wf-dialogo-cuerpo">
+      <p><strong>Esta acción no se puede deshacer.</strong></p>
+      <p>Se eliminará el curso Inglés conversacional I.</p>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Cancelar</button>
+      <button type="button" class="wf-boton wf-peligro" data-wf-enviando="Eliminando…">Eliminar curso</button>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo wf-reforzada" id="dlg-rechazo" aria-labelledby="dlg-rechazo-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-rechazo-t">¿Eliminar el curso ING-101?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <p><strong>Esta acción no se puede deshacer.</strong></p>
+      <div class="wf-mensaje wf-error" role="alert">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p>No se puede eliminar el curso porque tiene grupos asociados. Puede desactivarlo.</p></div>
+        <div class="wf-mensaje-acciones"><button type="button" class="wf-boton wf-boton-pequeno">Desactivar curso</button></div>
+      </div>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Cerrar</button>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-descartar" aria-labelledby="dlg-descartar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-descartar-t">¿Descartar los cambios?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>Hay cambios sin guardar en el formulario. Si sale, se perderán.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Seguir editando</button>
+      <button type="button" class="wf-boton wf-principal" data-wf-cerrar>Descartar cambios</button>
+    </div>
+  </dialog>
+
+  <script src="js/wireframe.js"></script>
+</body>
+</html>

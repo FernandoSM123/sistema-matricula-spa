@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-16 Detalle de estudiante — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-16"
+      data-wf-nombre="Detalle de estudiante"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-menu="V-14"
+      data-wf-estados="activo:Activo|inactivo:Inactivo|creado:Recién registrado (temporal no enviada)|guardado:Después de editar|reactivado:Después de reactivar|rechazos:Activo, con rechazos de la API en las ventanas|matriculado:Después de matricular (1007)|retirado:Después de retirar (1004)|cambiado:Después de cambiar de grupo (1001 → 1008)|cargando:Cargando|no-existe:Registro inexistente (404)|error:Error">
+
+  <main class="wf-vista">
+    <div class="wf-cargando" role="status" aria-label="Cargando el estudiante" data-wf-estado="cargando">
+      <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+    </div>
+    <div class="wf-caja wf-estado-contenido" data-wf-estado="no-existe">
+      <p class="wf-estado-titulo">El estudiante que busca no existe.</p>
+      <a class="wf-boton" href="V-14-estudiantes.html">Ir a Estudiantes</a>
+    </div>
+    <div class="wf-caja wf-estado-contenido" role="alert" data-wf-estado="error">
+      <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+      <button type="button" class="wf-boton">Reintentar</button>
+    </div>
+
+    <header class="wf-encabezado" data-wf-estado="activo inactivo creado guardado reactivado rechazos matriculado retirado cambiado">
+      <div>
+        <p class="wf-migas"><a href="V-14-estudiantes.html">Estudiantes</a> / Detalle</p>
+        <div class="wf-detalle-titulo">
+          <h1 style="margin:0">María Fernanda Quesada Rojas</h1>
+          <span class="wf-etiqueta" data-wf-estado="activo creado guardado reactivado rechazos matriculado retirado cambiado">Activo</span>
+          <span class="wf-etiqueta wf-e-apagada" data-wf-estado="inactivo">Inactivo</span>
+        </div>
+      </div>
+      <div class="wf-acciones">
+        <a class="wf-boton" href="V-15-estudiante-form.html#estado=edicion">Editar</a>
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-reenviar" data-wf-estado="activo creado guardado reactivado rechazos matriculado retirado cambiado">Reenviar temporal</button>
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-desactivar" data-wf-estado="activo creado guardado reactivado rechazos matriculado retirado cambiado">Desactivar</button>
+        <button type="button" class="wf-boton wf-principal" data-wf-abrir="dlg-reactivar" data-wf-estado="inactivo">Reactivar</button>
+        <button type="button" class="wf-boton wf-peligro" data-wf-abrir="dlg-eliminar">Eliminar</button>
+        <a class="wf-boton wf-enlace" href="V-36-auditoria.html#estado=filtrado">Ver historial de cambios</a>
+      </div>
+    </header>
+
+    <div class="wf-mensaje wf-aviso" role="status" data-wf-estado="creado">
+      <span class="wf-mensaje-icono" aria-hidden="true">[!]</span>
+      <div class="wf-mensaje-texto">
+        <p><strong>La cuenta se creó, pero no se pudo enviar la contraseña temporal.</strong></p>
+        <p>Revise que el correo sea correcto y reenvíela.</p>
+      </div>
+      <div class="wf-mensaje-acciones">
+        <button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-reenviar">Reenviar temporal</button>
+        <button type="button" class="wf-boton wf-boton-pequeno wf-enlace">Cerrar</button>
+      </div>
+    </div>
+
+    <div class="wf-mensaje" role="note" data-wf-estado="rechazos">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>En este estado, las ventanas de Reenviar temporal, Desactivar, Eliminar y Retirar muestran la respuesta de rechazo de la API.</p></div>
+    </div>
+
+    <div class="wf-pestanas" data-wf-estado="activo inactivo creado guardado reactivado rechazos matriculado retirado cambiado">
+      <div role="tablist" aria-label="Secciones del estudiante">
+        <button type="button" role="tab" id="tab-datos" aria-controls="panel-datos" aria-selected="true">Datos</button>
+        <button type="button" role="tab" id="tab-matriculas" aria-controls="panel-matriculas" data-wf-pestana-inicial="matriculado retirado cambiado">Matrículas</button>
+        <button type="button" role="tab" id="tab-horario" aria-controls="panel-horario">Horario</button>
+      </div>
+
+      <div role="tabpanel" id="panel-datos" aria-labelledby="tab-datos" class="wf-pila">
+        <section class="wf-caja" aria-labelledby="t-personales">
+          <h2 id="t-personales">Datos personales</h2>
+          <dl class="wf-datos">
+            <div><dt>Cédula</dt><dd>1-1789-0345</dd></div>
+            <div><dt>Nombre</dt><dd>María Fernanda</dd></div>
+            <div><dt>Apellidos</dt><dd>Quesada Rojas</dd></div>
+            <div><dt>Teléfono</dt><dd>8812-3456</dd></div>
+            <div><dt>Fecha de nacimiento</dt><dd>22/05/2002</dd></div>
+            <div><dt>Dirección</dt><dd>Barrio Escalante, San José</dd></div>
+          </dl>
+        </section>
+        <section class="wf-caja" aria-labelledby="t-cuenta">
+          <h2 id="t-cuenta">Cuenta</h2>
+          <dl class="wf-datos">
+            <div><dt>Correo</dt><dd>maria.quesada@correo.test</dd></div>
+            <div><dt>Estado</dt><dd><span data-wf-estado="activo creado guardado reactivado rechazos matriculado retirado cambiado">Activo</span><span data-wf-estado="inactivo">Inactivo</span></dd></div>
+            <div><dt>Fecha de registro</dt><dd><span data-wf-estado="activo inactivo guardado reactivado rechazos matriculado retirado cambiado">03/07/2026</span><span data-wf-estado="creado">19/11/2026</span></dd></div>
+            <div><dt>Cuenta creada</dt><dd><span data-wf-estado="activo inactivo guardado reactivado rechazos matriculado retirado cambiado">03/07/2026 9:12 a. m.</span><span data-wf-estado="creado">19/11/2026 9:40 a. m.</span></dd></div>
+            <div><dt>Último ingreso</dt><dd><span data-wf-estado="creado">Nunca ha ingresado</span><span data-wf-estado="activo inactivo guardado reactivado rechazos matriculado retirado cambiado">19/11/2026 8:15 a. m.</span></dd></div>
+          </dl>
+        </section>
+      </div>
+      <div role="tabpanel" id="panel-matriculas" aria-labelledby="tab-matriculas">
+        <div class="wf-pila">
+          <div class="wf-encabezado" style="margin:0">
+            <form class="wf-filtros" role="search" onsubmit="return false">
+              <div class="wf-campo wf-busqueda">
+                <label for="em-buscar">Buscar</label>
+                <div class="wf-con-boton"><input id="em-buscar" type="search" placeholder="Curso o NRC"><button type="submit" class="wf-boton">Buscar</button></div>
+              </div>
+              <div class="wf-campo">
+                <label for="em-periodo">Periodo</label>
+                <select id="em-periodo"><option selected>Todos</option><option>2026-III</option><option>2026-II</option></select>
+              </div>
+              <div class="wf-campo">
+                <label for="em-estado">Estado</label>
+                <select id="em-estado"><option selected>Todos</option><option>Activa</option><option>Retirada</option></select>
+              </div>
+            </form>
+            <a class="wf-boton wf-principal" href="../compartidas/V-32-matricular.html#estado=buscar&amp;rol=administrador">Matricular</a>
+          </div>
+
+          <div class="wf-listado" data-wf-estado="activo inactivo guardado reactivado rechazos matriculado retirado cambiado">
+            <table class="wf-tabla">
+              <thead>
+                <tr><th scope="col">Curso</th><th scope="col">NRC</th><th scope="col">Periodo</th><th scope="col">Profesor</th><th scope="col">Estado del grupo</th><th scope="col">Matrícula</th><th scope="col">Retiro</th><th scope="col"><span class="wf-solo-lector">Acciones</span></th></tr>
+              </thead>
+              <tbody>
+              <tr data-wf-estado="matriculado">
+                <td class="wf-celda-principal" data-etiqueta="Curso">FOT-300 · Fotografía digital avanzada</td><td data-etiqueta="NRC"><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=administrador">1007</a></td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Profesor">Ana Rodríguez Castro</td>
+                <td data-etiqueta="Estado del grupo"><span class="wf-etiqueta wf-e-llena">Abierto</span></td>
+                <td data-etiqueta="Matrícula"><span class="wf-etiqueta wf-e-llena">Activa</span> <span class="wf-nowrap">19/11/2026</span></td>
+                <td data-etiqueta="Retiro">—</td>
+                <td class="wf-col-acciones"><span class="wf-acciones">
+                  <a class="wf-boton wf-boton-pequeno" href="../compartidas/V-33-cambiar-grupo.html#estado=elegir&amp;rol=administrador">Cambiar de grupo</a>
+                  <button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-retirar-m">Retirar</button>
+                </span></td>
+              </tr>
+              <tr data-wf-estado="cambiado">
+                <td class="wf-celda-principal" data-etiqueta="Curso">ING-101 · Inglés conversacional I</td><td data-etiqueta="NRC"><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=administrador">1008</a></td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Profesor">Laura Jiménez Mora</td>
+                <td data-etiqueta="Estado del grupo"><span class="wf-etiqueta wf-e-llena">Abierto</span></td>
+                <td data-etiqueta="Matrícula"><span class="wf-etiqueta wf-e-llena">Activa</span> <span class="wf-nowrap">19/11/2026</span></td>
+                <td data-etiqueta="Retiro">—</td>
+                <td class="wf-col-acciones"><span class="wf-acciones">
+                  <a class="wf-boton wf-boton-pequeno" href="../compartidas/V-33-cambiar-grupo.html#estado=elegir&amp;rol=administrador">Cambiar de grupo</a>
+                  <button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-retirar-m">Retirar</button>
+                </span></td>
+              </tr>
+              <tr>
+                <td class="wf-celda-principal" data-etiqueta="Curso">ING-101 · Inglés conversacional I</td><td data-etiqueta="NRC"><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=administrador">1001</a></td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Profesor">Laura Jiménez Mora</td>
+                <td data-etiqueta="Estado del grupo"><span class="wf-etiqueta wf-e-llena">Abierto</span></td>
+                <td data-etiqueta="Matrícula"><span data-wf-estado="activo inactivo guardado reactivado rechazos matriculado retirado"><span class="wf-etiqueta wf-e-llena">Activa</span> <span class="wf-nowrap">10/11/2026</span></span><span data-wf-estado="cambiado"><span class="wf-etiqueta wf-e-apagada">Retirada</span> <span class="wf-nowrap">10/11/2026</span></span></td>
+                <td data-etiqueta="Retiro"><span data-wf-estado="activo inactivo guardado reactivado rechazos matriculado retirado">—</span><span data-wf-estado="cambiado"><span class="wf-nowrap">19/11/2026</span> · Cambio de grupo</span></td>
+                <td class="wf-col-acciones"><span data-wf-estado="activo inactivo guardado reactivado rechazos matriculado retirado"><span class="wf-acciones">
+                  <a class="wf-boton wf-boton-pequeno" href="../compartidas/V-33-cambiar-grupo.html#estado=elegir&amp;rol=administrador">Cambiar de grupo</a>
+                  <button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-retirar-m">Retirar</button>
+                </span></span></td>
+              </tr>
+              <tr>
+                <td class="wf-celda-principal" data-etiqueta="Curso">EXC-110 · Excel para la oficina</td><td data-etiqueta="NRC"><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=administrador">1004</a></td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Profesor">Carlos Vargas Solís</td>
+                <td data-etiqueta="Estado del grupo"><span class="wf-etiqueta wf-e-llena">Abierto</span></td>
+                <td data-etiqueta="Matrícula"><span data-wf-estado="activo inactivo guardado reactivado rechazos matriculado cambiado"><span class="wf-etiqueta wf-e-llena">Activa</span> <span class="wf-nowrap">10/11/2026</span></span><span data-wf-estado="retirado"><span class="wf-etiqueta wf-e-apagada">Retirada</span> <span class="wf-nowrap">10/11/2026</span></span></td>
+                <td data-etiqueta="Retiro"><span data-wf-estado="activo inactivo guardado reactivado rechazos matriculado cambiado">—</span><span data-wf-estado="retirado"><span class="wf-nowrap">19/11/2026</span> · Retiro voluntario</span></td>
+                <td class="wf-col-acciones"><span data-wf-estado="activo inactivo guardado reactivado rechazos matriculado cambiado"><span class="wf-acciones">
+                  <a class="wf-boton wf-boton-pequeno" href="../compartidas/V-33-cambiar-grupo.html#estado=elegir&amp;rol=administrador">Cambiar de grupo</a>
+                  <button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-retirar-m">Retirar</button>
+                </span></span></td>
+              </tr>
+              <tr>
+                <td class="wf-celda-principal" data-etiqueta="Curso">FOT-300 · Fotografía digital avanzada</td><td data-etiqueta="NRC"><a href="../compartidas/V-30-grupo.html#estado=finalizado&amp;rol=administrador">0901</a></td><td data-etiqueta="Periodo">2026-II</td><td data-etiqueta="Profesor">Ana Rodríguez Castro</td>
+                <td data-etiqueta="Estado del grupo"><span class="wf-etiqueta wf-e-apagada">Finalizado</span></td>
+                <td data-etiqueta="Matrícula"><span class="wf-etiqueta wf-e-llena">Activa</span> <span class="wf-nowrap">08/07/2026</span></td>
+                <td data-etiqueta="Retiro">—</td>
+                <td class="wf-col-acciones"></td>
+              </tr>
+              <tr>
+                <td class="wf-celda-principal" data-etiqueta="Curso">EXC-110 · Excel para la oficina</td><td data-etiqueta="NRC"><a href="../compartidas/V-30-grupo.html#estado=finalizado&amp;rol=administrador">0902</a></td><td data-etiqueta="Periodo">2026-II</td><td data-etiqueta="Profesor">Carlos Vargas Solís</td>
+                <td data-etiqueta="Estado del grupo"><span class="wf-etiqueta wf-e-apagada">Finalizado</span></td>
+                <td data-etiqueta="Matrícula"><span class="wf-etiqueta wf-e-apagada">Retirada</span> <span class="wf-nowrap">08/07/2026</span></td>
+                <td data-etiqueta="Retiro"><span class="wf-nowrap">05/08/2026</span> · Retiro voluntario</td>
+                <td class="wf-col-acciones"></td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="wf-paginacion">
+              <span class="wf-paginacion-rango" data-wf-estado="activo inactivo guardado reactivado rechazos retirado">1–4 de 4</span>
+              <span class="wf-paginacion-rango" data-wf-estado="matriculado cambiado">1–5 de 5</span>
+              <div class="wf-paginacion-controles">
+                <button type="button" class="wf-boton wf-boton-pequeno" disabled>← Anterior</button>
+                <button type="button" class="wf-boton wf-boton-pequeno" disabled>Siguiente →</button>
+              </div>
+            </div>
+          </div>
+          <div class="wf-caja wf-estado-contenido" data-wf-estado="creado">
+            <p class="wf-estado-titulo">Este estudiante todavía no tiene matrículas.</p>
+          </div>
+        </div>
+      </div>
+      <div role="tabpanel" id="panel-horario" aria-labelledby="tab-horario">
+        <section class="wf-horario" aria-label="Horario semanal" data-wf-estado="activo inactivo guardado reactivado rechazos matriculado retirado cambiado">
+          <div class="wf-horario-cabecera">
+            <h2 style="margin:0">Horario semanal</h2>
+            <div class="wf-campo">
+              <label for="eh-periodo">Periodo</label>
+              <select id="eh-periodo"><option selected>2026-III (vigente)</option><option>2027-I</option><option>2026-II</option></select>
+            </div>
+          </div>
+
+          <div class="wf-grilla" style="--wf-dias: 6; --wf-filas: 7" aria-hidden="true">
+            <div class="wf-grilla-col" style="grid-column: 2"></div>
+            <div class="wf-grilla-col" style="grid-column: 3"></div>
+            <div class="wf-grilla-col" style="grid-column: 4"></div>
+            <div class="wf-grilla-col" style="grid-column: 5"></div>
+            <div class="wf-grilla-col" style="grid-column: 6"></div>
+            <div class="wf-grilla-col" style="grid-column: 7"></div>
+            <div class="wf-grilla-dia" style="grid-column: 2">Lunes</div>
+            <div class="wf-grilla-dia" style="grid-column: 3">Martes</div>
+            <div class="wf-grilla-dia" style="grid-column: 4">Miércoles</div>
+            <div class="wf-grilla-dia" style="grid-column: 5">Jueves</div>
+            <div class="wf-grilla-dia" style="grid-column: 6">Viernes</div>
+            <div class="wf-grilla-dia" style="grid-column: 7">Sábado</div>
+            <div class="wf-grilla-hora" style="grid-row: 2 / span 2">5:00 p. m.</div>
+            <div class="wf-grilla-hora" style="grid-row: 4 / span 2">6:00 p. m.</div>
+            <div class="wf-grilla-hora" style="grid-row: 6 / span 2">7:00 p. m.</div>
+            <a class="wf-bloque" style="grid-column: 2; grid-row: 4 / 8" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=administrador" tabindex="-1"><strong>1001</strong><span>Inglés conversacional I</span><span>A-101 · Laura Jiménez</span></a>
+            <a class="wf-bloque" style="grid-column: 4; grid-row: 4 / 8" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=administrador" tabindex="-1"><strong>1001</strong><span>Inglés conversacional I</span><span>A-101 · Laura Jiménez</span></a>
+            <a class="wf-bloque" style="grid-column: 3; grid-row: 2 / 6" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=administrador" tabindex="-1"><strong>1004</strong><span>Excel para la oficina</span><span>B-201 · Carlos Vargas</span></a>
+            <a class="wf-bloque" style="grid-column: 5; grid-row: 2 / 6" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=administrador" tabindex="-1"><strong>1004</strong><span>Excel para la oficina</span><span>B-201 · Carlos Vargas</span></a>
+          </div>
+
+          <div class="wf-horario-lista">
+            <h3>Lunes</h3>
+            <ul><li><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=administrador"><strong>6:00 p. m. – 8:00 p. m. · 1001</strong><span>Inglés conversacional I · A-101 · Laura Jiménez</span></a></li></ul>
+            <h3>Martes</h3>
+            <ul><li><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=administrador"><strong>5:00 p. m. – 7:00 p. m. · 1004</strong><span>Excel para la oficina · B-201 · Carlos Vargas</span></a></li></ul>
+            <h3>Miércoles</h3>
+            <ul><li><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=administrador"><strong>6:00 p. m. – 8:00 p. m. · 1001</strong><span>Inglés conversacional I · A-101 · Laura Jiménez</span></a></li></ul>
+            <h3>Jueves</h3>
+            <ul><li><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=administrador"><strong>5:00 p. m. – 7:00 p. m. · 1004</strong><span>Excel para la oficina · B-201 · Carlos Vargas</span></a></li></ul>
+          </div>
+        </section>
+        <div class="wf-caja wf-estado-contenido" data-wf-estado="creado">
+          <p class="wf-estado-titulo">No hay clases en el periodo 2026-III.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="wf-toast" role="status" data-wf-estado="creado">Estudiante registrado</div>
+    <div class="wf-toast" role="status" data-wf-estado="matriculado">Matrícula registrada en el grupo 1007</div>
+    <div class="wf-toast" role="status" data-wf-estado="retirado">Matrícula del grupo 1004 retirada</div>
+    <div class="wf-toast" role="status" data-wf-estado="cambiado">Cambio al grupo 1008 realizado</div>
+    <div class="wf-toast" role="status" data-wf-estado="guardado">Cambios guardados</div>
+    <div class="wf-toast" role="status" data-wf-estado="reactivado">Estudiante reactivado</div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-16</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-16 Detalle de estudiante · administrador</dd>
+        <dt>Requerimientos</dt><dd>RFF-14 a RFF-17 · RFF-40 (historial) · RFF-12 (aviso de <code>correoEnviado: false</code>) · RFF-31, RFF-33, RFF-34, RFF-35 (matrículas y horario)</dd>
+        <dt>Reglas</dt><dd>RUI-03 (<code>404</code>), RUI-04 (<code>RN-34</code>, <code>RN-36</code>), RUI-07, RUI-13, RUI-16, RUI-21</dd>
+        <dt>Endpoints</dt><dd><code>GET /estudiantes/{id}</code>, <code>POST /usuarios/{id}/reenviar-temporal</code>, <code>POST /estudiantes/{id}/desactivar</code>, <code>POST /estudiantes/{id}/reactivar</code>, <code>DELETE /estudiantes/{id}</code>, <code>GET /estudiantes/{id}/matriculas</code>, <code>GET /estudiantes/{id}/horario</code>, <code>POST /matriculas/{id}/retiro</code></dd>
+        <dt>Backend</dt><dd>RF-12, RF-17, RF-19, RN-34, RN-35, RN-36, RN-38</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Tres pestañas: Datos, Matrículas y Horario, porque la matrícula del administrador vive aquí (§2.3).</li>
+            <li>Las acciones siguen la tabla de RFF-14 según el estado. "Eliminar" usa la confirmación reforzada.</li>
+            <li>El rechazo <code>409 RN-36</code> lleva a la pestaña "Matrículas"; el <code>409 RN-34</code> ofrece desactivar en su lugar.</li>
+            <li>Pestaña Matrículas (RFF-35): la lista del historial, con "Matricular" (abre V-32 sobre esta vista) y, por matrícula activa, "Cambiar de grupo" (V-33) y "Retirar" (confirmación simple). Después de matricular, retirar o cambiar, la vista vuelve con la pestaña Matrículas elegida.</li>
+            <li>Pestaña Horario: la grilla del componente 10 con <code>GET /estudiantes/{id}/horario</code>.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <dialog class="wf-dialogo" id="dlg-retirar-m" aria-labelledby="dlg-retirar-m-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-retirar-m-t">¿Retirar a María Fernanda de EXC-110, grupo 1004?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <ul>
+        <li>Se libera su cupo y no se puede deshacer.</li>
+        <li>Para volver, habría que matricularla de nuevo.</li>
+        <li>Como administrador, no se le aplican la fecha límite de retiro ni el estado del grupo.</li>
+      </ul>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rechazos">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p><strong>La matrícula ya no está activa</strong></p><p>Esta matrícula ya fue retirada. Actualice la lista.</p></div>
+      </div>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="#estado=retirado" data-wf-estado="activo inactivo guardado reactivado matriculado cambiado">Retirar</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-reenviar" aria-labelledby="dlg-reenviar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-reenviar-t">¿Reenviar la contraseña temporal?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <p>Se enviará una contraseña temporal nueva a <strong>maria.quesada@correo.test</strong>. Vence en 72 horas y reemplaza a cualquier otra pendiente.</p>
+      <p class="wf-texto-2">Antes de reenviar, confirme que el estudiante todavía usa ese correo.</p>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rechazos">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p>No se pudo enviar el correo con la contraseña temporal. Intente de nuevo.</p></div>
+      </div>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <button type="button" class="wf-boton wf-principal" data-wf-enviando="Enviando…" data-wf-estado="activo inactivo creado guardado reactivado matriculado retirado cambiado">Reenviar temporal</button>
+      <button type="button" class="wf-boton wf-principal" data-wf-enviando="Enviando…" data-wf-estado="rechazos">Intentar de nuevo</button>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-desactivar" aria-labelledby="dlg-desactivar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-desactivar-t">¿Desactivar a María Fernanda Quesada Rojas?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <ul>
+        <li>No podrá iniciar sesión, y sus sesiones abiertas se cerrarán.</li>
+        <li>Su historial de matrículas se conserva.</li>
+        <li>Puede reactivarla después.</li>
+      </ul>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rechazos">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p>No se puede desactivar al estudiante porque tiene matrículas activas.</p></div>
+        <div class="wf-mensaje-acciones"><button type="button" class="wf-boton wf-boton-pequeno" data-wf-pestana="tab-matriculas">Ver sus matrículas</button></div>
+      </div>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="#estado=inactivo" data-wf-estado="activo creado guardado reactivado matriculado retirado cambiado">Desactivar estudiante</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-reactivar" aria-labelledby="dlg-reactivar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-reactivar-t">¿Reactivar a María Fernanda Quesada Rojas?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>Podrá iniciar sesión de nuevo con su contraseña y volverá a aparecer en los listados.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="#estado=reactivado">Reactivar estudiante</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo wf-reforzada" id="dlg-eliminar" aria-labelledby="dlg-eliminar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-eliminar-t">¿Eliminar a María Fernanda Quesada Rojas?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <p><strong>Esta acción no se puede deshacer.</strong> También se elimina su cuenta.</p>
+      <p>Solo es posible si el estudiante nunca tuvo matrículas, por ejemplo si se registró por error. Para dar de baja a un estudiante, desactívelo.</p>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rechazos">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p>No se puede eliminar al estudiante porque tiene matrículas registradas.</p></div>
+        <div class="wf-mensaje-acciones"><button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-desactivar">Desactivar en su lugar</button></div>
+      </div>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Cancelar</button>
+      <a class="wf-boton wf-peligro" href="V-14-estudiantes.html#estado=eliminado" data-wf-estado="activo inactivo creado guardado reactivado matriculado retirado cambiado">Eliminar estudiante</a>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

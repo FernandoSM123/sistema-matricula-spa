@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-34 Mi horario — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-34"
+      data-wf-nombre="Mi horario"
+      data-wf-raiz="../"
+      data-wf-marco="rol"
+      data-wf-menu="V-34"
+      data-wf-estados="datos:Con clases|sin-vigente:Sin periodo vigente|sin-clases:Sin clases en el periodo|cargando:Cargando|error:Error"
+      data-wf-roles="estudiante:Estudiante|profesor:Profesor">
+
+  <main class="wf-vista">
+    <header class="wf-encabezado">
+      <div>
+        <h1>Mi horario</h1>
+        <p class="wf-encabezado-subtitulo" data-wf-rol="estudiante">Sus clases de la semana. Cada bloque abre el grupo.</p>
+        <p class="wf-encabezado-subtitulo" data-wf-rol="profesor">Las clases que imparte en la semana. Cada bloque abre el grupo.</p>
+      </div>
+    </header>
+
+    <section class="wf-horario" aria-label="Horario semanal" data-wf-estado="datos" data-wf-rol="estudiante">
+      <div class="wf-horario-cabecera">
+        <h2 style="margin:0">Horario semanal</h2>
+        <div class="wf-campo">
+          <label for="h-periodo-e">Periodo</label>
+          <select id="h-periodo-e"><option selected>2026-III (vigente)</option><option>2027-I</option><option>2026-II</option></select>
+        </div>
+      </div>
+
+      <div class="wf-grilla" style="--wf-dias: 6; --wf-filas: 7" aria-hidden="true">
+        <div class="wf-grilla-col" style="grid-column: 2"></div>
+        <div class="wf-grilla-col" style="grid-column: 3"></div>
+        <div class="wf-grilla-col" style="grid-column: 4"></div>
+        <div class="wf-grilla-col" style="grid-column: 5"></div>
+        <div class="wf-grilla-col" style="grid-column: 6"></div>
+        <div class="wf-grilla-col" style="grid-column: 7"></div>
+        <div class="wf-grilla-dia" style="grid-column: 2">Lunes</div>
+        <div class="wf-grilla-dia" style="grid-column: 3">Martes</div>
+        <div class="wf-grilla-dia" style="grid-column: 4">Miércoles</div>
+        <div class="wf-grilla-dia" style="grid-column: 5">Jueves</div>
+        <div class="wf-grilla-dia" style="grid-column: 6">Viernes</div>
+        <div class="wf-grilla-dia" style="grid-column: 7">Sábado</div>
+        <div class="wf-grilla-hora" style="grid-row: 2 / span 2">5:00 p. m.</div>
+        <div class="wf-grilla-hora" style="grid-row: 4 / span 2">6:00 p. m.</div>
+        <div class="wf-grilla-hora" style="grid-row: 6 / span 2">7:00 p. m.</div>
+        <a class="wf-bloque" style="grid-column: 2; grid-row: 4 / 8" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=estudiante" tabindex="-1"><strong>1001</strong><span>Inglés conversacional I</span><span>A-101 · Laura Jiménez</span></a>
+        <a class="wf-bloque" style="grid-column: 4; grid-row: 4 / 8" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=estudiante" tabindex="-1"><strong>1001</strong><span>Inglés conversacional I</span><span>A-101 · Laura Jiménez</span></a>
+        <a class="wf-bloque" style="grid-column: 3; grid-row: 2 / 6" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=estudiante" tabindex="-1"><strong>1004</strong><span>Excel para la oficina</span><span>B-201 · Carlos Vargas</span></a>
+        <a class="wf-bloque" style="grid-column: 5; grid-row: 2 / 6" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=estudiante" tabindex="-1"><strong>1004</strong><span>Excel para la oficina</span><span>B-201 · Carlos Vargas</span></a>
+      </div>
+
+      <div class="wf-horario-lista">
+        <h3>Lunes</h3>
+        <ul><li><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=estudiante"><strong>6:00 p. m. – 8:00 p. m. · 1001</strong><span>Inglés conversacional I · A-101 · Laura Jiménez</span></a></li></ul>
+        <h3>Martes</h3>
+        <ul><li><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=estudiante"><strong>5:00 p. m. – 7:00 p. m. · 1004</strong><span>Excel para la oficina · B-201 · Carlos Vargas</span></a></li></ul>
+        <h3>Miércoles</h3>
+        <ul><li><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=estudiante"><strong>6:00 p. m. – 8:00 p. m. · 1001</strong><span>Inglés conversacional I · A-101 · Laura Jiménez</span></a></li></ul>
+        <h3>Jueves</h3>
+        <ul><li><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=estudiante"><strong>5:00 p. m. – 7:00 p. m. · 1004</strong><span>Excel para la oficina · B-201 · Carlos Vargas</span></a></li></ul>
+      </div>
+    </section>
+
+    <section class="wf-horario" aria-label="Horario semanal" data-wf-estado="datos" data-wf-rol="profesor">
+      <div class="wf-horario-cabecera">
+        <h2 style="margin:0">Horario semanal</h2>
+        <div class="wf-campo">
+          <label for="h-periodo-p">Periodo</label>
+          <select id="h-periodo-p"><option selected>2026-III (vigente)</option><option>2027-I</option><option>2026-II</option></select>
+        </div>
+      </div>
+
+      <div class="wf-grilla" style="--wf-dias: 6; --wf-filas: 25" aria-hidden="true">
+        <div class="wf-grilla-col" style="grid-column: 2"></div>
+        <div class="wf-grilla-col" style="grid-column: 3"></div>
+        <div class="wf-grilla-col" style="grid-column: 4"></div>
+        <div class="wf-grilla-col" style="grid-column: 5"></div>
+        <div class="wf-grilla-col" style="grid-column: 6"></div>
+        <div class="wf-grilla-col" style="grid-column: 7"></div>
+        <div class="wf-grilla-dia" style="grid-column: 2">Lunes</div>
+        <div class="wf-grilla-dia" style="grid-column: 3">Martes</div>
+        <div class="wf-grilla-dia" style="grid-column: 4">Miércoles</div>
+        <div class="wf-grilla-dia" style="grid-column: 5">Jueves</div>
+        <div class="wf-grilla-dia" style="grid-column: 6">Viernes</div>
+        <div class="wf-grilla-dia" style="grid-column: 7">Sábado</div>
+        <div class="wf-grilla-hora" style="grid-row: 2 / span 2">8:00 a. m.</div>
+        <div class="wf-grilla-hora" style="grid-row: 4 / span 2">9:00 a. m.</div>
+        <div class="wf-grilla-hora" style="grid-row: 6 / span 2">10:00 a. m.</div>
+        <div class="wf-grilla-hora" style="grid-row: 8 / span 2">11:00 a. m.</div>
+        <div class="wf-grilla-hora" style="grid-row: 10 / span 2">12:00 p. m.</div>
+        <div class="wf-grilla-hora" style="grid-row: 12 / span 2">1:00 p. m.</div>
+        <div class="wf-grilla-hora" style="grid-row: 14 / span 2">2:00 p. m.</div>
+        <div class="wf-grilla-hora" style="grid-row: 16 / span 2">3:00 p. m.</div>
+        <div class="wf-grilla-hora" style="grid-row: 18 / span 2">4:00 p. m.</div>
+        <div class="wf-grilla-hora" style="grid-row: 20 / span 2">5:00 p. m.</div>
+        <div class="wf-grilla-hora" style="grid-row: 22 / span 2">6:00 p. m.</div>
+        <div class="wf-grilla-hora" style="grid-row: 24 / span 2">7:00 p. m.</div>
+        <a class="wf-bloque" style="grid-column: 7; grid-row: 2 / 8" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=profesor" tabindex="-1"><strong>1002</strong><span>Inglés conversacional I</span><span>Virtual</span></a>
+        <a class="wf-bloque" style="grid-column: 2; grid-row: 22 / 26" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=profesor" tabindex="-1"><strong>1001</strong><span>Inglés conversacional I</span><span>A-101</span></a>
+        <a class="wf-bloque" style="grid-column: 4; grid-row: 22 / 26" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=profesor" tabindex="-1"><strong>1001</strong><span>Inglés conversacional I</span><span>A-101</span></a>
+        <a class="wf-bloque" style="grid-column: 3; grid-row: 22 / 26" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=profesor" tabindex="-1"><strong>1003</strong><span>Inglés conversacional II</span><span>A-102</span></a>
+        <a class="wf-bloque" style="grid-column: 5; grid-row: 22 / 26" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=profesor" tabindex="-1"><strong>1003</strong><span>Inglés conversacional II</span><span>A-102</span></a>
+        <a class="wf-bloque" style="grid-column: 6; grid-row: 20 / 26" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=profesor" tabindex="-1"><strong>1008</strong><span>Inglés conversacional I</span><span>A-101</span></a>
+      </div>
+
+      <div class="wf-horario-lista">
+        <h3>Lunes</h3>
+        <ul><li><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=profesor"><strong>6:00 p. m. – 8:00 p. m. · 1001</strong><span>Inglés conversacional I · A-101</span></a></li></ul>
+        <h3>Martes</h3>
+        <ul><li><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=profesor"><strong>6:00 p. m. – 8:00 p. m. · 1003</strong><span>Inglés conversacional II · A-102</span></a></li></ul>
+        <h3>Miércoles</h3>
+        <ul><li><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=profesor"><strong>6:00 p. m. – 8:00 p. m. · 1001</strong><span>Inglés conversacional I · A-101</span></a></li></ul>
+        <h3>Jueves</h3>
+        <ul><li><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=profesor"><strong>6:00 p. m. – 8:00 p. m. · 1003</strong><span>Inglés conversacional II · A-102</span></a></li></ul>
+        <h3>Viernes</h3>
+        <ul><li><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=profesor"><strong>5:00 p. m. – 8:00 p. m. · 1008</strong><span>Inglés conversacional I · A-101</span></a></li></ul>
+        <h3>Sábado</h3>
+        <ul><li><a href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=profesor"><strong>8:00 a. m. – 11:00 a. m. · 1002</strong><span>Inglés conversacional I · Virtual</span></a></li></ul>
+      </div>
+    </section>
+
+    <section class="wf-horario" aria-label="Horario semanal" data-wf-estado="sin-vigente">
+      <div class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay un periodo vigente.</p>
+        <p>Elija un periodo para ver el horario.</p>
+        <div class="wf-campo"><label for="h-periodo-sv">Periodo</label><select id="h-periodo-sv"><option selected>Elija un periodo</option><option>2027-I</option><option>2026-III</option><option>2026-II</option></select></div>
+      </div>
+    </section>
+
+    <section class="wf-horario" aria-label="Horario semanal" data-wf-estado="sin-clases">
+      <div class="wf-horario-cabecera">
+        <h2 style="margin:0">Horario semanal</h2>
+        <div class="wf-campo">
+          <label for="h-periodo-sc">Periodo</label>
+          <select id="h-periodo-sc"><option selected>2026-III (vigente)</option><option>2027-I</option><option>2026-II</option></select>
+        </div>
+      </div>
+      <div class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay clases en el periodo 2026-III.</p>
+        <a class="wf-boton" href="../publico/V-01-oferta.html" data-wf-rol="estudiante">Ver la oferta académica</a>
+      </div>
+    </section>
+
+    <div class="wf-cargando" role="status" aria-label="Cargando el horario" data-wf-estado="cargando">
+      <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+    </div>
+    <div class="wf-caja wf-estado-contenido" role="alert" data-wf-estado="error">
+      <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+      <button type="button" class="wf-boton">Reintentar</button>
+    </div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-34</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-34 Mi horario · estudiante y profesor (con "Ver como")</dd>
+        <dt>Requerimientos</dt><dd>RFF-36</dd>
+        <dt>Reglas</dt><dd>RUI-17 · componente 10</dd>
+        <dt>Endpoints</dt><dd><code>GET /me/horario</code> (con <code>periodoId</code>), <code>GET /periodos</code></dd>
+        <dt>Backend</dt><dd>RF-21, RF-28, RN-18, consultas 3 y 7</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Los bloques del estudiante muestran el aula y el profesor; los del profesor, el aula (o "Virtual").</li>
+            <li>La grilla va de la primera a la última hora con clases: el horario de Laura empieza a las 8:00 a. m. por el grupo del sábado.</li>
+            <li>Sin periodo vigente, pide elegir un periodo. En celular, la grilla pasa a la lista por día.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

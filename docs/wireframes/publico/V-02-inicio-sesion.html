@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-02 Inicio de sesión — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-02"
+      data-wf-nombre="Inicio de sesión"
+      data-wf-raiz="../"
+      data-wf-marco="visitante"
+      data-wf-estados="datos:Formulario|invalidas:Credenciales inválidas (401)|desactivada:Cuenta desactivada (403 RN-29)|limite:Demasiados intentos (429)|sesion-vencida:Sesión terminada (RFF-03)|registrado:Después del registro|enviando:Enviando">
+
+  <main class="wf-vista wf-vista-angosta">
+    <header>
+      <h1>Iniciar sesión</h1>
+      <p class="wf-encabezado-subtitulo">Ingrese con su correo y su contraseña.</p>
+    </header>
+
+    <div class="wf-mensaje wf-aviso" role="status" data-wf-estado="sesion-vencida">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>Su sesión terminó. Inicie sesión de nuevo.</p><p class="wf-texto-2">Al ingresar, volverá a la página donde estaba.</p></div>
+    </div>
+
+    <div class="wf-toast wf-toast-muestra" role="status" data-wf-estado="registrado">Su cuenta fue creada. Ya puede iniciar sesión.</div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="invalidas">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto"><p>El correo o la contraseña no son correctos.</p></div>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="desactivada">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto"><p>Su cuenta está desactivada.</p><p>Para reactivarla, contacte a la administración del instituto.</p></div>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="limite">
+      <span class="wf-mensaje-icono" aria-hidden="true">[⏱]</span>
+      <div class="wf-mensaje-texto"><p>Demasiados intentos. Intente de nuevo en 60 segundos.</p></div>
+    </div>
+
+    <form class="wf-caja wf-form" onsubmit="return false" novalidate>
+      <div class="wf-campo">
+        <label for="l-correo" class="wf-obligatorio">Correo</label>
+        <input id="l-correo" type="email" autocomplete="username" value="maria.quesada@correo.test">
+      </div>
+      <div class="wf-campo">
+        <label for="l-contrasena" class="wf-obligatorio">Contraseña</label>
+        <div class="wf-con-boton">
+          <input id="l-contrasena" type="password" autocomplete="current-password" value="Secreta2026">
+          <button type="button" class="wf-boton" data-wf-mostrar="l-contrasena" aria-pressed="false">Mostrar</button>
+        </div>
+      </div>
+
+      <button type="submit" class="wf-boton wf-principal" data-wf-estado="datos invalidas desactivada sesion-vencida registrado">Iniciar sesión</button>
+      <button type="submit" class="wf-boton wf-principal" data-wf-estado="limite" disabled>Iniciar sesión (60 s)</button>
+      <button type="submit" class="wf-boton wf-principal wf-girando" data-wf-estado="enviando" disabled>Ingresando…</button>
+
+      <p><a href="V-04-olvido-contrasena.html">¿Olvidó su contraseña?</a></p>
+    </form>
+
+    <p>¿No tiene cuenta? <a href="V-05-registro.html">Regístrese como estudiante</a></p>
+
+    <div class="wf-simular">
+      <p>Resultado del ingreso</p>
+      <div class="wf-fila">
+        <a class="wf-boton wf-boton-pequeno" href="../estudiante/V-31-mis-matriculas.html">Estudiante → Mis matrículas</a>
+        <a class="wf-boton wf-boton-pequeno" href="../profesor/V-35-mis-grupos.html">Profesor → Mis grupos</a>
+        <a class="wf-boton wf-boton-pequeno" href="../admin/V-28-grupos.html">Administrador → Grupos</a>
+        <a class="wf-boton wf-boton-pequeno" href="V-03-cambio-obligatorio.html">Con contraseña temporal → V-03</a>
+      </div>
+    </div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-02</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-02 Inicio de sesión · visitante</dd>
+        <dt>Requerimientos</dt><dd>RFF-01 · RFF-03 (aviso de sesión terminada) · RFF-06 (llega con el correo escrito después del registro) · §2.5</dd>
+        <dt>Reglas</dt><dd>RUI-03 (<code>401</code> genérico, <code>403 RN-29</code>, <code>429</code>), RUI-08, RUI-21</dd>
+        <dt>Endpoints</dt><dd><code>POST /auth/login</code></dd>
+        <dt>Backend</dt><dd>RF-06, RF-07, RF-11, RN-24, RN-29</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Los mensajes van arriba del formulario, no en un campo: el <code>401</code> no indica si el correo existe.</li>
+            <li>Después del ingreso: si <code>debeCambiarContrasena</code>, abre V-03; si no, la vista que el usuario había pedido o la página de inicio de su rol.</li>
+            <li>El aviso de "Después del registro" muestra el mensaje que devuelve la API; el texto del boceto es ilustrativo.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

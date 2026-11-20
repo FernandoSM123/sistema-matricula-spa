@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-07 Cambiar contraseña — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-07"
+      data-wf-nombre="Cambiar contraseña"
+      data-wf-raiz="../"
+      data-wf-marco="rol"
+      data-wf-estados="datos:Formulario|actual-incorrecta:Actual incorrecta (409 RF-09)|igual:Igual a la actual (409 RN-25)|validacion:Errores de validación|enviando:Enviando|exito:Cambio correcto"
+      data-wf-roles="estudiante:Estudiante|profesor:Profesor|administrador:Administrador">
+
+  <main class="wf-vista wf-vista-angosta">
+    <header>
+      <p class="wf-migas"><a href="V-06-mi-perfil.html">Mi perfil</a> / Cambiar contraseña</p>
+      <h1>Cambiar contraseña</h1>
+    </header>
+
+    <div class="wf-mensaje wf-aviso" role="status" data-wf-estado="exito">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✓]</span>
+      <div class="wf-mensaje-texto">
+        <p><strong>Contraseña actualizada.</strong></p>
+        <p>Le enviamos un aviso a su correo. Las sesiones abiertas en otros dispositivos se cerraron.</p>
+      </div>
+      <div class="wf-mensaje-acciones"><a class="wf-boton wf-boton-pequeno" href="V-06-mi-perfil.html">Volver a mi perfil</a></div>
+    </div>
+
+    <form class="wf-caja wf-form" onsubmit="return false" novalidate data-wf-estado="datos actual-incorrecta igual validacion enviando">
+      <div class="wf-campo">
+        <label for="c-actual" class="wf-obligatorio">Contraseña actual</label>
+        <div class="wf-con-boton">
+          <input id="c-actual" type="password" autocomplete="current-password" value="Secreta2026">
+          <button type="button" class="wf-boton" data-wf-mostrar="c-actual" aria-pressed="false">Mostrar</button>
+        </div>
+        <p class="wf-error-campo" data-wf-estado="actual-incorrecta">La contraseña actual no es correcta.</p>
+      </div>
+
+      <div class="wf-mensaje" role="note">
+        <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+        <div class="wf-mensaje-texto"><p>La contraseña nueva debe tener al menos 8 caracteres, una letra mayúscula y un número.</p></div>
+      </div>
+
+      <div class="wf-campo">
+        <label for="c-nueva" class="wf-obligatorio">Contraseña nueva</label>
+        <div class="wf-con-boton">
+          <input id="c-nueva" type="password" autocomplete="new-password" value="Nueva2026">
+          <button type="button" class="wf-boton" data-wf-mostrar="c-nueva" aria-pressed="false">Mostrar</button>
+        </div>
+        <p class="wf-error-campo" data-wf-estado="igual">La contraseña nueva debe ser diferente de la actual.</p>
+        <p class="wf-error-campo" data-wf-estado="validacion">La contraseña debe tener al menos 8 caracteres, una letra mayúscula y un número.</p>
+      </div>
+      <div class="wf-campo">
+        <label for="c-confirmar" class="wf-obligatorio">Confirmar contraseña nueva</label>
+        <div class="wf-con-boton">
+          <input id="c-confirmar" type="password" autocomplete="new-password" value="Nueva2026">
+          <button type="button" class="wf-boton" data-wf-mostrar="c-confirmar" aria-pressed="false">Mostrar</button>
+        </div>
+        <p class="wf-error-campo" data-wf-estado="validacion">Las contraseñas no coinciden.</p>
+      </div>
+
+      <div class="wf-form-pie">
+        <a class="wf-boton" href="V-06-mi-perfil.html">Cancelar</a>
+        <button type="submit" class="wf-boton wf-principal" data-wf-estado="datos actual-incorrecta igual validacion">Cambiar contraseña</button>
+        <button type="submit" class="wf-boton wf-principal wf-girando" data-wf-estado="enviando" disabled>Cambiando…</button>
+      </div>
+    </form>
+
+    <div class="wf-simular" data-wf-estado="datos">
+      <p>Resultado del cambio</p>
+      <div class="wf-fila"><a class="wf-boton wf-boton-pequeno" href="#estado=exito">Ver el cambio correcto</a></div>
+    </div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-07</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-07 Cambiar contraseña · estudiante, profesor y administrador (menú de la cuenta y V-06)</dd>
+        <dt>Requerimientos</dt><dd>RFF-09</dd>
+        <dt>Reglas</dt><dd>RUI-02, RUI-04 (<code>409 RF-09</code> en la actual, <code>409 RN-25</code> en la nueva), RUI-06, RUI-08, RUI-21</dd>
+        <dt>Endpoints</dt><dd><code>POST /auth/cambiar-contrasena</code></dd>
+        <dt>Backend</dt><dd>RF-09, RN-25, RN-26, RN-33</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Con éxito, el formulario se reemplaza por un aviso fijo: cuenta dos consecuencias (aviso al correo y cierre de otras sesiones) y no debe desaparecer solo.</li>
+            <li>La sesión actual sigue abierta con el token nuevo que devuelve la API.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

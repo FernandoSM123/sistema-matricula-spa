@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-04 Olvido de contraseña — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-04"
+      data-wf-nombre="Olvido de contraseña"
+      data-wf-raiz="../"
+      data-wf-marco="visitante"
+      data-wf-menu="V-02"
+      data-wf-estados="datos:Formulario|enviado:Solicitud enviada|limite:Demasiados intentos (429)|enviando:Enviando">
+
+  <main class="wf-vista wf-vista-angosta">
+    <header>
+      <h1>¿Olvidó su contraseña?</h1>
+      <p class="wf-encabezado-subtitulo" data-wf-estado="datos limite enviando">Escriba su correo y le enviaremos una contraseña temporal.</p>
+    </header>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="limite">
+      <span class="wf-mensaje-icono" aria-hidden="true">[⏱]</span>
+      <div class="wf-mensaje-texto"><p>Demasiados intentos. Intente de nuevo en 60 segundos.</p></div>
+    </div>
+
+    <form class="wf-caja wf-form" onsubmit="return false" novalidate data-wf-estado="datos limite enviando">
+      <div class="wf-campo">
+        <label for="o-correo" class="wf-obligatorio">Correo</label>
+        <input id="o-correo" type="email" autocomplete="username" value="maria.quesada@correo.test">
+      </div>
+      <button type="submit" class="wf-boton wf-principal" data-wf-estado="datos">Enviar contraseña temporal</button>
+      <button type="submit" class="wf-boton wf-principal" data-wf-estado="limite" disabled>Enviar contraseña temporal (60 s)</button>
+      <button type="submit" class="wf-boton wf-principal wf-girando" data-wf-estado="enviando" disabled>Enviando…</button>
+    </form>
+
+    <div class="wf-caja wf-pila" data-wf-estado="enviado" role="status">
+      <div class="wf-mensaje">
+        <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+        <div class="wf-mensaje-texto"><p><strong>Si el correo está registrado, recibirá una contraseña temporal.</strong></p></div>
+      </div>
+      <ul>
+        <li>La contraseña temporal vence en 1 hora.</li>
+        <li>Al ingresar con ella, deberá definir una contraseña nueva.</li>
+        <li>Mientras tanto, su contraseña actual sigue funcionando.</li>
+      </ul>
+    </div>
+
+    <p><a href="V-02-inicio-sesion.html">← Volver a iniciar sesión</a></p>
+
+    <div class="wf-simular" data-wf-estado="datos">
+      <p>Resultado del envío</p>
+      <div class="wf-fila">
+        <a class="wf-boton wf-boton-pequeno" href="#estado=enviado">Ver la respuesta</a>
+      </div>
+    </div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-04</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-04 Olvido de contraseña · visitante</dd>
+        <dt>Requerimientos</dt><dd>RFF-05</dd>
+        <dt>Reglas</dt><dd>RUI-03 (<code>429</code>), RUI-08</dd>
+        <dt>Endpoints</dt><dd><code>POST /auth/olvido-contrasena</code></dd>
+        <dt>Backend</dt><dd>RF-10, RF-11, RN-28, RN-32</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>La respuesta reemplaza al formulario y es siempre la misma, exista o no el correo (RN-28). El texto en negrita es el de la API; la lista es del frontend.</li>
+            <li>En el menú del visitante se marca "Iniciar sesión", porque se llega desde ahí.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

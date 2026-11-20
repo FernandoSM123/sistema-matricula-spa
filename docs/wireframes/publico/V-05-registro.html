@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-05 Registro de estudiante — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-05"
+      data-wf-nombre="Registro de estudiante"
+      data-wf-raiz="../"
+      data-wf-marco="visitante"
+      data-wf-estados="datos:Formulario|validacion:Errores de validación|existe:Ya registrado (409 RN-21)|limite:Demasiados intentos (429)|enviando:Enviando">
+
+  <main class="wf-vista">
+    <header>
+      <h1>Registrarse como estudiante</h1>
+      <p class="wf-encabezado-subtitulo">Cree su cuenta para matricular cursos. ¿Ya tiene cuenta? <a href="V-02-inicio-sesion.html">Inicie sesión</a></p>
+    </header>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="existe">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto">
+        <p>Ya existe una cuenta con esa cédula o ese correo.</p>
+        <p>Si es suya, inicie sesión o recupere su contraseña. Si no reconoce la cuenta, contacte a la administración del instituto.</p>
+      </div>
+      <div class="wf-mensaje-acciones">
+        <a class="wf-boton wf-boton-pequeno" href="V-02-inicio-sesion.html">Iniciar sesión</a>
+        <a class="wf-boton wf-boton-pequeno" href="V-04-olvido-contrasena.html">Recuperar contraseña</a>
+      </div>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="limite">
+      <span class="wf-mensaje-icono" aria-hidden="true">[⏱]</span>
+      <div class="wf-mensaje-texto"><p>Demasiados intentos. Intente de nuevo en 60 segundos.</p></div>
+    </div>
+
+    <form class="wf-caja wf-form" onsubmit="return false" novalidate>
+      <p class="wf-nota-obligatorios">Los campos con * son obligatorios.</p>
+
+      <fieldset class="wf-form-seccion">
+        <legend>Datos personales</legend>
+        <div class="wf-campo">
+          <label for="r-cedula" class="wf-obligatorio">Cédula</label>
+          <input id="r-cedula" value="1-1789-0345">
+        </div>
+        <div class="wf-campo">
+          <label for="r-nacimiento">Fecha de nacimiento</label>
+          <div class="wf-con-boton">
+            <input id="r-nacimiento" inputmode="numeric" placeholder="dd/mm/aaaa" value="22/05/2002">
+            <button type="button" class="wf-boton" aria-label="Abrir calendario">▦</button>
+          </div>
+        </div>
+        <div class="wf-campo">
+          <label for="r-nombre" class="wf-obligatorio">Nombre</label>
+          <input id="r-nombre" value="María Fernanda">
+        </div>
+        <div class="wf-campo">
+          <label for="r-apellidos" class="wf-obligatorio">Apellidos</label>
+          <input id="r-apellidos" value="Quesada Rojas">
+        </div>
+      </fieldset>
+
+      <fieldset class="wf-form-seccion">
+        <legend>Contacto</legend>
+        <div class="wf-campo">
+          <label for="r-telefono" class="wf-obligatorio">Teléfono</label>
+          <input id="r-telefono" type="tel" value="8812-345">
+          <p class="wf-error-campo" data-wf-estado="validacion">El teléfono debe tener de 8 a 20 caracteres: dígitos, espacios, + y -.</p>
+        </div>
+        <div class="wf-campo">
+          <label for="r-correo" class="wf-obligatorio">Correo</label>
+          <input id="r-correo" type="email" autocomplete="username" value="maria.quesada@correo.test">
+        </div>
+        <div class="wf-campo wf-ancho-completo">
+          <label for="r-direccion">Dirección</label>
+          <textarea id="r-direccion">Barrio Escalante, San José</textarea>
+        </div>
+      </fieldset>
+
+      <fieldset class="wf-form-seccion">
+        <legend>Contraseña</legend>
+        <p class="wf-ayuda wf-ancho-completo" style="margin:0">Al menos 8 caracteres, una letra mayúscula y un número.</p>
+        <div class="wf-campo">
+          <label for="r-contrasena" class="wf-obligatorio">Contraseña</label>
+          <div class="wf-con-boton">
+            <input id="r-contrasena" type="password" autocomplete="new-password" value="secreta">
+            <button type="button" class="wf-boton" data-wf-mostrar="r-contrasena" aria-pressed="false">Mostrar</button>
+          </div>
+          <p class="wf-error-campo" data-wf-estado="validacion">La contraseña debe tener al menos 8 caracteres, una letra mayúscula y un número.</p>
+        </div>
+        <div class="wf-campo">
+          <label for="r-confirmar" class="wf-obligatorio">Confirmar contraseña</label>
+          <div class="wf-con-boton">
+            <input id="r-confirmar" type="password" autocomplete="new-password" value="secreta">
+            <button type="button" class="wf-boton" data-wf-mostrar="r-confirmar" aria-pressed="false">Mostrar</button>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="wf-form-pie">
+        <a class="wf-boton" href="V-01-oferta.html">Cancelar</a>
+        <button type="submit" class="wf-boton wf-principal" data-wf-estado="datos validacion existe">Crear cuenta</button>
+        <button type="submit" class="wf-boton wf-principal" data-wf-estado="limite" disabled>Crear cuenta (60 s)</button>
+        <button type="submit" class="wf-boton wf-principal wf-girando" data-wf-estado="enviando" disabled>Creando cuenta…</button>
+      </div>
+    </form>
+
+    <div class="wf-simular">
+      <p>Registro correcto (201)</p>
+      <div class="wf-fila">
+        <a class="wf-boton wf-boton-pequeno" href="V-02-inicio-sesion.html#estado=registrado">Abrir el inicio de sesión con el correo escrito</a>
+      </div>
+    </div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-05</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-05 Registro de estudiante · visitante</dd>
+        <dt>Requerimientos</dt><dd>RFF-06</dd>
+        <dt>Reglas</dt><dd>RUI-02, RUI-04 (<code>409 RN-21</code> con enlaces), RUI-06, RUI-08, RUI-09, RUI-15</dd>
+        <dt>Endpoints</dt><dd><code>POST /estudiantes/registro</code></dd>
+        <dt>Backend</dt><dd>RF-01, RN-19, RN-21, RN-26</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Sin selector de rol: el registro público solo crea estudiantes (RN-19).</li>
+            <li>Tres grupos: datos personales, contacto y contraseña; en celular, una sola columna.</li>
+            <li>Con éxito no inicia sesión: abre V-02 con el correo escrito y el mensaje de la API.</li>
+            <li>"Cancelar" vuelve a la oferta; con datos escritos pide descartar los cambios (RUI-09, ver componentes).</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

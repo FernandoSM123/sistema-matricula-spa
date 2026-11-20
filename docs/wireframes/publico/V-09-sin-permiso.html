@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-09 Sin permiso — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-09"
+      data-wf-nombre="Sin permiso"
+      data-wf-raiz="../"
+      data-wf-marco="rol"
+      data-wf-roles="estudiante:Estudiante|profesor:Profesor|administrador:Administrador">
+
+  <main class="wf-vista wf-vista-angosta">
+    <div class="wf-caja wf-estado-contenido">
+      <p class="wf-mensaje-icono" aria-hidden="true">[⊘]</p>
+      <h1>No tiene permiso para ver esta página</h1>
+      <p>Su cuenta no tiene acceso a esta sección del sistema.</p>
+      <a class="wf-boton wf-principal" href="../estudiante/V-31-mis-matriculas.html" data-wf-rol="estudiante">Ir a Mis matrículas</a>
+      <a class="wf-boton wf-principal" href="../profesor/V-35-mis-grupos.html" data-wf-rol="profesor">Ir a Mis grupos</a>
+      <a class="wf-boton wf-principal" href="../admin/V-28-grupos.html" data-wf-rol="administrador">Ir a Grupos</a>
+    </div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-09</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-09 Sin permiso · cualquier rol con sesión</dd>
+        <dt>Requerimientos</dt><dd>§2.5 (vista de otro rol) · RUI-03 (<code>403</code> sin <code>code</code> o con <code>RN-18</code> al cargar una vista)</dd>
+        <dt>Endpoints</dt><dd>Ninguno</dd>
+        <dt>Backend</dt><dd>RN-18, matriz §2.2</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Mantiene el marco del rol, con su menú, y ofrece un único enlace a la página de inicio del rol (§2.2).</li>
+            <li>No dice qué rol haría falta ni por qué: el menú nunca ofrece esas vistas.</li>
+            <li>La usan también los grupos que el estudiante o el profesor no pueden ver (RN-18, RFF-25), dentro de la ruta de la vista pedida.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

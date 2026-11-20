@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-21 Registrar o editar curso — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-21"
+      data-wf-nombre="Registrar o editar curso"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-menu="V-20"
+      data-wf-estados="registro:Registrar|validacion:Registrar con errores|duplicado:Registrar: código repetido (409 RN-13)|reactivar:Registrar: curso inactivo (409 RN-39)|edicion:Editar|enviando:Guardando">
+
+  <main class="wf-vista">
+    <header>
+      <p class="wf-migas"><a href="../compartidas/V-20-cursos.html">Cursos</a> / <span data-wf-estado="registro validacion duplicado reactivar">Registrar</span><span data-wf-estado="edicion enviando">Editar</span></p>
+      <h1 data-wf-estado="registro validacion duplicado reactivar">Registrar curso</h1>
+      <h1 data-wf-estado="edicion enviando">Editar curso</h1>
+    </header>
+
+    <div class="wf-errores-generales" role="alert" data-wf-estado="validacion">
+      <strong>No se pudo registrar el curso.</strong>
+      <ul><li>Revise los campos marcados.</li></ul>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="duplicado">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto"><p>Ya existe un curso con ese código.</p></div>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="reactivar">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto">
+        <p>Ya existe un curso inactivo con el código FRA-100.</p>
+        <p class="wf-texto-2">Al reactivarlo se recuperan sus datos anteriores, no los de este formulario. Después puede editarlos.</p>
+      </div>
+      <div class="wf-mensaje-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-22-curso.html#estado=reactivado&amp;rol=administrador">Reactivar curso</a></div>
+    </div>
+
+    <form class="wf-caja wf-form" onsubmit="return false" novalidate>
+      <p class="wf-nota-obligatorios">Los campos con * son obligatorios.</p>
+
+      <fieldset class="wf-form-seccion" data-wf-estado="registro validacion">
+        <legend>Datos del curso</legend>
+        <div class="wf-campo">
+          <label for="v-codigo" class="wf-obligatorio">Código</label>
+          <input id="v-codigo" style="text-transform: uppercase" placeholder="ING-101">
+          <span class="wf-ayuda">Se guarda en mayúsculas.</span>
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique el código.</p>
+        </div>
+        <div class="wf-campo">
+          <label for="v-nivel" class="wf-obligatorio">Nivel</label>
+          <select id="v-nivel"><option selected>Elija un nivel</option><option>Básico</option><option>Intermedio</option><option>Avanzado</option></select>
+          <p class="wf-error-campo" data-wf-estado="validacion">Elija el nivel.</p>
+        </div>
+        <div class="wf-campo wf-ancho-completo">
+          <label for="v-nombre" class="wf-obligatorio">Nombre</label>
+          <input id="v-nombre">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique el nombre.</p>
+        </div>
+        <div class="wf-campo">
+          <label for="v-duracion" class="wf-obligatorio">Duración (horas)</label>
+          <input id="v-duracion" inputmode="numeric">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique una duración mayor que cero.</p>
+        </div>
+        <div class="wf-campo">
+          <label for="v-costo" class="wf-obligatorio">Costo (₡)</label>
+          <input id="v-costo" inputmode="decimal" placeholder="0,00">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique el costo.</p>
+        </div>
+        <div class="wf-campo wf-ancho-completo">
+          <label for="v-descripcion">Descripción</label>
+          <textarea id="v-descripcion"></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset class="wf-form-seccion" data-wf-estado="duplicado reactivar">
+        <legend>Datos del curso</legend>
+        <div class="wf-campo">
+          <label for="d-codigo" class="wf-obligatorio">Código</label>
+          <input id="d-codigo" value="FRA-100">
+        </div>
+        <div class="wf-campo">
+          <label for="d-nivel" class="wf-obligatorio">Nivel</label>
+          <select id="d-nivel"><option>Elija un nivel</option><option selected>Básico</option><option>Intermedio</option><option>Avanzado</option></select>
+        </div>
+        <div class="wf-campo wf-ancho-completo">
+          <label for="d-nombre" class="wf-obligatorio">Nombre</label>
+          <input id="d-nombre" value="Francés para principiantes">
+        </div>
+        <div class="wf-campo">
+          <label for="d-duracion" class="wf-obligatorio">Duración (horas)</label>
+          <input id="d-duracion" inputmode="numeric" value="36">
+        </div>
+        <div class="wf-campo">
+          <label for="d-costo" class="wf-obligatorio">Costo (₡)</label>
+          <input id="d-costo" inputmode="decimal" value="40 000,00">
+        </div>
+        <div class="wf-campo wf-ancho-completo">
+          <label for="d-descripcion">Descripción</label>
+          <textarea id="d-descripcion">Vocabulario y frases para situaciones cotidianas.</textarea>
+        </div>
+      </fieldset>
+
+      <fieldset class="wf-form-seccion" data-wf-estado="edicion enviando">
+        <legend>Datos del curso</legend>
+        <div class="wf-campo">
+          <label for="e-codigo" class="wf-obligatorio">Código</label>
+          <input id="e-codigo" value="EXC-110">
+        </div>
+        <div class="wf-campo">
+          <label for="e-nivel" class="wf-obligatorio">Nivel</label>
+          <select id="e-nivel"><option>Elija un nivel</option><option selected>Básico</option><option>Intermedio</option><option>Avanzado</option></select>
+        </div>
+        <div class="wf-campo wf-ancho-completo">
+          <label for="e-nombre" class="wf-obligatorio">Nombre</label>
+          <input id="e-nombre" value="Excel para la oficina">
+        </div>
+        <div class="wf-campo">
+          <label for="e-duracion" class="wf-obligatorio">Duración (horas)</label>
+          <input id="e-duracion" inputmode="numeric" value="32">
+        </div>
+        <div class="wf-campo">
+          <label for="e-costo" class="wf-obligatorio">Costo (₡)</label>
+          <input id="e-costo" inputmode="decimal" value="35 000,00">
+        </div>
+        <div class="wf-campo wf-ancho-completo">
+          <label for="e-descripcion">Descripción</label>
+          <textarea id="e-descripcion">Fórmulas, tablas y gráficos para el trabajo diario.</textarea>
+        </div>
+      </fieldset>
+
+      <div class="wf-form-pie">
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-descartar">Cancelar</button>
+        <a class="wf-boton wf-principal" href="../compartidas/V-22-curso.html#estado=creado&amp;rol=administrador" data-wf-estado="registro validacion duplicado reactivar">Registrar curso</a>
+        <a class="wf-boton wf-principal" href="../compartidas/V-22-curso.html#estado=guardado&amp;rol=administrador" data-wf-estado="edicion">Guardar cambios</a>
+        <button type="button" class="wf-boton wf-principal wf-girando" data-wf-estado="enviando" disabled>Guardando…</button>
+      </div>
+    </form>
+
+    <details class="wf-notas">
+      <summary>Notas de V-21</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-21 Registrar o editar curso · administrador (desde V-20 y V-22)</dd>
+        <dt>Requerimientos</dt><dd>RFF-19</dd>
+        <dt>Reglas</dt><dd>RUI-02, RUI-04 (<code>409 RN-39</code>), RUI-06, RUI-08, RUI-09, RUI-15 (formato de costo)</dd>
+        <dt>Endpoints</dt><dd><code>POST /cursos</code>, <code>GET /cursos/{id}</code>, <code>PUT /cursos/{id}</code>, <code>POST /cursos/{id}/reactivar</code> (RN-39)</dd>
+        <dt>Backend</dt><dd>RF-29, RF-32, RN-13, RN-39</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>El código se muestra en mayúsculas al escribir (supuesto 1 de <code>SPEC-catalogos</code>).</li>
+            <li>"Reactivar curso" usa el <code>cursoId</code> de la respuesta y abre su detalle, como en RFF-12.</li>
+            <li>Los textos de error por campo son ilustrativos; los límites los fija la API.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <dialog class="wf-dialogo" id="dlg-descartar" aria-labelledby="dlg-descartar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-descartar-t">¿Descartar los cambios?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>Hay cambios sin guardar en el formulario. Si sale, se perderán.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Seguir editando</button>
+      <a class="wf-boton wf-principal" href="../compartidas/V-20-cursos.html#rol=administrador">Descartar cambios</a>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-12 Registrar o editar administrador — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-12"
+      data-wf-nombre="Registrar o editar administrador"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-menu="V-11"
+      data-wf-estados="registro:Registrar|validacion:Registrar con errores|duplicado:Registrar: ya existe (409 RN-13)|reactivar:Registrar: registro inactivo (409 RN-39)|edicion:Editar otro administrador|propio:Editar mis datos (desde Mi perfil)|enviando:Guardando">
+
+  <main class="wf-vista">
+    <header>
+      <p class="wf-migas">
+        <span data-wf-estado="registro validacion duplicado reactivar edicion enviando"><a href="V-11-administradores.html">Administradores</a> / </span><a href="../cuenta/V-06-mi-perfil.html" data-wf-estado="propio">Mi perfil</a><span data-wf-estado="propio"> / </span>
+        <span data-wf-estado="registro validacion duplicado reactivar">Registrar</span><span data-wf-estado="edicion enviando">Editar</span><span data-wf-estado="propio">Editar mis datos</span>
+      </p>
+      <h1 data-wf-estado="registro validacion duplicado reactivar">Registrar administrador</h1>
+      <h1 data-wf-estado="edicion enviando">Editar administrador</h1>
+      <h1 data-wf-estado="propio">Editar mis datos</h1>
+    </header>
+
+    <div class="wf-mensaje" role="note" data-wf-estado="registro validacion duplicado reactivar">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>No necesita definir una contraseña: el sistema genera una contraseña temporal y la envía al correo del administrador, que deberá cambiarla al ingresar.</p></div>
+    </div>
+
+    <div class="wf-errores-generales" role="alert" data-wf-estado="validacion">
+      <strong>No se pudo registrar el administrador.</strong>
+      <ul><li>Revise los campos marcados.</li></ul>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="duplicado">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto"><p>Ya existe un administrador con esa cédula o ese correo.</p></div>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="reactivar">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto">
+        <p>Ya existe un administrador inactivo con esa cédula.</p>
+        <p class="wf-texto-2">Al reactivarlo se recuperan sus datos anteriores, no los de este formulario. Después puede editarlos.</p>
+      </div>
+      <div class="wf-mensaje-acciones"><a class="wf-boton wf-boton-pequeno" href="V-11-administradores.html#estado=reactivado">Reactivar administrador</a></div>
+    </div>
+
+    <form class="wf-caja wf-form" onsubmit="return false" novalidate>
+      <p class="wf-nota-obligatorios">Todos los campos son obligatorios.</p>
+
+      <fieldset class="wf-form-seccion" data-wf-estado="registro validacion">
+        <legend>Datos personales</legend>
+        <div class="wf-campo">
+          <label for="v-cedula" class="wf-obligatorio">Cédula</label>
+          <input id="v-cedula">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique la cédula.</p>
+        </div>
+        <div class="wf-campo">
+          <label for="v-telefono" class="wf-obligatorio">Teléfono</label>
+          <input id="v-telefono" type="tel">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique el teléfono.</p>
+        </div>
+        <div class="wf-campo">
+          <label for="v-nombre" class="wf-obligatorio">Nombre</label>
+          <input id="v-nombre">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique el nombre.</p>
+        </div>
+        <div class="wf-campo">
+          <label for="v-apellidos" class="wf-obligatorio">Apellidos</label>
+          <input id="v-apellidos">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique los apellidos.</p>
+        </div>
+        <div class="wf-campo wf-ancho-completo">
+          <label for="v-correo" class="wf-obligatorio">Correo</label>
+          <input id="v-correo" type="email">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique el correo.</p>
+        </div>
+      </fieldset>
+
+      <fieldset class="wf-form-seccion" data-wf-estado="duplicado reactivar edicion enviando">
+        <legend>Datos personales</legend>
+        <div class="wf-campo">
+          <label for="e-cedula" class="wf-obligatorio">Cédula</label>
+          <input id="e-cedula" value="2-0645-0321">
+        </div>
+        <div class="wf-campo">
+          <label for="e-telefono" class="wf-obligatorio">Teléfono</label>
+          <input id="e-telefono" type="tel" value="8712-9087">
+        </div>
+        <div class="wf-campo">
+          <label for="e-nombre" class="wf-obligatorio">Nombre</label>
+          <input id="e-nombre" value="Roberto">
+        </div>
+        <div class="wf-campo">
+          <label for="e-apellidos" class="wf-obligatorio">Apellidos</label>
+          <input id="e-apellidos" value="Castillo Vega">
+        </div>
+        <div class="wf-campo wf-ancho-completo">
+          <label for="e-correo" class="wf-obligatorio">Correo</label>
+          <input id="e-correo" type="email" value="roberto.castillo@correo.test">
+          <span class="wf-ayuda" data-wf-estado="edicion enviando">Es el correo con el que inicia sesión.</span>
+        </div>
+      </fieldset>
+
+      <fieldset class="wf-form-seccion" data-wf-estado="propio">
+        <legend>Datos personales</legend>
+        <div class="wf-campo">
+          <label for="p-cedula" class="wf-obligatorio">Cédula</label>
+          <input id="p-cedula" value="1-0876-0543">
+        </div>
+        <div class="wf-campo">
+          <label for="p-telefono" class="wf-obligatorio">Teléfono</label>
+          <input id="p-telefono" type="tel" value="8901-2345">
+        </div>
+        <div class="wf-campo">
+          <label for="p-nombre" class="wf-obligatorio">Nombre</label>
+          <input id="p-nombre" value="Sofía">
+        </div>
+        <div class="wf-campo">
+          <label for="p-apellidos" class="wf-obligatorio">Apellidos</label>
+          <input id="p-apellidos" value="Méndez Arias">
+        </div>
+        <div class="wf-campo wf-ancho-completo">
+          <label for="p-correo" class="wf-obligatorio">Correo</label>
+          <input id="p-correo" type="email" value="sofia.mendez@correo.test">
+          <span class="wf-ayuda">Es el correo con el que inicia sesión. Si lo cambia, usará el nuevo la próxima vez.</span>
+        </div>
+      </fieldset>
+
+      <div class="wf-form-pie">
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-descartar">Cancelar</button>
+        <a class="wf-boton wf-principal" href="V-13-administrador.html#estado=creado" data-wf-estado="registro validacion duplicado reactivar">Registrar administrador</a>
+        <a class="wf-boton wf-principal" href="V-13-administrador.html#estado=guardado" data-wf-estado="edicion">Guardar cambios</a>
+        <a class="wf-boton wf-principal" href="../cuenta/V-06-mi-perfil.html#estado=guardado&amp;rol=administrador" data-wf-estado="propio">Guardar cambios</a>
+        <button type="button" class="wf-boton wf-principal wf-girando" data-wf-estado="enviando" disabled>Guardando…</button>
+      </div>
+    </form>
+
+    <details class="wf-notas">
+      <summary>Notas de V-12</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-12 Registrar o editar administrador · administrador (desde V-11, V-13 y, para sus propios datos, V-06)</dd>
+        <dt>Requerimientos</dt><dd>RFF-12 (registro), RFF-13 (edición), RFF-08 (editar mis datos)</dd>
+        <dt>Reglas</dt><dd>RUI-02, RUI-04 (<code>409 RN-39</code>), RUI-06, RUI-07, RUI-08, RUI-09</dd>
+        <dt>Endpoints</dt><dd><code>POST /administradores</code>, <code>GET /administradores/{id}</code>, <code>PUT /administradores/{id}</code>, <code>POST /usuarios/{id}/reactivar</code> (RN-39)</dd>
+        <dt>Backend</dt><dd>RF-04, RF-05, RF-55, RN-13, RN-20, RN-22, RN-31, RN-39</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Solo los campos comunes: cédula, nombre, apellidos, teléfono y correo, todos obligatorios.</li>
+            <li>"Reactivar" (RN-39) abre V-11 filtrado por la cédula, porque la respuesta solo trae el <code>usuarioId</code>.</li>
+            <li>"Editar mis datos" usa el <code>personaId</code> de <code>GET /me</code>; las migas y "Guardar cambios" vuelven a Mi perfil (V-06), de donde se llegó.</li>
+            <li>Si cambia el correo, pide la confirmación de RFF-13, como en V-15.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <dialog class="wf-dialogo" id="dlg-descartar" aria-labelledby="dlg-descartar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-descartar-t">¿Descartar los cambios?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>Hay cambios sin guardar en el formulario. Si sale, se perderán.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Seguir editando</button>
+      <a class="wf-boton wf-principal" href="V-11-administradores.html" data-wf-estado="registro validacion duplicado reactivar edicion enviando">Descartar cambios</a>
+      <a class="wf-boton wf-principal" href="../cuenta/V-06-mi-perfil.html#rol=administrador" data-wf-estado="propio">Descartar cambios</a>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

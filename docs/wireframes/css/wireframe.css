@@ -1,0 +1,680 @@
+/*
+ * Wireframes del SPA — estilos compartidos.
+ * Escala de grises, fuente del sistema, sin dependencias.
+ * Fijan estructura y posición; no el estilo visual definitivo (decisión 3 de la fase 0).
+ *
+ * Índice:
+ *   1. Variables
+ *   2. Base
+ *   3. Barra del wireframe (no es parte del producto)
+ *   4. Marco de la aplicación (encabezado, menú, cuenta)
+ *   5. Vista: encabezado, secciones, cajas
+ *   6. Botones y enlaces
+ *   7. Ventanas (dialog)
+ *   8. Pestañas
+ *   9. Notas del wireframe y huecos pendientes
+ *  10. Utilidades
+ *  11. Índice del wireframe
+ *  12. Pantallas angostas
+ *  Componentes (T2, se ven en componentes.html):
+ *  13. Listado paginado        18. Mensajes
+ *  14. Búsqueda y filtros      19. Estados de contenido
+ *  15. Formularios             20. Etiquetas de estado
+ *  16. Fecha y hora            21. Grilla del horario semanal
+ *  17. Selector con búsqueda   22. Encabezado de detalle y datos
+ *                              23. Página del catálogo
+ */
+
+/* 1. Variables ------------------------------------------------------------ */
+:root {
+  --wf-tinta: #1f1f1f;
+  --wf-texto-2: #555;
+  --wf-borde: #8c8c8c;
+  --wf-borde-suave: #cfcfcf;
+  --wf-fondo: #fff;
+  --wf-fondo-2: #f3f3f3;
+  --wf-fondo-3: #e2e2e2;
+  --wf-barra: #2b2b2b;
+  --wf-barra-texto: #f3f3f3;
+  --wf-radio: 4px;
+  --wf-espacio: 16px;
+  --wf-ancho-menu: 220px;
+  --wf-fuente: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --wf-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+/* 2. Base ----------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--wf-fuente);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--wf-tinta);
+  background: var(--wf-fondo-2);
+  overflow-wrap: anywhere;
+}
+
+h1, h2, h3 { line-height: 1.25; margin: 0 0 8px; }
+h1 { font-size: 1.5rem; }
+h2 { font-size: 1.2rem; }
+h3 { font-size: 1rem; }
+p { margin: 0 0 12px; }
+code { font-family: var(--wf-mono); font-size: 0.9em; background: var(--wf-fondo-3); padding: 0 4px; border-radius: 3px; }
+a { color: var(--wf-tinta); }
+
+:focus-visible { outline: 3px solid #000; outline-offset: 2px; }
+
+[hidden] { display: none !important; }
+
+/* 3. Barra del wireframe -------------------------------------------------- */
+.wf-barra {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 6px var(--wf-espacio);
+  background: var(--wf-barra);
+  color: var(--wf-barra-texto);
+  font-family: var(--wf-mono);
+  font-size: 13px;
+  border-bottom: 3px dashed #777;
+  overflow-wrap: normal;
+}
+.wf-barra a { color: var(--wf-barra-texto); }
+.wf-barra :focus-visible { outline-color: #fff; }
+.wf-barra-marca {
+  padding: 1px 6px;
+  border: 1px solid var(--wf-barra-texto);
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.wf-barra-vista { font-weight: 700; }
+.wf-barra-control { display: inline-flex; align-items: center; gap: 6px; min-width: 0; max-width: 100%; }
+.wf-barra-control select { min-width: 0; max-width: 100%; text-overflow: ellipsis; }
+.wf-barra select,
+.wf-barra button {
+  font: inherit;
+  color: var(--wf-tinta);
+  background: var(--wf-fondo);
+  border: 1px solid var(--wf-borde);
+  border-radius: 3px;
+  padding: 2px 6px;
+  min-height: 28px;
+}
+.wf-barra button[aria-pressed="true"] { background: var(--wf-fondo-3); font-weight: 700; }
+
+/* 4. Marco de la aplicación ----------------------------------------------- */
+.wf-app-encabezado {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 0 var(--wf-espacio);
+  background: var(--wf-fondo);
+  border-bottom: 2px solid var(--wf-borde);
+}
+.wf-app-nombre { font-weight: 700; font-size: 1.05rem; text-decoration: none; margin-right: auto; }
+.wf-app-nombre::before { content: "▣ "; }
+
+.wf-app-encabezado .wf-boton-menu { display: none; }
+
+/* Menú de la cuenta: details/summary, sin JS para abrirlo */
+.wf-cuenta { position: relative; }
+.wf-cuenta > summary {
+  list-style: none;
+  white-space: nowrap;
+  cursor: pointer;
+  padding: 6px 10px;
+  border: 1px solid var(--wf-borde);
+  border-radius: var(--wf-radio);
+  background: var(--wf-fondo);
+}
+.wf-cuenta > summary::-webkit-details-marker { display: none; }
+.wf-cuenta > summary::after { content: " ▾"; }
+.wf-cuenta-nombre { font-weight: 600; }
+.wf-cuenta-rol { color: var(--wf-texto-2); font-size: 0.85em; }
+.wf-cuenta-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 40;
+  min-width: 220px;
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+  background: var(--wf-fondo);
+  border: 1px solid var(--wf-borde);
+  border-radius: var(--wf-radio);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+.wf-cuenta-menu a { display: block; padding: 8px 14px; text-decoration: none; }
+.wf-cuenta-menu a:hover { background: var(--wf-fondo-2); }
+.wf-cuenta-menu .wf-separado { border-top: 1px solid var(--wf-borde-suave); margin-top: 4px; padding-top: 4px; }
+
+.wf-app-acceso { display: flex; gap: 8px; }
+
+.wf-app {
+  display: grid;
+  grid-template-columns: var(--wf-ancho-menu) minmax(0, 1fr);
+  min-height: calc(100vh - 56px);
+}
+/* Con marco, el pie queda al final de la ventana aunque la vista sea corta */
+body.wf-con-marco { display: flex; flex-direction: column; min-height: 100vh; }
+body.wf-con-marco > .wf-app { flex: 1 0 auto; min-height: 0; }
+.wf-app.wf-sin-menu { grid-template-columns: minmax(0, 1fr); }
+
+.wf-menu {
+  background: var(--wf-fondo);
+  border-right: 1px solid var(--wf-borde-suave);
+  padding: 12px 0;
+}
+.wf-menu-grupo { margin: 12px 16px 4px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--wf-texto-2); }
+.wf-menu ul { list-style: none; margin: 0; padding: 0; }
+.wf-menu a { display: block; padding: 8px 16px; text-decoration: none; border-left: 4px solid transparent; }
+.wf-menu a:hover { background: var(--wf-fondo-2); }
+.wf-menu a[aria-current="page"] { font-weight: 700; background: var(--wf-fondo-3); border-left-color: var(--wf-tinta); }
+
+/* Menú horizontal del visitante */
+.wf-menu-visitante { display: flex; gap: 4px; }
+.wf-menu-visitante a { padding: 6px 10px; text-decoration: none; border-radius: var(--wf-radio); }
+.wf-menu-visitante a[aria-current="page"] { font-weight: 700; background: var(--wf-fondo-3); }
+
+.wf-contenido { min-width: 0; padding: 24px 24px 48px; }
+/* Con menú lateral, el contenido ocupa todo el ancho disponible (mismo margen a cada lado);
+   sin menú, se centra con un ancho máximo */
+.wf-sin-menu .wf-contenido > * { max-width: 1100px; margin-inline: auto; }
+
+/* Pie de página (RUI-23): no queda fijo; en celular se apila */
+.wf-app-pie {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 16px;
+  padding: 10px var(--wf-espacio);
+  background: var(--wf-fondo);
+  border-top: 1px solid var(--wf-borde-suave);
+  color: var(--wf-texto-2);
+  font-size: 0.85rem;
+}
+
+/* 5. Vista ---------------------------------------------------------------- */
+.wf-vista { display: flex; flex-direction: column; gap: 20px; }
+.wf-vista-angosta { max-width: 460px; margin: 0 auto; width: 100%; }
+
+.wf-encabezado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+.wf-encabezado h1 { margin: 0; }
+.wf-encabezado-subtitulo { color: var(--wf-texto-2); margin: 4px 0 0; }
+.wf-acciones { display: flex; flex-wrap: wrap; gap: 8px; }
+.wf-migas { font-size: 0.85rem; color: var(--wf-texto-2); margin-bottom: 4px; }
+
+.wf-caja {
+  background: var(--wf-fondo);
+  border: 1px solid var(--wf-borde-suave);
+  border-radius: var(--wf-radio);
+  padding: var(--wf-espacio);
+}
+.wf-caja > h2:first-child { margin-top: 0; }
+
+/* Bloque de relleno que representa contenido sin detallar */
+.wf-relleno {
+  display: grid;
+  place-items: center;
+  min-height: 80px;
+  border: 1px dashed var(--wf-borde);
+  border-radius: var(--wf-radio);
+  color: var(--wf-texto-2);
+  background: repeating-linear-gradient(45deg, var(--wf-fondo), var(--wf-fondo) 8px, var(--wf-fondo-2) 8px, var(--wf-fondo-2) 16px);
+  text-align: center;
+  padding: 8px;
+}
+
+/* 6. Botones y enlaces ---------------------------------------------------- */
+.wf-boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 14px;
+  font: inherit;
+  font-weight: 600;
+  color: var(--wf-tinta);
+  text-decoration: none;
+  background: var(--wf-fondo);
+  border: 1px solid var(--wf-borde);
+  border-radius: var(--wf-radio);
+  cursor: pointer;
+}
+.wf-boton:hover { background: var(--wf-fondo-2); }
+.wf-boton.wf-principal { color: #fff; background: var(--wf-tinta); border-color: var(--wf-tinta); }
+.wf-boton.wf-principal:hover { background: #444; }
+/* Acción destructiva: se distingue por el texto y el borde doble, no por el color (RUI-20) */
+.wf-boton.wf-peligro { border: 3px double var(--wf-tinta); }
+.wf-boton.wf-enlace { border-color: transparent; background: transparent; text-decoration: underline; padding-inline: 4px; }
+.wf-boton[disabled], .wf-boton[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; }
+.wf-boton-pequeno { min-height: 32px; padding: 4px 10px; font-size: 0.9em; }
+
+/* 7. Ventanas ------------------------------------------------------------- */
+.wf-dialogo {
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  padding: 0;
+  border: 2px solid var(--wf-tinta);
+  border-radius: var(--wf-radio);
+  color: var(--wf-tinta);
+  background: var(--wf-fondo);
+}
+.wf-dialogo-ancho { width: min(760px, calc(100vw - 32px)); }
+.wf-dialogo::backdrop { background: rgba(0, 0, 0, 0.45); }
+/* Vista que se muestra como ventana (V-32, V-33): abierta sin modal para que la barra siga usable */
+.wf-dialogo[data-wf-abierta][open] {
+  position: fixed; inset: 0; margin: auto; z-index: 45; height: fit-content;
+  overflow: auto; box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.45);
+}
+.wf-dialogo-encabezado { padding: 14px var(--wf-espacio); border-bottom: 1px solid var(--wf-borde-suave); }
+.wf-dialogo-encabezado h2 { margin: 0; }
+.wf-dialogo-cuerpo { padding: var(--wf-espacio); }
+.wf-dialogo-pie {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px var(--wf-espacio);
+  border-top: 1px solid var(--wf-borde-suave);
+  background: var(--wf-fondo-2);
+}
+/* Confirmación reforzada (RUI-07): franja que destaca que no se puede deshacer */
+.wf-dialogo.wf-reforzada .wf-dialogo-encabezado { border-top: 8px solid var(--wf-tinta); }
+
+/* 8. Pestañas ------------------------------------------------------------- */
+.wf-pestanas [role="tablist"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  border-bottom: 2px solid var(--wf-borde);
+}
+.wf-pestanas [role="tab"] {
+  font: inherit;
+  padding: 8px 14px;
+  min-height: 40px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: var(--wf-radio) var(--wf-radio) 0 0;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.wf-pestanas [role="tab"][aria-selected="true"] {
+  font-weight: 700;
+  background: var(--wf-fondo);
+  border-color: var(--wf-borde);
+  margin-bottom: -2px;
+  border-bottom: 2px solid var(--wf-fondo);
+}
+.wf-pestanas [role="tabpanel"] { padding-top: 16px; }
+
+/* 9. Notas del wireframe y huecos pendientes ------------------------------ */
+.wf-notas {
+  margin-top: 32px;
+  font-family: var(--wf-mono);
+  font-size: 13px;
+  background: var(--wf-fondo);
+  border: 2px dashed var(--wf-borde);
+  border-radius: var(--wf-radio);
+}
+.wf-notas > summary { cursor: pointer; padding: 8px 12px; font-weight: 700; }
+.wf-notas > :not(summary) { margin: 0 12px 12px; }
+.wf-notas dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; }
+.wf-notas dt { font-weight: 700; }
+.wf-notas dd { margin: 0; }
+.wf-notas ul { padding-left: 18px; }
+
+/* Sección que completa una tarea posterior (por ejemplo, "Pendiente: T7") */
+.wf-hueco {
+  padding: 12px;
+  border: 2px dashed var(--wf-borde);
+  border-radius: var(--wf-radio);
+  font-family: var(--wf-mono);
+  font-size: 13px;
+  color: var(--wf-texto-2);
+  background: var(--wf-fondo);
+}
+.wf-hueco::before { content: "PENDIENTE · "; font-weight: 700; }
+
+/* 10. Utilidades ---------------------------------------------------------- */
+.wf-texto-2 { color: var(--wf-texto-2); }
+.wf-nowrap { white-space: nowrap; }
+.wf-pila { display: flex; flex-direction: column; gap: 12px; }
+.wf-fila { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.wf-rejilla-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--wf-espacio); }
+.wf-rejilla-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--wf-espacio); }
+.wf-solo-lector {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* 11. Índice del wireframe ------------------------------------------------ */
+.wf-indice { max-width: 1100px; margin: 0 auto; padding: 24px var(--wf-espacio) 48px; }
+.wf-indice header { margin-bottom: 24px; }
+.wf-indice section { margin-bottom: 40px; }
+.wf-indice section > h2 { margin-bottom: 12px; }
+.wf-indice h3 { margin-top: 28px; margin-bottom: 10px; }
+.wf-indice section > p { margin-bottom: 12px; }
+.wf-indice .wf-lista-vistas + p { margin-top: 20px; }
+.wf-indice .wf-desplazable { margin-bottom: 20px; }
+.wf-lista-vistas { list-style: none; margin: 0 0 8px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px 16px; }
+.wf-lista-vistas li { padding: 6px 8px; background: var(--wf-fondo); border: 1px solid var(--wf-borde-suave); border-radius: var(--wf-radio); }
+.wf-lista-vistas .wf-id { font-family: var(--wf-mono); font-weight: 700; margin-right: 6px; }
+.wf-pendiente { color: var(--wf-texto-2); }
+.wf-pendiente::after { content: " · pendiente"; font-family: var(--wf-mono); font-size: 0.8em; }
+
+.wf-tabla-simple { width: 100%; border-collapse: collapse; background: var(--wf-fondo); font-size: 0.92em; }
+.wf-tabla-simple th, .wf-tabla-simple td { text-align: left; padding: 6px 8px; border: 1px solid var(--wf-borde-suave); vertical-align: top; }
+.wf-tabla-simple th { background: var(--wf-fondo-3); }
+.wf-desplazable { overflow-x: auto; }
+
+/* 12. Pantallas angostas -------------------------------------------------- */
+@media (max-width: 720px) {
+  .wf-app { grid-template-columns: minmax(0, 1fr); }
+  .wf-app-encabezado .wf-boton-menu { display: inline-flex; }
+  .wf-menu { display: none; border-right: none; border-bottom: 1px solid var(--wf-borde-suave); }
+  .wf-menu.wf-abierto { display: block; }
+  .wf-cuenta-nombre { display: none; }
+  .wf-menu-visitante { display: none; }
+  .wf-menu-visitante.wf-abierto {
+    display: flex; flex-direction: column;
+    position: absolute; left: 0; right: 0; top: 100%; z-index: 30;
+    padding: 8px; background: var(--wf-fondo); border-bottom: 1px solid var(--wf-borde);
+  }
+  .wf-app-encabezado { position: relative; gap: 8px; }
+  .wf-app-nombre { font-size: 0.95rem; min-width: 0; }
+  /* En celular la barra del wireframe no queda fija, para no tapar la vista */
+  .wf-barra { position: static; }
+  .wf-contenido { padding: 16px var(--wf-espacio) 48px; }
+  .wf-app-pie { flex-direction: column; }
+  .wf-rejilla-2, .wf-rejilla-3 { grid-template-columns: minmax(0, 1fr); }
+  .wf-encabezado { align-items: stretch; flex-direction: column; }
+  .wf-notas dl { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* =========================================================================
+ * Componentes (T2). Cada uno cita su regla de docs/requerimientos.md.
+ * ========================================================================= */
+
+/* 13. Listado paginado: tabla en escritorio, tarjetas en celular (RUI-10, RUI-14) */
+.wf-tabla { width: 100%; border-collapse: collapse; background: var(--wf-fondo); }
+.wf-tabla th, .wf-tabla td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--wf-borde-suave); vertical-align: middle; overflow-wrap: normal; }
+.wf-tabla thead th { background: var(--wf-fondo-3); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 2px solid var(--wf-borde); }
+.wf-tabla tbody tr:hover { background: var(--wf-fondo-2); }
+.wf-tabla .wf-num { text-align: right; }
+.wf-tabla .wf-col-acciones { text-align: right; white-space: nowrap; }
+.wf-listado { background: var(--wf-fondo); border: 1px solid var(--wf-borde-suave); border-radius: var(--wf-radio); overflow-x: auto; }
+
+.wf-paginacion {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 8px 16px; padding: 10px 12px; border-top: 1px solid var(--wf-borde-suave);
+}
+.wf-paginacion-rango { font-weight: 600; }
+.wf-paginacion-controles { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.wf-paginacion-controles select { font: inherit; min-height: 32px; padding: 2px 6px; border: 1px solid var(--wf-borde); border-radius: var(--wf-radio); background: var(--wf-fondo); }
+
+/* 14. Búsqueda y filtros (RUI-11, RUI-12) */
+.wf-filtros {
+  display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 16px;
+  padding: 12px; background: var(--wf-fondo); border: 1px solid var(--wf-borde-suave); border-radius: var(--wf-radio);
+}
+.wf-filtros .wf-campo { margin: 0; }
+.wf-busqueda { flex: 1 1 280px; }
+.wf-casilla { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; cursor: pointer; }
+.wf-casilla input { width: 18px; height: 18px; margin: 0; }
+.wf-filtros-aplicados { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; font-size: 0.9rem; }
+.wf-chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border: 1px solid var(--wf-borde); border-radius: 999px; background: var(--wf-fondo); }
+
+/* 15. Formularios (RUI-02, RUI-06, RUI-08, RUI-09) */
+.wf-form { display: flex; flex-direction: column; gap: 20px; }
+/* Los campos se reparten en tantas columnas como quepan (de al menos 320 px): dos en una
+   pantalla normal y tres o cuatro en una ancha, para usar todo el ancho sin estirar los campos */
+.wf-form-seccion { border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 16px; }
+.wf-form-seccion > legend { font-weight: 700; padding: 0; margin-bottom: 12px; }
+.wf-form-seccion .wf-ancho-completo { grid-column: 1 / -1; }
+.wf-form-pie { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; padding-top: 12px; border-top: 1px solid var(--wf-borde-suave); }
+
+.wf-campo { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.wf-campo > label, .wf-etiqueta-campo { font-weight: 600; font-size: 0.92rem; }
+.wf-obligatorio::after { content: " *"; }
+.wf-nota-obligatorios { font-size: 0.85rem; color: var(--wf-texto-2); margin: 0; }
+.wf-ayuda { font-size: 0.85rem; color: var(--wf-texto-2); }
+
+.wf-campo input, .wf-campo select, .wf-campo textarea,
+.wf-filtros input:not([type="checkbox"]), .wf-filtros select {
+  font: inherit; color: var(--wf-tinta); background: var(--wf-fondo);
+  min-height: 40px; padding: 8px 10px; width: 100%;
+  border: 1px solid var(--wf-borde); border-radius: var(--wf-radio);
+}
+.wf-campo textarea { min-height: 88px; resize: vertical; }
+.wf-campo input[readonly] { background: var(--wf-fondo-2); }
+.wf-campo input:disabled, .wf-campo select:disabled, .wf-campo textarea:disabled {
+  background: var(--wf-fondo-3); color: var(--wf-texto-2); border-style: dashed; cursor: not-allowed;
+}
+/* Campo con error: borde grueso y mensaje con texto, no solo color (RUI-02, §6) */
+.wf-campo [aria-invalid="true"] { border: 2px solid var(--wf-tinta); background: var(--wf-fondo-2); }
+.wf-error-campo { font-size: 0.88rem; font-weight: 600; margin: 0; }
+.wf-error-campo::before { content: "⚠ "; }
+
+.wf-errores-generales { border: 2px solid var(--wf-tinta); border-left-width: 8px; border-radius: var(--wf-radio); padding: 10px 14px; background: var(--wf-fondo); }
+.wf-errores-generales ul { margin: 4px 0 0; padding-left: 20px; }
+
+/* Campo con botón pegado (búsqueda, mostrar contraseña, fecha) */
+.wf-con-boton { display: flex; }
+.wf-con-boton input { border-radius: var(--wf-radio) 0 0 var(--wf-radio) !important; flex: 1; min-width: 0; }
+.wf-con-boton .wf-boton { border-radius: 0 var(--wf-radio) var(--wf-radio) 0; margin-left: -1px; white-space: nowrap; }
+
+.wf-girando::before { content: "◌ "; }
+
+/* 16. Selectores de fecha y hora (RUI-15, RUI-17) */
+.wf-calendario { width: 280px; max-width: 100%; margin-top: 4px; padding: 10px; background: var(--wf-fondo); border: 1px solid var(--wf-borde); border-radius: var(--wf-radio); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); }
+.wf-calendario-mes { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; font-weight: 700; }
+.wf-calendario table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.88rem; }
+.wf-calendario th { font-weight: 600; color: var(--wf-texto-2); padding: 4px 0; }
+.wf-calendario td { padding: 1px; }
+.wf-calendario td button { width: 100%; min-height: 32px; font: inherit; background: none; border: 1px solid transparent; border-radius: 3px; cursor: pointer; }
+.wf-calendario td button:hover { border-color: var(--wf-borde); }
+.wf-calendario td button.wf-hoy { border-color: var(--wf-tinta); }
+.wf-calendario td button[aria-pressed="true"] { background: var(--wf-tinta); color: #fff; font-weight: 700; }
+.wf-hora { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.wf-campo .wf-hora select { width: auto; }
+
+/* 17. Selector con búsqueda (combobox, RUI-11) */
+.wf-opciones {
+  margin: 4px 0 0; padding: 4px 0; list-style: none;
+  background: var(--wf-fondo); border: 1px solid var(--wf-borde); border-radius: var(--wf-radio);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); max-height: 220px; overflow-y: auto;
+}
+.wf-opciones li { padding: 8px 12px; cursor: pointer; }
+.wf-opciones li[aria-selected="true"] { background: var(--wf-fondo-3); font-weight: 600; }
+.wf-opcion-sec { display: block; font-size: 0.85rem; color: var(--wf-texto-2); font-weight: 400; }
+.wf-opciones .wf-sin-opciones { color: var(--wf-texto-2); cursor: default; }
+
+/* 18. Mensajes (RUI-01, RUI-03, RUI-04, RUI-21) */
+.wf-mensaje {
+  display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px 12px;
+  padding: 12px 14px; background: var(--wf-fondo);
+  border: 1px solid var(--wf-borde); border-left-width: 8px; border-radius: var(--wf-radio);
+}
+.wf-mensaje-icono { font-weight: 700; font-family: var(--wf-mono); }
+.wf-mensaje-texto { flex: 1 1 220px; min-width: 0; }
+.wf-mensaje-texto p { margin: 0; }
+.wf-mensaje-texto p + p { margin-top: 4px; }
+.wf-mensaje-acciones { display: flex; flex-wrap: wrap; gap: 8px; }
+.wf-mensaje.wf-aviso { border-left: 10px double var(--wf-tinta); }
+.wf-mensaje.wf-error { border: 2px solid var(--wf-tinta); border-left-width: 8px; }
+.wf-traceid { font-family: var(--wf-mono); padding: 1px 6px; background: var(--wf-fondo-3); border-radius: 3px; }
+
+.wf-toast {
+  position: fixed; right: 16px; bottom: 16px; z-index: 60;
+  max-width: min(360px, calc(100vw - 32px));
+  padding: 12px 16px; color: #fff; background: var(--wf-tinta); border-radius: var(--wf-radio);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+.wf-toast::before { content: "✓ "; font-weight: 700; }
+.wf-toast.wf-toast-muestra { position: static; display: inline-block; box-shadow: none; }
+
+/* 19. Estados de contenido (RUI-13) */
+.wf-estado-contenido { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 32px 16px; text-align: center; background: var(--wf-fondo); }
+.wf-estado-contenido p { margin: 0; }
+.wf-estado-titulo { font-weight: 700; }
+.wf-cargando { display: flex; flex-direction: column; gap: 12px; padding: 16px; background: var(--wf-fondo); }
+.wf-cargando-linea { height: 14px; border-radius: 3px; background: var(--wf-fondo-3); }
+.wf-cargando-linea:nth-child(2n) { width: 85%; }
+.wf-cargando-linea:nth-child(3n) { width: 70%; }
+
+/* 20. Etiquetas de estado: el texto manda, el borde refuerza (RUI-19, RUI-20) */
+.wf-etiqueta {
+  display: inline-block; padding: 1px 9px; font-size: 0.82rem; font-weight: 600; line-height: 1.5;
+  white-space: nowrap; border: 1px solid var(--wf-tinta); border-radius: 999px; background: var(--wf-fondo);
+}
+.wf-etiqueta.wf-e-llena { color: #fff; background: var(--wf-tinta); }
+.wf-etiqueta.wf-e-gris { background: var(--wf-fondo-3); }
+.wf-etiqueta.wf-e-discontinua { border-style: dashed; }
+.wf-etiqueta.wf-e-doble { border: 3px double var(--wf-tinta); }
+.wf-etiqueta.wf-e-apagada { color: var(--wf-texto-2); border-color: var(--wf-borde); }
+.wf-etiqueta.wf-e-tachada { color: var(--wf-texto-2); border-color: var(--wf-borde); text-decoration: line-through; }
+
+/* 21. Grilla del horario semanal (RFF-29) */
+.wf-horario { background: var(--wf-fondo); border: 1px solid var(--wf-borde-suave); border-radius: var(--wf-radio); padding: 12px; }
+.wf-horario-cabecera { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 16px; margin-bottom: 12px; }
+/*
+ * Una fila = 30 minutos; la fila 1 son los días. Las líneas horizontales salen del fondo;
+ * las verticales, de un .wf-grilla-col por día. Solo se posicionan días, horas y bloques:
+ *   <div class="wf-grilla" style="--wf-dias: 6; --wf-filas: 7">
+ *     <div class="wf-grilla-col" style="grid-column: 2"></div> …
+ *     <div class="wf-grilla-dia" style="grid-column: 2">Lunes</div> …
+ *     <div class="wf-grilla-hora" style="grid-row: 2 / span 2">5:00 p. m.</div> …
+ *     <a class="wf-bloque" style="grid-column: 2; grid-row: 4 / 8">…</a>
+ */
+.wf-grilla {
+  display: grid;
+  grid-template-columns: 84px repeat(var(--wf-dias, 6), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--wf-filas, 7), 30px);
+  border: 1px solid var(--wf-borde-suave);
+  background: repeating-linear-gradient(to bottom, var(--wf-fondo) 0 29px, var(--wf-borde-suave) 29px 30px);
+  font-size: 0.85rem;
+}
+.wf-grilla-col { grid-row: 1 / -1; border-left: 1px solid var(--wf-borde-suave); }
+.wf-grilla-dia { grid-row: 1; display: grid; place-items: center; font-weight: 700; background: var(--wf-fondo-3); border-left: 1px solid var(--wf-borde-suave); border-bottom: 1px solid var(--wf-borde); }
+.wf-grilla-hora { grid-column: 1; padding: 2px 6px; font-size: 0.78rem; color: var(--wf-texto-2); }
+.wf-bloque {
+  z-index: 1; margin: 2px; padding: 4px 6px; overflow: hidden;
+  border: 2px solid var(--wf-tinta); border-radius: 3px; background: var(--wf-fondo-3);
+  text-decoration: none; line-height: 1.3;
+}
+.wf-bloque:hover { background: var(--wf-borde-suave); }
+.wf-bloque strong, .wf-bloque span { display: block; }
+.wf-bloque span { font-size: 0.78rem; }
+.wf-horario-lista { display: none; }
+.wf-horario-lista h3 { margin: 14px 0 6px; font-size: 0.95rem; }
+.wf-horario-lista h3:first-child { margin-top: 0; }
+.wf-horario-lista ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.wf-horario-lista a { display: block; padding: 8px 10px; border: 2px solid var(--wf-tinta); border-radius: 3px; background: var(--wf-fondo-3); text-decoration: none; }
+.wf-horario-lista a span { display: block; font-size: 0.85rem; }
+
+/* 22. Encabezado de detalle y datos */
+.wf-detalle-titulo { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.wf-datos { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px 24px; margin: 0; }
+.wf-datos dt { font-size: 0.82rem; color: var(--wf-texto-2); }
+.wf-datos dd { margin: 2px 0 0; font-weight: 600; }
+
+/* 24. Simulación del wireframe: elige el resultado de una acción para recorrer los flujos.
+ *     No es parte del producto (como la barra y las notas). */
+.wf-simular {
+  padding: 10px 12px;
+  font-family: var(--wf-mono);
+  font-size: 13px;
+  background: var(--wf-fondo-2);
+  border: 2px dashed var(--wf-borde);
+  border-radius: var(--wf-radio);
+}
+.wf-simular > p { margin: 0 0 8px; }
+.wf-simular > p:first-child { font-weight: 700; }
+.wf-simular > p:first-child::before { content: "SIMULACIÓN · "; }
+.wf-simular .wf-fila a { font-family: var(--wf-fuente); }
+
+/* Barra con el periodo vigente (oferta, listados filtrados por periodo) */
+.wf-periodo { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; padding: 10px 14px; background: var(--wf-fondo); border: 1px solid var(--wf-borde-suave); border-left: 6px solid var(--wf-tinta); border-radius: var(--wf-radio); }
+
+/* 23. Página del catálogo de componentes */
+.wf-componente { margin-bottom: 56px; }
+.wf-componente > h2 { padding-bottom: 6px; border-bottom: 2px solid var(--wf-borde); }
+.wf-componente-regla { font-family: var(--wf-mono); font-size: 0.85rem; color: var(--wf-texto-2); margin-bottom: 16px; }
+.wf-variante { margin: 28px 0 10px; font-size: 0.95rem; }
+.wf-muestras { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; align-items: start; }
+.wf-toc { columns: 2 240px; padding-left: 20px; }
+.wf-toc li { margin-bottom: 4px; }
+
+@media (max-width: 720px) {
+  /* Tabla → tarjetas: cada celda muestra su rótulo desde data-etiqueta (RUI-14) */
+  .wf-tabla thead { display: none; }
+  .wf-tabla, .wf-tabla tbody, .wf-tabla tr, .wf-tabla td { display: block; width: 100%; }
+  .wf-tabla tr { display: flex; flex-direction: column; padding: 10px 12px; border-bottom: 1px solid var(--wf-borde); }
+  .wf-tabla td.wf-celda-principal { order: -1; }
+  .wf-tabla td { display: flex; gap: 12px; padding: 3px 0; border: 0; }
+  .wf-tabla td::before { content: attr(data-etiqueta); flex: 0 0 38%; font-size: 0.82rem; color: var(--wf-texto-2); }
+  .wf-tabla td.wf-celda-principal { font-size: 1.05rem; font-weight: 700; }
+  .wf-tabla td.wf-celda-principal::before, .wf-tabla td.wf-col-acciones::before { content: none; }
+  .wf-tabla .wf-num, .wf-tabla .wf-col-acciones { text-align: left; }
+  .wf-tabla td.wf-col-acciones { padding-top: 8px; }
+
+  .wf-paginacion { flex-direction: column; align-items: stretch; }
+  .wf-paginacion-controles { display: grid; grid-template-columns: 1fr 1fr; }
+  .wf-paginacion-controles > label { grid-column: 1 / -1; }
+  .wf-filtros { flex-direction: column; align-items: stretch; }
+  .wf-filtros > * { flex: none; }
+  .wf-form-seccion { grid-template-columns: minmax(0, 1fr); }
+  .wf-form-pie { flex-direction: column-reverse; }
+  .wf-form-pie .wf-boton { width: 100%; }
+
+  /* Grilla → lista por día (RFF-29) */
+  .wf-grilla { display: none; }
+  .wf-horario-lista { display: block; }
+}
+
+/* Registros de auditoría (V-36): cada fila se expande para ver sus cambios */
+.wf-registros { list-style: none; margin: 0; padding: 0; background: var(--wf-fondo); border: 1px solid var(--wf-borde); border-radius: var(--wf-radio); }
+.wf-registros > li + li { border-top: 1px solid var(--wf-borde-suave); }
+.wf-registro > summary {
+  display: grid; grid-template-columns: 11rem 8rem minmax(9rem, 1fr) minmax(12rem, 1.4fr) 7rem;
+  gap: 4px 12px; align-items: center; padding: 10px 12px; cursor: pointer;
+}
+.wf-registro > summary > span { min-width: 0; overflow-wrap: anywhere; }
+.wf-registro[open] > summary { background: var(--wf-fondo-3); }
+.wf-registro-cuerpo { padding: 12px; display: grid; gap: 12px; }
+.wf-registros-cabecera { display: grid; grid-template-columns: 11rem 8rem minmax(9rem, 1fr) minmax(12rem, 1.4fr) 7rem; gap: 12px; padding: 8px 12px 8px 28px; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+.wf-registros-cabecera, .wf-registro > summary { padding-left: 28px; }
+.wf-protegido { font-style: italic; color: var(--wf-texto-2); }
+@media (max-width: 720px) {
+  .wf-registros-cabecera { display: none; }
+  .wf-registro > summary { grid-template-columns: 1fr; }
+}
+
+/* Detalle técnico de un error (V-38, única excepción de RUI-05) */
+.wf-tecnico { margin: 0; padding: 12px; max-height: 360px; overflow: auto; font-family: var(--wf-mono); font-size: 12px; line-height: 1.5; white-space: pre; background: var(--wf-fondo-3); border: 1px solid var(--wf-borde); border-radius: var(--wf-radio); }
+.wf-registro > summary { position: relative; list-style: none; }
+.wf-registro > summary::-webkit-details-marker { display: none; }
+.wf-registro > summary::before { content: "▸"; position: absolute; left: 10px; top: 10px; }
+.wf-registro[open] > summary::before { content: "▾"; }
+.wf-tabla code, .wf-datos code { overflow-wrap: break-word; }
+.wf-registros-cabecera { border: 1px solid transparent; }

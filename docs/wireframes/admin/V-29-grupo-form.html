@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-29 Registrar o editar grupo — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-29"
+      data-wf-nombre="Registrar o editar grupo"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-menu="V-28"
+      data-wf-estados="registro:Registrar (presencial)|virtual:Registrar (virtual, sin aula)|validacion:Registrar con errores|duplicado:Registrar: NRC repetido (409 RN-13)|planificado:Editar un grupo Planificado (todo editable)|abierto:Editar un grupo Abierto (campos limitados)|traslape:Editar: aula con traslape (409 RN-08)|enviando:Guardando">
+
+  <main class="wf-vista">
+    <header>
+      <p class="wf-migas"><a href="V-28-grupos.html">Grupos</a> / <span data-wf-estado="registro virtual validacion duplicado">Registrar</span><span data-wf-estado="planificado abierto traslape enviando">Editar</span></p>
+      <h1 data-wf-estado="registro virtual validacion duplicado">Registrar grupo</h1>
+      <h1 data-wf-estado="planificado">Editar grupo 1003</h1>
+      <h1 data-wf-estado="abierto traslape enviando">Editar grupo 1004</h1>
+    </header>
+
+    <div class="wf-mensaje" role="note" data-wf-estado="registro virtual validacion duplicado">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>El grupo se crea en estado Planificado. Después de crearlo, agregue sus horarios para poder abrirlo.</p></div>
+    </div>
+
+    <div class="wf-mensaje" role="note" data-wf-estado="abierto traslape enviando">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>El grupo está <strong>Abierto</strong>: solo se pueden cambiar el profesor, la modalidad, el aula y el cupo.</p></div>
+    </div>
+
+    <div class="wf-errores-generales" role="alert" data-wf-estado="validacion">
+      <strong>No se pudo registrar el grupo.</strong>
+      <ul><li>Revise los campos marcados.</li></ul>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="duplicado">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto"><p>Ya existe un grupo con el NRC 1004.</p></div>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="traslape">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto"><p>El aula A-102 ya está ocupada en ese horario por el grupo 1003.</p></div>
+    </div>
+
+    <form class="wf-caja wf-form" onsubmit="return false" novalidate>
+      <p class="wf-nota-obligatorios">Los campos con * son obligatorios.</p>
+
+      <fieldset class="wf-form-seccion">
+        <legend>Grupo</legend>
+
+        <!-- NRC -->
+        <div class="wf-campo">
+          <label for="g-nrc" class="wf-obligatorio">NRC</label>
+          <input id="g-nrc" data-wf-estado="registro virtual validacion">
+          <input value="1004" data-wf-estado="duplicado" aria-label="NRC">
+          <input value="1003" data-wf-estado="planificado" aria-label="NRC">
+          <input value="1004" data-wf-estado="abierto traslape enviando" aria-label="NRC" disabled>
+          <span class="wf-ayuda">Único en todo el sistema.</span>
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique el NRC.</p>
+        </div>
+
+        <!-- Periodo -->
+        <div class="wf-campo wf-combo">
+          <label for="g-periodo" class="wf-obligatorio">Periodo</label>
+          <div class="wf-con-boton" data-wf-estado="registro virtual validacion duplicado planificado"><input id="g-periodo" role="combobox" aria-expanded="false" value="2026-III (vigente)"><button type="button" class="wf-boton" aria-label="Quitar periodo">✕</button></div>
+          <input value="2026-III (vigente)" data-wf-estado="abierto traslape enviando" aria-label="Periodo" disabled>
+          <span class="wf-ayuda" data-wf-estado="registro virtual validacion duplicado">Empieza en el periodo vigente.</span>
+        </div>
+
+        <!-- Curso -->
+        <div class="wf-campo wf-combo">
+          <label for="g-curso" class="wf-obligatorio">Curso</label>
+          <input id="g-curso" role="combobox" aria-expanded="true" aria-controls="g-curso-opciones" aria-autocomplete="list" value="ing" data-wf-estado="registro">
+          <ul class="wf-opciones" id="g-curso-opciones" role="listbox" aria-label="Cursos" data-wf-estado="registro">
+            <li role="option" aria-selected="true">ING-101 · Inglés conversacional I<span class="wf-opcion-sec">Básico · 48 horas</span></li>
+            <li role="option" aria-selected="false">ING-201 · Inglés conversacional II<span class="wf-opcion-sec">Intermedio · 48 horas</span></li>
+          </ul>
+          <input role="combobox" aria-expanded="false" aria-label="Curso" data-wf-estado="validacion" aria-invalid="true">
+          <div class="wf-con-boton" data-wf-estado="virtual duplicado"><input role="combobox" aria-expanded="false" aria-label="Curso" value="EXC-110 · Excel para la oficina"><button type="button" class="wf-boton" aria-label="Quitar curso">✕</button></div>
+          <div class="wf-con-boton" data-wf-estado="planificado"><input role="combobox" aria-expanded="false" aria-label="Curso" value="ING-201 · Inglés conversacional II"><button type="button" class="wf-boton" aria-label="Quitar curso">✕</button></div>
+          <input value="EXC-110 · Excel para la oficina" data-wf-estado="abierto traslape enviando" aria-label="Curso" disabled>
+          <span class="wf-ayuda" data-wf-estado="registro">Solo cursos activos.</span>
+          <p class="wf-error-campo" data-wf-estado="validacion">Elija el curso.</p>
+        </div>
+
+        <!-- Profesor -->
+        <div class="wf-campo wf-combo">
+          <label for="g-profesor" class="wf-obligatorio">Profesor</label>
+          <input id="g-profesor" role="combobox" aria-expanded="false" aria-label="Profesor" placeholder="Escriba el nombre" data-wf-estado="registro validacion" aria-invalid="false">
+          <div class="wf-con-boton" data-wf-estado="virtual duplicado abierto traslape enviando"><input role="combobox" aria-expanded="false" aria-label="Profesor" value="Carlos Vargas Solís · Informática"><button type="button" class="wf-boton" aria-label="Quitar profesor">✕</button></div>
+          <div class="wf-con-boton" data-wf-estado="planificado"><input role="combobox" aria-expanded="false" aria-label="Profesor" value="Laura Jiménez Mora · Inglés"><button type="button" class="wf-boton" aria-label="Quitar profesor">✕</button></div>
+          <span class="wf-ayuda" data-wf-estado="registro">Solo profesores activos.</span>
+          <p class="wf-error-campo" data-wf-estado="validacion">Elija el profesor.</p>
+        </div>
+      </fieldset>
+
+      <fieldset class="wf-form-seccion">
+        <legend>Modalidad y cupo</legend>
+
+        <!-- Modalidad -->
+        <div class="wf-campo">
+          <label for="g-modalidad" class="wf-obligatorio">Modalidad</label>
+          <select id="g-modalidad" data-wf-estado="registro validacion duplicado abierto traslape enviando"><option>Elija una modalidad</option><option selected>Presencial</option><option>Virtual</option><option>Híbrida</option></select>
+          <select aria-label="Modalidad" data-wf-estado="virtual"><option>Elija una modalidad</option><option>Presencial</option><option selected>Virtual</option><option>Híbrida</option></select>
+          <select aria-label="Modalidad" data-wf-estado="planificado"><option>Elija una modalidad</option><option>Presencial</option><option>Virtual</option><option selected>Híbrida</option></select>
+          <span class="wf-ayuda">Presencial e híbrida usan aula; virtual, no.</span>
+        </div>
+
+        <!-- Aula: oculta en virtual -->
+        <div class="wf-campo wf-combo" data-wf-estado="registro validacion duplicado planificado abierto traslape enviando">
+          <label for="g-aula" class="wf-obligatorio">Aula</label>
+          <input id="g-aula" role="combobox" aria-expanded="false" aria-label="Aula" placeholder="Código o ubicación" data-wf-estado="registro validacion">
+          <div class="wf-con-boton" data-wf-estado="duplicado abierto enviando"><input role="combobox" aria-expanded="false" aria-label="Aula" value="B-201 · Edificio B, laboratorio de cómputo"><button type="button" class="wf-boton" aria-label="Quitar aula">✕</button></div>
+          <div class="wf-con-boton" data-wf-estado="planificado traslape"><input role="combobox" aria-expanded="false" aria-label="Aula" value="A-102 · Edificio A, primer piso" data-wf-estado="planificado"><input role="combobox" aria-expanded="false" aria-label="Aula" value="A-102 · Edificio A, primer piso" aria-invalid="true" data-wf-estado="traslape"><button type="button" class="wf-boton" aria-label="Quitar aula">✕</button></div>
+          <span class="wf-ayuda" data-wf-estado="registro">Solo aulas activas.</span>
+          <p class="wf-error-campo" data-wf-estado="validacion">Elija el aula.</p>
+        </div>
+
+        <!-- Cupo -->
+        <div class="wf-campo">
+          <label for="g-cupo" class="wf-obligatorio">Cupo</label>
+          <input id="g-cupo" inputmode="numeric" data-wf-estado="registro virtual validacion">
+          <input inputmode="numeric" value="18" data-wf-estado="duplicado abierto traslape enviando" aria-label="Cupo">
+          <input inputmode="numeric" value="20" data-wf-estado="planificado" aria-label="Cupo">
+          <span class="wf-ayuda" data-wf-estado="duplicado">Capacidad del aula B-201: 18.</span>
+          <span class="wf-ayuda" data-wf-estado="planificado traslape">Capacidad del aula A-102: 20.</span>
+          <span class="wf-ayuda" data-wf-estado="abierto enviando">Capacidad del aula B-201: 18. No puede ser menor que los 12 cupos ocupados.</span>
+          <span class="wf-ayuda" data-wf-estado="registro">Elija un aula para ver su capacidad.</span>
+          <span class="wf-ayuda" data-wf-estado="virtual">Sin aula: el cupo no depende de una capacidad.</span>
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique un cupo mayor que cero.</p>
+        </div>
+      </fieldset>
+
+      <div class="wf-form-pie">
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-descartar">Cancelar</button>
+        <a class="wf-boton wf-principal" href="../compartidas/V-30-grupo.html#estado=creado&amp;rol=administrador" data-wf-estado="registro virtual validacion duplicado">Registrar grupo</a>
+        <a class="wf-boton wf-principal" href="../compartidas/V-30-grupo.html#estado=planificado&amp;rol=administrador" data-wf-estado="planificado">Guardar cambios</a>
+        <a class="wf-boton wf-principal" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=administrador" data-wf-estado="abierto traslape">Guardar cambios</a>
+        <button type="button" class="wf-boton wf-principal wf-girando" data-wf-estado="enviando" disabled>Guardando…</button>
+      </div>
+    </form>
+
+    <details class="wf-notas">
+      <summary>Notas de V-29</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-29 Registrar o editar grupo · administrador (desde V-28 y V-30)</dd>
+        <dt>Requerimientos</dt><dd>RFF-24</dd>
+        <dt>Reglas</dt><dd>RUI-02, RUI-04 (<code>409</code> RN-07, RN-08, RN-09, RN-13, RN-17, RF-45), RUI-06, RUI-08, RUI-09, RUI-11 (selectores con búsqueda)</dd>
+        <dt>Endpoints</dt><dd><code>POST /grupos</code>, <code>GET /grupos/{id}</code>, <code>PUT /grupos/{id}</code>; para los selectores, <code>GET /cursos</code>, <code>GET /profesores</code>, <code>GET /periodos</code>, <code>GET /aulas</code></dd>
+        <dt>Backend</dt><dd>RF-42, RF-45, RN-07, RN-08, RN-09, RN-13, RN-17; supuestos 1, 2 y 4 de <code>SPEC-grupos</code></dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Curso, profesor, periodo y aula usan el selector con búsqueda (componente 5), que solo ofrece registros activos (RN-17).</li>
+            <li>En virtual el campo Aula desaparece y se envía vacío. Junto al cupo se muestra la capacidad del aula elegida (RN-09).</li>
+            <li>Al editar, los campos que el estado no permite se ven deshabilitados (tabla de RFF-24). Un grupo Finalizado o Cancelado no ofrece "Editar".</li>
+            <li>El traslape de ejemplo (<code>409 RN-08</code>) cambia el aula del 1004 a A-102, que el 1003 ocupa los martes y jueves. El mensaje es de la API y nombra el NRC.</li>
+            <li>Al registrar, abre V-30 con el aviso de que el grupo nace Planificado y necesita horarios.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <dialog class="wf-dialogo" id="dlg-descartar" aria-labelledby="dlg-descartar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-descartar-t">¿Descartar los cambios?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>Hay cambios sin guardar en el formulario. Si sale, se perderán.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Seguir editando</button>
+      <a class="wf-boton wf-principal" href="V-28-grupos.html">Descartar cambios</a>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

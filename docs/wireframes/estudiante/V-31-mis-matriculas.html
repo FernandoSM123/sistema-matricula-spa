@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-31 Mis matrículas — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-31"
+      data-wf-nombre="Mis matrículas"
+      data-wf-raiz="../"
+      data-wf-marco="estudiante"
+      data-wf-estados="datos:Con datos|matriculado:Después de matricular (1007)|retirado:Después de retirarse (1004)|cambiado:Después de cambiar de grupo (1001 → 1008)|rechazos:Con rechazo de la API al retirarse|sin-vigente:Sin periodo vigente|vacio:Sin matrículas|cargando:Cargando|error:Error">
+
+  <main class="wf-vista">
+    <header class="wf-encabezado">
+      <div>
+        <h1>Mis matrículas</h1>
+        <p class="wf-encabezado-subtitulo">Sus cursos del periodo y su historial.</p>
+      </div>
+      <div class="wf-acciones">
+        <a class="wf-boton wf-principal" href="../publico/V-01-oferta.html">Ver la oferta académica</a>
+      </div>
+    </header>
+
+    <div class="wf-periodo" data-wf-estado="datos matriculado retirado cambiado rechazos vacio cargando error">
+      <strong>Periodo 2026-III</strong>
+      <span>Matrícula del 09/11/2026 al 28/11/2026</span>
+      <span>Retiros hasta el 11/12/2026</span>
+    </div>
+
+    <div class="wf-mensaje" role="note" data-wf-estado="rechazos">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>En este estado, la ventana de "Retirarme" del grupo 1004 muestra la respuesta de rechazo de la API.</p></div>
+    </div>
+
+    <div class="wf-cargando" role="status" aria-label="Cargando sus matrículas" data-wf-estado="cargando">
+      <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+    </div>
+    <div class="wf-caja wf-estado-contenido" role="alert" data-wf-estado="error">
+      <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+      <button type="button" class="wf-boton">Reintentar</button>
+    </div>
+
+    <div class="wf-pestanas" data-wf-estado="datos matriculado retirado cambiado rechazos sin-vigente vacio">
+      <div role="tablist" aria-label="Matrículas">
+        <button type="button" role="tab" id="tab-actuales" aria-controls="panel-actuales" aria-selected="true">Actuales</button>
+        <button type="button" role="tab" id="tab-historial" aria-controls="panel-historial">Historial</button>
+      </div>
+
+      <!-- Actuales ======================================================= -->
+      <div role="tabpanel" id="panel-actuales" aria-labelledby="tab-actuales">
+        <div class="wf-listado" data-wf-estado="datos matriculado retirado cambiado rechazos">
+          <table class="wf-tabla">
+            <thead>
+              <tr><th scope="col">Curso</th><th scope="col">NRC</th><th scope="col">Profesor</th><th scope="col">Modalidad</th><th scope="col">Estado del grupo</th><th scope="col">Matriculado el</th><th scope="col"><span class="wf-solo-lector">Acciones</span></th></tr>
+            </thead>
+            <tbody>
+              <tr data-wf-estado="datos matriculado retirado rechazos">
+                <td class="wf-celda-principal" data-etiqueta="Curso">ING-101 · Inglés conversacional I</td>
+                <td data-etiqueta="NRC">1001</td>
+                <td data-etiqueta="Profesor">Laura Jiménez Mora</td>
+                <td data-etiqueta="Modalidad">Presencial · <span class="wf-nowrap">A-101</span></td>
+                <td data-etiqueta="Estado del grupo"><span class="wf-etiqueta wf-e-llena">Abierto</span></td>
+                <td data-etiqueta="Matriculado el" class="wf-nowrap">10/11/2026</td>
+                <td class="wf-col-acciones"><span class="wf-acciones">
+                  <a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=estudiante">Ver grupo</a>
+                  <a class="wf-boton wf-boton-pequeno" href="../compartidas/V-33-cambiar-grupo.html#estado=elegir&amp;rol=estudiante">Cambiar de grupo</a>
+                  <button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-retirar-1001">Retirarme</button>
+                </span></td>
+              </tr>
+              <tr data-wf-estado="cambiado">
+                <td class="wf-celda-principal" data-etiqueta="Curso">ING-101 · Inglés conversacional I</td>
+                <td data-etiqueta="NRC">1008</td>
+                <td data-etiqueta="Profesor">Laura Jiménez Mora</td>
+                <td data-etiqueta="Modalidad">Presencial · <span class="wf-nowrap">A-101</span></td>
+                <td data-etiqueta="Estado del grupo"><span class="wf-etiqueta wf-e-llena">Abierto</span></td>
+                <td data-etiqueta="Matriculado el" class="wf-nowrap">19/11/2026</td>
+                <td class="wf-col-acciones"><span class="wf-acciones">
+                  <a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=estudiante">Ver grupo</a>
+                  <a class="wf-boton wf-boton-pequeno" href="../compartidas/V-33-cambiar-grupo.html#estado=elegir&amp;rol=estudiante">Cambiar de grupo</a>
+                  <button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-retirar-1008">Retirarme</button>
+                </span></td>
+              </tr>
+              <tr data-wf-estado="datos matriculado cambiado rechazos">
+                <td class="wf-celda-principal" data-etiqueta="Curso">EXC-110 · Excel para la oficina</td>
+                <td data-etiqueta="NRC">1004</td>
+                <td data-etiqueta="Profesor">Carlos Vargas Solís</td>
+                <td data-etiqueta="Modalidad">Presencial · <span class="wf-nowrap">B-201</span></td>
+                <td data-etiqueta="Estado del grupo"><span class="wf-etiqueta wf-e-llena">Abierto</span></td>
+                <td data-etiqueta="Matriculado el" class="wf-nowrap">10/11/2026</td>
+                <td class="wf-col-acciones"><span class="wf-acciones">
+                  <a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=estudiante">Ver grupo</a>
+                  <a class="wf-boton wf-boton-pequeno" href="../compartidas/V-33-cambiar-grupo.html#estado=elegir&amp;rol=estudiante">Cambiar de grupo</a>
+                  <button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-retirar-1004">Retirarme</button>
+                </span></td>
+              </tr>
+              <tr data-wf-estado="matriculado">
+                <td class="wf-celda-principal" data-etiqueta="Curso">FOT-300 · Fotografía digital avanzada <span class="wf-etiqueta wf-e-gris">Nueva</span></td>
+                <td data-etiqueta="NRC">1007</td>
+                <td data-etiqueta="Profesor">Ana Rodríguez Castro</td>
+                <td data-etiqueta="Modalidad">Presencial · <span class="wf-nowrap">A-102</span></td>
+                <td data-etiqueta="Estado del grupo"><span class="wf-etiqueta wf-e-llena">Abierto</span></td>
+                <td data-etiqueta="Matriculado el" class="wf-nowrap">19/11/2026</td>
+                <td class="wf-col-acciones"><span class="wf-acciones">
+                  <a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=estudiante">Ver grupo</a>
+                  <a class="wf-boton wf-boton-pequeno" href="../compartidas/V-33-cambiar-grupo.html#estado=elegir&amp;rol=estudiante">Cambiar de grupo</a>
+                  <button type="button" class="wf-boton wf-boton-pequeno" data-wf-abrir="dlg-retirar-1007">Retirarme</button>
+                </span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="wf-caja wf-estado-contenido" data-wf-estado="vacio">
+          <p class="wf-estado-titulo">No tiene matrículas en el periodo 2026-III.</p>
+          <a class="wf-boton wf-principal" href="../publico/V-01-oferta.html">Ver la oferta académica</a>
+        </div>
+        <div class="wf-caja wf-estado-contenido" data-wf-estado="sin-vigente">
+          <p class="wf-estado-titulo">No hay un periodo vigente.</p>
+          <p class="wf-texto-2">Sus matrículas anteriores están en la pestaña Historial.</p>
+        </div>
+      </div>
+
+      <!-- Historial ====================================================== -->
+      <div role="tabpanel" id="panel-historial" aria-labelledby="tab-historial" class="wf-pila">
+        <form class="wf-filtros" role="search" onsubmit="return false" data-wf-estado="datos matriculado retirado cambiado rechazos sin-vigente">
+          <div class="wf-campo wf-busqueda">
+            <label for="h-buscar">Buscar</label>
+            <div class="wf-con-boton">
+              <input id="h-buscar" type="search" placeholder="Curso o NRC">
+              <button type="submit" class="wf-boton">Buscar</button>
+            </div>
+          </div>
+          <div class="wf-campo">
+            <label for="h-periodo">Periodo</label>
+            <select id="h-periodo"><option selected>Todos</option><option>2026-III</option><option>2026-II</option></select>
+          </div>
+          <div class="wf-campo">
+            <label for="h-estado">Estado</label>
+            <select id="h-estado"><option selected>Todos</option><option>Activa</option><option>Retirada</option></select>
+          </div>
+        </form>
+
+        <div class="wf-listado" data-wf-estado="datos matriculado retirado cambiado rechazos sin-vigente">
+          <table class="wf-tabla">
+            <thead>
+              <tr><th scope="col">Curso</th><th scope="col">NRC</th><th scope="col">Periodo</th><th scope="col">Profesor</th><th scope="col">Estado del grupo</th><th scope="col">Matrícula</th><th scope="col">Retiro</th><th scope="col"><span class="wf-solo-lector">Acciones</span></th></tr>
+            </thead>
+            <tbody>
+              <tr data-wf-estado="matriculado">
+                <td class="wf-celda-principal" data-etiqueta="Curso">FOT-300 · Fotografía digital avanzada</td><td data-etiqueta="NRC">1007</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Profesor">Ana Rodríguez Castro</td>
+                <td data-etiqueta="Estado del grupo"><span class="wf-etiqueta wf-e-llena">Abierto</span></td>
+                <td data-etiqueta="Matrícula"><span class="wf-etiqueta wf-e-llena">Activa</span> <span class="wf-nowrap">19/11/2026</span></td><td data-etiqueta="Retiro">—</td>
+                <td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=estudiante">Ver grupo</a></td>
+              </tr>
+              <tr data-wf-estado="cambiado">
+                <td class="wf-celda-principal" data-etiqueta="Curso">ING-101 · Inglés conversacional I</td><td data-etiqueta="NRC">1008</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Profesor">Laura Jiménez Mora</td>
+                <td data-etiqueta="Estado del grupo"><span class="wf-etiqueta wf-e-llena">Abierto</span></td>
+                <td data-etiqueta="Matrícula"><span class="wf-etiqueta wf-e-llena">Activa</span> <span class="wf-nowrap">19/11/2026</span></td><td data-etiqueta="Retiro">—</td>
+                <td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=estudiante">Ver grupo</a></td>
+              </tr>
+              <tr>
+                <td class="wf-celda-principal" data-etiqueta="Curso">ING-101 · Inglés conversacional I</td><td data-etiqueta="NRC">1001</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Profesor">Laura Jiménez Mora</td>
+                <td data-etiqueta="Estado del grupo"><span class="wf-etiqueta wf-e-llena">Abierto</span></td>
+                <td data-etiqueta="Matrícula"><span data-wf-estado="datos matriculado retirado rechazos sin-vigente"><span class="wf-etiqueta wf-e-llena">Activa</span></span><span data-wf-estado="cambiado"><span class="wf-etiqueta wf-e-apagada">Retirada</span></span> <span class="wf-nowrap">10/11/2026</span></td>
+                <td data-etiqueta="Retiro"><span data-wf-estado="datos matriculado retirado rechazos sin-vigente">—</span><span data-wf-estado="cambiado"><span class="wf-nowrap">19/11/2026</span> · Cambio de grupo</span></td>
+                <td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=estudiante">Ver grupo</a></td>
+              </tr>
+              <tr>
+                <td class="wf-celda-principal" data-etiqueta="Curso">EXC-110 · Excel para la oficina</td><td data-etiqueta="NRC">1004</td><td data-etiqueta="Periodo">2026-III</td><td data-etiqueta="Profesor">Carlos Vargas Solís</td>
+                <td data-etiqueta="Estado del grupo"><span class="wf-etiqueta wf-e-llena">Abierto</span></td>
+                <td data-etiqueta="Matrícula"><span data-wf-estado="datos matriculado cambiado rechazos sin-vigente"><span class="wf-etiqueta wf-e-llena">Activa</span></span><span data-wf-estado="retirado"><span class="wf-etiqueta wf-e-apagada">Retirada</span></span> <span class="wf-nowrap">10/11/2026</span></td>
+                <td data-etiqueta="Retiro"><span data-wf-estado="datos matriculado cambiado rechazos sin-vigente">—</span><span data-wf-estado="retirado"><span class="wf-nowrap">19/11/2026</span> · Retiro voluntario</span></td>
+                <td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=abierto&amp;rol=estudiante">Ver grupo</a></td>
+              </tr>
+              <tr>
+                <td class="wf-celda-principal" data-etiqueta="Curso">FOT-300 · Fotografía digital avanzada</td><td data-etiqueta="NRC">0901</td><td data-etiqueta="Periodo">2026-II</td><td data-etiqueta="Profesor">Ana Rodríguez Castro</td>
+                <td data-etiqueta="Estado del grupo"><span class="wf-etiqueta wf-e-apagada">Finalizado</span></td>
+                <td data-etiqueta="Matrícula"><span class="wf-etiqueta wf-e-llena">Activa</span> <span class="wf-nowrap">08/07/2026</span></td><td data-etiqueta="Retiro">—</td>
+                <td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=finalizado&amp;rol=estudiante">Ver grupo</a></td>
+              </tr>
+              <tr>
+                <td class="wf-celda-principal" data-etiqueta="Curso">EXC-110 · Excel para la oficina</td><td data-etiqueta="NRC">0902</td><td data-etiqueta="Periodo">2026-II</td><td data-etiqueta="Profesor">Carlos Vargas Solís</td>
+                <td data-etiqueta="Estado del grupo"><span class="wf-etiqueta wf-e-apagada">Finalizado</span></td>
+                <td data-etiqueta="Matrícula"><span class="wf-etiqueta wf-e-apagada">Retirada</span> <span class="wf-nowrap">08/07/2026</span></td>
+                <td data-etiqueta="Retiro"><span class="wf-nowrap">05/08/2026</span> · Retiro voluntario</td>
+                <td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="../compartidas/V-30-grupo.html#estado=finalizado&amp;rol=estudiante">Ver grupo</a></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="wf-paginacion">
+            <span class="wf-paginacion-rango" data-wf-estado="datos retirado rechazos sin-vigente">1–4 de 4</span>
+            <span class="wf-paginacion-rango" data-wf-estado="matriculado cambiado">1–5 de 5</span>
+            <div class="wf-paginacion-controles">
+              <label>Filas por página <select><option>10</option><option selected>20</option><option>50</option></select></label>
+              <button type="button" class="wf-boton wf-boton-pequeno" disabled>← Anterior</button>
+              <button type="button" class="wf-boton wf-boton-pequeno" disabled>Siguiente →</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="wf-caja wf-estado-contenido" data-wf-estado="vacio">
+          <p class="wf-estado-titulo">Todavía no tiene matrículas.</p>
+          <a class="wf-boton wf-principal" href="../publico/V-01-oferta.html">Ver la oferta académica</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="wf-toast" role="status" data-wf-estado="matriculado">Matrícula registrada en el grupo 1007</div>
+    <div class="wf-toast" role="status" data-wf-estado="retirado">Se retiró del grupo 1004</div>
+    <div class="wf-toast" role="status" data-wf-estado="cambiado">Cambio al grupo 1008 realizado</div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-31</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-31 Mis matrículas · estudiante · su página de inicio</dd>
+        <dt>Requerimientos</dt><dd>RFF-32, RFF-33 · destino de RFF-30 y RFF-34</dd>
+        <dt>Reglas</dt><dd>RUI-04, RUI-07 (retirar: simple), RUI-10 a RUI-14, RUI-20, RUI-21</dd>
+        <dt>Endpoints</dt><dd><code>GET /me/matriculas</code> (pestañas sobre el mismo endpoint), <code>GET /periodos/vigente</code>, <code>POST /matriculas/{id}/retiro</code></dd>
+        <dt>Backend</dt><dd>RF-20, RF-52, RF-54, RN-10, RN-11, RN-18, consultas 2 y 10; supuesto 7 de <code>SPEC-matriculas</code></dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>"Actuales" muestra las matrículas activas del periodo vigente, con sus acciones. "Historial" muestra todas, con filtros; ahí solo se ofrece "Ver grupo".</li>
+            <li>"Cambiar de grupo" abre V-33 como ventana sobre esta vista. "Retirarme" pide una confirmación simple.</li>
+            <li>La barra del periodo muestra la fecha límite de retiro, porque es la que decide si todavía puede retirarse (RN-10).</li>
+            <li>Las acciones de las filas se agrupan en un solo bloque, que en celular queda al pie de la tarjeta.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <dialog class="wf-dialogo" id="dlg-retirar-1001" aria-labelledby="dlg-retirar-1001-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-retirar-1001-t">¿Retirarse de ING-101, grupo 1001?</h2></div>
+    <div class="wf-dialogo-cuerpo">
+      <ul>
+        <li>Se libera su cupo y no se puede deshacer.</li>
+        <li>Para volver, tendría que matricularse de nuevo, si todavía hay cupo y está en fechas de matrícula.</li>
+      </ul>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <button type="button" class="wf-boton wf-principal" data-wf-enviando="Retirando…">Retirarme</button>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-retirar-1008" aria-labelledby="dlg-retirar-1008-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-retirar-1008-t">¿Retirarse de ING-101, grupo 1008?</h2></div>
+    <div class="wf-dialogo-cuerpo">
+      <ul>
+        <li>Se libera su cupo y no se puede deshacer.</li>
+        <li>Para volver, tendría que matricularse de nuevo, si todavía hay cupo y está en fechas de matrícula.</li>
+      </ul>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <button type="button" class="wf-boton wf-principal" data-wf-enviando="Retirando…">Retirarme</button>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-retirar-1007" aria-labelledby="dlg-retirar-1007-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-retirar-1007-t">¿Retirarse de FOT-300, grupo 1007?</h2></div>
+    <div class="wf-dialogo-cuerpo">
+      <ul>
+        <li>Se libera su cupo y no se puede deshacer.</li>
+        <li>Para volver, tendría que matricularse de nuevo, si todavía hay cupo y está en fechas de matrícula.</li>
+      </ul>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <button type="button" class="wf-boton wf-principal" data-wf-enviando="Retirando…">Retirarme</button>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-retirar-1004" aria-labelledby="dlg-retirar-1004-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-retirar-1004-t">¿Retirarse de EXC-110, grupo 1004?</h2></div>
+    <div class="wf-dialogo-cuerpo wf-pila">
+      <ul>
+        <li>Se libera su cupo y no se puede deshacer.</li>
+        <li>Para volver, tendría que matricularse de nuevo, si todavía hay cupo y está en fechas de matrícula.</li>
+      </ul>
+      <div class="wf-mensaje wf-error" role="alert" data-wf-estado="rechazos">
+        <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+        <div class="wf-mensaje-texto"><p><strong>Fuera de la fecha límite de retiro</strong></p><p>La fecha límite para retirarse del periodo 2026-III fue el 11/12/2026.</p></div>
+      </div>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="#estado=retirado" data-wf-estado="datos matriculado cambiado">Retirarme</a>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

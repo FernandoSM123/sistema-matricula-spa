@@ -1,6 +1,6 @@
 # Sistema de Matrícula — Requerimientos del frontend
 
-> **Estado:** aprobado (2026-11-17). Spec: [SPEC-requerimientos.md](../specs/SPEC-requerimientos.md) · Tareas: [tasks/requerimientos/todo.md](../tasks/requerimientos/todo.md).
+> **Estado:** aprobado (2026-11-17). Modificado el 2026-11-19: se agrega RUI-23 (pie de página), pedido durante los wireframes. Spec: [SPEC-requerimientos.md](../specs/SPEC-requerimientos.md) · Tareas: [tasks/requerimientos/todo.md](../tasks/requerimientos/todo.md).
 
 Este documento define qué hace el frontend (SPA) del sistema de matrícula. Las reglas de negocio, los datos y los permisos ya están definidos e implementados en la API, y aquí **se citan, no se repiten**: `RF-xx` y `RN-xx` se refieren a los [requerimientos del backend](../../sistema-matricula-api/docs/requerimientos.md). Los códigos propios del frontend son:
 
@@ -668,6 +668,10 @@ Todas las respuestas de error de la API son `ProblemDetails` (RFC 9457) con `tit
 - **RUI-21 Mensajes de éxito:** breves y no bloqueantes ("Estudiante registrado"), visibles unos segundos sin que el usuario deba cerrarlos. Los avisos que requieren una acción, como `correoEnviado: false`, quedan fijos hasta que se resuelven o se cierran.
 
 - **RUI-22 Trato y tono:** la interfaz trata al usuario de **usted**, como los mensajes de la API. Los textos son cortos, en lenguaje del instituto y no técnico ("matrícula", "grupo", "cupo"; no "registro" ni "entidad"), salvo en `V-36` a `V-38`, que son vistas técnicas del administrador.
+
+### 5.6 Marco de la aplicación
+
+- **RUI-23 Pie de página:** todas las vistas, también las públicas y el cambio obligatorio de contraseña (`V-03`), terminan con un pie que muestra el nombre del sistema, el nombre del instituto, el año y la versión del frontend (por ejemplo, "Sistema de Matrícula · [Nombre del instituto] · © 2026 · Versión 0.1.0"). La versión ayuda a soporte cuando un usuario reporta un error con su código (RUI-03); sale del build, no de la API. El nombre del instituto queda pendiente de definir. El pie no queda fijo en la pantalla, no lleva enlaces ni datos de contacto (la API no los ofrece) y en pantallas angostas se apila.
 
 ---
 

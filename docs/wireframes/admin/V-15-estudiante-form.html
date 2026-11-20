@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-15 Registrar o editar estudiante — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-15"
+      data-wf-nombre="Registrar o editar estudiante"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-menu="V-14"
+      data-wf-estados="registro:Registrar|validacion:Registrar con errores|duplicado:Registrar: ya existe (409 RN-13)|reactivar:Registrar: registro inactivo (409 RN-39)|edicion:Editar|enviando:Guardando">
+
+  <main class="wf-vista">
+    <header>
+      <p class="wf-migas"><a href="V-14-estudiantes.html">Estudiantes</a> / <span data-wf-estado="registro validacion duplicado reactivar">Registrar</span><span data-wf-estado="edicion enviando">Editar</span></p>
+      <h1 data-wf-estado="registro validacion duplicado reactivar">Registrar estudiante</h1>
+      <h1 data-wf-estado="edicion enviando">Editar estudiante</h1>
+    </header>
+
+    <div class="wf-mensaje" role="note" data-wf-estado="registro validacion duplicado reactivar">
+      <span class="wf-mensaje-icono" aria-hidden="true">[i]</span>
+      <div class="wf-mensaje-texto"><p>No necesita definir una contraseña: el sistema genera una contraseña temporal y la envía al correo del estudiante, que deberá cambiarla al ingresar.</p></div>
+    </div>
+
+    <div class="wf-errores-generales" role="alert" data-wf-estado="validacion">
+      <strong>No se pudo registrar el estudiante.</strong>
+      <ul><li>Revise los campos marcados.</li></ul>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="duplicado">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto"><p>Ya existe un estudiante con esa cédula o ese correo.</p></div>
+    </div>
+
+    <div class="wf-mensaje wf-error" role="alert" data-wf-estado="reactivar">
+      <span class="wf-mensaje-icono" aria-hidden="true">[✕]</span>
+      <div class="wf-mensaje-texto">
+        <p>Ya existe un estudiante inactivo con esa cédula.</p>
+        <p class="wf-texto-2">Al reactivarlo se recuperan sus datos anteriores, no los de este formulario. Después puede editarlos.</p>
+      </div>
+      <div class="wf-mensaje-acciones"><a class="wf-boton wf-boton-pequeno" href="V-16-estudiante.html#estado=reactivado">Reactivar estudiante</a></div>
+    </div>
+
+    <form class="wf-caja wf-form" onsubmit="return false" novalidate>
+      <p class="wf-nota-obligatorios">Los campos con * son obligatorios.</p>
+
+      <!-- Registro vacío (con los errores de los obligatorios en "Registrar con errores") -->
+      <fieldset class="wf-form-seccion" data-wf-estado="registro validacion">
+        <legend>Datos personales</legend>
+        <div class="wf-campo">
+          <label for="v-cedula" class="wf-obligatorio">Cédula</label>
+          <input id="v-cedula">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique la cédula.</p>
+        </div>
+        <div class="wf-campo">
+          <label for="v-nacimiento">Fecha de nacimiento</label>
+          <div class="wf-con-boton"><input id="v-nacimiento" inputmode="numeric" placeholder="dd/mm/aaaa"><button type="button" class="wf-boton" aria-label="Abrir calendario">▦</button></div>
+        </div>
+        <div class="wf-campo">
+          <label for="v-nombre" class="wf-obligatorio">Nombre</label>
+          <input id="v-nombre">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique el nombre.</p>
+        </div>
+        <div class="wf-campo">
+          <label for="v-apellidos" class="wf-obligatorio">Apellidos</label>
+          <input id="v-apellidos">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique los apellidos.</p>
+        </div>
+      </fieldset>
+      <fieldset class="wf-form-seccion" data-wf-estado="registro validacion">
+        <legend>Contacto y cuenta</legend>
+        <div class="wf-campo">
+          <label for="v-correo" class="wf-obligatorio">Correo</label>
+          <input id="v-correo" type="email">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique el correo.</p>
+        </div>
+        <div class="wf-campo">
+          <label for="v-telefono" class="wf-obligatorio">Teléfono</label>
+          <input id="v-telefono" type="tel">
+          <p class="wf-error-campo" data-wf-estado="validacion">Indique el teléfono.</p>
+        </div>
+        <div class="wf-campo wf-ancho-completo">
+          <label for="v-direccion">Dirección</label>
+          <textarea id="v-direccion"></textarea>
+        </div>
+      </fieldset>
+
+      <!-- Con datos: edición, o registro rechazado por la API (los datos escritos no se borran) -->
+      <fieldset class="wf-form-seccion" data-wf-estado="duplicado reactivar edicion enviando">
+        <legend>Datos personales</legend>
+        <div class="wf-campo">
+          <label for="e-cedula" class="wf-obligatorio">Cédula</label>
+          <input id="e-cedula" value="1-1789-0345">
+        </div>
+        <div class="wf-campo">
+          <label for="e-nacimiento">Fecha de nacimiento</label>
+          <div class="wf-con-boton"><input id="e-nacimiento" inputmode="numeric" placeholder="dd/mm/aaaa" value="22/05/2002"><button type="button" class="wf-boton" aria-label="Abrir calendario">▦</button></div>
+        </div>
+        <div class="wf-campo">
+          <label for="e-nombre" class="wf-obligatorio">Nombre</label>
+          <input id="e-nombre" value="María Fernanda">
+        </div>
+        <div class="wf-campo">
+          <label for="e-apellidos" class="wf-obligatorio">Apellidos</label>
+          <input id="e-apellidos" value="Quesada Rojas">
+        </div>
+      </fieldset>
+      <fieldset class="wf-form-seccion" data-wf-estado="duplicado reactivar edicion enviando">
+        <legend>Contacto y cuenta</legend>
+        <div class="wf-campo">
+          <label for="e-correo" class="wf-obligatorio">Correo</label>
+          <input id="e-correo" type="email" value="mafer.quesada@correo.test">
+          <span class="wf-ayuda" data-wf-estado="edicion enviando">Es el correo con el que inicia sesión.</span>
+        </div>
+        <div class="wf-campo">
+          <label for="e-telefono" class="wf-obligatorio">Teléfono</label>
+          <input id="e-telefono" type="tel" value="8812-3456">
+        </div>
+        <div class="wf-campo wf-ancho-completo">
+          <label for="e-direccion">Dirección</label>
+          <textarea id="e-direccion">Barrio Escalante, San José</textarea>
+        </div>
+      </fieldset>
+
+      <div class="wf-form-pie">
+        <button type="button" class="wf-boton" data-wf-abrir="dlg-descartar">Cancelar</button>
+        <a class="wf-boton wf-principal" href="V-16-estudiante.html#estado=creado" data-wf-estado="registro validacion duplicado reactivar">Registrar estudiante</a>
+        <button type="button" class="wf-boton wf-principal" data-wf-abrir="dlg-correo" data-wf-estado="edicion">Guardar cambios</button>
+        <button type="button" class="wf-boton wf-principal wf-girando" data-wf-estado="enviando" disabled>Guardando…</button>
+      </div>
+    </form>
+
+    <details class="wf-notas">
+      <summary>Notas de V-15</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-15 Registrar o editar estudiante · administrador (desde V-14 y V-16)</dd>
+        <dt>Requerimientos</dt><dd>RFF-12 (registro), RFF-13 (edición)</dd>
+        <dt>Reglas</dt><dd>RUI-02, RUI-04 (<code>409 RN-39</code> con "Reactivar"), RUI-06, RUI-07 (cambio de correo), RUI-08, RUI-09</dd>
+        <dt>Endpoints</dt><dd><code>POST /estudiantes</code>, <code>PUT /estudiantes/{id}</code>, <code>POST /estudiantes/{id}/reactivar</code> (RN-39)</dd>
+        <dt>Backend</dt><dd>RF-02, RF-05, RF-18, RN-13, RN-22, RN-31, RN-39</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Un solo formulario para registrar y editar; cambian el título, las migas y el botón.</li>
+            <li>En la edición, el correo del ejemplo está cambiado: "Guardar cambios" abre la confirmación de RFF-13. Sin cambio de correo, guarda directo.</li>
+            <li>"Registrar estudiante" simula el <code>201</code>: abre el detalle con el mensaje de éxito y el aviso de <code>correoEnviado: false</code>.</li>
+            <li>"Reactivar" abre el detalle del registro reactivado (con el <code>estudianteId</code> de la respuesta).</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <dialog class="wf-dialogo" id="dlg-correo" aria-labelledby="dlg-correo-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-correo-t">¿Cambiar el correo de María Fernanda Quesada Rojas?</h2></div>
+    <div class="wf-dialogo-cuerpo">
+      <p>De <strong>maria.quesada@correo.test</strong> a <strong>mafer.quesada@correo.test</strong>.</p>
+      <p>Iniciará sesión con el correo nuevo, y las contraseñas temporales llegarán ahí. Su sesión actual no se cierra.</p>
+    </div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar>Cancelar</button>
+      <a class="wf-boton wf-principal" href="V-16-estudiante.html#estado=guardado">Cambiar correo y guardar</a>
+    </div>
+  </dialog>
+
+  <dialog class="wf-dialogo" id="dlg-descartar" aria-labelledby="dlg-descartar-t">
+    <div class="wf-dialogo-encabezado"><h2 id="dlg-descartar-t">¿Descartar los cambios?</h2></div>
+    <div class="wf-dialogo-cuerpo"><p>Hay cambios sin guardar en el formulario. Si sale, se perderán.</p></div>
+    <div class="wf-dialogo-pie">
+      <button type="button" class="wf-boton" data-wf-cerrar autofocus>Seguir editando</button>
+      <a class="wf-boton wf-principal" href="V-14-estudiantes.html">Descartar cambios</a>
+    </div>
+  </dialog>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

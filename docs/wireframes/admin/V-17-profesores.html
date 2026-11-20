@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V-17 Profesores — Wireframes</title>
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body data-wf-id="V-17"
+      data-wf-nombre="Profesores"
+      data-wf-raiz="../"
+      data-wf-marco="administrador"
+      data-wf-estados="datos:Con datos|inactivos:Con &quot;Incluir inactivos&quot;|cargando:Cargando|vacio:Vacío sin filtros|vacio-filtros:Vacío con filtros|error:Error|eliminado:Después de eliminar">
+
+  <main class="wf-vista">
+    <header class="wf-encabezado">
+      <div>
+        <p class="wf-migas">Personas</p>
+        <h1>Profesores</h1>
+      </div>
+      <div class="wf-acciones">
+        <a class="wf-boton wf-principal" href="V-18-profesor-form.html">Registrar profesor</a>
+      </div>
+    </header>
+
+    <form class="wf-filtros" role="search" onsubmit="return false">
+      <div class="wf-campo wf-busqueda">
+        <label for="f-buscar">Buscar</label>
+        <div class="wf-con-boton">
+          <input id="f-buscar" type="search" placeholder="Nombre, apellidos, cédula, correo o especialidad">
+          <button type="submit" class="wf-boton">Buscar</button>
+        </div>
+      </div>
+      <label class="wf-casilla"><input type="checkbox" data-wf-estado="datos cargando vacio vacio-filtros error eliminado"> <input type="checkbox" checked data-wf-estado="inactivos"> Incluir inactivos</label>
+    </form>
+    <div class="wf-filtros-aplicados" data-wf-estado="inactivos vacio-filtros">
+      <span>Filtros aplicados:</span>
+      <span class="wf-chip" data-wf-estado="inactivos">Incluir inactivos</span>
+      <span class="wf-chip" data-wf-estado="vacio-filtros">Buscar: "química"</span>
+      <button type="button" class="wf-boton wf-enlace">Limpiar filtros</button>
+    </div>
+
+    <div class="wf-listado">
+      <div data-wf-estado="datos inactivos eliminado">
+        <table class="wf-tabla">
+          <thead>
+            <tr><th scope="col">Cédula</th><th scope="col">Nombre</th><th scope="col">Especialidad</th><th scope="col">Correo</th><th scope="col">Teléfono</th><th scope="col">Estado</th><th scope="col"><span class="wf-solo-lector">Acciones</span></th></tr>
+          </thead>
+          <tbody>
+            <tr><td data-etiqueta="Cédula" class="wf-nowrap">1-0988-0234</td><td class="wf-celda-principal" data-etiqueta="Nombre">Ana Rodríguez Castro</td><td data-etiqueta="Especialidad">Fotografía</td><td data-etiqueta="Correo">ana.rodriguez@correo.test</td><td data-etiqueta="Teléfono" class="wf-nowrap">8801-5566</td><td data-etiqueta="Estado"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-19-profesor.html">Ver detalle</a></td></tr>
+            <tr data-wf-estado="inactivos"><td data-etiqueta="Cédula" class="wf-nowrap">3-0377-0456</td><td class="wf-celda-principal" data-etiqueta="Nombre">Jorge Herrera Quirós</td><td data-etiqueta="Especialidad">Matemáticas</td><td data-etiqueta="Correo">jorge.herrera@correo.test</td><td data-etiqueta="Teléfono" class="wf-nowrap">8655-4433</td><td data-etiqueta="Estado"><span class="wf-etiqueta wf-e-apagada">Inactivo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-19-profesor.html#estado=inactivo">Ver detalle</a></td></tr>
+            <tr><td data-etiqueta="Cédula" class="wf-nowrap">1-1023-0456</td><td class="wf-celda-principal" data-etiqueta="Nombre">Laura Jiménez Mora</td><td data-etiqueta="Especialidad">Inglés</td><td data-etiqueta="Correo">laura.jimenez@correo.test</td><td data-etiqueta="Teléfono" class="wf-nowrap">8890-1234</td><td data-etiqueta="Estado"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-19-profesor.html">Ver detalle</a></td></tr>
+            <tr><td data-etiqueta="Cédula" class="wf-nowrap">2-0567-0891</td><td class="wf-celda-principal" data-etiqueta="Nombre">Carlos Vargas Solís</td><td data-etiqueta="Especialidad">Informática</td><td data-etiqueta="Correo">carlos.vargas@correo.test</td><td data-etiqueta="Teléfono" class="wf-nowrap">8778-1122</td><td data-etiqueta="Estado"><span class="wf-etiqueta">Activo</span></td><td class="wf-col-acciones"><a class="wf-boton wf-boton-pequeno" href="V-19-profesor.html">Ver detalle</a></td></tr>
+          </tbody>
+        </table>
+        <div class="wf-paginacion">
+          <span class="wf-paginacion-rango" data-wf-estado="datos eliminado">1–3 de 3</span>
+          <span class="wf-paginacion-rango" data-wf-estado="inactivos">1–4 de 4</span>
+          <div class="wf-paginacion-controles">
+            <label>Filas por página <select><option>10</option><option selected>20</option><option>50</option></select></label>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>← Anterior</button>
+            <button type="button" class="wf-boton wf-boton-pequeno" disabled>Siguiente →</button>
+          </div>
+        </div>
+      </div>
+
+      <div data-wf-estado="cargando" class="wf-cargando" role="status" aria-label="Cargando profesores">
+        <div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div><div class="wf-cargando-linea"></div>
+      </div>
+      <div data-wf-estado="vacio" class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay profesores registrados.</p>
+        <a class="wf-boton wf-principal" href="V-18-profesor-form.html">Registrar profesor</a>
+      </div>
+      <div data-wf-estado="vacio-filtros" class="wf-estado-contenido">
+        <p class="wf-estado-titulo">No hay resultados para los filtros aplicados.</p>
+        <button type="button" class="wf-boton">Limpiar filtros</button>
+      </div>
+      <div data-wf-estado="error" class="wf-estado-contenido" role="alert">
+        <p class="wf-estado-titulo">No se pudo conectar con el servidor. Revise su conexión e intente de nuevo.</p>
+        <button type="button" class="wf-boton">Reintentar</button>
+      </div>
+    </div>
+
+    <div class="wf-toast" role="status" data-wf-estado="eliminado">Profesor eliminado</div>
+
+    <details class="wf-notas">
+      <summary>Notas de V-17</summary>
+      <dl>
+        <dt>Vista</dt><dd>V-17 Profesores · administrador</dd>
+        <dt>Requerimientos</dt><dd>RFF-11 · RFF-17 (mensaje después de eliminar)</dd>
+        <dt>Reglas</dt><dd>RUI-10 a RUI-14, RUI-21</dd>
+        <dt>Endpoints</dt><dd><code>GET /profesores</code> (<code>search</code>, <code>incluirInactivos</code>)</dd>
+        <dt>Backend</dt><dd>RF-23, RN-41</dd>
+        <dt>Decisiones</dt><dd>
+          <ul>
+            <li>Mismo patrón que V-14, con la columna "Especialidad", que también entra en la búsqueda.</li>
+          </ul>
+        </dd>
+      </dl>
+    </details>
+  </main>
+
+  <script src="../js/wireframe.js"></script>
+</body>
+</html>

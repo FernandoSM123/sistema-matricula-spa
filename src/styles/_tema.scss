@@ -45,4 +45,12 @@ html {
       on-error: var(--sm-superficie),
     )
   );
+
+  // Los botones secundarios son de contorno con el color del texto, no del acento (§6.6).
+  @include mat.button-overrides(
+    (
+      outlined-label-text-color: var(--sm-texto),
+      outlined-outline-color: var(--sm-borde-control),
+    )
+  );
 }

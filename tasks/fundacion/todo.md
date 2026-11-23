@@ -17,8 +17,8 @@ Cada tarea termina con:
 | T2. ESLint, Prettier y carpetas | Completada | ✅ | ➖ | ✅ | ✅ |
 | T3. Formateadores, etiquetas y pipes | Completada | ✅ | ✅ | ➖ | ✅ |
 | T4. `AdaptadorFechas` y opciones de Material | Completada | ✅ | ✅ | ➖ | ✅ |
-| T5. Paleta, tema, tipografía e íconos | Implementada | ✅ | ✅ | ⬜ | ✅ |
-| T6. Página de muestra, README y cierre | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
+| T5. Paleta, tema, tipografía e íconos | Completada | ✅ | ✅ | ✅ | ✅ |
+| T6. Página de muestra, README y cierre | Completada | ✅ | ✅ | ✅ | ✅ |
 
 **Estados de tarea:**
 - **Pendiente:** no se ha empezado.
@@ -256,3 +256,21 @@ Cada tarea termina con:
     - `pnpm build` sin warnings de estilos: 312,47 kB iniciales (`HttpClient` y el registro de íconos; presupuesto: 500 kB) y 10,70 kB de estilos.
     - El CSS del build tiene las variables de §6.6, `dist/` publica los 19 íconos y la licencia, y el build no referencia ningún otro origen.
     - **Pendiente para T6:** en el navegador, `getComputedStyle` de `:root` y un `mat-icon` visible sin peticiones fuera de `localhost`.
+- 2026-11-23: T6 completada y T5 verificada. Módulo completado.
+  - **Página de muestra:** con la paleta (cada color muestra el valor de `getComputedStyle` en `:root`), los seis estados, el botón principal y el secundario, un enlace, el campo de correo con su error, `mat-datepicker`, `mat-timepicker` de 15 minutos, los 19 íconos, un ejemplo de cada pipe y la barra con el foco claro de §6.6. Marcada como provisional en el código.
+  - **La muestra va en una ruta diferida** (`src/app/muestra/`, con `muestra.routes.ts`), no en `app.html`: en `app.html` la carga inicial llegaba a 744 kB (presupuesto: 500 kB; error en 750 kB). `app.html` queda con el `<router-outlet>`, y `App` ahora tiene `OnPush`, que el CLI no había puesto.
+  - **Opciones de Material por área** (decisión del usuario): con la muestra diferida, la carga inicial seguía en 708 kB, porque `provideMaterial()` en la raíz importaba `MatDatepickerIntl`, `MAT_FORM_FIELD_DEFAULT_OPTIONS` y `MatPaginatorIntl`, y en cuanto una vista diferida usa esos controles, sus módulos completos pasan a un chunk compartido que se carga al inicio. Medido: sin el selector de fecha en la raíz, 618 kB; sin ninguna opción, 415 kB. Ahora:
+    - `core/config/material.ts`: `provideMaterial()` solo con la duración de los avisos, en `app.config.ts`.
+    - `core/config/material-vistas.ts`: `provideMaterialVistas()` con los campos, el paginador y el selector de fecha. Cada área lo registra en los `providers` de su ruta diferida (la muestra ya lo hace). Anotado en §2.5 y §6.1 de la arquitectura.
+  - **Carga inicial: 499,92 kB.** El overlay del CDK y el botón de Material entran por los avisos; el marco de `nucleo` los usa igual. **Alerta para `nucleo`:** con la barra, el menú lateral y los menús, es probable que pase la advertencia de 500 kB (el error es en 750 kB).
+  - **Tema:** `mat.button-overrides` para que el botón de contorno use el color del texto y el borde de los controles (§6.6).
+  - **README.md:** requisitos, cómo levantar el SPA junto a la API (incluido el origen del CORS), los comandos de §11.2 y el chequeo de cierre.
+  - **`pnpm audit`:** 1 hallazgo moderado, ninguno alto ni crítico. `minimatch` 10.2.6 (GHSA-g3hv-75wg-m249, denegación de servicio con patrones de glob), que llega por typescript-eslint. Se acepta: es una herramienta de desarrollo, solo procesa los patrones de nuestra configuración y no llega al navegador. Se revisa al actualizar angular-eslint.
+  - **Criterios de éxito de la spec:**
+    1. `pnpm install --frozen-lockfile` sin errores ni scripts, con versiones exactas (T1, T2).
+    2. `pnpm formato:revisar`, `pnpm lint`, `pnpm test --watch=false` (68 pruebas) y `pnpm build` pasan, con 499,92 kB iniciales.
+    3. Los imports prohibidos fallan en `pnpm lint` con el mensaje de §2.3 (T2).
+    4. Las pruebas de formateadores, pipes y `AdaptadorFechas` cubren los casos de §9 (T3, T4).
+    5. `pnpm start` abre la muestra en `http://localhost:5173`. El usuario la revisó: paleta y valores de `:root`, contraste, foco con Tab, `05/03/2026` escrito a mano, "6:30 p. m." en el selector de hora, los íconos sin peticiones fuera de `localhost` y 360 px sin desplazamiento horizontal.
+    6. `pnpm audit` sin hallazgos altos ni críticos; el moderado, anotado.
+    7. El `README.md` cubre los pasos para levantar el proyecto.

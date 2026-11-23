@@ -1,12 +1,11 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
+/** Componente raíz. `nucleo` le agrega el marco (§2.2). */
 @Component({
-  imports: [RouterOutlet],
   selector: 'sm-root',
-  styleUrl: './app.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterOutlet],
   templateUrl: './app.html',
 })
-export class App {
-  protected readonly title = signal('sistema-matricula-spa');
-}
+export class App {}

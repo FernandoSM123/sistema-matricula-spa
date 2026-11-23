@@ -170,6 +170,7 @@ En total son 38 vistas: 4 + 1 + 3 + 9 + 8 + 3 + 5 + 3 + 2.
 ### 2.5 Carga diferida
 
 - **Por área:** cada área se carga con `loadChildren: () => import('./features/<area>/<area>.routes')`. La carga inicial incluye solo `core` (marco, sesión, interceptores, guardas) y lo de Material que usa el marco.
+- **Opciones de Material:** cada área registra `provideMaterialVistas()` en los `providers` de su ruta raíz (`<area>.routes.ts`), para que los módulos de los campos, el paginador y el selector de fecha no entren en la carga inicial (§6.1).
 - **Por rol:** las áreas de un solo rol (`personas`, `sistema`) se protegen con `canMatch`, no con `canActivate`. Así su código ni siquiera se descarga para los demás roles. Las áreas compartidas filtran por rol en cada ruta.
 - **FullCalendar:** `HorarioSemanal` lo carga con `@defer`, y solo en pantallas anchas. Agrega unos 400 kB (T1), que solo se descargan en `V-16`, `V-19`, `V-27` y `V-34`, al mostrar la grilla. En pantallas angostas no se descarga.
 - La meta concreta de la carga inicial y los presupuestos de tamaño se fijan en §8.
@@ -466,6 +467,9 @@ protected async guardar() {
   - Campos: `MAT_FORM_FIELD_DEFAULT_OPTIONS` con `appearance: 'outline'` y `subscriptSizing: 'dynamic'`.
   - Avisos temporales: duran 5 segundos.
   - Textos en español: `MatPaginatorIntl` ("Filas por página" y el rango "21–40 de 134", RUI-10) y `MatDatepickerIntl`.
+- **Dónde se registran** (decisión del usuario, `fundacion` T6):
+  - `provideMaterial()` (`core/config/material.ts`), en `app.config.ts`: solo lo que el marco usa desde el arranque, hoy la duración de los avisos.
+  - `provideMaterialVistas()` (`core/config/material-vistas.ts`): los campos, el paginador y el selector de fecha. **Cada área lo registra en los `providers` de su ruta diferida** (§2.5), y nada de la carga inicial importa ese archivo. Si la raíz importara `MatDatepickerIntl` o `MAT_FORM_FIELD_DEFAULT_OPTIONS`, el primer uso de esos controles en una vista diferida metería sus módulos completos en un chunk compartido de la carga inicial: medido en `fundacion`, 708 kB contra 500 kB.
 - **El marco** (`core/marco/`) usa `mat-toolbar` para la barra superior, `mat-sidenav` para el menú y `mat-menu` para el menú de la cuenta. El menú es lateral fijo desde 960 px y plegable por debajo (wireframes).
 
 ### 6.2 Componentes del catálogo de los wireframes

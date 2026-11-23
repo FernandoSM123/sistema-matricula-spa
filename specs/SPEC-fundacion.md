@@ -4,13 +4,14 @@ Módulo `fundacion` del [mapa de módulos](mapa-modulos.md). Sin dependencias.
 
 | Estado | Plan | Tareas | Avance |
 |---|---|---|---|
-| **Aprobada** | [Aprobado](../tasks/fundacion/plan.md) | [Aprobadas](../tasks/fundacion/todo.md) | 4/6 tareas completadas |
+| **Aprobada** | [Aprobado](../tasks/fundacion/plan.md) | [Aprobadas](../tasks/fundacion/todo.md) | 6/6 tareas completadas. Módulo completado |
 
 **Historial:**
 - 2026-11-23: v1 en revisión.
 - 2026-11-23: v1 aprobada por el usuario, con sus cinco supuestos. Pregunta abierta resuelta: el instituto se llama **Instituto de Cursos Libres** (RUI-23). Plan y tareas en revisión.
 - 2026-11-23: el usuario añade a T2 el final de línea LF en todo el repositorio (`.gitattributes` y `endOfLine: 'lf'` en Prettier), porque con `core.autocrlf=true` en Windows `pnpm formato:revisar` fallaba.
 - 2026-11-23: el usuario decide que Prettier no revise los Markdown (`*.md`) ni las skills (`.agents/`, `.claude/`): el relleno de las tablas ensuciaba los diffs de los documentos, y las skills deben coincidir con el hash de `skills-lock.json`.
+- 2026-11-23: módulo completado, con los 7 criterios de éxito cumplidos y la muestra revisada por el usuario. Decisiones del usuario durante la implementación: una excepción acotada a `bypassSecurityTrustResourceUrl` para registrar los íconos (T5), y las opciones de Material de las vistas por área, en lugar de en `app.config.ts`, para la carga inicial (T6). Detalle en el historial de `tasks/fundacion/todo.md`.
 
 ## Objetivo
 

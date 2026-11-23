@@ -68,7 +68,7 @@ Cada tarea termina con:
     - las reglas recomendadas y las de accesibilidad de plantillas;
     - `no-console` y `@typescript-eslint/no-explicit-any` como error;
     - `no-restricted-imports` por carpeta, según §2.3 y §10.2.
-  - Prettier 3.10 con `printWidth: 120`, `singleQuote: true`, `endOfLine: 'lf'` y el analizador `angular`, más un `.prettierignore` con `pnpm-lock.yaml`, `dist/` y `docs/wireframes/`.
+  - Prettier 3.10 con `printWidth: 120`, `singleQuote: true`, `endOfLine: 'lf'` y el analizador `angular`, más un `.prettierignore` con `pnpm-lock.yaml`, `dist/`, `docs/wireframes/`, `*.md`, `.agents/` y `.claude/`.
   - Final de línea LF en todo el repositorio:
     - `.gitattributes` con `* text=auto eol=lf`, y los binarios (`*.ico`, `*.png`) marcados como `binary`;
     - los archivos ya versionados, normalizados con `git add --renormalize .`.

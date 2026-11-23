@@ -8,7 +8,7 @@ Frontend web del sistema de matrícula de un instituto de cursos libres. Consume
   - `../sistema-matricula-api/specs/SPEC-<modulo>.md` (endpoints, DTOs, códigos de error).
   - El OpenAPI en `http://localhost:5022/openapi/v1.json`, con la API en marcha.
 
-  El frontend **no redefine** esas reglas: las cita por código. Los ajustes a la API posteriores al cierre de sus módulos están en `../sistema-matricula-api/correcciones/` (por ejemplo, COR-01 resolvió las brechas B-01, B-02 y B-04).
+  El frontend **no redefine** esas reglas: las cita por código. Los ajustes a la API posteriores al cierre de sus módulos están en `../sistema-matricula-api/correcciones/` (COR-01 resolvió las brechas B-01, B-02 y B-04; COR-02, la B-05).
 - **Fase 0 (fundamentos):** `specs/fase-0.md`.
 - **Qué construir en el frontend:** `docs/requerimientos.md` (vistas `V-xx`, `RFF-xx`, `RUI-xx` y las brechas con el backend en §8).
 - **Cómo se ven las vistas:** `docs/wireframes/` (guía, no contrato).

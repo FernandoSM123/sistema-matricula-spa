@@ -18,6 +18,7 @@ Plan de la fase previa al [mapa de módulos](mapa-modulos.md) del frontend (SPA)
 - 2026-11-20: spec de `arquitectura` aprobada (v2: Angular Material, token en `sessionStorage`, pruebas unitarias, pnpm y regla 60-30-10). Lista de tareas en revisión.
 - 2026-11-20: lista de tareas de `arquitectura` aprobada; entregable en elaboración.
 - 2026-11-20: `arquitectura` completado: `docs/arquitectura.md` aprobado (Angular 22, Angular Material, pnpm 12, FullCalendar 7), `AGENTS.md` completado con los comandos, la estructura y los límites técnicos, y la brecha B-05 agregada a `docs/requerimientos.md`. **Fase 0 completada.** Siguiente paso: `specs/mapa-modulos.md` (sin empezar, a la espera del usuario), con el orden de `docs/arquitectura.md` §12.
+- 2026-11-23: la brecha B-05 queda resuelta en el backend (`correcciones/COR-02-encabezados-cors.md`: la API expone `Retry-After` y `Location` por CORS). Se actualizan `docs/requerimientos.md` §8, `docs/arquitectura.md` §3.5 y §12, y `AGENTS.md`.
 
 ## Objetivo
 

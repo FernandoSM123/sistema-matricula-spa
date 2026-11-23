@@ -1,6 +1,6 @@
 # Arquitectura y buenas prácticas — SPA Sistema de Matrícula
 
-> **Estado:** aprobado (2026-11-20). Spec: [SPEC-arquitectura.md](../specs/SPEC-arquitectura.md) · Tareas: [tasks/arquitectura/todo.md](../tasks/arquitectura/todo.md).
+> **Estado:** aprobado (2026-11-20). Modificado el 2026-11-23: B-05 resuelta en el backend (COR-02); se quita el comportamiento provisional del `429`. Spec: [SPEC-arquitectura.md](../specs/SPEC-arquitectura.md) · Tareas: [tasks/arquitectura/todo.md](../tasks/arquitectura/todo.md).
 
 Este documento fija con qué y cómo se construye el frontend del sistema de matrícula: una SPA en Angular que consume la API de `../sistema-matricula-api`. **Qué** hace el frontend está en [`requerimientos.md`](requerimientos.md), y **cómo se ve cada vista**, en [`wireframes/`](wireframes/index.html). Aquí se citan sus códigos (`V-xx`, `RFF-xx`, `RUI-xx`) sin repetirlos.
 
@@ -272,7 +272,7 @@ export interface ErrorApi {
   detail?: string;                   // mensaje para el usuario, ya en español (RUI-01)
   errors: Record<string, string[]>;  // errores por campo del 400 (RUI-02)
   traceId?: string;                  // código para reportar un 500 (RUI-03)
-  retryAfter?: number;               // segundos del 429; undefined mientras exista B-05
+  retryAfter?: number;               // segundos del 429, del encabezado `Retry-After`
   datos: Record<string, unknown>;    // otras extensiones, p. ej. `usuarioId` del 409 RN-39
 }
 ```
@@ -291,7 +291,7 @@ export interface ErrorApi {
 | `404` de un dato referenciado en un formulario | El formulario | El error en ese campo |
 | `400` | El formulario, con `aplicarErroresServidor()` | Cada mensaje en su campo, comparando los nombres sin distinguir mayúsculas (`Cedula` ↔ `cedula`); los que no tienen campo, arriba del formulario (RUI-02, §5) |
 | `409` | `ErrorAccion`, con las acciones que le pasa la vista | El `detail` destacado junto a la acción, más la acción adicional según el `code` (RUI-04): "Reactivar" (`RN-39`, con el id de `datos`), la alternativa a eliminar (`RN-34`), el enlace a lo que lo impide (`RN-36`, `RN-37`), los enlaces de `RN-21` e "Intentar de nuevo" (`CONCURRENCIA`). `RF-09` y `RN-25` van al campo de la contraseña. Un `code` desconocido solo muestra el mensaje |
-| `429` | `ErrorAccion` | Con `retryAfter`: "Demasiados intentos. Intente de nuevo en N segundos", y el envío queda deshabilitado N segundos con cuenta regresiva (RUI-03). **Mientras exista B-05** (la API no expone `Retry-After` por CORS): muestra el `detail` y deshabilita el envío 60 segundos |
+| `429` | `ErrorAccion` | Con `retryAfter`: "Demasiados intentos. Intente de nuevo en N segundos", y el envío queda deshabilitado N segundos con cuenta regresiva (RUI-03). La API expone `Retry-After` por CORS desde COR-02. Si una respuesta llegara sin el encabezado, muestra el `detail` sin cuenta regresiva |
 | `500` | `ErrorAccion` en una acción; `EstadoContenido` al cargar | "Ocurrió un error inesperado. Si el problema continúa, reporte este código: `<traceId>`", con el botón "Copiar" (RUI-03) |
 | Sin respuesta (`status: 0`, sin conexión o tiempo agotado) | `ErrorAccion` o `EstadoContenido` | "No se pudo conectar con el servidor. Revise su conexión e intente de nuevo", con "Reintentar" (RUI-03) |
 
@@ -836,4 +836,4 @@ Es la base de `specs/mapa-modulos.md`. Cada paso depende de los anteriores, y lo
 - **El orden sigue el de los requerimientos y los wireframes:** primero lo transversal, después las áreas de §3. Las secciones que una vista recibe de un área posterior se completan con esa área, como hicieron los wireframes (T4 y T7 de su lista de tareas).
 - **Cada módulo se verifica** con las pruebas de §9, el comando de cierre de §11.2 y la revisión de sus vistas contra los wireframes, con la API en marcha.
 - **Lighthouse (§8.3)** se mide al cerrar `nucleo` y `componentes`, y otra vez al final.
-- **B-05 (§3.5)** no bloquea ningún paso: el frontend funciona con el comportamiento provisional hasta que el backend exponga `Retry-After`.
+- **`Retry-After` y `Location` (COR-02):** la API ya los expone por CORS. El módulo `acceso`, el primero que maneja un `429`, comprueba desde el navegador que `ErrorApi.retryAfter` trae el valor, como pide la verificación pendiente de COR-02.

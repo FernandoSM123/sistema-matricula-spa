@@ -26,7 +26,7 @@ Busca lo mismo que la [arquitectura del backend](../../sistema-matricula-api/doc
 
 Versiones verificadas el 2026-11-20 (`npm view` y una prueba desechable, T1 de la lista de tareas). Se instalan **exactas**, sin `^` ni `~` (§10). Todas las dependencias tienen licencia MIT, salvo TypeScript (Apache-2.0).
 
-**Versiones instaladas en `fundacion` (2026-11-23):** Angular 22.3.0, Vitest 5.1.1 y angular-eslint 22.8.0 tenían menos de una semana y `minimumReleaseAge` (§10.4) las rechaza. Por decisión del usuario se instalaron las anteriores, con más de una semana: Angular 22.2.6 (CLI y `@angular/build` 22.2.7), Material, CDK y el adaptador de date-fns 22.2.7, Vitest 5.1.0 y angular-eslint 22.7.0. Se sube a 22.3 con `ng update` en un módulo posterior, cuando cumpla la semana.
+**Versiones instaladas en `fundacion` (2026-11-23):** Angular 22.3.0, Vitest 5.1.1 y angular-eslint 22.8.0 tenían menos de una semana y `minimumReleaseAge` (§10.4) las rechaza. Por decisión del usuario se instalaron las anteriores, con más de una semana: Angular 22.2.6 (CLI y `@angular/build` 22.2.7), Material, CDK y el adaptador de date-fns 22.2.7, Vitest 5.1.0 y angular-eslint 22.7.0 (con ESLint 10.15.0, `@eslint/js` 10.0.1 y typescript-eslint 8.72.1). Se sube a 22.3 con `ng update` en un módulo posterior, cuando cumpla la semana.
 
 | Pieza | Elección | Por qué |
 |---|---|---|
@@ -742,6 +742,8 @@ Como en el backend, primero lo que es puro y transversal. Las pruebas de las vis
 ```
 
   El patrón exacto se ajusta al crear el proyecto. Lo que no puede cambiar es la regla de §2.3.
+
+  **Patrón final (`fundacion` T2):** `@typescript-eslint/no-restricted-imports` con patrones `regex` sobre los imports relativos, para no confundir `core/` con `@angular/core`. `shared` importa de `api` solo con `import type` (`allowTypeImports`), `core` no importa de `features`, y cada área tiene su bloque: solo las de la tabla de §2.4 importan de `matricula`, y solo su `index.ts`. Ver `eslint.config.js`.
 
 ### 10.3 Código, comentarios y documentos
 

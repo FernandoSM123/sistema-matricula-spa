@@ -14,7 +14,7 @@ Cada tarea termina con:
 | Tarea | Estado | Código | Pruebas unitarias | Verificación manual | Commit |
 |---|---|:---:|:---:|:---:|:---:|
 | T1. Proyecto y configuración | Completada | ✅ | ➖ | ✅ | `152c1a3` |
-| T2. ESLint, Prettier y carpetas | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
+| T2. ESLint, Prettier y carpetas | Completada | ✅ | ➖ | ✅ | ⬜ |
 | T3. Formateadores, etiquetas y pipes | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T4. `AdaptadorFechas` y opciones de Material | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T5. Paleta, tema, tipografía e íconos | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
@@ -64,7 +64,7 @@ Cada tarea termina con:
 
 ### T2. ESLint, Prettier y carpetas
 - Acceptance:
-  - angular-eslint 22.8 con:
+  - angular-eslint 22.7.0 (ver las versiones de T1) con:
     - las reglas recomendadas y las de accesibilidad de plantillas;
     - `no-console` y `@typescript-eslint/no-explicit-any` como error;
     - `no-restricted-imports` por carpeta, según §2.3 y §10.2.
@@ -205,3 +205,16 @@ Cada tarea termina con:
     - OneDrive a veces bloquea un renombrado durante `pnpm install` ("concurrent package import did not settle"). Reintentar lo resuelve.
     - Las rutas de `node_modules` superan los 260 caracteres. PowerShell no puede borrarlas y git avisa "Filename too long"; `rm -rf` desde bash funciona.
     - `pnpm peers check` avisa de `@emnapi/*` en `@napi-rs/wasm-runtime`, una dependencia indirecta que solo se usa como alternativa WebAssembly. No afecta.
+- 2026-11-23: el proyecto se movió a `C:proyectos personalessistema-matricula-spa` por el límite de 260 caracteres. Se verificó que todo siguiera funcionando; solo se había perdido `.claude/skills/spec-driven-development/SKILL.md`, que se restauró de git. El usuario añadió a T2 el final de línea LF (`e056745`) y la exclusión de los Markdown y las skills de Prettier (`a330012`).
+- 2026-11-23: T2 completada.
+  - **Instalación** con `ng add angular-eslint@22.7.0` (la 22.8.0 salió el 18/11 y aún no cumple la semana). Creó `eslint.config.js` y el target `lint` de `angular.json`. Dejó `^` en `eslint` y `@eslint/js`; se fijaron las resueltas: ESLint 10.15.0, `@eslint/js` 10.0.1, typescript-eslint 8.72.1 y `@angular-eslint/builder` 22.7.0. Anotadas en §1 de la arquitectura.
+  - **Reglas entre carpetas** con `@typescript-eslint/no-restricted-imports` y patrones `regex` sobre los imports relativos (así `@angular/core` no se confunde con `core/`). Además de los tres casos de la verificación:
+    - `shared` → `api` solo con `import type` (`allowTypeImports`), como pide §2.3.
+    - `core` → `features` prohibido (§2.3).
+    - Solo `oferta`, `personas`, `catalogos` y `grupos` importan de `matricula`, y solo su `index.ts` (tabla de §2.4).
+  - **`src/main.ts`:** se quitó el `.catch((err) => console.error(err))` que genera el CLI, porque `no-console` lo rechaza (§4.5). Si el arranque falla, el navegador informa el rechazo de la promesa.
+  - **Prettier:** `printWidth` 120 y `.prettierignore`. `pnpm formato` reformateó 7 archivos generados por el CLI (`app.config.ts`, `app.html`, `app.spec.ts`, `index.html`, `main.ts` y los `tsconfig.*.json`), sin cambios de código.
+  - **Verificación:**
+    - `pnpm formato:revisar` y `pnpm lint` pasan; `pnpm test --watch=false` (2 pruebas) y `pnpm build` (216,95 kB) siguen en verde.
+    - Con archivos temporales, fallaron con el mensaje de su regla: `shared` → `core`, `shared` → `api` sin `import type`, `api` → `shared`, `core` → `features`, `personas` → `catalogos`, `personas` → `matricula/v/interno`, `sistema` → `matricula`, un `any` y un `console.log`. Pasaron `import type` desde `shared`, `personas` → `matricula` (`index.ts`) y `personas` → `core`. Después se borraron.
+    - `git ls-files --eol` no muestra archivos con CRLF, y `pnpm install --frozen-lockfile` pasa.

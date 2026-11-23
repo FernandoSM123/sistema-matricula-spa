@@ -1,0 +1,7 @@
+# docs/arquitectura.md §10.2 y SPEC-fundacion
+pnpm-lock.yaml
+dist/
+docs/wireframes/
+*.md
+.agents/
+.claude/

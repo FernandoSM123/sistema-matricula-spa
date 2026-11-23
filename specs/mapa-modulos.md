@@ -14,6 +14,7 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 **Historial:**
 - 2026-11-23: v1 en revisión.
 - 2026-11-23: v1 aprobada, con un cambio del usuario en la decisión 5: commit después de cada tarea, no solo al cerrar el módulo. Siguiente paso: la spec de `fundacion` (sin empezar, a la espera del usuario).
+- 2026-11-23: empieza `fundacion`, en la rama `fundacion`, con su spec en revisión.
 
 ## Módulos
 
@@ -39,7 +40,7 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 
 | Módulo | Spec | Plan | Tareas | Avance | Estado del módulo |
 |---|---|---|---|---|---|
-| `fundacion` | — | — | — | — | Sin empezar |
+| `fundacion` | [Aprobada](SPEC-fundacion.md) | [Aprobado](../tasks/fundacion/plan.md) | [Aprobadas](../tasks/fundacion/todo.md) | 0/6 | En implementación |
 | `nucleo` | — | — | — | — | Sin empezar |
 | `componentes` | — | — | — | — | Sin empezar |
 | `acceso` | — | — | — | — | Sin empezar |

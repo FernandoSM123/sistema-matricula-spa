@@ -1,1 +1,31 @@
-/* You can add global styles to this file, and also import other style files */
+// Estilos globales (docs/arquitectura.md §6.5 y §6.6).
+@use 'styles/paleta';
+@use 'styles/tema';
+
+html {
+  font-size: 100%; // base de 16 px
+}
+
+body {
+  margin: 0;
+  font-family: var(--sm-fuente);
+  font-size: 1rem;
+  background: var(--sm-fondo);
+  color: var(--sm-texto);
+}
+
+// El foco siempre es visible: 2 px del acento (§6.5).
+:focus-visible {
+  outline: 2px solid var(--sm-acento);
+  outline-offset: 2px;
+}
+
+// Área táctil de al menos 44 × 44 px en celular (§6.5). Los botones de Material ya
+// tienen su propia área táctil de 48 px con la densidad 0.
+@media (max-width: 599.98px) {
+  button:not(.mat-mdc-button-base),
+  [role='button']:not(.mat-mdc-button-base) {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}

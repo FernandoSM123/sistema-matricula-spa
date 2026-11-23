@@ -582,12 +582,14 @@ Un color nuevo o cambiado vuelve a calcular su contraste antes de usarse (§10).
 **Cómo se aplica a Material:**
 - En `styles.scss`, `@include mat.theme(...)` define el tema claro con una paleta generada desde el acento con `ng generate @angular/material:theme-color`.
 - `@include mat.theme-overrides(...)` fija los tokens de sistema que importan (`primary`, `on-primary`, `surface`, `on-surface`, `outline`, `error`…) a las variables `--sm-*`.
-- Las variables de FullCalendar (`--fc-classic-*`) se mapean a las mismas en ese archivo.
+- Las variables de FullCalendar (`--fc-classic-*`) se mapean a las mismas en ese archivo, cuando se instale FullCalendar (`componentes`).
 - Solo hay tema claro, porque el modo oscuro está fuera del alcance (§1.3 de los requerimientos).
 
 **Tipografía:** la fuente del sistema (`system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`), con la escala de tipos de Material y una base de 16 px. No se descarga ninguna fuente, así que no hay CDN ni dependencia, y la carga inicial no espera una fuente.
 
 **Íconos:** archivos SVG de **Material Symbols** (licencia Apache-2.0) copiados a `public/iconos/` y registrados con `MatIconRegistry.addSvgIcon` en `core/config/`. No se usa la fuente de íconos ni un CDN, y no se agrega una dependencia. Solo se copian los que se usan: menú, buscar, cerrar, editar, eliminar, mostrar u ocultar, copiar, calendario, reloj, éxito, aviso, error, información, flechas de paginación y salir. El aviso de la licencia queda junto a los archivos.
+- **Registro (`fundacion` T5):** `provideIconos()` en `core/config/iconos.ts` registra cada ícono con su nombre en español (`menu`, `buscar`, `cerrar`, `editar`, `eliminar`, `mostrar`, `ocultar`, `copiar`, `calendario`, `reloj`, `exito`, `aviso`, `error`, `informacion`, `primera-pagina`, `anterior`, `siguiente`, `ultima-pagina`, `salir`), que es también el nombre del archivo. Se usan con `<mat-icon svgIcon="buscar" />`.
+- **Excepción a `bypassSecurityTrust*`** (decisión del usuario, 2026-11-23): `addSvgIcon` exige un `SafeResourceUrl`, que solo se obtiene con `bypassSecurityTrustResourceUrl`. Se usa solo en `iconos.ts` y sobre rutas fijas del propio sitio. Material descarga los SVG con `HttpClient`, así que `app.config.ts` registra `provideHttpClient()` desde `fundacion`; `nucleo` le agrega los interceptores.
 
 **Espaciado:** una escala de 4, 8, 16, 24 y 32 px (`--sm-espacio-1` a `--sm-espacio-5`). Ningún componente usa medidas sueltas.
 

@@ -17,7 +17,7 @@ Cada tarea termina con:
 | T2. ESLint, Prettier y carpetas | Completada | ✅ | ➖ | ✅ | ✅ |
 | T3. Formateadores, etiquetas y pipes | Completada | ✅ | ✅ | ➖ | ✅ |
 | T4. `AdaptadorFechas` y opciones de Material | Completada | ✅ | ✅ | ➖ | ✅ |
-| T5. Paleta, tema, tipografía e íconos | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
+| T5. Paleta, tema, tipografía e íconos | Implementada | ✅ | ✅ | ⬜ | ✅ |
 | T6. Página de muestra, README y cierre | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
 
 **Estados de tarea:**
@@ -244,3 +244,15 @@ Cada tarea termina con:
   - **Verificación:**
     - `pnpm test --watch=false`: 65 pruebas en verde (20 nuevas). El adaptador lee `05/03/2026` y `5/3/2026`, rechaza `31/02/2026` y `03/15/2026`, lee "6:30 p. m.", "18:30" y "12:00 a. m.", escribe "6:30 p. m." y vuelve a leer lo que escribe. La semana empieza el lunes. El paginador da "21–40 de 134".
     - `pnpm formato:revisar`, `pnpm lint` y `pnpm build` pasan. La carga inicial sube a 278,27 kB por los módulos de Material (presupuesto: 500 kB).
+- 2026-11-23: T5 implementada; falta la verificación en el navegador, que se hace con la página de muestra de T6.
+  - **Íconos y `bypassSecurityTrust*`:** `MatIconRegistry.addSvgIcon` (§6.6) exige un `SafeResourceUrl`, que solo se obtiene con `bypassSecurityTrustResourceUrl`, y `AGENTS.md` lo prohibía. Además, el registro descarga los SVG con `HttpClient`. El usuario eligió una **excepción acotada**: el bypass solo en `core/config/iconos.ts`, sobre rutas fijas de `public/iconos/`, y `provideHttpClient()` en `app.config.ts` desde ahora (`nucleo` le agrega los interceptores). Anotado en `AGENTS.md` y §6.6.
+  - **Paleta:** `src/styles/_paleta.scss` con las variables de §6.6 en `:root`, más `--sm-texto-sobre-marca`, `--sm-texto-sobre-acento` (los blancos de la tabla) y `--sm-fuente`.
+  - **Tema:** `src/styles/_theme-colors.scss`, generado con `ng generate @angular/material:theme-color --primary-color=#0F766E` y sin cambios. `_tema.scss` aplica `mat.theme` (claro, fuente del sistema, densidad 0) y `mat.theme-overrides` hacia las `--sm-*`: `primary`, `on-primary`, `background`, `surface` y sus `surface-container` (blancos, como pide §6.6), `on-surface`, `on-surface-variant`, `secondary-container` (opción activa), `outline` y `error`. Las variables de FullCalendar quedan para `componentes`, que lo instala.
+  - **`styles.scss`:** base de 16 px, fondo `--sm-fondo`, foco `:focus-visible` de 2 px con el acento y, por debajo de 600 px, 44 × 44 px para los botones que no son de Material. Los de Material ya tienen un área táctil de 48 px con la densidad 0 (`button-touch-target-size`).
+  - **Íconos:** los 19 SVG de la lista de §6.6, de Material Symbols (estilo Outlined, 24 px), descargados del repositorio `google/material-design-icons` con su `LICENSE` (Apache-2.0) a `public/iconos/`, con nombres en español. Antes de copiarlos se revisó que cada uno tuviera solo `<svg>` y `<path>`.
+  - **`iconos.ts`:** `ICONOS`, el tipo `Icono` y `provideIconos()`, que los registra con `provideAppInitializer`. Su prueba comprueba que cada ícono pide su archivo, y que un nombre desconocido falla.
+  - **Verificación:**
+    - `pnpm test --watch=false` (67 pruebas), `pnpm formato:revisar` y `pnpm lint` pasan.
+    - `pnpm build` sin warnings de estilos: 312,47 kB iniciales (`HttpClient` y el registro de íconos; presupuesto: 500 kB) y 10,70 kB de estilos.
+    - El CSS del build tiene las variables de §6.6, `dist/` publica los 19 íconos y la licencia, y el build no referencia ningún otro origen.
+    - **Pendiente para T6:** en el navegador, `getComputedStyle` de `:root` y un `mat-icon` visible sin peticiones fuera de `localhost`.

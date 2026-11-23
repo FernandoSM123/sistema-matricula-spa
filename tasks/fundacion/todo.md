@@ -68,13 +68,17 @@ Cada tarea termina con:
     - las reglas recomendadas y las de accesibilidad de plantillas;
     - `no-console` y `@typescript-eslint/no-explicit-any` como error;
     - `no-restricted-imports` por carpeta, según §2.3 y §10.2.
-  - Prettier 3.10 con `printWidth: 120`, `singleQuote: true` y el analizador `angular`, más un `.prettierignore` con `pnpm-lock.yaml`, `dist/` y `docs/wireframes/`.
+  - Prettier 3.10 con `printWidth: 120`, `singleQuote: true`, `endOfLine: 'lf'` y el analizador `angular`, más un `.prettierignore` con `pnpm-lock.yaml`, `dist/` y `docs/wireframes/`.
+  - Final de línea LF en todo el repositorio:
+    - `.gitattributes` con `* text=auto eol=lf`, y los binarios (`*.ico`, `*.png`) marcados como `binary`;
+    - los archivos ya versionados, normalizados con `git add --renormalize .`.
   - Carpetas `src/app/api/`, `core/`, `shared/` y `features/`, y `src/testing/`, con `.gitkeep` donde estén vacías.
 - Verify:
   - `pnpm lint` y `pnpm formato:revisar` pasan.
   - Un import de prueba en cada caso prohibido (`shared` → `core`, `api` → `shared` y `features/a` → `features/b`) hace fallar `pnpm lint` con el mensaje de §2.3. Después se quitan.
   - Un `console.log` y un `any` de prueba también fallan.
-- Files: `eslint.config.js`, `.prettierrc`, `.prettierignore`, `package.json`, `.gitkeep` de las carpetas
+  - `git ls-files --eol` no muestra archivos de texto con `crlf`, y los commits ya no dan el aviso "LF will be replaced by CRLF".
+- Files: `eslint.config.js`, `.prettierrc`, `.prettierignore`, `.gitattributes`, `package.json`, `.gitkeep` de las carpetas
 
 ### T3. Formateadores, etiquetas y pipes
 - Acceptance:

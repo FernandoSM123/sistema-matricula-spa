@@ -25,7 +25,7 @@ Cada tarea termina con:
 | # | Componente | Depende de | Notas |
 |---|---|---|---|
 | 1 | **Proyecto:** pnpm instalado, proyecto creado con el CLI en la raíz, `pnpm-workspace.yaml`, versiones exactas, `angular.json`, `tsconfig`, entornos y scripts. También la corrección de los documentos (decisiones 1 y 2 de la spec) | — | La base de todo lo demás |
-| 2 | **Calidad:** ESLint (angular-eslint, `no-console`, `no-explicit-any`, reglas entre carpetas), Prettier y las carpetas vacías de §2.2 | 1 | Las reglas entre carpetas necesitan que existan las carpetas |
+| 2 | **Calidad:** ESLint (angular-eslint, `no-console`, `no-explicit-any`, reglas entre carpetas), Prettier, final de línea LF (`.gitattributes`) y las carpetas vacías de §2.2 | 1 | Las reglas entre carpetas necesitan que existan las carpetas |
 | 3 | **Formatos:** `formateadores.ts`, `etiquetas.ts`, los seis pipes y el locale `es-CR`, con sus pruebas | 2 | Funciones puras, sin Material |
 | 4 | **Fechas de Material:** `AdaptadorFechas`, `MAT_DATE_FORMATS`, `MAT_DATE_LOCALE` y las opciones por defecto de Material, con sus pruebas | 3 | El adaptador usa el formateador de hora |
 | 5 | **Estilo:** `_paleta.scss`, tema de Material, tipografía, foco, espaciado e íconos SVG | 2 | Independiente de 3 y 4 |

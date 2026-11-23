@@ -9,6 +9,7 @@ Módulo `fundacion` del [mapa de módulos](mapa-modulos.md). Sin dependencias.
 **Historial:**
 - 2026-11-23: v1 en revisión.
 - 2026-11-23: v1 aprobada por el usuario, con sus cinco supuestos. Pregunta abierta resuelta: el instituto se llama **Instituto de Cursos Libres** (RUI-23). Plan y tareas en revisión.
+- 2026-11-23: el usuario añade a T2 el final de línea LF en todo el repositorio (`.gitattributes` y `endOfLine: 'lf'` en Prettier), porque con `core.autocrlf=true` en Windows `pnpm formato:revisar` fallaba.
 
 ## Objetivo
 
@@ -34,7 +35,8 @@ El módulo no tiene vistas ni RFF. Construye RUI-15 a RUI-19 como piezas probada
    - `tsconfig.json` con las opciones estrictas de §8.2.
    - En `angular.json`: prefijo `sm`, generadores con `OnPush` y `scss`, los presupuestos de §8.3 y `fileReplacements` para desarrollo.
    - **ESLint** con angular-eslint (recomendadas y accesibilidad de plantillas), `no-console`, `no-explicit-any` y `no-restricted-imports` por carpeta (§2.3, §10.2).
-   - **Prettier**, con `printWidth: 120`, `singleQuote: true` y el analizador `angular`.
+   - **Prettier**, con `printWidth: 120`, `singleQuote: true`, `endOfLine: 'lf'` y el analizador `angular`.
+   - **Final de línea LF** en todo el repositorio, fijado con `.gitattributes` (`* text=auto eol=lf`) para que no dependa de la configuración de Git de cada máquina.
 3. **Carpetas y arranque** (§2.2):
    - `src/app/` con `api/`, `core/`, `shared/` y `features/`, vacías salvo lo de este módulo.
    - `app.ts`, `app.config.ts` (locale, adaptador de fechas y opciones de Material) y `app.routes.ts` sin rutas de áreas.
@@ -93,7 +95,7 @@ pnpm audit
 
 ```
 package.json, pnpm-workspace.yaml, pnpm-lock.yaml, angular.json, tsconfig*.json
-eslint.config.js, .prettierrc, .prettierignore, .gitignore, README.md
+eslint.config.js, .prettierrc, .prettierignore, .gitignore, .gitattributes, README.md
 public/iconos/                 SVG de Material Symbols y LICENSE
 src/
   main.ts, index.html, styles.scss

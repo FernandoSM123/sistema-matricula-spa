@@ -15,7 +15,7 @@ Cada tarea termina con:
 |---|---|:---:|:---:|:---:|:---:|
 | T1. Proyecto y configuración | Completada | ✅ | ➖ | ✅ | `152c1a3` |
 | T2. ESLint, Prettier y carpetas | Completada | ✅ | ➖ | ✅ | `62f8a10` |
-| T3. Formateadores, etiquetas y pipes | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
+| T3. Formateadores, etiquetas y pipes | Completada | ✅ | ✅ | ➖ | ⬜ |
 | T4. `AdaptadorFechas` y opciones de Material | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T5. Paleta, tema, tipografía e íconos | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
 | T6. Página de muestra, README y cierre | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
@@ -218,3 +218,18 @@ Cada tarea termina con:
     - `pnpm formato:revisar` y `pnpm lint` pasan; `pnpm test --watch=false` (2 pruebas) y `pnpm build` (216,95 kB) siguen en verde.
     - Con archivos temporales, fallaron con el mensaje de su regla: `shared` → `core`, `shared` → `api` sin `import type`, `api` → `shared`, `core` → `features`, `personas` → `catalogos`, `personas` → `matricula/v/interno`, `sistema` → `matricula`, un `any` y un `console.log`. Pasaron `import type` desde `shared`, `personas` → `matricula` (`index.ts`) y `personas` → `core`. Después se borraron.
     - `git ls-files --eol` no muestra archivos con CRLF, y `pnpm install --frozen-lockfile` pasa.
+- 2026-11-23: T3 completada.
+  - **Pruebas primero:** se escribieron las de formateadores, etiquetas, pipes y locale, y fallaron (no existía el código) antes de implementarlo.
+  - **`formateadores.ts`:**
+    - `LOCALE_INSTITUTO` ('es-CR') y `ZONA_INSTITUTO`. El locale vive en `shared` porque `core` puede importar de `shared`, pero no al revés (§2.3).
+    - Solo `formatearFechaHora` recibe la zona (por defecto, la del instituto): `formatearFecha` arma el texto sin `Date`, y `formatearHora` formatea en UTC para que `Intl` no convierta la hora.
+    - Un valor vacío (`null`, `undefined`, `''`, `NaN`) da `''`. Un texto que no tiene el formato esperado se devuelve tal cual, igual que las etiquetas, para no ocultar un dato inesperado de la API.
+    - Los `Intl.DateTimeFormat` se guardan uno por zona.
+  - **`etiquetas.ts`:** las nueve tablas de RUI-19 con los tipos `rol`, `nivelCurso`, `modalidad`, `estadoGrupo`, `estadoMatricula`, `motivoRetiro`, `dia`, `accionAuditoria` y `origenError`. Usa `Object.hasOwn`, para que un valor como `toString` no se tome como etiqueta.
+  - **Pipes** standalone y puros (`fecha`, `fechaHora`, `hora`, `moneda`, `numero`, `etiqueta`). Como solo delegan en los formateadores, sus pruebas van juntas en `pipes.spec.ts`, en lugar de un `.spec.ts` por pipe.
+  - **Locale:** `core/config/locale.ts` con `provideLocale()`, que registra `es-CR` y fija `LOCALE_ID`, con su prueba. Se agregó a `app.config.ts`.
+  - **`src/testing/espacios.ts`:** `normalizarEspacios` para comparar la salida de `Intl` (§7.2). `src/testing/` se excluyó de `tsconfig.app.json` para que no entre en el build; su `.gitkeep` se borró.
+  - **Verificación:**
+    - `pnpm test --watch=false`: 45 pruebas en verde (43 nuevas), con todos los casos de la verificación. En `es-CR` la hora sale con espacios normales y la moneda con espacios que no se parten; las pruebas normalizan ambos.
+    - La independencia de la zona del dispositivo se prueba con `formatearFechaHora` en `UTC` y `Europe/Madrid`, y con un `Date` que falla si `formatearFecha` lo crea. Correr las pruebas con otra `TZ` no sirve en Windows: Node la ignora.
+    - `pnpm formato:revisar`, `pnpm lint` y `pnpm build` (219,42 kB) pasan.

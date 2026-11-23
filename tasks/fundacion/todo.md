@@ -14,7 +14,7 @@ Cada tarea termina con:
 | Tarea | Estado | Código | Pruebas unitarias | Verificación manual | Commit |
 |---|---|:---:|:---:|:---:|:---:|
 | T1. Proyecto y configuración | Completada | ✅ | ➖ | ✅ | `152c1a3` |
-| T2. ESLint, Prettier y carpetas | Completada | ✅ | ➖ | ✅ | ⬜ |
+| T2. ESLint, Prettier y carpetas | Completada | ✅ | ➖ | ✅ | `62f8a10` |
 | T3. Formateadores, etiquetas y pipes | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T4. `AdaptadorFechas` y opciones de Material | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T5. Paleta, tema, tipografía e íconos | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |

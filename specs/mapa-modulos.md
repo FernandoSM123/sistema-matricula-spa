@@ -1,0 +1,94 @@
+# Mapa de módulos — Frontend (SPA) Sistema de Matrícula
+
+Índice de los módulos del SPA. Cada módulo tiene su spec en `specs/SPEC-<id>.md`, su plan y sus tareas en `tasks/<id>/plan.md` y `tasks/<id>/todo.md`, y se construye en el orden indicado (Specify → Plan → Tasks → Implement). Los ids son estables: no se renombran.
+
+Se arma con los tres documentos de la [fase 0](fase-0.md):
+- Las vistas y los RFF de `docs/requerimientos.md`.
+- Los wireframes de `docs/wireframes/`.
+- El orden de `docs/arquitectura.md` §12.
+
+| Estado | Avance |
+|---|---|
+| **Aprobado** | 0/10 módulos completados |
+
+**Historial:**
+- 2026-11-23: v1 en revisión.
+- 2026-11-23: v1 aprobada, con un cambio del usuario en la decisión 5: commit después de cada tarea, no solo al cerrar el módulo. Siguiente paso: la spec de `fundacion` (sin empezar, a la espera del usuario).
+
+## Módulos
+
+| # | Id | Responsabilidad | Vistas | RFF | RUI que construye | Depende de |
+|---|---|---|---|---|---|---|
+| 1 | `fundacion` | Proyecto creado con el CLI y pnpm, `pnpm-workspace.yaml`, ESLint con las reglas entre carpetas, Prettier, carpetas de §2.2 y `environments/`. Tema de Material, paleta `--sm-*`, tipografía e íconos (§6.6). Locale `es-CR`, `AdaptadorFechas`, formateadores y pipes (§7) | — | — | RUI-15 a RUI-19 | — |
+| 2 | `nucleo` | `api/` base: tipos generados, `modelos.ts`, paginación, `ErrorApi` y `API_URL`. `SesionService`, interceptores y guardas (§4). Marco con el menú por rol, el menú de la cuenta y el pie. Rutas y página de inicio por rol (§2.2 a §2.5 de los requerimientos) | `V-09`, `V-10` | RFF-03, RFF-04 | RUI-01 a RUI-05 (interpretación del error), RUI-23 | `fundacion` |
+| 3 | `componentes` | `shared/ui` y `shared/formularios`: `EstadoContenido`, `ErrorAccion`, `AvisosService`, `AvisoFijo`, `ConfirmacionesService`, `BotonEnvio`, `CampoContrasena`, validadores, `aplicarErroresServidor`, `ListadoPaginado`, `BarraFiltros`, `EtiquetaEstado`, `EncabezadoDetalle` y `SelectorBusqueda` (§5, §6) | — | — | RUI-01 a RUI-05 (presentación), RUI-06 a RUI-14, RUI-20, RUI-21 | `nucleo` |
+| 4 | `acceso` | Inicio de sesión, cambio obligatorio, olvido de contraseña y registro público. Mi perfil, cambiar contraseña y datos de contacto | `V-02` a `V-08` | RFF-01, RFF-02, RFF-05, RFF-06, RFF-08 a RFF-10 | — | `componentes` |
+| 5 | `oferta` | La oferta académica pública. La acción "Matricular" la agrega `matricula` | `V-01` | RFF-07 | — | `componentes` |
+| 6 | `catalogos` | Cursos, periodos y aulas. La ocupación del aula la agrega `grupos` | `V-20` a `V-27` | RFF-18 a RFF-22 | — | `acceso` |
+| 7 | `personas` | Administradores, estudiantes y profesores, con las acciones sobre la cuenta. Las secciones de matrícula, grupos y horario de `V-16` y `V-19` las agrega `matricula` | `V-11` a `V-19` | RFF-11 a RFF-17 | — | `acceso` |
+| 8 | `grupos` | Grupos, horarios y estados. `HorarioSemanal` (FullCalendar) y `SelectorPeriodo` (§6.3), y con ellos la ocupación de `V-27` | `V-28` a `V-30` | RFF-23 a RFF-29 | — | `catalogos`, `personas` |
+| 9 | `matricula` | Mis matrículas, matricular, cambiar de grupo y retirar. Mi horario y mis grupos. Las secciones que agrega a vistas anteriores (decisión 2) | `V-31` a `V-35` | RFF-30 a RFF-38 | — | `oferta`, `catalogos`, `personas`, `grupos` |
+| 10 | `sistema` | Auditoría y errores. El enlace "Ver historial de cambios" de los detalles (RFF-40) | `V-36` a `V-38` | RFF-39 a RFF-41 | — | `catalogos`, `personas`, `grupos` |
+
+**Orden de construcción:** `fundacion` → `nucleo` → `componentes` → `acceso` → `oferta` → `catalogos` → `personas` → `grupos` → `matricula` → `sistema`
+
+- Es el orden de `docs/arquitectura.md` §12. Algunos pares se podrían intercambiar, porque no dependen entre sí: `oferta` con los que le siguen hasta `grupos`, y `catalogos` con `personas`. Se mantiene el orden lineal porque el proyecto lo construye una sola persona.
+- Las 38 vistas y los 41 RFF quedan en un solo módulo cada uno. Las RUI 22 (trato de usted) y la accesibilidad de §6 de los requerimientos las aplican todos los módulos.
+
+## Estado de los módulos
+
+| Módulo | Spec | Plan | Tareas | Avance | Estado del módulo |
+|---|---|---|---|---|---|
+| `fundacion` | — | — | — | — | Sin empezar |
+| `nucleo` | — | — | — | — | Sin empezar |
+| `componentes` | — | — | — | — | Sin empezar |
+| `acceso` | — | — | — | — | Sin empezar |
+| `oferta` | — | — | — | — | Sin empezar |
+| `catalogos` | — | — | — | — | Sin empezar |
+| `personas` | — | — | — | — | Sin empezar |
+| `grupos` | — | — | — | — | Sin empezar |
+| `matricula` | — | — | — | — | Sin empezar |
+| `sistema` | — | — | — | — | Sin empezar |
+
+**Estados de un documento** (spec, plan o lista de tareas):
+- **Borrador:** se está escribiendo.
+- **En revisión:** espera la aprobación del usuario.
+- **Aprobado/a:** aprobado y vigente.
+- **Obsoleto/a:** reemplazado; queda solo como historial.
+
+**Estados de un módulo:**
+- **Sin empezar.**
+- **Planificación:** spec, plan o tareas sin aprobar.
+- **En implementación:** tareas aprobadas y al menos una iniciada.
+- **Completado:** todas las tareas completadas y los criterios de éxito de la spec cumplidos.
+
+**Avance** = tareas completadas / total de tareas del `todo.md` del módulo.
+
+## Verificaciones heredadas
+
+Verificaciones que un módulo no puede hacer por falta de vistas o de datos. Se copian al `todo.md` del módulo destino cuando se crea.
+
+| Origen | Destino | Verificación |
+|---|---|---|
+| `arquitectura` §3.2 | `nucleo` | Al generar los tipos con `pnpm api:tipos`, revisar si algún número del OpenAPI viene como `integer \| string` y ajustar `modelos.ts` |
+| `arquitectura` §1 | `nucleo` | La aplicación funciona en las dos últimas versiones de Chrome, Edge, Firefox y Safari, en escritorio y en celular |
+| `arquitectura` §1 | `grupos` | La grilla de `HorarioSemanal` (FullCalendar con `temporal-polyfill`) funciona en esos mismos navegadores |
+| `arquitectura` §8.3 | `nucleo`, `componentes`, `sistema` | Lighthouse al cerrar cada uno: carga inicial de 500 kB o menos sin comprimir y LCP menor a 2,5 s, con el perfil de escritorio y el build de producción |
+| `nucleo` | `acceso` | Con una sesión real: las 7 situaciones de §2.5 de los requerimientos (sin sesión, rol sin permiso, `401` que vuelve a `V-02` con el aviso y regresa a la vista, cambio pendiente…) y el cierre de sesión desde el menú de la cuenta (RFF-04) |
+| COR-02 (backend) | `acceso` | Desde el navegador, el `429` del inicio de sesión llena `ErrorApi.retryAfter` con el valor de `Retry-After` (RUI-03) |
+
+## Decisiones aprobadas
+
+1. **Módulos por capa técnica al inicio y por área después.** `fundacion`, `nucleo` y `componentes` no tienen vistas de negocio (salvo `V-09` y `V-10`). Así cada área usa piezas ya probadas, en lugar de que la primera área cargue con todo lo transversal.
+2. **Las secciones que una vista recibe de un área posterior las agrega el área posterior**, como en el backend (decisión 4 de su mapa) y en los wireframes. El módulo dueño de la vista deja el lugar de la sección, sin mostrarla:
+   - `grupos` agrega la ocupación a `V-27`.
+   - `matricula` agrega:
+     - a `V-01`, la acción "Matricular" y la marca "Ya matriculado";
+     - a `V-16`, las matrículas y el horario;
+     - a `V-19`, los grupos y el horario;
+     - a `V-22` y `V-30`, la acción "Matricular";
+     - a `V-30`, los estudiantes inscritos (§3.7 de los requerimientos).
+   - `sistema` agrega "Ver historial de cambios" a `V-13`, `V-16`, `V-19`, `V-22`, `V-27` y `V-30`.
+3. **Pruebas:** las unitarias de `docs/arquitectura.md` §9 en cada módulo. Cada módulo se verifica también a mano, con la API en marcha y la base de desarrollo sembrada por el módulo `datos-prueba` del backend, revisando sus vistas contra los wireframes. Las pruebas e2e siguen diferidas.
+4. **La API no se modifica desde el SPA.** Si un módulo encuentra algo que la API no ofrece, se detiene, lo anota como brecha en `docs/requerimientos.md` §8 y se decide aparte, como B-05 (COR-02).
+5. **Un commit después de cada tarea** (2026-11-23, pedido por el usuario), con el hash anotado en la fila de la tarea en la tabla de estado del `todo.md`. Se aparta de la fase 0, que hacía un solo commit por entregable. Cada módulo se trabaja en su propia rama (`<id>`) y se integra a `main` con un pull request, como en el backend.

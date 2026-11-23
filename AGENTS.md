@@ -13,7 +13,7 @@ Frontend web del sistema de matrícula de un instituto de cursos libres. Consume
 - **Qué construir en el frontend:** `docs/requerimientos.md` (vistas `V-xx`, `RFF-xx`, `RUI-xx` y las brechas con el backend en §8).
 - **Cómo se ven las vistas:** `docs/wireframes/` (guía, no contrato).
 - **Cómo construirlo:** `docs/arquitectura.md` (stack, carpetas, integración con la API, sesión, formularios, componentes, estilo, formatos, pruebas, convenciones y orden de implementación).
-- **Mapa de módulos:** `specs/mapa-modulos.md` (se crea al cerrar la fase 0).
+- **Mapa de módulos:** `specs/mapa-modulos.md` (módulos, orden, verificaciones heredadas y decisiones).
 
 Si algo de una spec contradice estos documentos, o el frontend necesita algo que la API no ofrece, detente y pregunta; no elijas por tu cuenta.
 
@@ -85,4 +85,5 @@ src/styles/   Paleta (--sm-*), tema de Material y estilos globales
 ## Flujo de trabajo
 Usar la skill **spec-driven-development**: `specs/SPEC-<id>.md` → `tasks/<id>/` → implementación tarea por tarea, con aprobación del usuario en cada fase.
 - En la fase 0, plan y tareas van en un solo `tasks/<id>/todo.md`.
-- Los módulos del mapa usan `plan.md` y `todo.md`, y siguen el orden de `docs/arquitectura.md` §12.
+- Los módulos del mapa usan `plan.md` y `todo.md`, y siguen el orden de `specs/mapa-modulos.md`.
+- Cada módulo se trabaja en su rama (`<id>`) y se integra a `main` con un pull request. Se hace un commit después de cada tarea y su hash se anota en el `todo.md`.

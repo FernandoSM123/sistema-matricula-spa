@@ -7,16 +7,16 @@ Módulo `fundacion` del [mapa](../../specs/mapa-modulos.md). Spec: [`specs/SPEC-
 Cada tarea termina con:
 - `pnpm lint`, `pnpm test --watch=false` y `pnpm build` en verde, desde que existen;
 - la verificación indicada;
-- un commit en la rama `fundacion`, cuyo hash se anota en la tabla.
+- un solo commit en la rama `fundacion`, con el código y la actualización de este archivo, la spec y el mapa. En la tabla se marca ✅, sin el hash.
 
 ## Estado
 
 | Tarea | Estado | Código | Pruebas unitarias | Verificación manual | Commit |
 |---|---|:---:|:---:|:---:|:---:|
-| T1. Proyecto y configuración | Completada | ✅ | ➖ | ✅ | `152c1a3` |
-| T2. ESLint, Prettier y carpetas | Completada | ✅ | ➖ | ✅ | `62f8a10` |
-| T3. Formateadores, etiquetas y pipes | Completada | ✅ | ✅ | ➖ | `e0b34aa` |
-| T4. `AdaptadorFechas` y opciones de Material | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
+| T1. Proyecto y configuración | Completada | ✅ | ➖ | ✅ | ✅ |
+| T2. ESLint, Prettier y carpetas | Completada | ✅ | ➖ | ✅ | ✅ |
+| T3. Formateadores, etiquetas y pipes | Completada | ✅ | ✅ | ➖ | ✅ |
+| T4. `AdaptadorFechas` y opciones de Material | Completada | ✅ | ✅ | ➖ | ✅ |
 | T5. Paleta, tema, tipografía e íconos | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
 | T6. Página de muestra, README y cierre | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
 
@@ -233,3 +233,14 @@ Cada tarea termina con:
     - `pnpm test --watch=false`: 45 pruebas en verde (43 nuevas), con todos los casos de la verificación. En `es-CR` la hora sale con espacios normales y la moneda con espacios que no se parten; las pruebas normalizan ambos.
     - La independencia de la zona del dispositivo se prueba con `formatearFechaHora` en `UTC` y `Europe/Madrid`, y con un `Date` que falla si `formatearFecha` lo crea. Correr las pruebas con otra `TZ` no sirve en Windows: Node la ignora.
     - `pnpm formato:revisar`, `pnpm lint` y `pnpm build` (219,42 kB) pasan.
+- 2026-11-23: el usuario decide hacer un solo commit por tarea (código y documentos juntos) y marcar la columna "Commit" con ✅ en lugar del hash. T1 a T3 se cambiaron a ✅; sus hashes están en `git log`.
+- 2026-11-23: T4 completada.
+  - **Pruebas primero:** las del adaptador y las de Material fallaron (no existía el código) antes de implementarlo.
+  - **`formatos-fecha.ts`:** `FORMATOS_FECHA` con la lectura y la presentación de la tarea, más las etiquetas del calendario (`LLL yyyy`, `PPP`, `LLLL yyyy`). `FORMATO_HORA` (`h:mm a`) es el formato que el adaptador reconoce como hora.
+  - **`AdaptadorFechas`:** solo cambia `format()`. Para `FORMATO_HORA` usa `formatearHora` y escribe la hora con **espacios normales**: date-fns no lee "6:30 p. m." con los espacios que no se parten (U+00A0, U+202F), que `Intl` usa en algunos navegadores, y el selector de hora vuelve a leer lo que escribe. Verificado con date-fns: "6:30 p. m." con espacios normales se lee, con esos espacios da una fecha inválida. Los pipes conservan la salida de `Intl`. Anotado en §7.3 de la arquitectura.
+  - **`provideAdaptadorFechas()`** registra el adaptador, `MAT_DATE_LOCALE` (`es` de date-fns) y `MAT_DATE_FORMATS`, en lugar de `provideDateFnsAdapter()`.
+  - **`material.ts`:** `provideMaterial()` con los campos `outline` y `dynamic`, los avisos de 5 segundos, `PaginadorIntl` y `SelectorFechaIntl`. El rango del paginador usa `formatearNumero` ("1–10 de 1 234") y, como el de Material, no recorta una página que quedó fuera del total.
+  - **`app.config.ts`:** `provideLocale()`, `provideAdaptadorFechas()` y `provideMaterial()`.
+  - **Verificación:**
+    - `pnpm test --watch=false`: 65 pruebas en verde (20 nuevas). El adaptador lee `05/03/2026` y `5/3/2026`, rechaza `31/02/2026` y `03/15/2026`, lee "6:30 p. m.", "18:30" y "12:00 a. m.", escribe "6:30 p. m." y vuelve a leer lo que escribe. La semana empieza el lunes. El paginador da "21–40 de 134".
+    - `pnpm formato:revisar`, `pnpm lint` y `pnpm build` pasan. La carga inicial sube a 278,27 kB por los módulos de Material (presupuesto: 500 kB).

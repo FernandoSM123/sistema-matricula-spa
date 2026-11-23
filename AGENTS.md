@@ -86,4 +86,4 @@ src/styles/   Paleta (--sm-*), tema de Material y estilos globales
 Usar la skill **spec-driven-development**: `specs/SPEC-<id>.md` → `tasks/<id>/` → implementación tarea por tarea, con aprobación del usuario en cada fase.
 - En la fase 0, plan y tareas van en un solo `tasks/<id>/todo.md`.
 - Los módulos del mapa usan `plan.md` y `todo.md`, y siguen el orden de `specs/mapa-modulos.md`.
-- Cada módulo se trabaja en su rama (`<id>`) y se integra a `main` con un pull request. Se hace un commit después de cada tarea y su hash se anota en el `todo.md`.
+- Cada módulo se trabaja en su rama (`<id>`) y se integra a `main` con un pull request. Se hace un solo commit por tarea, con el código y la actualización de `todo.md`, la spec y el mapa; en la columna "Commit" del `todo.md` se marca ✅ (sin el hash).

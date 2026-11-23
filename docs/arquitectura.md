@@ -626,6 +626,7 @@ Un color nuevo o cambiado vuelve a calcular su contraste antes de usarse (§10).
   - Lectura: fechas con `['dd/MM/yyyy', 'd/M/yyyy']` y horas con `['h:mm a', 'H:mm']`. En T1 se verificó que lee "6:30 p. m." y que rechaza `31/02/2026` y `03/15/2026`.
   - Presentación: `dd/MM/yyyy` para las fechas y el formateador propio para las horas y las opciones del selector de hora.
 - Se registra en `app.config.ts` como el `DateAdapter`, en lugar de `provideDateFnsAdapter()`.
+- Escribe la hora con espacios normales, porque el selector vuelve a leer lo que escribe y date-fns no reconoce "p. m." con los espacios que no se parten que `Intl` usa en algunos navegadores (`fundacion` T4). Los pipes conservan la salida de `Intl`.
 
 ---
 

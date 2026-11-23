@@ -40,7 +40,7 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 
 | Módulo | Spec | Plan | Tareas | Avance | Estado del módulo |
 |---|---|---|---|---|---|
-| `fundacion` | [Aprobada](SPEC-fundacion.md) | [Aprobado](../tasks/fundacion/plan.md) | [Aprobadas](../tasks/fundacion/todo.md) | 3/6 | En implementación |
+| `fundacion` | [Aprobada](SPEC-fundacion.md) | [Aprobado](../tasks/fundacion/plan.md) | [Aprobadas](../tasks/fundacion/todo.md) | 4/6 | En implementación |
 | `nucleo` | — | — | — | — | Sin empezar |
 | `componentes` | — | — | — | — | Sin empezar |
 | `acceso` | — | — | — | — | Sin empezar |
@@ -92,4 +92,4 @@ Verificaciones que un módulo no puede hacer por falta de vistas o de datos. Se 
    - `sistema` agrega "Ver historial de cambios" a `V-13`, `V-16`, `V-19`, `V-22`, `V-27` y `V-30`.
 3. **Pruebas:** las unitarias de `docs/arquitectura.md` §9 en cada módulo. Cada módulo se verifica también a mano, con la API en marcha y la base de desarrollo sembrada por el módulo `datos-prueba` del backend, revisando sus vistas contra los wireframes. Las pruebas e2e siguen diferidas.
 4. **La API no se modifica desde el SPA.** Si un módulo encuentra algo que la API no ofrece, se detiene, lo anota como brecha en `docs/requerimientos.md` §8 y se decide aparte, como B-05 (COR-02).
-5. **Un commit después de cada tarea** (2026-11-23, pedido por el usuario), con el hash anotado en la fila de la tarea en la tabla de estado del `todo.md`. Se aparta de la fase 0, que hacía un solo commit por entregable. Cada módulo se trabaja en su propia rama (`<id>`) y se integra a `main` con un pull request, como en el backend.
+5. **Un commit después de cada tarea** (2026-11-23, pedido por el usuario), que incluye el código y la actualización del `todo.md`, la spec y el mapa. En la columna "Commit" de la tabla de estado del `todo.md` se marca ✅, sin el hash (decisión del usuario, 2026-11-23: el hash obligaba a un segundo commit solo para anotarlo). Se aparta de la fase 0, que hacía un solo commit por entregable. Cada módulo se trabaja en su propia rama (`<id>`) y se integra a `main` con un pull request, como en el backend.

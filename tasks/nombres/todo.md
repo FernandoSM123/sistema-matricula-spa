@@ -20,7 +20,7 @@ Los nombres nuevos son los de las tablas 2.1 a 2.6 de la spec. Si aparece uno qu
 | T2. `api/` | Completada | ✅ | ✅ | ➖ | ✅ |
 | T3. Sesión, guardas e interceptores | Completada | ✅ | ✅ | ➖ | ✅ |
 | T4. Configuración y formatos | Completada | ✅ | ✅ | ➖ | ✅ |
-| T5. Layout y páginas | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
+| T5. Layout y páginas | Completada | ✅ | ✅ | ✅ | ✅ |
 | T6. Estilos globales | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T7. Verificación y cierre | Pendiente | ➖ | ⬜ | ⬜ | ⬜ |
 
@@ -109,7 +109,7 @@ Los nombres nuevos son los de las tablas 2.1 a 2.6 de la spec. Si aparece uno qu
 ### T5. Layout y páginas
 - Acceptance (tablas 2.3 y 2.5 de la spec):
   - `git mv core/marco core/layout`: `layout.ts|html|scss|spec.ts` (`Layout`, `sm-layout`, `LayoutVariant` con `'guest' | 'rol' | 'password-change'`, `FIXED_SIDENAV_QUERY`), `nav-items.ts` (`NavItem` con `path`, `label`, `roles`, `section`; `NavSection` con `title`, `items`; `NAV_ITEMS`, `USER_MENU_ITEMS`, `navFor`, `Audience`), `user-menu/` (`UserMenu`, `sm-user-menu`) y `footer/` (`Footer`, `sm-footer`). Los miembros internos en inglés (`toggleSidenav`, `hasSidenav`, `fixedSidenav`, `sidenav`, `logout`…).
-  - `git mv core/paginas core/pages`: `message-page/` (`MessagePage`, `sm-message-page`, entradas `icon`, `title`, `message`), `not-found/` (`NotFound`), `forbidden/` (`Forbidden`) y `pages.spec.ts`.
+  - `git mv core/paginas core/pages`: `message-page/` (`MessagePage`, `sm-message-page`, entradas `icon`, `heading`, `message`), `not-found/` (`NotFound`), `forbidden/` (`Forbidden`) y `pages.spec.ts`.
   - `app.ts`, `app.html` (`<sm-layout>`) y `app.routes.ts` (las rutas `loadComponent` a los archivos nuevos; las direcciones de la URL no cambian).
   - Clases CSS de los componentes según la tabla 2.5 (`rol` se queda, decisión 6), en las plantillas, los `.scss` y las pruebas que las buscan.
   - `environment.instituteName` en los dos archivos de `environments/` y en `Footer`.
@@ -118,6 +118,7 @@ Los nombres nuevos son los de las tablas 2.1 a 2.6 de la spec. Si aparece uno qu
   - `grep -rnE "Marco|MenuCuenta|\bPie\b|menu-opciones|OpcionMenu|GrupoMenu|OPCIONES_|menuDe|Audiencia|MensajePagina|NoEncontrada|SinPermiso|sm-marco|sm-pie|sm-menu-cuenta|sm-mensaje-pagina|nombreInstituto|core/marco|core/paginas" src/` sin resultados, ni las clases viejas de la tabla 2.5 en `src/app`.
   - **Manual**, con `pnpm start` y la API en marcha: el layout del visitante, el de un rol (sesión escrita en `sessionStorage` con la clave nueva), el menú de la cuenta, el pie, `/sin-permiso` y una dirección inexistente se ven igual que antes, con sus íconos.
 - Files: `src/app/core/layout/*`, `src/app/core/pages/*`, `src/app/app.ts`, `app.html`, `app.routes.ts`, `src/environments/*`
+- **Resultado (2026-11-24):**  - `core/layout/` (`Layout`, `nav-items.ts`, `UserMenu`, `Footer`) y `core/pages/` (`MessagePage`, `NotFound`, `Forbidden`) movidos con `git mv`, con sus pruebas. `app.ts`, `app.html` y `app.routes.ts` usan los nombres nuevos; las direcciones de la URL no cambian.  - `MessagePage` recibe `heading` en lugar de `title`, que es un atributo global de HTML y mostraría un tooltip (decisión del usuario; spec actualizada).  - Clases CSS según la tabla 2.5; además, `activa` → `active` y `oculto` → `hidden`, que la tabla no listaba. `environment.instituteName` en los dos entornos.  - Los selectores de las pruebas del layout y de las páginas se revisaron uno por uno.  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (20 archivos y 197 pruebas) y `pnpm build` (carga inicial: 438,41 kB) en verde. El usuario revisó el layout del visitante y V-10 en el navegador, con la API en marcha.
 
 ### T6. Estilos globales
 - Acceptance (tabla 2.5 de la spec):

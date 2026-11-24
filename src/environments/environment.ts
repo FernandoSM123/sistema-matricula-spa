@@ -5,6 +5,6 @@ export const environment = {
   // Sin despliegue definido todavía: mismo valor que en desarrollo (§3.1).
   apiUrl: 'http://localhost:5022/api/v1',
   // RUI-23
-  nombreInstituto: 'Instituto de Cursos Libres',
+  instituteName: 'Instituto de Cursos Libres',
   version,
 };

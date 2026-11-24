@@ -4,7 +4,7 @@ import { authGuard } from './core/guards/auth-guard';
 import { homeRoute } from './core/session/home-route';
 import { SessionService } from './core/session/session-service';
 
-const SISTEMA = 'Sistema de Matrícula';
+const APP_NAME = 'Sistema de Matrícula';
 
 /**
  * Rutas de la aplicación (§2.4, §2.5). Cada área agrega aquí la suya, con `loadChildren`, cuando se
@@ -15,13 +15,13 @@ export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: () => homeRoute(inject(SessionService)) },
   {
     path: 'sin-permiso',
-    title: `Sin permiso · ${SISTEMA}`,
+    title: `Sin permiso · ${APP_NAME}`,
     canActivate: [authGuard],
-    loadComponent: () => import('./core/paginas/sin-permiso/sin-permiso').then((m) => m.SinPermiso),
+    loadComponent: () => import('./core/pages/forbidden/forbidden').then((m) => m.Forbidden),
   },
   {
     path: '**',
-    title: `Página no encontrada · ${SISTEMA}`,
-    loadComponent: () => import('./core/paginas/no-encontrada/no-encontrada').then((m) => m.NoEncontrada),
+    title: `Página no encontrada · ${APP_NAME}`,
+    loadComponent: () => import('./core/pages/not-found/not-found').then((m) => m.NotFound),
   },
 ];

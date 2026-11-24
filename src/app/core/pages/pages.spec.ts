@@ -9,8 +9,8 @@ import { API_URL } from '../../api/api-url';
 import { Rol, TokenResponse } from '../../api/models';
 import { CLOCK } from '../session/clock';
 import { SESSION_KEY } from '../session/session-service';
-import { NoEncontrada } from './no-encontrada/no-encontrada';
-import { SinPermiso } from './sin-permiso/sin-permiso';
+import { NotFound } from './not-found/not-found';
+import { Forbidden } from './forbidden/forbidden';
 
 describe('páginas del sistema (V-09, V-10)', () => {
   beforeEach(() => {
@@ -27,51 +27,51 @@ describe('páginas del sistema (V-09, V-10)', () => {
     });
   });
 
-  const conSesion = (token: TokenResponse, rol: Rol = token.rol) =>
+  const withSession = (token: TokenResponse, rol: Rol = token.rol) =>
     sessionStorage.setItem(SESSION_KEY, JSON.stringify({ ...token, rol, nombre: null }));
 
-  function mostrar(pagina: Type<unknown>) {
-    const fixture = TestBed.createComponent(pagina);
+  function render(page: Type<unknown>) {
+    const fixture = TestBed.createComponent(page);
     fixture.detectChanges();
-    const raiz = fixture.nativeElement as HTMLElement;
-    const enlace = raiz.querySelector('a');
+    const root = fixture.nativeElement as HTMLElement;
+    const link = root.querySelector('a');
     return {
-      titulo: raiz.querySelector('h1')?.textContent?.trim(),
-      enlaces: raiz.querySelectorAll('a').length,
-      texto: enlace?.textContent?.trim(),
-      ruta: enlace?.getAttribute('href'),
+      heading: root.querySelector('h1')?.textContent?.trim(),
+      links: root.querySelectorAll('a').length,
+      text: link?.textContent?.trim(),
+      path: link?.getAttribute('href'),
     };
   }
 
   it('V-09 avisa que no tiene permiso, con un único enlace a su página de inicio', () => {
-    conSesion(ESTUDIANTE_TOKEN, 'Profesor');
-    expect(mostrar(SinPermiso)).toEqual({
-      titulo: 'No tiene permiso para ver esta página',
-      enlaces: 1,
-      texto: 'Ir a Mis grupos',
-      ruta: '/mis-grupos',
+    withSession(ESTUDIANTE_TOKEN, 'Profesor');
+    expect(render(Forbidden)).toEqual({
+      heading: 'No tiene permiso para ver esta página',
+      links: 1,
+      text: 'Ir a Mis grupos',
+      path: '/mis-grupos',
     });
   });
 
   it('V-10 avisa que la dirección no existe', () => {
-    expect(mostrar(NoEncontrada).titulo).toBe('No encontramos esta página');
+    expect(render(NotFound).heading).toBe('No encontramos esta página');
   });
 
   it.each<[string, () => void, string, string]>([
     ['el visitante', () => undefined, 'Ir a la oferta académica', '/oferta'],
-    ['el estudiante', () => conSesion(ESTUDIANTE_TOKEN), 'Ir a Mis matrículas', '/mis-matriculas'],
-    ['el profesor', () => conSesion(ESTUDIANTE_TOKEN, 'Profesor'), 'Ir a Mis grupos', '/mis-grupos'],
-    ['el administrador', () => conSesion(ESTUDIANTE_TOKEN, 'Administrador'), 'Ir a Grupos', '/grupos'],
+    ['el estudiante', () => withSession(ESTUDIANTE_TOKEN), 'Ir a Mis matrículas', '/mis-matriculas'],
+    ['el profesor', () => withSession(ESTUDIANTE_TOKEN, 'Profesor'), 'Ir a Mis grupos', '/mis-grupos'],
+    ['el administrador', () => withSession(ESTUDIANTE_TOKEN, 'Administrador'), 'Ir a Grupos', '/grupos'],
     [
       'un cambio pendiente',
-      () => conSesion(PASSWORD_CHANGE_TOKEN),
+      () => withSession(PASSWORD_CHANGE_TOKEN),
       'Ir al cambio de contraseña',
       '/cambio-obligatorio',
     ],
-  ])('V-10 lleva a %s a su página de inicio', (_caso, preparar, texto, ruta) => {
-    preparar();
-    const pagina = mostrar(NoEncontrada);
-    expect(pagina.texto).toBe(texto);
-    expect(pagina.ruta).toBe(ruta);
+  ])('V-10 lleva a %s a su página de inicio', (_case, prepare, text, path) => {
+    prepare();
+    const page = render(NotFound);
+    expect(page.text).toBe(text);
+    expect(page.path).toBe(path);
   });
 });

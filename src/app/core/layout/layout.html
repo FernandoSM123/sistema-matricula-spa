@@ -1,0 +1,85 @@
+<header>
+  <mat-toolbar class="toolbar">
+    @if (hasSidenav() && !fixedSidenav()) {
+      <button
+        mat-icon-button
+        type="button"
+        class="menu-button"
+        aria-label="Menú"
+        aria-controls="main-nav"
+        [attr.aria-expanded]="sidenav.opened"
+        (click)="toggleSidenav()"
+      >
+        <mat-icon svgIcon="menu" aria-hidden="true" />
+      </button>
+    }
+
+    @if (variant() === 'password-change') {
+      <span class="app-name">Sistema de Matrícula</span>
+    } @else {
+      <a class="app-name" [routerLink]="home()">Sistema de Matrícula</a>
+    }
+
+    <span class="spacer"></span>
+
+    @switch (variant()) {
+      @case ('guest') {
+        @if (isWide()) {
+          <nav class="guest-links" aria-label="Menú principal">
+            @for (item of nav()[0].items; track item.path) {
+              <a mat-button [routerLink]="item.path" routerLinkActive="active" ariaCurrentWhenActive="page">{{
+                item.label
+              }}</a>
+            }
+          </nav>
+        }
+      }
+      @case ('rol') {
+        <!-- mat-menu arrastra el overlay del CDK (unos 75 kB): fuera de la carga inicial (§8.3). -->
+        @defer (on idle) {
+          <sm-user-menu />
+        } @placeholder {
+          <span class="account-loading">{{ session.rol() | smLabel: 'rol' }}</span>
+        }
+      }
+      @case ('password-change') {
+        <button mat-stroked-button type="button" class="logout" (click)="logout()">Cerrar sesión</button>
+      }
+    }
+  </mat-toolbar>
+</header>
+
+<mat-sidenav-container class="body">
+  <mat-sidenav
+    #sidenav
+    id="main-nav"
+    class="sidenav"
+    [class.hidden]="!hasSidenav()"
+    [mode]="fixedSidenav() ? 'side' : 'over'"
+    [opened]="fixedSidenav()"
+    [disableClose]="fixedSidenav()"
+  >
+    <nav aria-label="Menú principal">
+      @for (section of nav(); track $index) {
+        @if (section.title) {
+          <p class="section" [id]="'section-' + $index">{{ section.title }}</p>
+        }
+        <ul [attr.aria-labelledby]="section.title ? 'section-' + $index : null">
+          @for (item of section.items; track item.path) {
+            <li>
+              <a [routerLink]="item.path" routerLinkActive="active" ariaCurrentWhenActive="page">{{ item.label }}</a>
+            </li>
+          }
+        </ul>
+      }
+    </nav>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <main>
+      <ng-content />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<sm-footer />

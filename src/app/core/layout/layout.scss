@@ -5,7 +5,7 @@
   min-height: 100vh;
 }
 
-.barra {
+.toolbar {
   --mat-toolbar-container-background-color: var(--sm-marca);
   --mat-toolbar-container-text-color: var(--sm-texto-sobre-marca);
   --mat-button-text-label-text-color: var(--sm-texto-sobre-marca);
@@ -22,7 +22,7 @@
   }
 }
 
-.nombre-sistema {
+.app-name {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -33,28 +33,28 @@
   text-decoration: none;
 }
 
-.espacio {
+.spacer {
   flex: 1 1 auto;
 }
 
-.cuenta-cargando {
+.account-loading {
   padding-inline: var(--sm-espacio-3);
   font-size: 0.875rem;
 }
 
-.enlaces-visitante {
+.guest-links {
   display: flex;
   gap: var(--sm-espacio-1);
 
   // Sin colores fuera de la paleta (§6.6): la opción activa va en negrita y subrayada.
-  .activa {
+  .active {
     font-weight: 700;
     text-decoration: underline;
     text-underline-offset: 4px;
   }
 }
 
-.cuerpo {
+.body {
   flex: 1 0 auto;
   --mat-sidenav-content-background-color: var(--sm-fondo);
   --mat-sidenav-container-background-color: var(--sm-secundario-suave);
@@ -63,15 +63,15 @@
 }
 
 // Sin menú lateral (visitante en pantalla ancha y cambio pendiente), el sidenav no se dibuja.
-.lateral.oculto {
+.sidenav.hidden {
   display: none;
 }
 
-.lateral nav {
+.sidenav nav {
   padding-block: var(--sm-espacio-2);
 }
 
-.grupo {
+.section {
   margin: var(--sm-espacio-3) var(--sm-espacio-3) var(--sm-espacio-1);
   font-size: 0.75rem;
   font-weight: 600;
@@ -80,13 +80,13 @@
   color: var(--sm-texto-secundario);
 }
 
-.lateral ul {
+.sidenav ul {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.lateral a {
+.sidenav a {
   display: block;
   padding: 10px var(--sm-espacio-3);
   border-left: 4px solid transparent;
@@ -102,7 +102,7 @@
   }
 
   // Opción activa (§6.6): fondo activo, texto de la marca y la barra del acento.
-  &.activa {
+  &.active {
     font-weight: 700;
     color: var(--sm-marca);
     background: var(--sm-secundario-activo);
@@ -116,11 +116,11 @@ main {
 }
 
 @media (max-width: 599.98px) {
-  .barra {
+  .toolbar {
     padding-inline: var(--sm-espacio-2);
   }
 
-  .nombre-sistema {
+  .app-name {
     font-size: 1rem;
   }
 

@@ -4,7 +4,7 @@ Corrección transversal antes de `componentes`. No es un módulo del [mapa](mapa
 
 | Estado | Plan | Tareas | Avance |
 |---|---|---|---|
-| **Aprobada** | [Aprobado](../tasks/nombres/plan.md) | [Aprobadas](../tasks/nombres/todo.md) | 4/7 tareas completadas |
+| **Aprobada** | [Aprobado](../tasks/nombres/plan.md) | [Aprobadas](../tasks/nombres/todo.md) | 5/7 tareas completadas |
 
 **Historial:**
 - 2026-11-24: v1 en revisión, en la rama `nombres`. El usuario fijó la regla (decisiones 1 a 5) al revisar el código a mano.
@@ -110,7 +110,7 @@ Los nombres internos (propiedades protegidas, variables locales, funciones priva
 | `OpcionMenu` (`ruta`, `etiqueta`, `roles`, `grupo`), `GrupoMenu` (`grupo`, `opciones`) | `NavItem` (`path`, `label`, `roles`, `section`), `NavSection` (`title`, `items`) (decisión 7) |
 | `OPCIONES_MENU`, `OPCIONES_CUENTA`, `menuDe`, `Audiencia` | `NAV_ITEMS`, `USER_MENU_ITEMS`, `navFor`, `Audience` (el valor `'Visitante'` se queda, porque se une a los de `Rol`) |
 | `MenuCuenta` (`sm-menu-cuenta`), `Pie` (`sm-pie`) | `UserMenu` (`sm-user-menu`), `Footer` (`sm-footer`) |
-| `MensajePagina` (`sm-mensaje-pagina`; entradas `icono`, `titulo`, `mensaje`), `NoEncontrada`, `SinPermiso` | `MessagePage` (`sm-message-page`; `icon`, `title`, `message`), `NotFound`, `Forbidden` |
+| `MensajePagina` (`sm-mensaje-pagina`; entradas `icono`, `titulo`, `mensaje`), `NoEncontrada`, `SinPermiso` | `MessagePage` (`sm-message-page`; `icon`, `heading`, `message`: `title` es un atributo global de HTML y mostraría un tooltip; decisión del usuario, 2026-11-24), `NotFound`, `Forbidden` |
 | `SesionService`, el tipo `Sesion`, `CLAVE_SESION` (`'matricula.sesion'`) | `SessionService`, `Session`, `SESSION_KEY` (`'matricula.session'`, supuesto 2) |
 | Métodos y signals de la sesión: `activa()`, `vencida()`, `iniciar()`, `terminar()`, `cerrarSesion()`, `terminada`, `cambioPendiente` | `isActive()`, `isExpired()`, `start()`, `end()`, `logout()`, `ended`, `passwordChangePending` |
 | Datos de la sesión: `token`, `rol`, `nombre`, `accessToken`, `expiraEn`, `debeCambiarContrasena` | Sin cambio (decisión 3) |
@@ -141,7 +141,7 @@ Los nombres internos (propiedades protegidas, variables locales, funciones priva
 
 | Hoy | Nuevo |
 |---|---|
-| Clases CSS: `barra`, `boton-menu`, `cerrar-sesion`, `contenido`, `cuenta`, `cuenta-cargando`, `cuerpo`, `enlaces-visitante`, `espacio`, `grupo`, `icono`, `lateral`, `mensaje`, `nombre`, `nombre-sistema`, `pagina`, `rol` | `toolbar`, `menu-button`, `logout`, `content`, `account`, `account-loading`, `body`, `guest-links`, `spacer`, `section`, `icon`, `sidenav`, `message`, `name`, `app-name`, `page`, `rol` (sin cambio, decisión 6) |
+| Clases CSS: `barra`, `boton-menu`, `cerrar-sesion`, `contenido`, `cuenta`, `cuenta-cargando`, `cuerpo`, `enlaces-visitante`, `espacio`, `grupo`, `icono`, `lateral`, `mensaje`, `nombre`, `nombre-sistema`, `pagina`, `rol`, `activa`, `oculto` | `toolbar`, `menu-button`, `logout`, `content`, `account`, `account-loading`, `body`, `guest-links`, `spacer`, `section`, `icon`, `sidenav`, `message`, `name`, `app-name`, `page`, `rol` (sin cambio, decisión 6); también `activa` → `active` y `oculto` → `hidden` |
 | `--sm-marca`, `--sm-acento`, `--sm-acento-hover`, `--sm-fondo`, `--sm-superficie`, `--sm-texto`, `--sm-texto-secundario`, `--sm-texto-deshabilitado`, `--sm-texto-sobre-marca`, `--sm-texto-sobre-acento`, `--sm-foco-sobre-marca`, `--sm-borde-control`, `--sm-secundario-activo`, `--sm-secundario-suave`, `--sm-fuente`, `--sm-espacio-1` a `5` | `--sm-brand`, `--sm-accent`, `--sm-accent-hover`, `--sm-background`, `--sm-surface`, `--sm-text`, `--sm-text-secondary`, `--sm-text-disabled`, `--sm-text-on-brand`, `--sm-text-on-accent`, `--sm-focus-on-brand`, `--sm-control-border`, `--sm-secondary-active`, `--sm-secondary-soft`, `--sm-font`, `--sm-space-1` a `5` |
 | Estados `--sm-{exito,aviso,error,informacion,neutro,apagado}-{fondo,borde,texto}` | `--sm-{success,warning,error,info,neutral,muted}-{bg,border,text}` |
 | `$fuente` (`_tema.scss`) | `$font` |

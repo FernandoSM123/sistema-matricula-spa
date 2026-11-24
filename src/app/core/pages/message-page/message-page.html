@@ -1,0 +1,9 @@
+<!-- El <main> lo pone el layout alrededor del router-outlet. -->
+<div class="page">
+  <section class="message" aria-labelledby="message-heading">
+    <mat-icon class="icon" [svgIcon]="icon()" aria-hidden="true" />
+    <h1 id="message-heading">{{ heading() }}</h1>
+    <p>{{ message() }}</p>
+    <a mat-flat-button [routerLink]="home().path">{{ home().label }}</a>
+  </section>
+</div>

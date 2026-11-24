@@ -2,32 +2,32 @@ import { EnvironmentProviders, Injectable, makeEnvironmentProviders } from '@ang
 import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions } from '@angular/material/form-field';
 import { MatPaginatorIntl } from '@angular/material/paginator';
-import { formatearNumero } from '../../shared/formatos/formateadores';
-import { provideAdaptadorFechas } from './adaptador-fechas';
+import { formatNumber } from '../../shared/formatting/formatters';
+import { provideAppDateAdapter } from './app-date-adapter';
 
 /** Textos del paginador (RUI-10): "Filas por página" y "21–40 de 134". */
 @Injectable()
-export class PaginadorIntl extends MatPaginatorIntl {
+export class PaginatorIntl extends MatPaginatorIntl {
   override itemsPerPageLabel = 'Filas por página';
   override nextPageLabel = 'Página siguiente';
   override previousPageLabel = 'Página anterior';
   override firstPageLabel = 'Primera página';
   override lastPageLabel = 'Última página';
 
-  override getRangeLabel = (pagina: number, tamano: number, total: number): string => {
-    if (total === 0 || tamano === 0) {
-      return `0 de ${formatearNumero(total)}`;
+  override getRangeLabel = (page: number, size: number, total: number): string => {
+    if (total === 0 || size === 0) {
+      return `0 de ${formatNumber(total)}`;
     }
-    const inicio = pagina * tamano;
+    const start = page * size;
     // Como Material: si la página quedó fuera del total, el rango no se recorta.
-    const fin = inicio < total ? Math.min(inicio + tamano, total) : inicio + tamano;
-    return `${formatearNumero(inicio + 1)}–${formatearNumero(fin)} de ${formatearNumero(total)}`;
+    const end = start < total ? Math.min(start + size, total) : start + size;
+    return `${formatNumber(start + 1)}–${formatNumber(end)} de ${formatNumber(total)}`;
   };
 }
 
 /** Textos del selector de fecha, que leen los lectores de pantalla. */
 @Injectable()
-export class SelectorFechaIntl extends MatDatepickerIntl {
+export class DatepickerIntl extends MatDatepickerIntl {
   override calendarLabel = 'Calendario';
   override openCalendarLabel = 'Abrir el calendario';
   override closeCalendarLabel = 'Cerrar el calendario';
@@ -43,16 +43,16 @@ export class SelectorFechaIntl extends MatDatepickerIntl {
   override endDateLabel = 'Fecha de fin';
   override comparisonDateLabel = 'Rango de comparación';
 
-  override formatYearRange(inicio: string, fin: string): string {
-    return `${inicio}–${fin}`;
+  override formatYearRange(start: string, end: string): string {
+    return `${start}–${end}`;
   }
 
-  override formatYearRangeLabel(inicio: string, fin: string): string {
-    return `de ${inicio} a ${fin}`;
+  override formatYearRangeLabel(start: string, end: string): string {
+    return `de ${start} a ${end}`;
   }
 }
 
-const OPCIONES_CAMPOS: MatFormFieldDefaultOptions = {
+const FIELD_OPTIONS: MatFormFieldDefaultOptions = {
   appearance: 'outline',
   subscriptSizing: 'dynamic',
 };
@@ -66,11 +66,11 @@ const OPCIONES_CAMPOS: MatFormFieldDefaultOptions = {
  * vista diferida metería sus módulos completos en la carga inicial (fundacion T6), y el
  * adaptador agrega date-fns, que solo usan los formularios (nucleo T1: 70 kB).
  */
-export function provideMaterialVistas(): EnvironmentProviders {
+export function provideMaterialDefaults(): EnvironmentProviders {
   return makeEnvironmentProviders([
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: OPCIONES_CAMPOS },
-    { provide: MatPaginatorIntl, useClass: PaginadorIntl },
-    { provide: MatDatepickerIntl, useClass: SelectorFechaIntl },
-    provideAdaptadorFechas(),
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: FIELD_OPTIONS },
+    { provide: MatPaginatorIntl, useClass: PaginatorIntl },
+    { provide: MatDatepickerIntl, useClass: DatepickerIntl },
+    provideAppDateAdapter(),
   ]);
 }

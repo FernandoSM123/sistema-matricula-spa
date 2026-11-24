@@ -19,7 +19,7 @@ Los nombres nuevos son los de las tablas 2.1 a 2.6 de la spec. Si aparece uno qu
 | T1. Regla, documentos y scripts | Completada | ✅ | ✅ | ➖ | ✅ |
 | T2. `api/` | Completada | ✅ | ✅ | ➖ | ✅ |
 | T3. Sesión, guardas e interceptores | Completada | ✅ | ✅ | ➖ | ✅ |
-| T4. Configuración y formatos | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
+| T4. Configuración y formatos | Completada | ✅ | ✅ | ➖ | ✅ |
 | T5. Layout y páginas | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T6. Estilos globales | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T7. Verificación y cierre | Pendiente | ➖ | ⬜ | ⬜ | ⬜ |
@@ -104,6 +104,7 @@ Los nombres nuevos son los de las tablas 2.1 a 2.6 de la spec. Si aparece uno qu
   - `icons.spec.ts` pasa con las rutas nuevas.
   - `grep -rnE "AdaptadorFechas|FORMATOS_FECHA|FORMATO_HORA|ICONOS|provideIconos|PaginadorIntl|SelectorFechaIntl|MaterialVistas|formatear|LOCALE_INSTITUTO|ZONA_INSTITUTO|etiquetar|TipoEtiqueta|FechaPipe|MonedaPipe|NumeroPipe|HoraPipe|EtiquetaPipe|formatos/|iconos" src/` sin resultados, y `grep -rn "svgIcon" src/app` solo con nombres de `ICONS`.
 - Files: `src/app/core/config/*`, `public/icons/*`, `src/app/shared/formatting/*`, `src/app/app.config.ts`, y los usos en `core/marco/` y `core/paginas/`
+- **Resultado (2026-11-24):**  - `core/config/` (`app-date-adapter.ts`, `date-formats.ts`, `icons.ts`, `material-defaults.ts`), `shared/formatting/` y `public/icons/` movidos con `git mv`, con sus pruebas. Los 19 SVG conservan su contenido; solo cambia el nombre.  - Los pipes se usan como `smDate`, `smDateTime`, `smTime`, `smCurrency`, `smNumber` y `smLabel`; las plantillas del layout ya usan `smLabel`.  - Las páginas `V-09` y `V-10` pasan los íconos `warning` e `info`, y el menú de la cuenta usa `logout`. Las pruebas de los interceptores usan `/icons/search.svg` como archivo del sitio.  - Los nombres internos pasan a inglés (`twoDigits`, `OptionalText`, `cached`, `FIELD_OPTIONS`…). Las claves del catálogo de etiquetas (`rol`, `estadoGrupo`…) no cambian.  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (20 archivos y 197 pruebas) y `pnpm build` (carga inicial: 438,57 kB) en verde.
 
 ### T5. Layout y páginas
 - Acceptance (tablas 2.3 y 2.5 de la spec):

@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { environment } from '../environments/environment';
 import { API_URL } from './api/api-url';
 import { routes } from './app.routes';
-import { provideIconos } from './core/config/iconos';
+import { provideIcons } from './core/config/icons';
 import { provideLocale } from './core/config/locale';
 import { errorInterceptor } from './core/http/error-interceptor';
 import { tokenInterceptor } from './core/http/token-interceptor';
@@ -17,6 +17,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([tokenInterceptor, errorInterceptor])),
     { provide: API_URL, useValue: environment.apiUrl }, // §3.1
     provideLocale(),
-    provideIconos(),
+    provideIcons(),
   ],
 };

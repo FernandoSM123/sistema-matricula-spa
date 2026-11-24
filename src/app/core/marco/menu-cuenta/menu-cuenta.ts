@@ -4,7 +4,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
-import { EtiquetaPipe } from '../../../shared/formatos/etiqueta-pipe';
+import { SmLabelPipe } from '../../../shared/formatting/label-pipe';
 import { SessionService } from '../../session/session-service';
 import { OPCIONES_CUENTA } from '../menu-opciones';
 
@@ -15,7 +15,7 @@ import { OPCIONES_CUENTA } from '../menu-opciones';
 @Component({
   selector: 'sm-menu-cuenta',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButton, MatDivider, MatIcon, MatMenu, MatMenuItem, MatMenuTrigger, RouterLink, EtiquetaPipe],
+  imports: [MatButton, MatDivider, MatIcon, MatMenu, MatMenuItem, MatMenuTrigger, RouterLink, SmLabelPipe],
   templateUrl: './menu-cuenta.html',
   styleUrl: './menu-cuenta.scss',
 })

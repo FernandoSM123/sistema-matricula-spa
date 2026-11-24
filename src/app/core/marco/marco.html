@@ -39,7 +39,7 @@
         @defer (on idle) {
           <sm-menu-cuenta />
         } @placeholder {
-          <span class="cuenta-cargando">{{ sesion.rol() | etiqueta: 'rol' }}</span>
+          <span class="cuenta-cargando">{{ sesion.rol() | smLabel: 'rol' }}</span>
         }
       }
       @case ('cambio-pendiente') {

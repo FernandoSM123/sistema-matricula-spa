@@ -1,7 +1,7 @@
 // Etiquetas legibles de los enums de la API (RUI-19). Un valor que no está en la tabla
 // se muestra tal como llega.
 
-const ETIQUETAS = {
+const LABELS = {
   rol: {
     Administrador: 'Administrador',
     Profesor: 'Profesor',
@@ -54,12 +54,12 @@ const ETIQUETAS = {
   },
 } as const satisfies Record<string, Record<string, string>>;
 
-export type TipoEtiqueta = keyof typeof ETIQUETAS;
+export type LabelType = keyof typeof LABELS;
 
-/** `etiquetar('estadoGrupo', 'EnCurso')` → `En curso`. */
-export function etiquetar(tipo: TipoEtiqueta, valor: string | null | undefined): string {
-  if (!valor) return '';
-  const tabla: Record<string, string> = ETIQUETAS[tipo];
+/** `toLabel('estadoGrupo', 'EnCurso')` → `En curso`. */
+export function toLabel(type: LabelType, value: string | null | undefined): string {
+  if (!value) return '';
+  const table: Record<string, string> = LABELS[type];
   // Object.hasOwn evita tomar como etiqueta una propiedad heredada, como 'toString'.
-  return Object.hasOwn(tabla, valor) ? tabla[valor] : valor;
+  return Object.hasOwn(table, value) ? table[value] : value;
 }

@@ -10,7 +10,7 @@ import { MensajePagina } from '../mensaje-pagina/mensaje-pagina';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MensajePagina],
   template: `<sm-mensaje-pagina
-    icono="informacion"
+    icono="info"
     titulo="No encontramos esta página"
     mensaje="La dirección no existe o cambió. Revise que esté bien escrita."
   />`,

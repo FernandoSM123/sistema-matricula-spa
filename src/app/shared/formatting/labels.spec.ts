@@ -1,7 +1,7 @@
-import { etiquetar, TipoEtiqueta } from './etiquetas';
+import { toLabel, LabelType } from './labels';
 
-describe('etiquetar (RUI-19)', () => {
-  it.each<[TipoEtiqueta, string, string]>([
+describe('toLabel (RUI-19)', () => {
+  it.each<[LabelType, string, string]>([
     ['rol', 'Administrador', 'Administrador'],
     ['nivelCurso', 'Basico', 'Básico'],
     ['modalidad', 'Hibrida', 'Híbrida'],
@@ -11,19 +11,19 @@ describe('etiquetar (RUI-19)', () => {
     ['dia', 'Miercoles', 'Miércoles'],
     ['accionAuditoria', 'Modificacion', 'Modificación'],
     ['origenError', 'Peticion', 'Solicitud'],
-  ])('%s: %s → %s', (tipo, valor, esperado) => {
-    expect(etiquetar(tipo, valor)).toBe(esperado);
+  ])('%s: %s → %s', (type, value, expected) => {
+    expect(toLabel(type, value)).toBe(expected);
   });
 
   it('devuelve tal cual un valor que no está en la tabla', () => {
-    expect(etiquetar('estadoGrupo', 'Suspendido')).toBe('Suspendido');
+    expect(toLabel('estadoGrupo', 'Suspendido')).toBe('Suspendido');
   });
 
   it('no confunde un valor con una propiedad heredada', () => {
-    expect(etiquetar('dia', 'toString')).toBe('toString');
+    expect(toLabel('dia', 'toString')).toBe('toString');
   });
 
-  it.each([null, undefined, ''])('%s → texto vacío', (valor) => {
-    expect(etiquetar('rol', valor)).toBe('');
+  it.each([null, undefined, ''])('%s → texto vacío', (value) => {
+    expect(toLabel('rol', value)).toBe('');
   });
 });

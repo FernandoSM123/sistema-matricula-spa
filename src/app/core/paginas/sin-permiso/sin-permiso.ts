@@ -10,7 +10,7 @@ import { MensajePagina } from '../mensaje-pagina/mensaje-pagina';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MensajePagina],
   template: `<sm-mensaje-pagina
-    icono="aviso"
+    icono="warning"
     titulo="No tiene permiso para ver esta página"
     mensaje="Su cuenta no tiene acceso a esta sección del sistema."
   />`,

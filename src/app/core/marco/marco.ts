@@ -7,7 +7,7 @@ import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/mat
 import { MatToolbar } from '@angular/material/toolbar';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter, map } from 'rxjs';
-import { EtiquetaPipe } from '../../shared/formatos/etiqueta-pipe';
+import { SmLabelPipe } from '../../shared/formatting/label-pipe';
 import { homeRoute } from '../session/home-route';
 import { SessionService } from '../session/session-service';
 import { menuDe } from './menu-opciones';
@@ -41,7 +41,7 @@ export type VarianteMarco = 'visitante' | 'rol' | 'cambio-pendiente';
     RouterLinkActive,
     MenuCuenta,
     Pie,
-    EtiquetaPipe,
+    SmLabelPipe,
   ],
   templateUrl: './marco.html',
   styleUrl: './marco.scss',

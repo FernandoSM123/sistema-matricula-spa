@@ -44,7 +44,7 @@ describe('tokenInterceptor (§4.2)', () => {
   it.each([
     ['otro origen', 'https://otro.sitio/api/v1/me'],
     ['un prefijo parecido a la API', `${API}-falsa/me`],
-    ['un archivo del propio sitio', '/iconos/buscar.svg'],
+    ['un archivo del propio sitio', '/icons/search.svg'],
   ])('no lo envía a %s', (_case, url) => {
     configure(true);
     expect(authorization(url)).toBeNull();

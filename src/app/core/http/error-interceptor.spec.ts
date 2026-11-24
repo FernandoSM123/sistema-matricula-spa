@@ -57,9 +57,9 @@ describe('errorInterceptor (§3.5, §4.2)', () => {
 
   it('respeta un tiempo de espera propio y no toca las peticiones a otros orígenes', () => {
     void firstValueFrom(http().get(`${API}/cursos`, { timeout: 5000 })).catch(() => undefined);
-    void firstValueFrom(http().get('/iconos/buscar.svg')).catch(() => undefined);
+    void firstValueFrom(http().get('/icons/search.svg')).catch(() => undefined);
     const api = controller().expectOne(`${API}/cursos`);
-    const icon = controller().expectOne('/iconos/buscar.svg');
+    const icon = controller().expectOne('/icons/search.svg');
     expect(api.request.timeout).toBe(5000);
     expect(icon.request.timeout).toBeFalsy();
     api.flush([]);
@@ -82,8 +82,8 @@ describe('errorInterceptor (§3.5, §4.2)', () => {
   });
 
   it('deja los errores de otros orígenes como HttpErrorResponse', async () => {
-    const result = firstValueFrom(http().get('/iconos/x.svg')).catch((e: unknown) => e);
-    controller().expectOne('/iconos/x.svg').flush('', { status: 404, statusText: 'Not Found' });
+    const result = firstValueFrom(http().get('/icons/x.svg')).catch((e: unknown) => e);
+    controller().expectOne('/icons/x.svg').flush('', { status: 404, statusText: 'Not Found' });
     expect(await result).toBeInstanceOf(HttpErrorResponse);
   });
 

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { ZONA_INSTITUTO } from '../../../shared/formatos/formateadores';
+import { APP_TIME_ZONE } from '../../../shared/formatting/formatters';
 import { CLOCK } from '../../session/clock';
 
 /**
@@ -21,7 +21,7 @@ export class Pie {
   protected readonly instituto = environment.nombreInstituto;
   protected readonly version = environment.version;
   /** El año en la zona del instituto, no en la del dispositivo (supuesto 6 de SPEC-nucleo). */
-  protected readonly anio = new Intl.DateTimeFormat('es-CR', { year: 'numeric', timeZone: ZONA_INSTITUTO }).format(
+  protected readonly anio = new Intl.DateTimeFormat('es-CR', { year: 'numeric', timeZone: APP_TIME_ZONE }).format(
     inject(CLOCK)(),
   );
 }

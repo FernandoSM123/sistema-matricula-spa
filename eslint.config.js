@@ -27,6 +27,8 @@ const reglasDeArea = (area) =>
   );
 
 module.exports = defineConfig([
+  // Generado por openapi-typescript (pnpm api:tipos): no se edita ni se revisa (§3.2).
+  { ignores: ['src/app/api/esquema.d.ts'] },
   {
     files: ['**/*.ts'],
     extends: [

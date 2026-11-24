@@ -5,3 +5,4 @@ docs/wireframes/
 *.md
 .agents/
 .claude/
+src/app/api/esquema.d.ts

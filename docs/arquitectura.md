@@ -1,6 +1,6 @@
 # Arquitectura y buenas prácticas — SPA Sistema de Matrícula
 
-> **Estado:** aprobado (2026-11-20). Modificado el 2026-11-23: B-05 resuelta en el backend (COR-02); se quita el comportamiento provisional del `429`. Modificado el 2026-11-23 en `fundacion` T1: versiones instaladas (§1), nombre del instituto (§6.6, §11.3) y commits por tarea (§10.3). Spec: [SPEC-arquitectura.md](../specs/SPEC-arquitectura.md) · Tareas: [tasks/arquitectura/todo.md](../tasks/arquitectura/todo.md).
+> **Estado:** aprobado (2026-11-20). Modificado el 2026-11-23: B-05 resuelta en el backend (COR-02); se quita el comportamiento provisional del `429`. Modificado el 2026-11-23 en `fundacion` T1: versiones instaladas (§1), nombre del instituto (§6.6, §11.3) y commits por tarea (§10.3). Modificado el 2026-11-24 en `nucleo` T6: menú de la cuenta en diferido (§8.3). Modificado el 2026-11-24 en `nucleo` T4: precisiones de las guardas (§4.3). Modificado el 2026-11-24 en `nucleo` T3: `name` y `message` en `ErrorApi` (§3.5) y `terminar()` sin motivo (§4.2). Modificado el 2026-11-24 en `nucleo` T1: resultado de la primera generación de tipos (§3.2, B-06 y B-07, resueltas con COR-03) y, por la carga inicial, el adaptador de fechas y la duración de los avisos salen de `app.config.ts` (§6.1, §7.3). Spec: [SPEC-arquitectura.md](../specs/SPEC-arquitectura.md) · Tareas: [tasks/arquitectura/todo.md](../tasks/arquitectura/todo.md).
 
 Este documento fija con qué y cómo se construye el frontend del sistema de matrícula: una SPA en Angular que consume la API de `../sistema-matricula-api`. **Qué** hace el frontend está en [`requerimientos.md`](requerimientos.md), y **cómo se ve cada vista**, en [`wireframes/`](wireframes/index.html). Aquí se citan sus códigos (`V-xx`, `RFF-xx`, `RUI-xx`) sin repetirlos.
 
@@ -89,7 +89,7 @@ src/
   environments/                 URL base de la API por entorno (§3, §11)
   app/
     app.ts                      Componente raíz: el marco y el <router-outlet>
-    app.config.ts               Providers: router, HttpClient con interceptores, locale es-CR, adaptador de fechas, opciones de Material
+    app.config.ts               Providers: router, HttpClient con interceptores, API_URL, locale es-CR e íconos. El adaptador de fechas y las opciones de Material van en la ruta de cada área (§6.1)
     app.routes.ts               Una ruta por área, con carga diferida y guardas (§2.5)
     api/
     core/
@@ -226,7 +226,7 @@ El contrato lo define la API (`/openapi/v1.json` y las specs del backend). Esta 
   - Los enums son uniones de textos (`'Abierto' | 'Cerrado' | …`); sus etiquetas legibles están en `shared/formatos` (RUI-19, §7).
   - Las fechas son textos: `DateOnly` llega como `'2026-03-05'`, `TimeOnly` como `'18:30:00'` y las marcas de tiempo, en ISO 8601 UTC.
   - **No se convierten a `Date` en los modelos.** Solo se convierten al mostrarlas (pipes) y en los formularios (§7).
-- **A revisar en la primera generación:** el OpenAPI que genera ASP.NET Core puede declarar los números como `integer | string`, por cómo serializa sus números. Si pasa, los tipos salen como `number | string`. Se revisa en el primer módulo y, si afecta, se anota como brecha (§8 de los requerimientos), sin parchear el archivo generado.
+- **Revisión de la primera generación (`nucleo` T1, 2026-11-24):** el OpenAPI declaraba los números como `integer | string` (B-06) y los enums como `integer` sin valores (B-07), porque el generador lee las opciones JSON HTTP de ASP.NET Core y el backend solo configuraba las de MVC. Las dos brechas se resolvieron en la API ([COR-03](../../sistema-matricula-api/correcciones/COR-03-contrato-openapi.md)), y los tipos generados quedan como `number` y uniones de textos, sin parchear el archivo generado. `api/modelos.spec.ts` lo comprueba con pruebas de tipos: si un cambio del contrato los vuelve a ensanchar, falla la compilación de las pruebas.
 
 ### 3.3 Clientes por recurso
 
@@ -270,6 +270,8 @@ export class CursosApi {
 ```ts
 // api/error-api.ts
 export interface ErrorApi {
+  name: 'ErrorApi';                 // con `message`, httpResource lo entrega tal cual, sin envolverlo (nucleo T3)
+  message: string;                   // texto técnico ('HTTP 409 RN-39'); nunca se muestra (RUI-05)
   status: number;                    // 0 si no hubo respuesta
   code?: string;                     // 'RN-05', 'RF-47', 'CONCURRENCIA'… (extensión `code` del ProblemDetails)
   detail?: string;                   // mensaje para el usuario, ya en español (RUI-01)
@@ -298,6 +300,7 @@ export interface ErrorApi {
 | `500` | `ErrorAccion` en una acción; `EstadoContenido` al cargar | "Ocurrió un error inesperado. Si el problema continúa, reporte este código: `<traceId>`", con el botón "Copiar" (RUI-03) |
 | Sin respuesta (`status: 0`, sin conexión o tiempo agotado) | `ErrorAccion` o `EstadoContenido` | "No se pudo conectar con el servidor. Revise su conexión e intente de nuevo", con "Reintentar" (RUI-03) |
 
+- **Solo los errores de la API** (`API_URL`) se convierten. Los de otras peticiones, como los íconos que descarga Material, siguen como `HttpErrorResponse`. `esErrorApi()` distingue un `ErrorApi` de otro error.
 - **Regla general (RUI-01):** el texto es el `detail` de la API. El frontend solo pone textos propios donde la tabla lo indica: `500`, sin respuesta y el `429` con N.
 - **Los errores de una acción se muestran junto a ella** (en el formulario o en la ventana) y nunca borran lo que el usuario escribió (RUI-01). Por eso los maneja el componente y no un aviso global. Los únicos que se manejan globalmente son el `401` con sesión y el `403 RN-24`, porque cambian de vista.
 
@@ -330,7 +333,7 @@ export interface ErrorApi {
 - **`tokenInterceptor`:** agrega `Authorization: Bearer <token>` **solo a las peticiones a `API_URL`**. El token nunca se envía a otro origen.
 - **`erroresInterceptor`:**
   - Convierte cada error en un `ErrorApi` (§3.5).
-  - **`401` de una petición que llevaba token:** llama a `SesionService.terminar('sesion-terminada')`, que descarta la sesión, y navega a `/iniciar-sesion?volver=<ruta actual>&aviso=sesion-terminada` (RFF-03). Un `401` sin token es una credencial inválida y lo maneja `V-02`.
+  - **`401` de una petición que llevaba token:** llama a `SesionService.terminar()`, que descarta la sesión, y navega a `/iniciar-sesion?volver=<ruta actual>&aviso=sesion-terminada` (RFF-03). Un `401` sin token es una credencial inválida y lo maneja `V-02`.
   - **`403 RN-24`:** navega a `/cambio-obligatorio`.
   - Si varias peticiones fallan con `401` a la vez, solo la primera navega.
 - **La ruta de vuelta (`volver`)** solo se acepta si es una ruta interna (empieza con `/` y no con `//`). Así nadie puede usar el enlace de inicio de sesión para redirigir a otro sitio. Después del login se usa solo si el rol puede abrir esa ruta (RFF-01).
@@ -351,6 +354,8 @@ Funciones en `core/guardas/`, una por regla:
 | El registro no existe (`404`) | — (la vista) | — | §3.5 |
 | Sale de un formulario con cambios sin guardar (RUI-09) | `cambiosSinGuardarGuard` | `canDeactivate` de los formularios | Confirmación "¿Descartar los cambios?" (RUI-07). No pregunta si la salida es porque la sesión terminó (RFF-03) |
 
+- **`rolGuard` aplica primero la regla de `sesionGuard`** (sin sesión, vencida o con un cambio pendiente), así sirve sola como `canMatch` de un área de un solo rol. Las dos toman `volver` de la navegación en curso (`router.currentNavigation()`), porque `canMatch` no recibe el `RouterStateSnapshot`, y así conservan los parámetros de la dirección (`nucleo` T4).
+- **El aviso de sesión vencida** solo aparece si la sesión vence durante el uso. Al arrancar, una sesión vencida se descarta sin aviso (§4.1).
 - **Inicio (`/`):** una función de redirección envía a la página de inicio del rol, o a `/oferta` sin sesión (§2.2 de los requerimientos).
 - `cambiosSinGuardarGuard` funciona con cualquier componente que implemente `ConCambiosSinGuardar` (`tieneCambios(): boolean`). Para saber si la sesión terminó, consulta `SesionService`.
 
@@ -468,8 +473,8 @@ protected async guardar() {
   - Avisos temporales: duran 5 segundos.
   - Textos en español: `MatPaginatorIntl` ("Filas por página" y el rango "21–40 de 134", RUI-10) y `MatDatepickerIntl`.
 - **Dónde se registran** (decisión del usuario, `fundacion` T6):
-  - `provideMaterial()` (`core/config/material.ts`), en `app.config.ts`: solo lo que el marco usa desde el arranque, hoy la duración de los avisos.
-  - `provideMaterialVistas()` (`core/config/material-vistas.ts`): los campos, el paginador y el selector de fecha. **Cada área lo registra en los `providers` de su ruta diferida** (§2.5), y nada de la carga inicial importa ese archivo. Si la raíz importara `MatDatepickerIntl` o `MAT_FORM_FIELD_DEFAULT_OPTIONS`, el primer uso de esos controles en una vista diferida metería sus módulos completos en un chunk compartido de la carga inicial: medido en `fundacion`, 708 kB contra 500 kB.
+  - En `app.config.ts` no va ninguna opción de Material (`nucleo` T1). Hasta entonces, `provideMaterial()` fijaba ahí la duración de los avisos, pero importar el token `MAT_SNACK_BAR_DEFAULT_OPTIONS` metía todo el módulo de avisos (con overlay y botones) en la carga inicial: 129 kB, medido. **La duración de 5 segundos la fija `AvisosService`** (`componentes`) en cada aviso. No puede ir en la ruta de cada área, porque `MatSnackBar` vive en la raíz y lee sus opciones de ahí.
+  - `provideMaterialVistas()` (`core/config/material-vistas.ts`): los campos, el paginador, el selector de fecha y el adaptador de fechas (§7.3). **Cada área lo registra en los `providers` de su ruta diferida** (§2.5), y nada de la carga inicial importa ese archivo. Si la raíz importara `MatDatepickerIntl` o `MAT_FORM_FIELD_DEFAULT_OPTIONS`, el primer uso de esos controles en una vista diferida metería sus módulos completos en un chunk compartido de la carga inicial: medido en `fundacion`, 708 kB contra 500 kB.
 - **El marco** (`core/marco/`) usa `mat-toolbar` para la barra superior, `mat-sidenav` para el menú y `mat-menu` para el menú de la cuenta. El menú es lateral fijo desde 960 px y plegable por debajo (wireframes).
 
 ### 6.2 Componentes del catálogo de los wireframes
@@ -631,7 +636,7 @@ Un color nuevo o cambiado vuelve a calcular su contraste antes de usarse (§10).
 - **Formatos** (`MAT_DATE_FORMATS`):
   - Lectura: fechas con `['dd/MM/yyyy', 'd/M/yyyy']` y horas con `['h:mm a', 'H:mm']`. En T1 se verificó que lee "6:30 p. m." y que rechaza `31/02/2026` y `03/15/2026`.
   - Presentación: `dd/MM/yyyy` para las fechas y el formateador propio para las horas y las opciones del selector de hora.
-- Se registra en `app.config.ts` como el `DateAdapter`, en lugar de `provideDateFnsAdapter()`.
+- Se registra como el `DateAdapter` con `provideAdaptadorFechas()`, en lugar de `provideDateFnsAdapter()`, **dentro de `provideMaterialVistas()`**, es decir, en la ruta de cada área (§6.1). Hasta `nucleo` T1 iba en `app.config.ts`, pero así date-fns (70 kB, medido) entraba en la carga inicial y solo lo usan los formularios.
 - Escribe la hora con espacios normales, porque el selector vuelve a leer lo que escribe y date-fns no reconoce "p. m." con los espacios que no se parten que `Intl` usa en algunos navegadores (`fundacion` T4). Los pipes conservan la salida de `Intl`.
 
 ---
@@ -666,6 +671,7 @@ Lo estándar de Angular 22 se nombra sin explicarlo. Lo que sigue es lo que este
 Cómo se cumple:
 - **Presupuestos en `angular.json`:** `initial` avisa en 500 kB y falla en 750 kB; `anyComponentStyle` avisa en 4 kB y falla en 8 kB (los valores del CLI). Un build que falla el presupuesto no se acepta.
 - **Carga diferida por área y por rol**, y FullCalendar (unos 400 kB) con `@defer` (§2.5).
+- **El menú de la cuenta, con `@defer (on idle)`:** `mat-menu` arrastra el overlay del CDK (unos 60 kB) y solo se usa con sesión. Mientras carga, la barra muestra el rol. Con el marco, la carga inicial quedó en 438,6 kB (`nucleo` T6).
 - **Imports por componente:** cada componente importa solo lo que usa de Material, sin módulos "compartidos" que lo traigan todo.
 - La fuente del sistema y los íconos SVG no agregan descargas al arranque (§6.6).
 - Los listados nunca piden todo: la API pagina (RUI-10).

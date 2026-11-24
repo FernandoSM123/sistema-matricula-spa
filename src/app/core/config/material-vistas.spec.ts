@@ -1,8 +1,10 @@
 import { TestBed } from '@angular/core/testing';
+import { DateAdapter } from '@angular/material/core';
 import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { normalizarEspacios } from '../../../testing/espacios';
+import { AdaptadorFechas } from './adaptador-fechas';
 import { provideMaterialVistas } from './material-vistas';
 
 describe('provideMaterialVistas (§6.1)', () => {
@@ -43,5 +45,9 @@ describe('provideMaterialVistas (§6.1)', () => {
     const intl = TestBed.inject(MatDatepickerIntl);
     expect(intl.openCalendarLabel).toBe('Abrir el calendario');
     expect(intl.formatYearRange('2020', '2043')).toBe('2020–2043');
+  });
+
+  it('registra AdaptadorFechas como el DateAdapter (§7.3)', () => {
+    expect(TestBed.inject(DateAdapter)).toBeInstanceOf(AdaptadorFechas);
   });
 });

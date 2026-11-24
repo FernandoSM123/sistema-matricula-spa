@@ -3,6 +3,7 @@ import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions } from '@angular/material/form-field';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { formatearNumero } from '../../shared/formatos/formateadores';
+import { provideAdaptadorFechas } from './adaptador-fechas';
 
 /** Textos del paginador (RUI-10): "Filas por página" y "21–40 de 134". */
 @Injectable()
@@ -57,16 +58,19 @@ const OPCIONES_CAMPOS: MatFormFieldDefaultOptions = {
 };
 
 /**
- * Opciones por defecto de los campos, el paginador y el selector de fecha (§6.1).
+ * Opciones por defecto de los campos, el paginador y el selector de fecha (§6.1), y el adaptador
+ * de fechas (§7.3).
  *
  * No se registran en app.config.ts: cada área las registra en los providers de su ruta
  * diferida (§2.5). Si la raíz importara este archivo, el primer uso de esos controles en una
- * vista diferida metería sus módulos completos en la carga inicial (fundacion T6).
+ * vista diferida metería sus módulos completos en la carga inicial (fundacion T6), y el
+ * adaptador agrega date-fns, que solo usan los formularios (nucleo T1: 70 kB).
  */
 export function provideMaterialVistas(): EnvironmentProviders {
   return makeEnvironmentProviders([
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: OPCIONES_CAMPOS },
     { provide: MatPaginatorIntl, useClass: PaginadorIntl },
     { provide: MatDatepickerIntl, useClass: SelectorFechaIntl },
+    provideAdaptadorFechas(),
   ]);
 }

@@ -1,11 +1,11 @@
-// Sobre la barra superior (--sm-marca): texto blanco y el foco claro de §6.6.
+// Sobre la barra superior (--sm-brand): texto blanco y el foco claro de §6.6.
 .account {
-  --mat-button-text-label-text-color: var(--sm-texto-sobre-marca);
+  --mat-button-text-label-text-color: var(--sm-text-on-brand);
   max-width: 100%;
-  gap: var(--sm-espacio-2);
+  gap: var(--sm-space-2);
 
   &:focus-visible {
-    outline-color: var(--sm-foco-sobre-marca);
+    outline-color: var(--sm-focus-on-brand);
   }
 }
 

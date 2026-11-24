@@ -21,7 +21,7 @@ Los nombres nuevos son los de las tablas 2.1 a 2.6 de la spec. Si aparece uno qu
 | T3. Sesión, guardas e interceptores | Completada | ✅ | ✅ | ➖ | ✅ |
 | T4. Configuración y formatos | Completada | ✅ | ✅ | ➖ | ✅ |
 | T5. Layout y páginas | Completada | ✅ | ✅ | ✅ | ✅ |
-| T6. Estilos globales | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
+| T6. Estilos globales | Completada | ✅ | ✅ | ✅ | ✅ |
 | T7. Verificación y cierre | Pendiente | ➖ | ⬜ | ⬜ | ⬜ |
 
 **Estados de tarea:**
@@ -130,6 +130,7 @@ Los nombres nuevos son los de las tablas 2.1 a 2.6 de la spec. Si aparece uno qu
   - `grep -rnE "\-\-sm-(marca|acento|fondo|superficie|texto|borde|secundario|fuente|espacio|foco|exito|aviso|informacion|neutro|apagado)|\\\$fuente|_paleta|_tema" src/` sin resultados.
   - **Manual:** el layout del visitante y de un rol, `V-09` y `V-10` se ven igual que en T5 (colores, espacios, foco con el teclado).
 - Files: `src/styles/_palette.scss`, `_theme.scss`, `src/styles.scss` y los `.scss` de los componentes
+- **Resultado (2026-11-24):**  - `_paleta.scss` → `_palette.scss` y `_tema.scss` → `_theme.scss` con `git mv`, y sus `@use` en `styles.scss`.  - Las 38 variables `--sm-*` con sus nombres de la tabla 2.5, en su definición y en los `.scss` del layout y de las páginas; `$fuente` → `$font`, y el alias `colores` de `_theme.scss` → `colors`. `styles.scss` no tiene clases globales.  - Comparado con la versión anterior, `_palette.scss` solo cambia los nombres: los valores son los mismos y en el mismo orden.  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (20 archivos y 197 pruebas) y `pnpm build` (carga inicial: 438,26 kB) en verde. El usuario revisó en el navegador los colores, los espacios y el foco con el teclado.
 
 ### T7. Verificación y cierre
 - Acceptance:

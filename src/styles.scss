@@ -1,6 +1,6 @@
 // Estilos globales (docs/arquitectura.md §6.5 y §6.6).
-@use 'styles/paleta';
-@use 'styles/tema';
+@use 'styles/palette';
+@use 'styles/theme';
 
 html {
   font-size: 100%; // base de 16 px
@@ -8,15 +8,15 @@ html {
 
 body {
   margin: 0;
-  font-family: var(--sm-fuente);
+  font-family: var(--sm-font);
   font-size: 1rem;
-  background: var(--sm-fondo);
-  color: var(--sm-texto);
+  background: var(--sm-background);
+  color: var(--sm-text);
 }
 
 // El foco siempre es visible: 2 px del acento (§6.5).
 :focus-visible {
-  outline: 2px solid var(--sm-acento);
+  outline: 2px solid var(--sm-accent);
   outline-offset: 2px;
 }
 

@@ -1,0 +1,54 @@
+// Paleta del SPA (docs/arquitectura.md §6.6). Un color nuevo o cambiado vuelve a
+// calcular su contraste antes de usarse (§10).
+
+:root {
+  // 60 %, neutro
+  --sm-background: #f5f7fa;
+  --sm-surface: #ffffff;
+  --sm-text: #1a2230;
+  --sm-text-secondary: #4a5565;
+  --sm-control-border: #7a8597;
+  --sm-text-disabled: #8b95a5;
+
+  // 30 %, secundario
+  --sm-brand: #1e3a5f;
+  --sm-text-on-brand: #ffffff;
+  --sm-secondary-soft: #e3eaf3;
+  --sm-secondary-active: #c9d7e8;
+
+  // 10 %, acento
+  --sm-accent: #0f766e;
+  --sm-text-on-accent: #ffffff;
+  --sm-accent-hover: #115e59;
+  --sm-focus-on-brand: #7dd3c8;
+
+  // Estados (RUI-20): siempre con texto
+  --sm-success-text: #166534;
+  --sm-success-bg: #dcfce7;
+  --sm-success-border: #16a34a;
+  --sm-error-text: #b42318;
+  --sm-error-bg: #fee4e2;
+  --sm-error-border: #b42318;
+  --sm-warning-text: #854d0e;
+  --sm-warning-bg: #fef3c7;
+  --sm-warning-border: #b45309;
+  --sm-info-text: #1e40af;
+  --sm-info-bg: #dbeafe;
+  --sm-info-border: #1e40af;
+  --sm-neutral-text: #374151;
+  --sm-neutral-bg: #f1f3f6;
+  --sm-neutral-border: #7a8597;
+  --sm-muted-text: #4a5565;
+  --sm-muted-bg: #f1f3f6;
+  --sm-muted-border: #7a8597; // discontinuo (RUI-12)
+
+  // Espaciado
+  --sm-space-1: 4px;
+  --sm-space-2: 8px;
+  --sm-space-3: 16px;
+  --sm-space-4: 24px;
+  --sm-space-5: 32px;
+
+  // Tipografía: la del sistema, sin descargar fuentes
+  --sm-font: system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}

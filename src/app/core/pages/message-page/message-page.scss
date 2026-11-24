@@ -2,19 +2,19 @@
 .page {
   max-width: 700px;
   margin-inline: auto;
-  padding: var(--sm-espacio-4) var(--sm-espacio-3);
+  padding: var(--sm-space-4) var(--sm-space-3);
 }
 
 .message {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--sm-espacio-3);
-  padding: var(--sm-espacio-5) var(--sm-espacio-3);
+  gap: var(--sm-space-3);
+  padding: var(--sm-space-5) var(--sm-space-3);
   text-align: center;
-  background: var(--sm-superficie);
-  border: 1px solid var(--sm-secundario-activo);
-  border-radius: var(--sm-espacio-2);
+  background: var(--sm-surface);
+  border: 1px solid var(--sm-secondary-active);
+  border-radius: var(--sm-space-2);
 }
 
 h1 {
@@ -25,11 +25,11 @@ h1 {
 
 p {
   margin: 0;
-  color: var(--sm-texto-secundario);
+  color: var(--sm-text-secondary);
 }
 
 .icon {
   width: 48px;
   height: 48px;
-  color: var(--sm-texto-secundario);
+  color: var(--sm-text-secondary);
 }

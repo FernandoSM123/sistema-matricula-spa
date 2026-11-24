@@ -20,6 +20,7 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 - 2026-11-24: plan y tareas de `nucleo` aprobados. T1 queda bloqueada: los tipos generados traen los enums como `number` (B-07) y los números como `number | string` (B-06). Por decisión del usuario se corrigen en la API con COR-03 (decisión 4 del mapa), y `nucleo` sigue cuando esté hecha.
 - 2026-11-24: COR-03 aplicada en la API, y `nucleo` T1 completada: los tipos generados traen `number` y uniones de textos. Además, por decisión del usuario, el adaptador de fechas y la duración de los avisos salen de la carga inicial, que baja de 500 kB a 302 kB. Se aplican los cambios de las decisiones de `nucleo`: `cambiosSinGuardarGuard` pasa a `componentes`, y Firefox y Safari a `sistema`.
 - 2026-11-24: `nucleo` completado (7/7 tareas, versión 0.2.0), en la rama `nucleo`; el pull request a `main` lo abre el usuario. Se quita la fila de Chrome, Edge y Brave, ya verificados. Lighthouse queda para `componentes` y `sistema`, medido sobre `dist/`. El `401` con un token invalidado y el cambio pendiente con una cuenta real se prueban a mano en `acceso`. Siguiente módulo: `componentes`.
+- 2026-11-24: `nucleo` integrado a `main` (PR #2). Antes de `componentes`, el usuario cambia la regla de nombres: el dominio en español y lo técnico en inglés. La corrección [`nombres`](SPEC-nombres.md), en la rama `nombres`, renombra lo construido en `fundacion` y `nucleo`. Spec, plan y tareas aprobados; empieza T1.
 
 ## Módulos
 

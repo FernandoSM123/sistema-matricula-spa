@@ -1,6 +1,6 @@
 # Arquitectura y buenas prácticas — SPA Sistema de Matrícula
 
-> **Estado:** aprobado (2026-11-20). Modificado el 2026-11-23: B-05 resuelta en el backend (COR-02); se quita el comportamiento provisional del `429`. Modificado el 2026-11-23 en `fundacion` T1: versiones instaladas (§1), nombre del instituto (§6.6, §11.3) y commits por tarea (§10.3). Modificado el 2026-11-24 en `nucleo` T3: `name` y `message` en `ErrorApi` (§3.5) y `terminar()` sin motivo (§4.2). Modificado el 2026-11-24 en `nucleo` T1: resultado de la primera generación de tipos (§3.2, B-06 y B-07, resueltas con COR-03) y, por la carga inicial, el adaptador de fechas y la duración de los avisos salen de `app.config.ts` (§6.1, §7.3). Spec: [SPEC-arquitectura.md](../specs/SPEC-arquitectura.md) · Tareas: [tasks/arquitectura/todo.md](../tasks/arquitectura/todo.md).
+> **Estado:** aprobado (2026-11-20). Modificado el 2026-11-23: B-05 resuelta en el backend (COR-02); se quita el comportamiento provisional del `429`. Modificado el 2026-11-23 en `fundacion` T1: versiones instaladas (§1), nombre del instituto (§6.6, §11.3) y commits por tarea (§10.3). Modificado el 2026-11-24 en `nucleo` T4: precisiones de las guardas (§4.3). Modificado el 2026-11-24 en `nucleo` T3: `name` y `message` en `ErrorApi` (§3.5) y `terminar()` sin motivo (§4.2). Modificado el 2026-11-24 en `nucleo` T1: resultado de la primera generación de tipos (§3.2, B-06 y B-07, resueltas con COR-03) y, por la carga inicial, el adaptador de fechas y la duración de los avisos salen de `app.config.ts` (§6.1, §7.3). Spec: [SPEC-arquitectura.md](../specs/SPEC-arquitectura.md) · Tareas: [tasks/arquitectura/todo.md](../tasks/arquitectura/todo.md).
 
 Este documento fija con qué y cómo se construye el frontend del sistema de matrícula: una SPA en Angular que consume la API de `../sistema-matricula-api`. **Qué** hace el frontend está en [`requerimientos.md`](requerimientos.md), y **cómo se ve cada vista**, en [`wireframes/`](wireframes/index.html). Aquí se citan sus códigos (`V-xx`, `RFF-xx`, `RUI-xx`) sin repetirlos.
 
@@ -354,6 +354,8 @@ Funciones en `core/guardas/`, una por regla:
 | El registro no existe (`404`) | — (la vista) | — | §3.5 |
 | Sale de un formulario con cambios sin guardar (RUI-09) | `cambiosSinGuardarGuard` | `canDeactivate` de los formularios | Confirmación "¿Descartar los cambios?" (RUI-07). No pregunta si la salida es porque la sesión terminó (RFF-03) |
 
+- **`rolGuard` aplica primero la regla de `sesionGuard`** (sin sesión, vencida o con un cambio pendiente), así sirve sola como `canMatch` de un área de un solo rol. Las dos toman `volver` de la navegación en curso (`router.currentNavigation()`), porque `canMatch` no recibe el `RouterStateSnapshot`, y así conservan los parámetros de la dirección (`nucleo` T4).
+- **El aviso de sesión vencida** solo aparece si la sesión vence durante el uso. Al arrancar, una sesión vencida se descarta sin aviso (§4.1).
 - **Inicio (`/`):** una función de redirección envía a la página de inicio del rol, o a `/oferta` sin sesión (§2.2 de los requerimientos).
 - `cambiosSinGuardarGuard` funciona con cualquier componente que implemente `ConCambiosSinGuardar` (`tieneCambios(): boolean`). Para saber si la sesión terminó, consulta `SesionService`.
 

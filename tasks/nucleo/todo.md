@@ -16,7 +16,7 @@ Cada tarea termina con:
 | T1. Contrato con la API | Completada | ✅ | ✅ | ✅ | ✅ |
 | T2. `SesionService` | Completada | ✅ | ✅ | ➖ | ✅ |
 | T3. `ErrorApi` e interceptores | Completada | ✅ | ✅ | ➖ | ✅ |
-| T4. Guardas e inicio por rol | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
+| T4. Guardas e inicio por rol | Completada | ✅ | ✅ | ➖ | ✅ |
 | T5. Rutas, `V-09` y `V-10` | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T6. Marco | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T7. Verificación con sesión real y cierre | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
@@ -127,6 +127,15 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
     - `rutaVolverSegura(valor)`: devuelve la ruta solo si empieza con `/` y no con `//` ni `/\`; si no, `null`.
 - Verify: una prueba por fila de §4.3 (salvo las que no son guardas) y los casos de `rutaVolverSegura`: `/grupos/5?pestana=x` aceptada; `//otro.sitio`, `/\otro.sitio`, `https://otro.sitio`, `javascript:…` y vacío rechazados.
 - Files: `src/app/core/sesion/inicio-rol.ts`, `src/app/core/guardas/*.ts` y sus `.spec.ts`
+- **Resultado (2026-11-24):**
+  - `inicio-rol.ts`: `RUTAS` (oferta, inicio de sesión, cambio obligatorio, sin permiso), `INICIO_POR_ROL` y `rutaDeInicio(sesion)`. Con la sesión vencida, la oferta.
+  - `sesionGuard` y `rolGuard` sirven como `canActivate` y como `canMatch`. Toman `volver` de `router.currentNavigation()` (el signal que reemplaza a `getCurrentNavigation()`, obsoleto desde Angular 20.2), porque `canMatch` no recibe el `RouterStateSnapshot`. Así `volver` conserva los parámetros también en un área protegida con `canMatch`.
+  - `rolGuard` aplica primero la regla de `sesionGuard` (`revisarSesion()`), así sirve sola en un área de un solo rol.
+  - `invitadoGuard` y `cambioPendienteGuard` descartan una sesión vencida. `cambioPendienteGuard` no pone `volver`, que sería el propio `V-03`.
+  - `rutaVolverSegura()` también rechaza espacios y caracteres de control, que algunos navegadores ignoran al leer la dirección (`/ /otro.sitio`, `/	/otro.sitio`).
+  - **El aviso de sesión vencida solo aparece si vence durante el uso:** al arrancar, `SesionService` descarta la vencida sin aviso (§4.1). Dos pruebas fallaron al principio por crear el servicio después de vencer la sesión; se corrigieron las pruebas, no el código. Anotado en §4.3 de la arquitectura.
+  - Las pruebas de las guardas navegan con el router real, con rutas de prueba, en lugar de llamar a las funciones con datos simulados.
+  - 42 pruebas nuevas. `pnpm formato:revisar`, `pnpm lint`, `pnpm test --watch=false` (18 archivos, 169 pruebas) y `pnpm build` en verde. La carga inicial no cambia (306,72 kB): las guardas aún no están en ninguna ruta.
 
 ### T5. Rutas, `V-09` y `V-10`
 - Acceptance:
@@ -178,3 +187,4 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
 - 2026-11-24: COR-03 aplicada en la API (el usuario reinició la instancia de `:5022`). T1 completada, con un cambio decidido por el usuario: el adaptador de fechas y la duración de los avisos salen de la carga inicial (decisión 5 de la spec).
 - 2026-11-24: T2 completada.
 - 2026-11-24: T3 completada.
+- 2026-11-24: T4 completada.

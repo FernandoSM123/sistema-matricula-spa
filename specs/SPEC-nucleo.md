@@ -4,7 +4,7 @@ Módulo `nucleo` del [mapa de módulos](mapa-modulos.md). Depende de `fundacion`
 
 | Estado | Plan | Tareas | Avance |
 |---|---|---|---|
-| **Aprobada** | [Aprobado](../tasks/nucleo/plan.md) | [Aprobadas](../tasks/nucleo/todo.md) | 3/7 tareas completadas |
+| **Aprobada** | [Aprobado](../tasks/nucleo/plan.md) | [Aprobadas](../tasks/nucleo/todo.md) | 4/7 tareas completadas |
 
 **Historial:**
 - 2026-11-24: v1 en revisión, en la rama `nucleo`.

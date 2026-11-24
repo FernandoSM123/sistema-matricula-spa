@@ -1,4 +1,4 @@
-import { Rol } from '../../api/modelos';
+import { Rol } from '../../api/models';
 
 /** Quién ve una opción: un rol con sesión, o el visitante sin ella. */
 export type Audiencia = Rol | 'Visitante';

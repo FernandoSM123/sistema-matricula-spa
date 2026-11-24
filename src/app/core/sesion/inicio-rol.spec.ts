@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { AHORA, TOKEN_CAMBIO_PENDIENTE, TOKEN_ESTUDIANTE } from '../../../testing/sesion';
 import { API_URL } from '../../api/api-url';
-import { Rol, TokenResponse } from '../../api/modelos';
+import { Rol, TokenResponse } from '../../api/models';
 import { rutaDeInicio } from './inicio-rol';
 import { RELOJ } from './reloj';
 import { CLAVE_SESION, SesionService } from './sesion-service';

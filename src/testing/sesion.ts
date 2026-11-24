@@ -1,4 +1,4 @@
-import type { PerfilResponse, TokenResponse } from '../app/api/modelos';
+import type { PerfilResponse, TokenResponse } from '../app/api/models';
 
 /** Instante fijo de las pruebas de sesión: 2026-03-05 18:00 UTC. */
 export const AHORA = Date.UTC(2026, 2, 5, 18, 0, 0);

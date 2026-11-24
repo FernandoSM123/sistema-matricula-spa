@@ -6,7 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { PROBLEMA_401, PROBLEMA_403_RN24, PROBLEMA_409_RN39, PROBLEMA_500 } from '../../../testing/problem-details';
 import { AHORA, TOKEN_ESTUDIANTE } from '../../../testing/sesion';
 import { API_URL } from '../../api/api-url';
-import { ErrorApi } from '../../api/error-api';
+import { ApiError } from '../../api/api-error';
 import { RELOJ } from '../sesion/reloj';
 import { CLAVE_SESION, SesionService } from '../sesion/sesion-service';
 import { erroresInterceptor, TIEMPO_ESPERA } from './errores-interceptor';
@@ -66,19 +66,19 @@ describe('erroresInterceptor (§3.5, §4.2)', () => {
     icono.flush('');
   });
 
-  it('convierte el error en un ErrorApi', async () => {
-    const error = (await fallar(409, PROBLEMA_409_RN39)) as ErrorApi;
-    expect(error.name).toBe('ErrorApi');
+  it('convierte el error en un ApiError', async () => {
+    const error = (await fallar(409, PROBLEMA_409_RN39)) as ApiError;
+    expect(error.name).toBe('ApiError');
     expect(error.status).toBe(409);
     expect(error.code).toBe('RN-39');
-    expect(error.datos).toEqual({ usuarioId: 12 });
+    expect(error.data).toEqual({ usuarioId: 12 });
     expect(navegar).not.toHaveBeenCalled();
   });
 
   it('sin respuesta da status 0', async () => {
     const resultado = firstValueFrom(http().get(`${API}/cursos`)).catch((e: unknown) => e);
     control().expectOne(`${API}/cursos`).error(new ProgressEvent('error'));
-    expect(((await resultado) as ErrorApi).status).toBe(0);
+    expect(((await resultado) as ApiError).status).toBe(0);
   });
 
   it('deja los errores de otros orígenes como HttpErrorResponse', async () => {
@@ -89,7 +89,7 @@ describe('erroresInterceptor (§3.5, §4.2)', () => {
 
   describe('401 (RFF-03)', () => {
     it('con token: termina la sesión y abre V-02 con volver y el aviso', async () => {
-      const error = (await fallar(401, PROBLEMA_401)) as ErrorApi;
+      const error = (await fallar(401, PROBLEMA_401)) as ApiError;
 
       expect(error.status).toBe(401);
       expect(sesion().activa()).toBe(false);
@@ -101,7 +101,7 @@ describe('erroresInterceptor (§3.5, §4.2)', () => {
 
     it('sin token (credenciales inválidas en el login) no navega', async () => {
       sesion().terminar();
-      const error = (await fallar(401, PROBLEMA_401, `${API}/auth/login`)) as ErrorApi;
+      const error = (await fallar(401, PROBLEMA_401, `${API}/auth/login`)) as ApiError;
       expect(error.status).toBe(401);
       expect(navegar).not.toHaveBeenCalled();
     });
@@ -129,7 +129,7 @@ describe('erroresInterceptor (§3.5, §4.2)', () => {
   });
 
   it('403 RN-24: abre V-03 (RFF-02)', async () => {
-    const error = (await fallar(403, PROBLEMA_403_RN24)) as ErrorApi;
+    const error = (await fallar(403, PROBLEMA_403_RN24)) as ApiError;
     expect(error.code).toBe('RN-24');
     expect(navegar).toHaveBeenCalledExactlyOnceWith(['/cambio-obligatorio']);
   });
@@ -140,7 +140,7 @@ describe('erroresInterceptor (§3.5, §4.2)', () => {
     ['404', 404, { status: 404, detail: 'El grupo no existe.' }],
     ['500', 500, PROBLEMA_500],
   ])('%s: no navega, la vista lo presenta', async (_caso, status, cuerpo) => {
-    const error = (await fallar(status, cuerpo)) as ErrorApi;
+    const error = (await fallar(status, cuerpo)) as ApiError;
     expect(error.status).toBe(status);
     expect(navegar).not.toHaveBeenCalled();
     expect(sesion().activa()).toBe(true);

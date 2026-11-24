@@ -6,7 +6,7 @@ import { provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { AHORA, TOKEN_CAMBIO_PENDIENTE, TOKEN_ESTUDIANTE } from '../testing/sesion';
 import { API_URL } from './api/api-url';
-import { Rol, TokenResponse } from './api/modelos';
+import { Rol, TokenResponse } from './api/models';
 import { routes } from './app.routes';
 import { RELOJ } from './core/sesion/reloj';
 import { CLAVE_SESION } from './core/sesion/sesion-service';

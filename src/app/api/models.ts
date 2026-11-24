@@ -13,6 +13,6 @@ export type TokenResponse = Esquemas['TokenResponse'];
 export type PerfilResponse = Esquemas['PerfilResponse'];
 export type DatosPersonalesResponse = Esquemas['DatosPersonalesResponse'];
 
-/** Cuerpo de los errores de la API. Su forma interpretada es `ErrorApi` (§3.5). */
+/** Cuerpo de los errores de la API. Su forma interpretada es `ApiError` (§3.5). */
 export type ProblemDetails = Esquemas['ProblemDetails'];
 export type ValidationProblemDetails = Esquemas['ValidationProblemDetails'];

@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, CanMatchFn, Router } from '@angular/router';
-import { Rol } from '../../api/modelos';
+import { Rol } from '../../api/models';
 import { RUTAS } from '../sesion/inicio-rol';
 import { SesionService } from '../sesion/sesion-service';
 import { revisarSesion } from './sesion-guard';

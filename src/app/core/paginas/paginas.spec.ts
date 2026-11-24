@@ -6,7 +6,7 @@ import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { provideRouter } from '@angular/router';
 import { AHORA, TOKEN_CAMBIO_PENDIENTE, TOKEN_ESTUDIANTE } from '../../../testing/sesion';
 import { API_URL } from '../../api/api-url';
-import { Rol, TokenResponse } from '../../api/modelos';
+import { Rol, TokenResponse } from '../../api/models';
 import { RELOJ } from '../sesion/reloj';
 import { CLAVE_SESION } from '../sesion/sesion-service';
 import { NoEncontrada } from './no-encontrada/no-encontrada';

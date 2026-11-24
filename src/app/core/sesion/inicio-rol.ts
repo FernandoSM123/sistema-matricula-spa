@@ -1,4 +1,4 @@
-import { Rol } from '../../api/modelos';
+import { Rol } from '../../api/models';
 import { SesionService } from './sesion-service';
 
 /** Rutas del sistema que usan las guardas y los interceptores (§2.4 de la arquitectura). */

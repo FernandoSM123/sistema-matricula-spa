@@ -17,7 +17,7 @@ Los nombres nuevos son los de las tablas 2.1 a 2.6 de la spec. Si aparece uno qu
 | Tarea | Estado | Código | Pruebas unitarias | Verificación manual | Commit |
 |---|---|:---:|:---:|:---:|:---:|
 | T1. Regla, documentos y scripts | Completada | ✅ | ✅ | ➖ | ✅ |
-| T2. `api/` | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
+| T2. `api/` | Completada | ✅ | ✅ | ➖ | ✅ |
 | T3. Sesión, guardas e interceptores | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T4. Configuración y formatos | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T5. Layout y páginas | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
@@ -75,6 +75,11 @@ Los nombres nuevos son los de las tablas 2.1 a 2.6 de la spec. Si aparece uno qu
   - Todas las importaciones y usos en `core/`, `src/testing/` y las pruebas.
 - Verify: `grep -rnE "ErrorApi|aErrorApi|esErrorApi|Pagina<|ParametrosListado|ValorParametro|aParametros|obtenerPerfil|modelos|paginacion|error-api" src/` sin resultados.
 - Files: `src/app/api/models.ts`, `pagination.ts`, `api-error.ts`, `auth-api.ts`, `me-api.ts`, sus `.spec.ts`, y los que los importan en `core/` y `src/testing/`
+- **Resultado (2026-11-24):**
+  - `models.ts`, `pagination.ts` y `api-error.ts` (con sus pruebas) movidos con `git mv`. Los nombres internos de `api-error.ts` también pasan a inglés (`KNOWN_FIELDS`, `toObject`, `asText`, `fieldErrors`, `seconds`), y el auxiliar `respuesta` de su prueba, a `response`.
+  - `AuthApi.logout()` y `MeApi.getProfile()`. `SesionService.cerrarSesion()` y su variable `datos` se renombran en T3, con el resto de la sesión.
+  - Las pruebas siguen importando `PROBLEMA_*` de `src/testing/`, que cambia en T3.
+  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (20 archivos y 197 pruebas) y `pnpm build` (carga inicial: 438,57 kB) en verde.
 
 ### T3. Sesión, guardas e interceptores
 - Acceptance (tabla 2.3 y 2.4 de la spec):

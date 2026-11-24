@@ -5,7 +5,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, Routes } from '@angular/router';
 import { AHORA, TOKEN_CAMBIO_PENDIENTE, TOKEN_ESTUDIANTE } from '../../../testing/sesion';
 import { API_URL } from '../../api/api-url';
-import { Rol, TokenResponse } from '../../api/modelos';
+import { Rol, TokenResponse } from '../../api/models';
 import { RELOJ } from '../sesion/reloj';
 import { CLAVE_SESION, SesionService } from '../sesion/sesion-service';
 import { cambioPendienteGuard } from './cambio-pendiente-guard';

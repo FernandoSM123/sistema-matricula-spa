@@ -4,7 +4,7 @@ Corrección transversal antes de `componentes`. No es un módulo del [mapa](mapa
 
 | Estado | Plan | Tareas | Avance |
 |---|---|---|---|
-| **Aprobada** | [Aprobado](../tasks/nombres/plan.md) | [Aprobadas](../tasks/nombres/todo.md) | 1/7 tareas completadas |
+| **Aprobada** | [Aprobado](../tasks/nombres/plan.md) | [Aprobadas](../tasks/nombres/todo.md) | 2/7 tareas completadas |
 
 **Historial:**
 - 2026-11-24: v1 en revisión, en la rama `nombres`. El usuario fijó la regla (decisiones 1 a 5) al revisar el código a mano.

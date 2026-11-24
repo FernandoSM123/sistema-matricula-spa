@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AuthApi } from '../../api/auth-api';
 import { MeApi } from '../../api/me-api';
-import { Rol, TokenResponse } from '../../api/modelos';
+import { Rol, TokenResponse } from '../../api/models';
 import { RELOJ } from './reloj';
 
 /** Única clave de `sessionStorage` de la aplicación (§4.1). */
@@ -73,7 +73,7 @@ export class SesionService {
     if (sesion.debeCambiarContrasena) return;
 
     try {
-      const perfil = await firstValueFrom(this.meApi.obtenerPerfil());
+      const perfil = await firstValueFrom(this.meApi.getProfile());
       const datos = perfil.datosPersonales;
       // Solo si sigue siendo la misma sesión: pudo terminar o reemplazarse mientras tanto.
       if (datos && this.sesion() === sesion) {
@@ -97,7 +97,7 @@ export class SesionService {
   async cerrarSesion(): Promise<void> {
     // La petición sale al suscribirse, con el token todavía en la sesión. Se descarta antes de
     // la respuesta, así un 401 (sesión ya vencida) no dispara además la navegación de RFF-03.
-    const logout = firstValueFrom(this.authApi.cerrarSesion());
+    const logout = firstValueFrom(this.authApi.logout());
     this.terminar();
     try {
       await logout;

@@ -9,12 +9,16 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 
 | Estado | Avance |
 |---|---|
-| **Aprobado** | 0/10 módulos completados |
+| **Aprobado** | 1/10 módulos completados |
 
 **Historial:**
 - 2026-11-23: v1 en revisión.
 - 2026-11-23: v1 aprobada, con un cambio del usuario en la decisión 5: commit después de cada tarea, no solo al cerrar el módulo. Siguiente paso: la spec de `fundacion` (sin empezar, a la espera del usuario).
 - 2026-11-23: empieza `fundacion`, en la rama `fundacion`, con su spec en revisión.
+- 2026-11-24: `fundacion` completado e integrado a `main` (PR #1). Empieza `nucleo`, en la rama `nucleo`, con su spec en revisión.
+- 2026-11-24: spec de `nucleo` aprobada; plan y tareas en revisión. Los cambios al mapa de sus decisiones (`cambiosSinGuardarGuard` a `componentes`, Firefox y Safari a `sistema`) se aplican en su T1.
+- 2026-11-24: plan y tareas de `nucleo` aprobados. T1 queda bloqueada: los tipos generados traen los enums como `number` (B-07) y los números como `number | string` (B-06). Por decisión del usuario se corrigen en la API con COR-03 (decisión 4 del mapa), y `nucleo` sigue cuando esté hecha.
+- 2026-11-24: COR-03 aplicada en la API, y `nucleo` T1 completada: los tipos generados traen `number` y uniones de textos. Además, por decisión del usuario, el adaptador de fechas y la duración de los avisos salen de la carga inicial, que baja de 500 kB a 302 kB. Se aplican los cambios de las decisiones de `nucleo`: `cambiosSinGuardarGuard` pasa a `componentes`, y Firefox y Safari a `sistema`.
 
 ## Módulos
 
@@ -22,7 +26,7 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 |---|---|---|---|---|---|---|
 | 1 | `fundacion` | Proyecto creado con el CLI y pnpm, `pnpm-workspace.yaml`, ESLint con las reglas entre carpetas, Prettier, carpetas de §2.2 y `environments/`. Tema de Material, paleta `--sm-*`, tipografía e íconos (§6.6). Locale `es-CR`, `AdaptadorFechas`, formateadores y pipes (§7) | — | — | RUI-15 a RUI-19 | — |
 | 2 | `nucleo` | `api/` base: tipos generados, `modelos.ts`, paginación, `ErrorApi` y `API_URL`. `SesionService`, interceptores y guardas (§4). Marco con el menú por rol, el menú de la cuenta y el pie. Rutas y página de inicio por rol (§2.2 a §2.5 de los requerimientos) | `V-09`, `V-10` | RFF-03, RFF-04 | RUI-01 a RUI-05 (interpretación del error), RUI-23 | `fundacion` |
-| 3 | `componentes` | `shared/ui` y `shared/formularios`: `EstadoContenido`, `ErrorAccion`, `AvisosService`, `AvisoFijo`, `ConfirmacionesService`, `BotonEnvio`, `CampoContrasena`, validadores, `aplicarErroresServidor`, `ListadoPaginado`, `BarraFiltros`, `EtiquetaEstado`, `EncabezadoDetalle` y `SelectorBusqueda` (§5, §6) | — | — | RUI-01 a RUI-05 (presentación), RUI-06 a RUI-14, RUI-20, RUI-21 | `nucleo` |
+| 3 | `componentes` | `shared/ui` y `shared/formularios`: `EstadoContenido`, `ErrorAccion`, `AvisosService`, `AvisoFijo`, `ConfirmacionesService`, `BotonEnvio`, `CampoContrasena`, validadores, `aplicarErroresServidor`, `ListadoPaginado`, `BarraFiltros`, `EtiquetaEstado`, `EncabezadoDetalle` y `SelectorBusqueda` (§5, §6). `cambiosSinGuardarGuard` y `ConCambiosSinGuardar` (§4.3, decisión 1 de `SPEC-nucleo`) | — | — | RUI-01 a RUI-05 (presentación), RUI-06 a RUI-14, RUI-20, RUI-21 | `nucleo` |
 | 4 | `acceso` | Inicio de sesión, cambio obligatorio, olvido de contraseña y registro público. Mi perfil, cambiar contraseña y datos de contacto | `V-02` a `V-08` | RFF-01, RFF-02, RFF-05, RFF-06, RFF-08 a RFF-10 | — | `componentes` |
 | 5 | `oferta` | La oferta académica pública. La acción "Matricular" la agrega `matricula` | `V-01` | RFF-07 | — | `componentes` |
 | 6 | `catalogos` | Cursos, periodos y aulas. La ocupación del aula la agrega `grupos` | `V-20` a `V-27` | RFF-18 a RFF-22 | — | `acceso` |
@@ -41,7 +45,7 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 | Módulo | Spec | Plan | Tareas | Avance | Estado del módulo |
 |---|---|---|---|---|---|
 | `fundacion` | [Aprobada](SPEC-fundacion.md) | [Aprobado](../tasks/fundacion/plan.md) | [Aprobadas](../tasks/fundacion/todo.md) | 6/6 | Completado |
-| `nucleo` | — | — | — | — | Sin empezar |
+| `nucleo` | [Aprobada](SPEC-nucleo.md) | [Aprobado](../tasks/nucleo/plan.md) | [Aprobadas](../tasks/nucleo/todo.md) | 1/7 | En implementación |
 | `componentes` | — | — | — | — | Sin empezar |
 | `acceso` | — | — | — | — | Sin empezar |
 | `oferta` | — | — | — | — | Sin empezar |
@@ -71,9 +75,10 @@ Verificaciones que un módulo no puede hacer por falta de vistas o de datos. Se 
 
 | Origen | Destino | Verificación |
 |---|---|---|
-| `arquitectura` §3.2 | `nucleo` | Al generar los tipos con `pnpm api:tipos`, revisar si algún número del OpenAPI viene como `integer \| string` y ajustar `modelos.ts` |
-| `arquitectura` §1 | `nucleo` | La aplicación funciona en las dos últimas versiones de Chrome, Edge, Firefox y Safari, en escritorio y en celular |
-| `arquitectura` §1 | `grupos` | La grilla de `HorarioSemanal` (FullCalendar con `temporal-polyfill`) funciona en esos mismos navegadores |
+| `arquitectura` §1 | `nucleo` | La aplicación funciona en las dos últimas versiones de Chrome, Edge y Brave, en escritorio y en el modo celular de las herramientas (decisión 2 de `SPEC-nucleo`) |
+| `nucleo` | `sistema` | La aplicación funciona en las dos últimas versiones de Firefox y Safari, en escritorio y en celular. `nucleo` solo probó navegadores con Chromium (decisión 2 de `SPEC-nucleo`) |
+| `arquitectura` §1 | `grupos` | La grilla de `HorarioSemanal` (FullCalendar con `temporal-polyfill`) funciona en Chrome, Edge y Brave. Firefox y Safari, con `sistema` |
+| `nucleo` | `componentes` | `AvisosService.exito()` fija la duración de 5 s en cada aviso: el token global `MAT_SNACK_BAR_DEFAULT_OPTIONS` salió de la raíz por la carga inicial (decisión 5 de `SPEC-nucleo`, §6.1 de la arquitectura) |
 | `arquitectura` §8.3 | `nucleo`, `componentes`, `sistema` | Lighthouse al cerrar cada uno: carga inicial de 500 kB o menos sin comprimir y LCP menor a 2,5 s, con el perfil de escritorio y el build de producción |
 | `nucleo` | `acceso` | Con una sesión real: las 7 situaciones de §2.5 de los requerimientos (sin sesión, rol sin permiso, `401` que vuelve a `V-02` con el aviso y regresa a la vista, cambio pendiente…) y el cierre de sesión desde el menú de la cuenta (RFF-04) |
 | COR-02 (backend) | `acceso` | Desde el navegador, el `429` del inicio de sesión llena `ErrorApi.retryAfter` con el valor de `Retry-After` (RUI-03) |

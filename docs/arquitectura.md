@@ -1,6 +1,6 @@
 # Arquitectura y buenas prácticas — SPA Sistema de Matrícula
 
-> **Estado:** aprobado (2026-11-20). Modificado el 2026-11-23: B-05 resuelta en el backend (COR-02); se quita el comportamiento provisional del `429`. Spec: [SPEC-arquitectura.md](../specs/SPEC-arquitectura.md) · Tareas: [tasks/arquitectura/todo.md](../tasks/arquitectura/todo.md).
+> **Estado:** aprobado (2026-11-20). Modificado el 2026-11-23: B-05 resuelta en el backend (COR-02); se quita el comportamiento provisional del `429`. Modificado el 2026-11-23 en `fundacion` T1: versiones instaladas (§1), nombre del instituto (§6.6, §11.3) y commits por tarea (§10.3). Spec: [SPEC-arquitectura.md](../specs/SPEC-arquitectura.md) · Tareas: [tasks/arquitectura/todo.md](../tasks/arquitectura/todo.md).
 
 Este documento fija con qué y cómo se construye el frontend del sistema de matrícula: una SPA en Angular que consume la API de `../sistema-matricula-api`. **Qué** hace el frontend está en [`requerimientos.md`](requerimientos.md), y **cómo se ve cada vista**, en [`wireframes/`](wireframes/index.html). Aquí se citan sus códigos (`V-xx`, `RFF-xx`, `RUI-xx`) sin repetirlos.
 
@@ -26,23 +26,25 @@ Busca lo mismo que la [arquitectura del backend](../../sistema-matricula-api/doc
 
 Versiones verificadas el 2026-11-20 (`npm view` y una prueba desechable, T1 de la lista de tareas). Se instalan **exactas**, sin `^` ni `~` (§10). Todas las dependencias tienen licencia MIT, salvo TypeScript (Apache-2.0).
 
+**Versiones instaladas en `fundacion` (2026-11-23):** Angular 22.3.0, Vitest 5.1.1 y angular-eslint 22.8.0 tenían menos de una semana y `minimumReleaseAge` (§10.4) las rechaza. Por decisión del usuario se instalaron las anteriores, con más de una semana: Angular 22.2.6 (CLI y `@angular/build` 22.2.7), Material, CDK y el adaptador de date-fns 22.2.7, Vitest 5.1.0 y angular-eslint 22.7.0 (con ESLint 10.15.0, `@eslint/js` 10.0.1 y typescript-eslint 8.72.1). Se sube a 22.3 con `ng update` en un módulo posterior, cuando cumpla la semana.
+
 | Pieza | Elección | Por qué |
 |---|---|---|
 | Lenguaje | **TypeScript 6.0**, en modo estricto | Es la versión que pide Angular 22 (`>=6.0 <6.1`). La 7.0 ya salió, pero Angular 22 no la admite |
-| Framework | **Angular 22.3**: componentes standalone, sin `zone.js` (zoneless) | Elegido por el usuario. Trae incluidos lo que piden los requerimientos: router con guardas (§2.5), `HttpClient` con interceptores (RFF-03, RUI-03) y formularios con validación (RUI-06). Zoneless es el valor por defecto del CLI |
+| Framework | **Angular 22.2** (22.3 más adelante, ver la nota de arriba): componentes standalone, sin `zone.js` (zoneless) | Elegido por el usuario. Trae incluidos lo que piden los requerimientos: router con guardas (§2.5), `HttpClient` con interceptores (RFF-03, RUI-03) y formularios con validación (RUI-06). Zoneless es el valor por defecto del CLI |
 | Runtime de desarrollo | **Node 24 LTS** | Soporte largo. Angular 22 pide `^22.22.3`, `^24.15.0` o `>=26` |
 | Gestor de paquetes | **pnpm 12.21**, fijado en `packageManager` del `package.json` | Elegido por el usuario. No ejecuta scripts de instalación que no estén autorizados, puede exigir una antigüedad mínima a las versiones nuevas, y su `node_modules` estricto impide importar lo que no está declarado (§10) |
 | Build y servidor de desarrollo | **`@angular/build`**, el del CLI (esbuild y Vite) | El que trae el CLI. No hace falta configurar un bundler |
-| Componentes | **Angular Material + CDK 22.3** | Elegido por el usuario. Oficiales y con las mismas versiones que Angular. Resuelven la accesibilidad de §6 (foco en las ventanas, teclado) y traen las piezas de los wireframes: tabla, paginador, ventanas, avisos temporales, selector de fecha que permite escribir, selector de hora y autocompletado |
+| Componentes | **Angular Material + CDK 22.2** | Elegido por el usuario. Oficiales y con las mismas versiones que Angular. Resuelven la accesibilidad de §6 (foco en las ventanas, teclado) y traen las piezas de los wireframes: tabla, paginador, ventanas, avisos temporales, selector de fecha que permite escribir, selector de hora y autocompletado |
 | Estado | **Signals** (`signal`, `computed`, `linkedSignal`) en los componentes y en los servicios de `core` | El único estado compartido es la sesión. El resto es de cada vista |
 | Lectura de datos | **`httpResource`** para las consultas (`GET`) y **`HttpClient`** para las acciones (`POST`, `PUT`, `DELETE`) | `httpResource` es estable desde Angular 22.0. Se vuelve a pedir solo cuando cambian sus parámetros (filtros, página) y expone el estado de la carga, que alimenta RUI-13 sin código repetido. RxJS 7.8 viene con Angular y se usa solo donde una API de Angular lo pide |
 | Formularios | **Reactive Forms tipados** | Elegido por el usuario el 2026-11-20. Signal Forms también es estable desde la 22.0, pero Reactive Forms es más maduro y está probado con todos los controles de Material |
-| Fechas en los selectores | **date-fns 4.4** con **`@angular/material-date-fns-adapter` 22.3**, extendido por un adaptador propio | Lee `dd/mm/aaaa` escrito a mano y rechaza fechas inválidas (RUI-15, verificado en T1). El adaptador propio formatea las horas con `Intl`, porque date-fns escribe "6:30 PM" o "6:30 p.m.", y RUI-17 pide "6:30 p. m." (§7) |
+| Fechas en los selectores | **date-fns 4.4** con **`@angular/material-date-fns-adapter` 22.2**, extendido por un adaptador propio | Lee `dd/mm/aaaa` escrito a mano y rechaza fechas inválidas (RUI-15, verificado en T1). El adaptador propio formatea las horas con `Intl`, porque date-fns escribe "6:30 PM" o "6:30 p.m.", y RUI-17 pide "6:30 p. m." (§7) |
 | Fechas para mostrar | **`Intl`** del navegador (`DateTimeFormat`, `NumberFormat`) con `es-CR` y `timeZone: 'America/Costa_Rica'` | Da la hora (RUI-16, RUI-17) y la moneda (RUI-18) en el formato pedido sin otra dependencia (§7) |
 | Horario semanal | **FullCalendar 7.1** (`fullcalendar` y `@fullcalendar/angular` 7.1.5, con `temporal-polyfill` 1.0.8), solo para la grilla | Propuesto por el usuario. La vista `timeGridWeek` cubre la grilla de RFF-29 con bloques que se repiten cada semana. En pantallas angostas, el componente dibuja su propia lista por día, porque la lista de FullCalendar no cabe en 360 px (T1, §6) |
 | Tipos de la API | **openapi-typescript 7.13**, solo en desarrollo | Genera los tipos de los DTO desde `/openapi/v1.json` (§3). Avisa que espera TypeScript 5, pero genera bien con TypeScript 6 (T1) |
 | Pruebas | **Vitest 5.1** con **jsdom**, el corredor de `ng test` | El que trae el CLI. Solo pruebas unitarias; las e2e quedan diferidas (§9) |
-| Calidad | **angular-eslint 22.8** (con ESLint y typescript-eslint) y **Prettier 3.10** | Lo estándar en Angular. Prettier ya viene con el CLI. ESLint también hace cumplir las dependencias entre carpetas (§2.3) |
+| Calidad | **angular-eslint 22.7** (con ESLint y typescript-eslint) y **Prettier 3.10** | Lo estándar en Angular. Prettier ya viene con el CLI. ESLint también hace cumplir las dependencias entre carpetas (§2.3) |
 | Idioma | `LOCALE_ID` `es-CR` con `registerLocaleData` | Un solo idioma (§1.3 de los requerimientos) |
 | Navegadores | Los objetivos de compilación por defecto del CLI, sin un `.browserslistrc` propio | Los navegadores que soporta Angular incluyen las dos últimas versiones de Chrome, Edge, Firefox y Safari, en escritorio y en celular, que es lo que pide §6 de los requerimientos. `temporal-polyfill` cubre la API `Temporal` que FullCalendar necesita en los navegadores que aún no la traen. El primer módulo lo confirma en los cuatro navegadores |
 
@@ -168,6 +170,7 @@ En total son 38 vistas: 4 + 1 + 3 + 9 + 8 + 3 + 5 + 3 + 2.
 ### 2.5 Carga diferida
 
 - **Por área:** cada área se carga con `loadChildren: () => import('./features/<area>/<area>.routes')`. La carga inicial incluye solo `core` (marco, sesión, interceptores, guardas) y lo de Material que usa el marco.
+- **Opciones de Material:** cada área registra `provideMaterialVistas()` en los `providers` de su ruta raíz (`<area>.routes.ts`), para que los módulos de los campos, el paginador y el selector de fecha no entren en la carga inicial (§6.1).
 - **Por rol:** las áreas de un solo rol (`personas`, `sistema`) se protegen con `canMatch`, no con `canActivate`. Así su código ni siquiera se descarga para los demás roles. Las áreas compartidas filtran por rol en cada ruta.
 - **FullCalendar:** `HorarioSemanal` lo carga con `@defer`, y solo en pantallas anchas. Agrega unos 400 kB (T1), que solo se descargan en `V-16`, `V-19`, `V-27` y `V-34`, al mostrar la grilla. En pantallas angostas no se descarga.
 - La meta concreta de la carga inicial y los presupuestos de tamaño se fijan en §8.
@@ -464,6 +467,9 @@ protected async guardar() {
   - Campos: `MAT_FORM_FIELD_DEFAULT_OPTIONS` con `appearance: 'outline'` y `subscriptSizing: 'dynamic'`.
   - Avisos temporales: duran 5 segundos.
   - Textos en español: `MatPaginatorIntl` ("Filas por página" y el rango "21–40 de 134", RUI-10) y `MatDatepickerIntl`.
+- **Dónde se registran** (decisión del usuario, `fundacion` T6):
+  - `provideMaterial()` (`core/config/material.ts`), en `app.config.ts`: solo lo que el marco usa desde el arranque, hoy la duración de los avisos.
+  - `provideMaterialVistas()` (`core/config/material-vistas.ts`): los campos, el paginador y el selector de fecha. **Cada área lo registra en los `providers` de su ruta diferida** (§2.5), y nada de la carga inicial importa ese archivo. Si la raíz importara `MatDatepickerIntl` o `MAT_FORM_FIELD_DEFAULT_OPTIONS`, el primer uso de esos controles en una vista diferida metería sus módulos completos en un chunk compartido de la carga inicial: medido en `fundacion`, 708 kB contra 500 kB.
 - **El marco** (`core/marco/`) usa `mat-toolbar` para la barra superior, `mat-sidenav` para el menú y `mat-menu` para el menú de la cuenta. El menú es lateral fijo desde 960 px y plegable por debajo (wireframes).
 
 ### 6.2 Componentes del catálogo de los wireframes
@@ -580,16 +586,18 @@ Un color nuevo o cambiado vuelve a calcular su contraste antes de usarse (§10).
 **Cómo se aplica a Material:**
 - En `styles.scss`, `@include mat.theme(...)` define el tema claro con una paleta generada desde el acento con `ng generate @angular/material:theme-color`.
 - `@include mat.theme-overrides(...)` fija los tokens de sistema que importan (`primary`, `on-primary`, `surface`, `on-surface`, `outline`, `error`…) a las variables `--sm-*`.
-- Las variables de FullCalendar (`--fc-classic-*`) se mapean a las mismas en ese archivo.
+- Las variables de FullCalendar (`--fc-classic-*`) se mapean a las mismas en ese archivo, cuando se instale FullCalendar (`componentes`).
 - Solo hay tema claro, porque el modo oscuro está fuera del alcance (§1.3 de los requerimientos).
 
 **Tipografía:** la fuente del sistema (`system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`), con la escala de tipos de Material y una base de 16 px. No se descarga ninguna fuente, así que no hay CDN ni dependencia, y la carga inicial no espera una fuente.
 
 **Íconos:** archivos SVG de **Material Symbols** (licencia Apache-2.0) copiados a `public/iconos/` y registrados con `MatIconRegistry.addSvgIcon` en `core/config/`. No se usa la fuente de íconos ni un CDN, y no se agrega una dependencia. Solo se copian los que se usan: menú, buscar, cerrar, editar, eliminar, mostrar u ocultar, copiar, calendario, reloj, éxito, aviso, error, información, flechas de paginación y salir. El aviso de la licencia queda junto a los archivos.
+- **Registro (`fundacion` T5):** `provideIconos()` en `core/config/iconos.ts` registra cada ícono con su nombre en español (`menu`, `buscar`, `cerrar`, `editar`, `eliminar`, `mostrar`, `ocultar`, `copiar`, `calendario`, `reloj`, `exito`, `aviso`, `error`, `informacion`, `primera-pagina`, `anterior`, `siguiente`, `ultima-pagina`, `salir`), que es también el nombre del archivo. Se usan con `<mat-icon svgIcon="buscar" />`.
+- **Excepción a `bypassSecurityTrust*`** (decisión del usuario, 2026-11-23): `addSvgIcon` exige un `SafeResourceUrl`, que solo se obtiene con `bypassSecurityTrustResourceUrl`. Se usa solo en `iconos.ts` y sobre rutas fijas del propio sitio. Material descarga los SVG con `HttpClient`, así que `app.config.ts` registra `provideHttpClient()` desde `fundacion`; `nucleo` le agrega los interceptores.
 
 **Espaciado:** una escala de 4, 8, 16, 24 y 32 px (`--sm-espacio-1` a `--sm-espacio-5`). Ningún componente usa medidas sueltas.
 
-**Nombre del instituto (RUI-23):** pendiente de definir. Va como constante en `environments/`, junto con la versión del frontend (§11), y el pie lo lee de ahí.
+**Nombre del instituto (RUI-23):** "Instituto de Cursos Libres" (decidido por el usuario el 2026-11-23). Va como constante en `environments/`, junto con la versión del frontend (§11), y el pie lo lee de ahí.
 
 ---
 
@@ -624,6 +632,7 @@ Un color nuevo o cambiado vuelve a calcular su contraste antes de usarse (§10).
   - Lectura: fechas con `['dd/MM/yyyy', 'd/M/yyyy']` y horas con `['h:mm a', 'H:mm']`. En T1 se verificó que lee "6:30 p. m." y que rechaza `31/02/2026` y `03/15/2026`.
   - Presentación: `dd/MM/yyyy` para las fechas y el formateador propio para las horas y las opciones del selector de hora.
 - Se registra en `app.config.ts` como el `DateAdapter`, en lugar de `provideDateFnsAdapter()`.
+- Escribe la hora con espacios normales, porque el selector vuelve a leer lo que escribe y date-fns no reconoce "p. m." con los espacios que no se parten que `Intl` usa en algunos navegadores (`fundacion` T4). Los pipes conservan la salida de `Intl`.
 
 ---
 
@@ -741,12 +750,14 @@ Como en el backend, primero lo que es puro y transversal. Las pruebas de las vis
 
   El patrón exacto se ajusta al crear el proyecto. Lo que no puede cambiar es la regla de §2.3.
 
+  **Patrón final (`fundacion` T2):** `@typescript-eslint/no-restricted-imports` con patrones `regex` sobre los imports relativos, para no confundir `core/` con `@angular/core`. `shared` importa de `api` solo con `import type` (`allowTypeImports`), `core` no importa de `features`, y cada área tiene su bloque: solo las de la tabla de §2.4 importan de `matricula`, y solo su `index.ts`. Ver `eslint.config.js`.
+
 ### 10.3 Código, comentarios y documentos
 
 - **Un archivo por pieza.** Pocos comentarios, en español, solo para explicar **por qué** se hace algo, por ejemplo citando la RUI o la RN que lo justifica.
 - **Las reglas se citan, no se repiten:** si un código implementa una RUI o un RFF, lo nombra en un comentario corto o en el nombre de la prueba.
 - **`README.md`** con los requisitos, los pasos para levantar el SPA junto a la API y los comandos de §11. Se crea en el primer módulo.
-- **Commits:** un solo commit al cerrar cada entregable o módulo, no uno por tarea, como en las fases anteriores. Mensajes en español, con prefijo (`feat:`, `docs:`, `fix:`).
+- **Commits:** en la fase 0 hubo un solo commit por entregable. En los módulos del mapa, un commit después de cada tarea, en la rama del módulo, y un pull request a `main` al cerrarlo (decisión 5 de `specs/mapa-modulos.md`, 2026-11-23). Mensajes en español, con prefijo (`feat:`, `docs:`, `fix:`).
 
 ### 10.4 Dependencias
 
@@ -807,7 +818,7 @@ allowBuilds:                 # scripts de instalación: denegados salvo que se a
   - Generadores con `changeDetection: "OnPush"` y estilos `scss`.
   - Los presupuestos de §8.3.
   - `fileReplacements` para el entorno de desarrollo.
-- **`src/environments/`:** `apiUrl` (§3.1), `nombreInstituto` (pendiente, RUI-23) y `version`.
+- **`src/environments/`:** `apiUrl` (§3.1), `nombreInstituto` ("Instituto de Cursos Libres", RUI-23) y `version`.
 - **Versión en el pie (RUI-23):**
   - `version` se importa del `package.json` en `environments/`, así que sale del build y no de la API.
   - Empieza en `0.1.0` y la versión menor sube al cerrar cada módulo del mapa.

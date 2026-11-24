@@ -1,0 +1,12 @@
+packages:
+  - '.'
+
+# Seguridad de las dependencias (docs/arquitectura.md §10.4)
+saveExact: true # versiones exactas en package.json, sin ^ ni ~
+minimumReleaseAge: 10080 # no instalar versiones publicadas hace menos de una semana
+trustPolicy: no-downgrade # fallar si un paquete perdió evidencia de confianza respecto de versiones anteriores
+allowBuilds: # scripts de instalación: denegados salvo que se autoricen aquí
+  '@parcel/watcher': false
+  esbuild: false
+  lmdb: false
+  msgpackr-extract: false

@@ -78,7 +78,7 @@ src/styles/   Paleta (--sm-*), tema de Material y estilos globales
 - Modificar la API desde este proyecto. Las brechas con el backend se anotan en `docs/requerimientos.md` y se deciden aparte.
 - Guardar o mostrar contraseñas o temporales fuera de los campos de formulario que las piden.
 - Poner el token en la dirección, escribirlo en la consola o enviarlo a un origen que no sea la API. No usar `console.*` en el código de la aplicación.
-- Usar `innerHTML` con datos de la API o `bypassSecurityTrust*`; cargar scripts, fuentes o íconos desde un CDN.
+- Usar `innerHTML` con datos de la API o `bypassSecurityTrust*`; cargar scripts, fuentes o íconos desde un CDN. Única excepción: `bypassSecurityTrustResourceUrl` en `core/config/iconos.ts`, sobre las rutas fijas de `public/iconos/` que exige `MatIconRegistry.addSvgIcon` (decisión del usuario, 2026-11-23).
 - Editar a mano `src/app/api/esquema.d.ts`, desactivar las opciones estrictas de TypeScript o usar `any`.
 - Estilar FullCalendar con selectores de sus clases internas, que llevan hash (`docs/arquitectura.md` §6.3).
 
@@ -86,4 +86,4 @@ src/styles/   Paleta (--sm-*), tema de Material y estilos globales
 Usar la skill **spec-driven-development**: `specs/SPEC-<id>.md` → `tasks/<id>/` → implementación tarea por tarea, con aprobación del usuario en cada fase.
 - En la fase 0, plan y tareas van en un solo `tasks/<id>/todo.md`.
 - Los módulos del mapa usan `plan.md` y `todo.md`, y siguen el orden de `specs/mapa-modulos.md`.
-- Cada módulo se trabaja en su rama (`<id>`) y se integra a `main` con un pull request. Se hace un commit después de cada tarea y su hash se anota en el `todo.md`.
+- Cada módulo se trabaja en su rama (`<id>`) y se integra a `main` con un pull request. Se hace un solo commit por tarea, con el código y la actualización de `todo.md`, la spec y el mapa; en la columna "Commit" del `todo.md` se marca ✅ (sin el hash).

@@ -1,0 +1,56 @@
+// Tema de Angular Material (docs/arquitectura.md §6.6). Solo tema claro: el modo oscuro
+// está fuera del alcance (§1.3 de los requerimientos).
+@use '@angular/material' as mat;
+@use 'theme-colors' as colores;
+
+$fuente: system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+html {
+  color-scheme: light;
+
+  // Paleta generada con `ng generate @angular/material:theme-color` desde el acento #0F766E.
+  @include mat.theme(
+    (
+      color: (
+        primary: colores.$primary-palette,
+        tertiary: colores.$tertiary-palette,
+        theme-type: light,
+      ),
+      typography: (
+        plain-family: $fuente,
+        brand-family: $fuente,
+      ),
+      density: 0,
+    )
+  );
+
+  // Los tokens que importan, hacia la paleta propia.
+  @include mat.theme-overrides(
+    (
+      primary: var(--sm-acento),
+      on-primary: var(--sm-texto-sobre-acento),
+      background: var(--sm-fondo),
+      on-background: var(--sm-texto),
+      surface: var(--sm-superficie),
+      on-surface: var(--sm-texto),
+      on-surface-variant: var(--sm-texto-secundario),
+      surface-container-lowest: var(--sm-superficie),
+      surface-container-low: var(--sm-superficie),
+      surface-container: var(--sm-superficie),
+      surface-container-high: var(--sm-superficie),
+      secondary-container: var(--sm-secundario-activo),
+      on-secondary-container: var(--sm-marca),
+      outline: var(--sm-borde-control),
+      error: var(--sm-error-texto),
+      on-error: var(--sm-superficie),
+    )
+  );
+
+  // Los botones secundarios son de contorno con el color del texto, no del acento (§6.6).
+  @include mat.button-overrides(
+    (
+      outlined-label-text-color: var(--sm-texto),
+      outlined-outline-color: var(--sm-borde-control),
+    )
+  );
+}

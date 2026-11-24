@@ -14,7 +14,7 @@ Cada tarea termina con:
 | Tarea | Estado | Código | Pruebas unitarias | Verificación manual | Commit |
 |---|---|:---:|:---:|:---:|:---:|
 | T1. Contrato con la API | Completada | ✅ | ✅ | ✅ | ✅ |
-| T2. `SesionService` | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
+| T2. `SesionService` | Completada | ✅ | ✅ | ➖ | ✅ |
 | T3. `ErrorApi` e interceptores | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T4. Guardas e inicio por rol | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T5. Rutas, `V-09` y `V-10` | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
@@ -81,6 +81,15 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
   - `src/testing/`: una `TokenResponse` y un `PerfilResponse` de ejemplo.
 - Verify: pruebas de §9 y de la spec: guarda y lee de `sessionStorage`, descarta una sesión vencida y una clave corrupta al arrancar, `iniciar()` reemplaza el token, pide `GET /me` solo sin cambio pendiente, sigue si `GET /me` falla, y `cerrarSesion()` descarta la sesión y navega aunque el logout responda `401` o no responda.
 - Files: `src/app/api/auth-api.ts`, `me-api.ts`, `src/app/core/sesion/sesion-service.ts`, `sesion-service.spec.ts`, `src/testing/sesion.ts`
+- **Resultado (2026-11-24):**
+  - `AuthApi.cerrarSesion()` y `MeApi.obtenerPerfil()`. `obtenerPerfil()` devuelve un `Observable` y no un `httpResource`, porque la usa un servicio fuera de una vista; la consulta de `V-06` la agrega `acceso`.
+  - `SesionService` con `token()`, `rol()`, `nombre()`, `cambioPendiente()` y `terminada()` como signals, y `activa()` y `vencida()` como métodos, porque dependen del reloj, que no es un signal. `vencida()` permite que `sesionGuard` distinga la sesión vencida, que lleva el aviso de RFF-03, de la falta de sesión.
+  - `core/sesion/reloj.ts`: el token `RELOJ` (`Date.now` por defecto), para probar el vencimiento.
+  - `terminar()` no recibe un motivo, como decía el plan: el aviso lo pone en la dirección quien navega (`erroresInterceptor`, `sesionGuard`).
+  - `iniciar()` solo pone el nombre si la sesión sigue siendo la misma cuando responde `GET /me`.
+  - `cerrarSesion()` envía el logout con el token y descarta la sesión **antes** de la respuesta. Así un `401` del logout no dispara, en T3, la navegación de RFF-03.
+  - La sesión guardada se valida al leerla (token, `expiraEn`, rol conocido, booleano y nombre). Si el almacenamiento está bloqueado, se trabaja sin sesión guardada.
+  - 19 pruebas nuevas. `pnpm formato:revisar`, `pnpm lint`, `pnpm test --watch=false` (12 archivos, 93 pruebas) y `pnpm build` en verde. La carga inicial no cambia (301,89 kB).
 
 ### T3. `ErrorApi` e interceptores
 - Acceptance:
@@ -158,3 +167,4 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
 - 2026-11-24: lista aprobada por el usuario, con un agregado a T1: actualizar §3.2 de la arquitectura. Empieza T1.
 - 2026-11-24: T1 bloqueada. El primer `esquema.d.ts` trae los 9 enums como `number` sin valores (B-07), además de los números `integer | string` (B-06). Causa: en `Program.cs` del backend, `JsonStringEnumConverter` está solo en las opciones de MVC, y el OpenAPI lee las de `ConfigureHttpJsonOptions`. El usuario decide corregir ambas en la API (COR-03), y el tipo utilitario de los números se descarta.
 - 2026-11-24: COR-03 aplicada en la API (el usuario reinició la instancia de `:5022`). T1 completada, con un cambio decidido por el usuario: el adaptador de fechas y la duración de los avisos salen de la carga inicial (decisión 5 de la spec).
+- 2026-11-24: T2 completada.

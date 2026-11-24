@@ -4,7 +4,7 @@ Módulo `nucleo` del [mapa de módulos](mapa-modulos.md). Depende de `fundacion`
 
 | Estado | Plan | Tareas | Avance |
 |---|---|---|---|
-| **Aprobada** | [Aprobado](../tasks/nucleo/plan.md) | [Aprobadas](../tasks/nucleo/todo.md) | 1/7 tareas completadas |
+| **Aprobada** | [Aprobado](../tasks/nucleo/plan.md) | [Aprobadas](../tasks/nucleo/todo.md) | 2/7 tareas completadas |
 
 **Historial:**
 - 2026-11-24: v1 en revisión, en la rama `nucleo`.
@@ -41,7 +41,7 @@ Con este módulo, la aplicación deja de mostrar la página de muestra de `funda
    - `SesionService` con la sesión como signal: token, `expiraEn`, rol, `debeCambiarContrasena` y nombre. Expone `activa()`, `rol()`, `nombre()`, `cambioPendiente()` y si la sesión terminó (para RUI-09).
    - Guarda y lee una sola clave (`matricula.sesion`) de `sessionStorage`. Al arrancar descarta la sesión vencida.
    - `iniciar(respuesta)`: guarda la sesión de una respuesta con token y, si no hay cambio pendiente, pide el nombre a `GET /me` (supuesto 2). La usan `acceso` (login, cambio obligatorio, cambiar contraseña).
-   - `terminar(motivo)`: descarta la sesión.
+   - `terminar()`: descarta la sesión y la marca como terminada. No recibe un motivo: el aviso lo pone en la dirección quien navega (T2).
    - `cerrarSesion()` (RFF-04): llama a `POST /auth/logout`, descarta la sesión aunque la llamada falle y navega a `/oferta?aviso=sesion-cerrada` (supuesto 3).
 3. **Interceptores** (`core/http/`, §3.1, §4.2):
    - `tokenInterceptor`: `Authorization: Bearer` solo a las peticiones a `API_URL`.

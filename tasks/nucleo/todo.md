@@ -18,7 +18,7 @@ Cada tarea termina con:
 | T3. `ErrorApi` e interceptores | Completada | ✅ | ✅ | ➖ | ✅ |
 | T4. Guardas e inicio por rol | Completada | ✅ | ✅ | ➖ | ✅ |
 | T5. Rutas, `V-09` y `V-10` | Completada | ✅ | ✅ | ✅ | ✅ |
-| T6. Marco | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
+| T6. Marco | Completada | ✅ | ✅ | ✅ | ✅ |
 | T7. Verificación con sesión real y cierre | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
 
 **Estados de tarea:**
@@ -170,6 +170,17 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
   - `pnpm build` dentro del presupuesto inicial; se anota el tamaño.
   - Manual, sin sesión: el marco del visitante contra `V-02`/`V-10` de los wireframes, a 1280 px y 360 px.
 - Files: `src/app/core/marco/**`, `src/app/app.ts`, `app.html`, `app.scss`
+- **Resultado (2026-11-24):**
+  - `menu-opciones.ts`: la lista única `OPCIONES_MENU` (`ruta`, `etiqueta`, `roles`, `grupo`) y `menuDe(rol)`, que arma los grupos consecutivos (solo el administrador los ve). "Oferta académica" va dos veces en la lista, porque el administrador la ve al final de "Académico" y los demás roles, antes de "Cursos". `OPCIONES_CUENTA` para el menú de la cuenta.
+  - `Marco` con las tres variantes (`visitante`, `rol`, `cambio-pendiente`). El visitante, en pantalla ancha, ve sus enlaces en la barra y no tiene menú lateral; por debajo de 960 px, los mismos enlaces van en el menú plegable. El cambio pendiente ve solo "Cerrar sesión" y el nombre del sistema sin enlace.
+  - El menú plegable se cierra con `NavigationEnd` (al elegir una opción o con Atrás).
+  - `MenuCuenta` (nombre, si `GET /me` lo trajo, y rol con el pipe `etiqueta`) y `Pie` (RUI-23, año con `RELOJ` en la zona del instituto).
+  - `App` pone el `<router-outlet>` dentro del `<main>` del marco. No hizo falta `app.scss`.
+  - **Carga inicial:** con el marco llegó a 498,77 kB. Imports standalone de Material en lugar de los módulos (§8.3): 490,95 kB. El menú de la cuenta con `@defer (on idle)`, porque `mat-menu` arrastra el overlay del CDK: **438,60 kB** (el menú, 62,78 kB en diferido). Anotado en §8.3 de la arquitectura.
+  - La opción activa del visitante, en la barra, va en negrita y subrayada, sin colores fuera de la paleta. Contrastes medidos: `--sm-marca` sobre `--sm-secundario-activo` 7,87:1; `--sm-texto` sobre `--sm-secundario-activo` 10,92:1; `--sm-texto-secundario` sobre `--sm-secundario-suave` 6,24:1.
+  - Pruebas con `BreakpointObserver` simulado (ancho y angosto) y el bloque diferido completado con `getDeferBlocks()`. Comprobado que la prueba del cierre al navegar falla sin el cierre.
+  - 14 pruebas nuevas. `pnpm formato:revisar`, `pnpm lint`, `pnpm test --watch=false` (20 archivos, 196 pruebas) y `pnpm build` en verde, sin avisos de presupuesto.
+  - Verificación manual del usuario (2026-11-24), con `pnpm start`: el marco del visitante a 1280 px y 360 px, y el foco con el teclado.
 
 ### T7. Verificación con sesión real y cierre
 - Acceptance:
@@ -197,3 +208,4 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
 - 2026-11-24: T3 completada.
 - 2026-11-24: T4 completada.
 - 2026-11-24: T5 completada, revisada por el usuario.
+- 2026-11-24: T6 completada, revisada por el usuario.

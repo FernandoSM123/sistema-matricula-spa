@@ -1,6 +1,6 @@
 # Arquitectura y buenas prácticas — SPA Sistema de Matrícula
 
-> **Estado:** aprobado (2026-11-20). Modificado el 2026-11-23: B-05 resuelta en el backend (COR-02); se quita el comportamiento provisional del `429`. Modificado el 2026-11-23 en `fundacion` T1: versiones instaladas (§1), nombre del instituto (§6.6, §11.3) y commits por tarea (§10.3). Modificado el 2026-11-24 en `nucleo` T4: precisiones de las guardas (§4.3). Modificado el 2026-11-24 en `nucleo` T3: `name` y `message` en `ErrorApi` (§3.5) y `terminar()` sin motivo (§4.2). Modificado el 2026-11-24 en `nucleo` T1: resultado de la primera generación de tipos (§3.2, B-06 y B-07, resueltas con COR-03) y, por la carga inicial, el adaptador de fechas y la duración de los avisos salen de `app.config.ts` (§6.1, §7.3). Spec: [SPEC-arquitectura.md](../specs/SPEC-arquitectura.md) · Tareas: [tasks/arquitectura/todo.md](../tasks/arquitectura/todo.md).
+> **Estado:** aprobado (2026-11-20). Modificado el 2026-11-23: B-05 resuelta en el backend (COR-02); se quita el comportamiento provisional del `429`. Modificado el 2026-11-23 en `fundacion` T1: versiones instaladas (§1), nombre del instituto (§6.6, §11.3) y commits por tarea (§10.3). Modificado el 2026-11-24 en `nucleo` T6: menú de la cuenta en diferido (§8.3). Modificado el 2026-11-24 en `nucleo` T4: precisiones de las guardas (§4.3). Modificado el 2026-11-24 en `nucleo` T3: `name` y `message` en `ErrorApi` (§3.5) y `terminar()` sin motivo (§4.2). Modificado el 2026-11-24 en `nucleo` T1: resultado de la primera generación de tipos (§3.2, B-06 y B-07, resueltas con COR-03) y, por la carga inicial, el adaptador de fechas y la duración de los avisos salen de `app.config.ts` (§6.1, §7.3). Spec: [SPEC-arquitectura.md](../specs/SPEC-arquitectura.md) · Tareas: [tasks/arquitectura/todo.md](../tasks/arquitectura/todo.md).
 
 Este documento fija con qué y cómo se construye el frontend del sistema de matrícula: una SPA en Angular que consume la API de `../sistema-matricula-api`. **Qué** hace el frontend está en [`requerimientos.md`](requerimientos.md), y **cómo se ve cada vista**, en [`wireframes/`](wireframes/index.html). Aquí se citan sus códigos (`V-xx`, `RFF-xx`, `RUI-xx`) sin repetirlos.
 
@@ -671,6 +671,7 @@ Lo estándar de Angular 22 se nombra sin explicarlo. Lo que sigue es lo que este
 Cómo se cumple:
 - **Presupuestos en `angular.json`:** `initial` avisa en 500 kB y falla en 750 kB; `anyComponentStyle` avisa en 4 kB y falla en 8 kB (los valores del CLI). Un build que falla el presupuesto no se acepta.
 - **Carga diferida por área y por rol**, y FullCalendar (unos 400 kB) con `@defer` (§2.5).
+- **El menú de la cuenta, con `@defer (on idle)`:** `mat-menu` arrastra el overlay del CDK (unos 60 kB) y solo se usa con sesión. Mientras carga, la barra muestra el rol. Con el marco, la carga inicial quedó en 438,6 kB (`nucleo` T6).
 - **Imports por componente:** cada componente importa solo lo que usa de Material, sin módulos "compartidos" que lo traigan todo.
 - La fuente del sistema y los íconos SVG no agregan descargas al arranque (§6.6).
 - Los listados nunca piden todo: la API pagina (RUI-10).

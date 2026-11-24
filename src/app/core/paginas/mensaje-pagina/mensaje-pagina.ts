@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { enlaceDeInicio } from '../../sesion/inicio-rol';
 import { SesionService } from '../../sesion/sesion-service';
@@ -12,7 +12,7 @@ import { SesionService } from '../../sesion/sesion-service';
 @Component({
   selector: 'sm-mensaje-pagina',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButtonModule, MatIconModule, RouterLink],
+  imports: [MatButton, MatIcon, RouterLink],
   templateUrl: './mensaje-pagina.html',
   styleUrl: './mensaje-pagina.scss',
 })

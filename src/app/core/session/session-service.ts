@@ -4,15 +4,15 @@ import { firstValueFrom } from 'rxjs';
 import { AuthApi } from '../../api/auth-api';
 import { MeApi } from '../../api/me-api';
 import { Rol, TokenResponse } from '../../api/models';
-import { RELOJ } from './reloj';
+import { CLOCK } from './clock';
 
 /** Única clave de `sessionStorage` de la aplicación (§4.1). */
-export const CLAVE_SESION = 'matricula.sesion';
+export const SESSION_KEY = 'matricula.session';
 
 const ROLES: readonly Rol[] = ['Administrador', 'Profesor', 'Estudiante'];
 
 /** Lo que se guarda de la sesión: la respuesta con token y el nombre de `GET /me`. */
-interface Sesion extends TokenResponse {
+interface Session extends TokenResponse {
   nombre: string | null;
 }
 
@@ -21,38 +21,38 @@ interface Sesion extends TokenResponse {
  * Los componentes la leen con sus signals, nunca del almacenamiento.
  */
 @Injectable({ providedIn: 'root' })
-export class SesionService {
+export class SessionService {
   private readonly authApi = inject(AuthApi);
   private readonly meApi = inject(MeApi);
   private readonly router = inject(Router);
-  private readonly reloj = inject(RELOJ);
+  private readonly clock = inject(CLOCK);
 
-  private readonly sesion = signal<Sesion | null>(this.leer());
-  private readonly fueTerminada = signal(false);
+  private readonly session = signal<Session | null>(this.read());
+  private readonly wasEnded = signal(false);
 
-  readonly token = computed(() => this.sesion()?.accessToken ?? null);
-  readonly rol = computed(() => this.sesion()?.rol ?? null);
-  readonly nombre = computed(() => this.sesion()?.nombre ?? null);
+  readonly token = computed(() => this.session()?.accessToken ?? null);
+  readonly rol = computed(() => this.session()?.rol ?? null);
+  readonly nombre = computed(() => this.session()?.nombre ?? null);
   /** Cambio de contraseña pendiente (RN-24): solo `V-03` y cerrar sesión (RFF-02). */
-  readonly cambioPendiente = computed(() => this.sesion()?.debeCambiarContrasena ?? false);
+  readonly passwordChangePending = computed(() => this.session()?.debeCambiarContrasena ?? false);
   /** La sesión terminó durante el uso (401, cierre): RUI-09 deja salir sin preguntar. */
-  readonly terminada = this.fueTerminada.asReadonly();
+  readonly ended = this.wasEnded.asReadonly();
 
   constructor() {
     // §8.1: el único effect de la aplicación, para sincronizar la sesión con sessionStorage.
-    effect(() => escribir(this.sesion()));
+    effect(() => write(this.session()));
   }
 
   /** Hay sesión y no pasó `expiraEn` (§4.3). Lee el reloj, así que es un método. */
-  activa(): boolean {
-    const sesion = this.sesion();
-    return sesion !== null && !this.paso(sesion);
+  isActive(): boolean {
+    const session = this.session();
+    return session !== null && !this.hasExpired(session);
   }
 
-  /** Hay sesión, pero `expiraEn` ya pasó: `sesionGuard` lo trata como RFF-03. */
-  vencida(): boolean {
-    const sesion = this.sesion();
-    return sesion !== null && this.paso(sesion);
+  /** Hay sesión, pero `expiraEn` ya pasó: `authGuard` lo trata como RFF-03. */
+  isExpired(): boolean {
+    const session = this.session();
+    return session !== null && this.hasExpired(session);
   }
 
   /**
@@ -60,24 +60,24 @@ export class SesionService {
    * y, sin un cambio pendiente, pide el nombre a `GET /me`, que con el cambio pendiente responde
    * `403 RN-24`. Si `GET /me` falla, la sesión sigue sin nombre (supuesto 2 de SPEC-nucleo).
    */
-  async iniciar(respuesta: TokenResponse): Promise<void> {
-    const sesion: Sesion = {
-      accessToken: respuesta.accessToken,
-      expiraEn: respuesta.expiraEn,
-      rol: respuesta.rol,
-      debeCambiarContrasena: respuesta.debeCambiarContrasena,
+  async start(response: TokenResponse): Promise<void> {
+    const session: Session = {
+      accessToken: response.accessToken,
+      expiraEn: response.expiraEn,
+      rol: response.rol,
+      debeCambiarContrasena: response.debeCambiarContrasena,
       nombre: null,
     };
-    this.sesion.set(sesion);
-    this.fueTerminada.set(false);
-    if (sesion.debeCambiarContrasena) return;
+    this.session.set(session);
+    this.wasEnded.set(false);
+    if (session.debeCambiarContrasena) return;
 
     try {
-      const perfil = await firstValueFrom(this.meApi.getProfile());
-      const datos = perfil.datosPersonales;
+      const profile = await firstValueFrom(this.meApi.getProfile());
+      const datos = profile.datosPersonales;
       // Solo si sigue siendo la misma sesión: pudo terminar o reemplazarse mientras tanto.
-      if (datos && this.sesion() === sesion) {
-        this.sesion.set({ ...sesion, nombre: `${datos.nombre} ${datos.apellidos}` });
+      if (datos && this.session() === session) {
+        this.session.set({ ...session, nombre: `${datos.nombre} ${datos.apellidos}` });
       }
     } catch {
       // Sin nombre: el menú de la cuenta muestra solo el rol.
@@ -85,53 +85,54 @@ export class SesionService {
   }
 
   /** Descarta la sesión: `401` con sesión (RFF-03), vencimiento o cierre. */
-  terminar(): void {
-    this.sesion.set(null);
-    this.fueTerminada.set(true);
+  end(): void {
+    this.session.set(null);
+    this.wasEnded.set(true);
   }
 
   /**
    * RFF-04: envía `POST /auth/logout`, descarta la sesión aunque la llamada falle y abre la
    * oferta con el aviso de sesión cerrada (supuesto 3 de SPEC-nucleo).
    */
-  async cerrarSesion(): Promise<void> {
+  async logout(): Promise<void> {
     // La petición sale al suscribirse, con el token todavía en la sesión. Se descarta antes de
     // la respuesta, así un 401 (sesión ya vencida) no dispara además la navegación de RFF-03.
-    const logout = firstValueFrom(this.authApi.logout());
-    this.terminar();
+    const request = firstValueFrom(this.authApi.logout());
+    this.end();
     try {
-      await logout;
+      await request;
     } catch {
       // Igual se cierra la sesión local (RFF-04).
     }
     await this.router.navigateByUrl('/oferta?aviso=sesion-cerrada');
   }
 
-  private paso(sesion: Sesion): boolean {
-    return Date.parse(sesion.expiraEn) <= this.reloj();
+  private hasExpired(session: Session): boolean {
+    return Date.parse(session.expiraEn) <= this.clock();
   }
 
   /** Lee la sesión guardada; descarta la vencida o la que no tiene la forma esperada. */
-  private leer(): Sesion | null {
-    const sesion = aSesion(leerAlmacenamiento());
-    if (sesion === null || this.paso(sesion)) {
-      escribir(null);
+  private read(): Session | null {
+    const session = toSession(readStorage());
+    if (session === null || this.hasExpired(session)) {
+      write(null);
       return null;
     }
-    return sesion;
+    return session;
   }
 }
 
-function aSesion(texto: string | null): Sesion | null {
-  if (texto === null) return null;
-  let valor: unknown;
+function toSession(text: string | null): Session | null {
+  if (text === null) return null;
+  let value: unknown;
   try {
-    valor = JSON.parse(texto);
+    value = JSON.parse(text);
   } catch {
     return null;
   }
-  if (typeof valor !== 'object' || valor === null) return null;
-  const v = valor as Record<string, unknown>;
+  if (typeof value !== 'object' || value === null) return null;
+
+  const v = value as Record<string, unknown>;
   const { accessToken, expiraEn, rol, debeCambiarContrasena, nombre } = v;
   if (
     typeof accessToken !== 'string' ||
@@ -147,18 +148,18 @@ function aSesion(texto: string | null): Sesion | null {
   return { accessToken, expiraEn, rol: rol as Rol, debeCambiarContrasena, nombre: nombre ?? null };
 }
 
-function leerAlmacenamiento(): string | null {
+function readStorage(): string | null {
   try {
-    return sessionStorage.getItem(CLAVE_SESION);
+    return sessionStorage.getItem(SESSION_KEY);
   } catch {
     return null; // Almacenamiento bloqueado por el navegador: se trabaja sin sesión guardada.
   }
 }
 
-function escribir(sesion: Sesion | null): void {
+function write(session: Session | null): void {
   try {
-    if (sesion === null) sessionStorage.removeItem(CLAVE_SESION);
-    else sessionStorage.setItem(CLAVE_SESION, JSON.stringify(sesion));
+    if (session === null) sessionStorage.removeItem(SESSION_KEY);
+    else sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
   } catch {
     // Almacenamiento lleno o bloqueado: la sesión sigue en memoria hasta recargar.
   }

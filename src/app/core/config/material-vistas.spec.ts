@@ -3,7 +3,7 @@ import { DateAdapter } from '@angular/material/core';
 import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatPaginatorIntl } from '@angular/material/paginator';
-import { normalizarEspacios } from '../../../testing/espacios';
+import { normalizeWhitespace } from '../../../testing/whitespace';
 import { AdaptadorFechas } from './adaptador-fechas';
 import { provideMaterialVistas } from './material-vistas';
 
@@ -37,7 +37,7 @@ describe('provideMaterialVistas (§6.1)', () => {
       [0, 20, 0, '0 de 0'],
       [0, 10, 1234, '1–10 de 1 234'],
     ])('página %i de %i con %i filas → %s', (pagina, tamano, total, esperado) => {
-      expect(normalizarEspacios(intl.getRangeLabel(pagina, tamano, total))).toBe(esperado);
+      expect(normalizeWhitespace(intl.getRangeLabel(pagina, tamano, total))).toBe(esperado);
     });
   });
 

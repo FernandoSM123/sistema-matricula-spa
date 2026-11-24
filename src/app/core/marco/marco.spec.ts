@@ -5,11 +5,11 @@ import { DeferBlockBehavior, DeferBlockState, TestBed } from '@angular/core/test
 import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { provideRouter, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { AHORA, TOKEN_CAMBIO_PENDIENTE, TOKEN_ESTUDIANTE } from '../../../testing/sesion';
+import { NOW, PASSWORD_CHANGE_TOKEN, ESTUDIANTE_TOKEN } from '../../../testing/session';
 import { API_URL } from '../../api/api-url';
 import { Rol, TokenResponse } from '../../api/models';
-import { RELOJ } from '../sesion/reloj';
-import { CLAVE_SESION } from '../sesion/sesion-service';
+import { CLOCK } from '../session/clock';
+import { SESSION_KEY } from '../session/session-service';
 import { Marco } from './marco';
 import { menuDe } from './menu-opciones';
 
@@ -20,7 +20,7 @@ describe('Marco (§6.1, RUI-23)', () => {
     sessionStorage.clear();
     if (opciones.token) {
       const { token, rol = token.rol, nombre = null } = opciones;
-      sessionStorage.setItem(CLAVE_SESION, JSON.stringify({ ...token, rol, nombre }));
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ ...token, rol, nombre }));
     }
     const estado: BreakpointState = { matches: opciones.ancho ?? true, breakpoints: {} };
     TestBed.configureTestingModule({
@@ -31,7 +31,7 @@ describe('Marco (§6.1, RUI-23)', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: API_URL, useValue: API },
-        { provide: RELOJ, useValue: () => AHORA },
+        { provide: CLOCK, useValue: () => NOW },
         { provide: BreakpointObserver, useValue: { observe: () => of(estado) } },
       ],
     });
@@ -63,7 +63,7 @@ describe('Marco (§6.1, RUI-23)', () => {
 
   describe('con rol', () => {
     it('el estudiante ve su menú lateral fijo y el menú de la cuenta, sin enlaces del visitante', async () => {
-      const { raiz, textos } = await crear({ token: TOKEN_ESTUDIANTE, nombre: 'María Fernanda Quesada Rojas' });
+      const { raiz, textos } = await crear({ token: ESTUDIANTE_TOKEN, nombre: 'María Fernanda Quesada Rojas' });
       expect(textos('mat-sidenav a')).toEqual(['Mis matrículas', 'Mi horario', 'Oferta académica', 'Cursos']);
       expect(raiz.querySelector('mat-sidenav')?.classList).not.toContain('oculto');
       expect(raiz.querySelector('.boton-menu')).toBeNull();
@@ -73,13 +73,13 @@ describe('Marco (§6.1, RUI-23)', () => {
     });
 
     it('el administrador ve los grupos del menú (§2.3)', async () => {
-      const { textos } = await crear({ token: TOKEN_ESTUDIANTE, rol: 'Administrador' });
+      const { textos } = await crear({ token: ESTUDIANTE_TOKEN, rol: 'Administrador' });
       expect(textos('mat-sidenav .grupo')).toEqual(['Académico', 'Personas', 'Sistema']);
       expect(textos('mat-sidenav a')).toHaveLength(10);
     });
 
     it('en celular, el menú se pliega y se abre con el botón', async () => {
-      const { fixture, raiz } = await crear({ token: TOKEN_ESTUDIANTE, ancho: false });
+      const { fixture, raiz } = await crear({ token: ESTUDIANTE_TOKEN, ancho: false });
       const boton = raiz.querySelector<HTMLButtonElement>('.boton-menu');
       expect(boton?.getAttribute('aria-expanded')).toBe('false');
       boton?.click();
@@ -89,7 +89,7 @@ describe('Marco (§6.1, RUI-23)', () => {
     });
 
     it('en celular, el menú se cierra al navegar', async () => {
-      const { fixture, raiz } = await crear({ token: TOKEN_ESTUDIANTE, ancho: false });
+      const { fixture, raiz } = await crear({ token: ESTUDIANTE_TOKEN, ancho: false });
       const boton = raiz.querySelector<HTMLButtonElement>('.boton-menu');
       boton?.click();
       await fixture.whenStable();
@@ -100,13 +100,13 @@ describe('Marco (§6.1, RUI-23)', () => {
     });
 
     it('sin el nombre (GET /me falló), muestra solo el rol', async () => {
-      const { textos } = await crear({ token: TOKEN_ESTUDIANTE, rol: 'Profesor' });
+      const { textos } = await crear({ token: ESTUDIANTE_TOKEN, rol: 'Profesor' });
       expect(textos('.cuenta .nombre')).toEqual([]);
       expect(textos('.cuenta .rol')).toEqual(['Profesor']);
     });
 
     it('el menú de la cuenta ofrece Mi perfil, Cambiar contraseña y Cerrar sesión', async () => {
-      const { fixture, raiz } = await crear({ token: TOKEN_ESTUDIANTE });
+      const { fixture, raiz } = await crear({ token: ESTUDIANTE_TOKEN });
       raiz.querySelector<HTMLButtonElement>('.cuenta')?.click();
       await fixture.whenStable();
       const items = Array.from(document.querySelectorAll('.mat-mdc-menu-item'), (e) => e.textContent?.trim());
@@ -114,7 +114,7 @@ describe('Marco (§6.1, RUI-23)', () => {
     });
 
     it('"Cerrar sesión" llama al logout y lleva a la oferta con el aviso (RFF-04)', async () => {
-      const { fixture, raiz } = await crear({ token: TOKEN_ESTUDIANTE });
+      const { fixture, raiz } = await crear({ token: ESTUDIANTE_TOKEN });
       raiz.querySelector<HTMLButtonElement>('.cuenta')?.click();
       await fixture.whenStable();
       const cerrar = Array.from(document.querySelectorAll<HTMLElement>('.mat-mdc-menu-item')).at(-1);
@@ -126,7 +126,7 @@ describe('Marco (§6.1, RUI-23)', () => {
   });
 
   it('con un cambio pendiente, solo "Cerrar sesión": sin menú ni enlace de inicio (RFF-02)', async () => {
-    const { raiz, textos } = await crear({ token: TOKEN_CAMBIO_PENDIENTE });
+    const { raiz, textos } = await crear({ token: PASSWORD_CHANGE_TOKEN });
     expect(raiz.querySelector('mat-sidenav')?.classList).toContain('oculto');
     expect(raiz.querySelector('sm-menu-cuenta')).toBeNull();
     expect(raiz.querySelector('a.nombre-sistema')).toBeNull();
@@ -134,7 +134,7 @@ describe('Marco (§6.1, RUI-23)', () => {
   });
 
   it('el nombre del sistema lleva a la página de inicio del rol', async () => {
-    const { raiz } = await crear({ token: TOKEN_ESTUDIANTE, rol: 'Profesor' });
+    const { raiz } = await crear({ token: ESTUDIANTE_TOKEN, rol: 'Profesor' });
     expect(raiz.querySelector('a.nombre-sistema')?.getAttribute('href')).toBe('/mis-grupos');
   });
 
@@ -169,7 +169,7 @@ describe('menuDe (§2.3)', () => {
 
 describe('Marco: menú de la cuenta en diferido (§8.3)', () => {
   it('mientras carga muestra el rol, sin el menú', async () => {
-    sessionStorage.setItem(CLAVE_SESION, JSON.stringify({ ...TOKEN_ESTUDIANTE, nombre: null }));
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify({ ...ESTUDIANTE_TOKEN, nombre: null }));
     TestBed.configureTestingModule({
       deferBlockBehavior: DeferBlockBehavior.Manual,
       imports: [Marco, MatIconTestingModule],
@@ -178,7 +178,7 @@ describe('Marco: menú de la cuenta en diferido (§8.3)', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: API_URL, useValue: API },
-        { provide: RELOJ, useValue: () => AHORA },
+        { provide: CLOCK, useValue: () => NOW },
       ],
     });
     const fixture = TestBed.createComponent(Marco);

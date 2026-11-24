@@ -1,10 +1,10 @@
 import type { PerfilResponse, TokenResponse } from '../app/api/models';
 
 /** Instante fijo de las pruebas de sesión: 2026-03-05 18:00 UTC. */
-export const AHORA = Date.UTC(2026, 2, 5, 18, 0, 0);
+export const NOW = Date.UTC(2026, 2, 5, 18, 0, 0);
 
-/** Respuesta del login de un estudiante, con una hora de vigencia desde `AHORA`. */
-export const TOKEN_ESTUDIANTE: TokenResponse = {
+/** Respuesta del login de un estudiante, con una hora de vigencia desde `NOW`. */
+export const ESTUDIANTE_TOKEN: TokenResponse = {
   accessToken: 'token-estudiante',
   expiraEn: '2026-03-05T19:00:00Z',
   rol: 'Estudiante',
@@ -12,13 +12,13 @@ export const TOKEN_ESTUDIANTE: TokenResponse = {
 };
 
 /** Respuesta del login con una contraseña temporal (RN-24). */
-export const TOKEN_CAMBIO_PENDIENTE: TokenResponse = {
-  ...TOKEN_ESTUDIANTE,
+export const PASSWORD_CHANGE_TOKEN: TokenResponse = {
+  ...ESTUDIANTE_TOKEN,
   accessToken: 'token-temporal',
   debeCambiarContrasena: true,
 };
 
-export const PERFIL_ESTUDIANTE: PerfilResponse = {
+export const ESTUDIANTE_PROFILE: PerfilResponse = {
   usuarioId: 7,
   personaId: 3,
   correo: 'estudiante1@prueba.test',

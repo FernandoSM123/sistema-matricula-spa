@@ -1,4 +1,4 @@
-import { normalizarEspacios } from '../../../testing/espacios';
+import { normalizeWhitespace } from '../../../testing/whitespace';
 import { EtiquetaPipe } from './etiqueta-pipe';
 import { FechaHoraPipe } from './fecha-hora-pipe';
 import { FechaPipe } from './fecha-pipe';
@@ -14,22 +14,22 @@ describe('pipes de formatos', () => {
   });
 
   it('fechaHora, con la zona del instituto o la que recibe', () => {
-    expect(normalizarEspacios(new FechaHoraPipe().transform('2026-03-06T00:30:00Z'))).toBe('05/03/2026 6:30 p. m.');
-    expect(normalizarEspacios(new FechaHoraPipe().transform('2026-03-06T00:30:00Z', 'UTC'))).toBe(
+    expect(normalizeWhitespace(new FechaHoraPipe().transform('2026-03-06T00:30:00Z'))).toBe('05/03/2026 6:30 p. m.');
+    expect(normalizeWhitespace(new FechaHoraPipe().transform('2026-03-06T00:30:00Z', 'UTC'))).toBe(
       '06/03/2026 12:30 a. m.',
     );
   });
 
   it('hora', () => {
-    expect(normalizarEspacios(new HoraPipe().transform('18:30:00'))).toBe('6:30 p. m.');
+    expect(normalizeWhitespace(new HoraPipe().transform('18:30:00'))).toBe('6:30 p. m.');
   });
 
   it('moneda', () => {
-    expect(normalizarEspacios(new MonedaPipe().transform(25000))).toBe('₡25 000,00');
+    expect(normalizeWhitespace(new MonedaPipe().transform(25000))).toBe('₡25 000,00');
   });
 
   it('numero', () => {
-    expect(normalizarEspacios(new NumeroPipe().transform(1234))).toBe('1 234');
+    expect(normalizeWhitespace(new NumeroPipe().transform(1234))).toBe('1 234');
   });
 
   it('etiqueta', () => {

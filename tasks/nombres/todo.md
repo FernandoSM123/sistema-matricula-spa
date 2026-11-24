@@ -18,7 +18,7 @@ Los nombres nuevos son los de las tablas 2.1 a 2.6 de la spec. Si aparece uno qu
 |---|---|:---:|:---:|:---:|:---:|
 | T1. Regla, documentos y scripts | Completada | ✅ | ✅ | ➖ | ✅ |
 | T2. `api/` | Completada | ✅ | ✅ | ➖ | ✅ |
-| T3. Sesión, guardas e interceptores | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
+| T3. Sesión, guardas e interceptores | Completada | ✅ | ✅ | ➖ | ✅ |
 | T4. Configuración y formatos | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T5. Layout y páginas | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T6. Estilos globales | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
@@ -92,6 +92,7 @@ Los nombres nuevos son los de las tablas 2.1 a 2.6 de la spec. Si aparece uno qu
   - Las pruebas de sesión, guardas e interceptores pasan.
   - `grep -rnE "SesionService|CLAVE_SESION|sesionGuard|revisarSesion|invitadoGuard|cambioPendienteGuard|rutaVolverSegura|erroresInterceptor|TIEMPO_ESPERA|RUTAS|INICIO_POR_ROL|enlaceDeInicio|rutaDeInicio|RELOJ|normalizarEspacios|PROBLEMA_|AHORA|core/sesion|core/guardas" src/` sin resultados.
 - Files: `src/app/core/session/*`, `src/app/core/guards/*`, `src/app/core/http/*`, `src/testing/*`, `src/app/app.config.ts`, `src/app/app.routes.ts`, y los usos en `core/marco/` y `core/paginas/`
+- **Resultado (2026-11-24):**  - `core/session/`, `core/guards/`, `core/http/error-interceptor.ts` y `src/testing/` movidos con `git mv` y renombrados según las tablas 2.3 y 2.4. La clave de `sessionStorage` es `matricula.session` (supuesto 2).  - Faltaba en T2: `esUrlDeLaApi` (`api/api-url.ts`) pasa a `isApiUrl`.  - `HomeLink` cambia sus campos a `path` y `label`, porque no son datos de una entidad. Se ajustó la plantilla de `MensajePagina`, que el compilador de tipos no revisa.  - Los nombres internos de las piezas y de sus pruebas pasan a inglés (`hasExpired`, `requestedUrl`, `withTimeout`, `store`, `go`…). Las descripciones de las pruebas siguen en español; las que nombran un método usan el nombre nuevo (`start()`, `end()`, `logout()`).  - El layout y la página de mensaje ya usan `logout()` y `passwordChangePending()` de la sesión; sus propios nombres cambian en T5.  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (20 archivos y 197 pruebas) y `pnpm build` (carga inicial: 438,55 kB) en verde.
 
 ### T4. Configuración y formatos
 - Acceptance (tablas 2.3 y 2.4 de la spec):

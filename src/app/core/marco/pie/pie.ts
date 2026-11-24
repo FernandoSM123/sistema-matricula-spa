@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { ZONA_INSTITUTO } from '../../../shared/formatos/formateadores';
-import { RELOJ } from '../../sesion/reloj';
+import { CLOCK } from '../../session/clock';
 
 /**
  * RUI-23: el nombre del sistema, el del instituto, el año y la versión del frontend, que sale del
@@ -22,6 +22,6 @@ export class Pie {
   protected readonly version = environment.version;
   /** El año en la zona del instituto, no en la del dispositivo (supuesto 6 de SPEC-nucleo). */
   protected readonly anio = new Intl.DateTimeFormat('es-CR', { year: 'numeric', timeZone: ZONA_INSTITUTO }).format(
-    inject(RELOJ)(),
+    inject(CLOCK)(),
   );
 }

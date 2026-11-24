@@ -2,12 +2,12 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
-import { API_URL, esUrlDeLaApi } from '../../api/api-url';
+import { API_URL, isApiUrl } from '../../api/api-url';
 import { toApiError } from '../../api/api-error';
-import { SesionService } from '../sesion/sesion-service';
+import { SessionService } from '../session/session-service';
 
 /** Tiempo de espera de las peticiones a la API. Si se agota, cuenta como sin respuesta (§3.1, RUI-03). */
-export const TIEMPO_ESPERA = 30_000;
+export const REQUEST_TIMEOUT = 30_000;
 
 /**
  * Convierte los errores de la API en `ApiError` (§3.5) y maneja los dos que cambian de vista:
@@ -16,28 +16,26 @@ export const TIEMPO_ESPERA = 30_000;
  *
  * Debe ir después de `tokenInterceptor`, para ver el encabezado `Authorization`.
  */
-export const erroresInterceptor: HttpInterceptorFn = (peticion, siguiente) => {
-  if (!esUrlDeLaApi(peticion.url, inject(API_URL))) {
-    return siguiente(peticion); // Íconos y otros archivos del sitio: no son errores de la API.
+export const errorInterceptor: HttpInterceptorFn = (request, next) => {
+  if (!isApiUrl(request.url, inject(API_URL))) {
+    return next(request); // Íconos y otros archivos del sitio: no son errores de la API.
   }
-  const sesion = inject(SesionService);
+  const session = inject(SessionService);
   const router = inject(Router);
-  const conTiempo = peticion.timeout ? peticion : peticion.clone({ timeout: TIEMPO_ESPERA });
+  const withTimeout = request.timeout ? request : request.clone({ timeout: REQUEST_TIMEOUT });
 
-  return siguiente(conTiempo).pipe(
-    catchError((respuesta: unknown) => {
-      const error = toApiError(respuesta);
-
+  return next(withTimeout).pipe(
+    catchError((response: unknown) => {
+      const error = toApiError(response);
       // Solo con token y si la sesión sigue: así un 401 sin token (login) lo maneja V-02, el del
       // logout no navega (la sesión ya se descartó) y de varios 401 a la vez navega el primero.
-      if (error.status === 401 && peticion.headers.has('Authorization') && sesion.token() !== null) {
+      if (error.status === 401 && request.headers.has('Authorization') && session.token() !== null) {
         const volver = router.url;
-        sesion.terminar();
+        session.end();
         void router.navigate(['/iniciar-sesion'], { queryParams: { volver, aviso: 'sesion-terminada' } });
       } else if (error.status === 403 && error.code === 'RN-24') {
         void router.navigate(['/cambio-obligatorio']);
       }
-
       return throwError(() => error);
     }),
   );

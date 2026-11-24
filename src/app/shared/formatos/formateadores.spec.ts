@@ -1,4 +1,4 @@
-import { normalizarEspacios } from '../../../testing/espacios';
+import { normalizeWhitespace } from '../../../testing/whitespace';
 import {
   formatearFecha,
   formatearFechaHora,
@@ -41,18 +41,18 @@ describe('formateadores', () => {
 
   describe('formatearFechaHora (RUI-16)', () => {
     it('convierte una marca UTC de la noche al día anterior en Costa Rica', () => {
-      expect(normalizarEspacios(formatearFechaHora('2026-03-06T00:30:00Z'))).toBe('05/03/2026 6:30 p. m.');
+      expect(normalizeWhitespace(formatearFechaHora('2026-03-06T00:30:00Z'))).toBe('05/03/2026 6:30 p. m.');
     });
 
     it('usa la zona que recibe, no la del dispositivo', () => {
-      expect(normalizarEspacios(formatearFechaHora('2026-03-06T00:30:00Z', 'UTC'))).toBe('06/03/2026 12:30 a. m.');
-      expect(normalizarEspacios(formatearFechaHora('2026-03-06T00:30:00Z', 'Europe/Madrid'))).toBe(
+      expect(normalizeWhitespace(formatearFechaHora('2026-03-06T00:30:00Z', 'UTC'))).toBe('06/03/2026 12:30 a. m.');
+      expect(normalizeWhitespace(formatearFechaHora('2026-03-06T00:30:00Z', 'Europe/Madrid'))).toBe(
         '06/03/2026 1:30 a. m.',
       );
     });
 
     it('acepta fracciones de segundo y un desplazamiento explícito', () => {
-      expect(normalizarEspacios(formatearFechaHora('2026-03-05T18:30:00.1234567+00:00'))).toBe(
+      expect(normalizeWhitespace(formatearFechaHora('2026-03-05T18:30:00.1234567+00:00'))).toBe(
         '05/03/2026 12:30 p. m.',
       );
     });
@@ -70,7 +70,7 @@ describe('formateadores', () => {
       ['07:05:00', '7:05 a. m.'],
       ['18:30', '6:30 p. m.'],
     ])('%s → %s', (valor, esperado) => {
-      expect(normalizarEspacios(formatearHora(valor))).toBe(esperado);
+      expect(normalizeWhitespace(formatearHora(valor))).toBe(esperado);
     });
 
     it('devuelve tal cual un texto que no es una hora', () => {
@@ -80,12 +80,12 @@ describe('formateadores', () => {
 
   describe('formatearMoneda y formatearNumero (RUI-18)', () => {
     it('muestra colones con dos decimales', () => {
-      expect(normalizarEspacios(formatearMoneda(25000))).toBe('₡25 000,00');
-      expect(normalizarEspacios(formatearMoneda(1500.5))).toBe('₡1 500,50');
+      expect(normalizeWhitespace(formatearMoneda(25000))).toBe('₡25 000,00');
+      expect(normalizeWhitespace(formatearMoneda(1500.5))).toBe('₡1 500,50');
     });
 
     it('muestra un número con el separador de miles de es-CR', () => {
-      expect(normalizarEspacios(formatearNumero(1234))).toBe('1 234');
+      expect(normalizeWhitespace(formatearNumero(1234))).toBe('1 234');
       expect(formatearNumero(30)).toBe('30');
       expect(formatearNumero(0)).toBe('0');
     });

@@ -5,7 +5,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
 import { EtiquetaPipe } from '../../../shared/formatos/etiqueta-pipe';
-import { SesionService } from '../../sesion/sesion-service';
+import { SessionService } from '../../session/session-service';
 import { OPCIONES_CUENTA } from '../menu-opciones';
 
 /**
@@ -20,10 +20,10 @@ import { OPCIONES_CUENTA } from '../menu-opciones';
   styleUrl: './menu-cuenta.scss',
 })
 export class MenuCuenta {
-  protected readonly sesion = inject(SesionService);
+  protected readonly sesion = inject(SessionService);
   protected readonly opciones = OPCIONES_CUENTA;
 
   protected cerrarSesion(): void {
-    void this.sesion.cerrarSesion();
+    void this.sesion.logout();
   }
 }

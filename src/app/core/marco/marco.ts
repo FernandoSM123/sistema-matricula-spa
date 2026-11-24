@@ -8,8 +8,8 @@ import { MatToolbar } from '@angular/material/toolbar';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { EtiquetaPipe } from '../../shared/formatos/etiqueta-pipe';
-import { rutaDeInicio } from '../sesion/inicio-rol';
-import { SesionService } from '../sesion/sesion-service';
+import { homeRoute } from '../session/home-route';
+import { SessionService } from '../session/session-service';
 import { menuDe } from './menu-opciones';
 import { MenuCuenta } from './menu-cuenta/menu-cuenta';
 import { Pie } from './pie/pie';
@@ -47,7 +47,7 @@ export type VarianteMarco = 'visitante' | 'rol' | 'cambio-pendiente';
   styleUrl: './marco.scss',
 })
 export class Marco {
-  protected readonly sesion = inject(SesionService);
+  protected readonly sesion = inject(SessionService);
 
   /** Pantalla ancha: menú lateral fijo y enlaces del visitante en la barra. */
   protected readonly ancho = toSignal(
@@ -59,11 +59,11 @@ export class Marco {
 
   protected readonly variante = computed<VarianteMarco>(() => {
     if (this.sesion.token() === null) return 'visitante';
-    return this.sesion.cambioPendiente() ? 'cambio-pendiente' : 'rol';
+    return this.sesion.passwordChangePending() ? 'cambio-pendiente' : 'rol';
   });
 
   protected readonly menu = computed(() => menuDe(this.variante() === 'rol' ? this.sesion.rol() : null));
-  protected readonly inicio = computed(() => rutaDeInicio(this.sesion));
+  protected readonly inicio = computed(() => homeRoute(this.sesion));
 
   /** Hay menú lateral con el rol siempre, y con el visitante solo en pantallas angostas. */
   protected readonly conMenuLateral = computed(
@@ -90,6 +90,6 @@ export class Marco {
   }
 
   protected cerrarSesion(): void {
-    void this.sesion.cerrarSesion();
+    void this.sesion.logout();
   }
 }

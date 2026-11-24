@@ -4,11 +4,11 @@ import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { provideRouter } from '@angular/router';
-import { AHORA, TOKEN_CAMBIO_PENDIENTE, TOKEN_ESTUDIANTE } from '../../../testing/sesion';
+import { NOW, PASSWORD_CHANGE_TOKEN, ESTUDIANTE_TOKEN } from '../../../testing/session';
 import { API_URL } from '../../api/api-url';
 import { Rol, TokenResponse } from '../../api/models';
-import { RELOJ } from '../sesion/reloj';
-import { CLAVE_SESION } from '../sesion/sesion-service';
+import { CLOCK } from '../session/clock';
+import { SESSION_KEY } from '../session/session-service';
 import { NoEncontrada } from './no-encontrada/no-encontrada';
 import { SinPermiso } from './sin-permiso/sin-permiso';
 
@@ -22,13 +22,13 @@ describe('páginas del sistema (V-09, V-10)', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: API_URL, useValue: 'http://api.prueba/api/v1' },
-        { provide: RELOJ, useValue: () => AHORA },
+        { provide: CLOCK, useValue: () => NOW },
       ],
     });
   });
 
   const conSesion = (token: TokenResponse, rol: Rol = token.rol) =>
-    sessionStorage.setItem(CLAVE_SESION, JSON.stringify({ ...token, rol, nombre: null }));
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify({ ...token, rol, nombre: null }));
 
   function mostrar(pagina: Type<unknown>) {
     const fixture = TestBed.createComponent(pagina);
@@ -44,7 +44,7 @@ describe('páginas del sistema (V-09, V-10)', () => {
   }
 
   it('V-09 avisa que no tiene permiso, con un único enlace a su página de inicio', () => {
-    conSesion(TOKEN_ESTUDIANTE, 'Profesor');
+    conSesion(ESTUDIANTE_TOKEN, 'Profesor');
     expect(mostrar(SinPermiso)).toEqual({
       titulo: 'No tiene permiso para ver esta página',
       enlaces: 1,
@@ -59,12 +59,12 @@ describe('páginas del sistema (V-09, V-10)', () => {
 
   it.each<[string, () => void, string, string]>([
     ['el visitante', () => undefined, 'Ir a la oferta académica', '/oferta'],
-    ['el estudiante', () => conSesion(TOKEN_ESTUDIANTE), 'Ir a Mis matrículas', '/mis-matriculas'],
-    ['el profesor', () => conSesion(TOKEN_ESTUDIANTE, 'Profesor'), 'Ir a Mis grupos', '/mis-grupos'],
-    ['el administrador', () => conSesion(TOKEN_ESTUDIANTE, 'Administrador'), 'Ir a Grupos', '/grupos'],
+    ['el estudiante', () => conSesion(ESTUDIANTE_TOKEN), 'Ir a Mis matrículas', '/mis-matriculas'],
+    ['el profesor', () => conSesion(ESTUDIANTE_TOKEN, 'Profesor'), 'Ir a Mis grupos', '/mis-grupos'],
+    ['el administrador', () => conSesion(ESTUDIANTE_TOKEN, 'Administrador'), 'Ir a Grupos', '/grupos'],
     [
       'un cambio pendiente',
-      () => conSesion(TOKEN_CAMBIO_PENDIENTE),
+      () => conSesion(PASSWORD_CHANGE_TOKEN),
       'Ir al cambio de contraseña',
       '/cambio-obligatorio',
     ],

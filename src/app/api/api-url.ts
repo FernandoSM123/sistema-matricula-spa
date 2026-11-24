@@ -7,6 +7,6 @@ import { InjectionToken } from '@angular/core';
 export const API_URL = new InjectionToken<string>('API_URL');
 
 /** Si la petición va a la API: la URL base exacta o algo debajo de ella, no un prefijo parecido. */
-export function esUrlDeLaApi(url: string, apiUrl: string): boolean {
+export function isApiUrl(url: string, apiUrl: string): boolean {
   return url === apiUrl || url.startsWith(`${apiUrl}/`) || url.startsWith(`${apiUrl}?`);
 }

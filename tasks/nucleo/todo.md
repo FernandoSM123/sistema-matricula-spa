@@ -15,7 +15,7 @@ Cada tarea termina con:
 |---|---|:---:|:---:|:---:|:---:|
 | T1. Contrato con la API | Completada | ✅ | ✅ | ✅ | ✅ |
 | T2. `SesionService` | Completada | ✅ | ✅ | ➖ | ✅ |
-| T3. `ErrorApi` e interceptores | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
+| T3. `ErrorApi` e interceptores | Completada | ✅ | ✅ | ➖ | ✅ |
 | T4. Guardas e inicio por rol | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T5. Rutas, `V-09` y `V-10` | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T6. Marco | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
@@ -106,6 +106,15 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
   - `tokenInterceptor`: agrega el token a `API_URL`; no lo agrega a otro origen (`https://otro.sitio/…`), ni a `/iconos/…`, ni sin sesión.
   - `erroresInterceptor`: el `401` con token navega con `volver` y `aviso`; el `401` sin token (login) no navega; dos `401` seguidos navegan una sola vez; el `401` del logout después de `cerrarSesion()` no navega a `V-02`; el `403 RN-24` navega a `V-03`; un `403 RN-18` y un `409` no navegan.
 - Files: `src/app/api/error-api.ts`, `error-api.spec.ts`, `src/app/core/http/token-interceptor.ts`, `errores-interceptor.ts`, sus `.spec.ts`, `src/app/app.config.ts`, `src/testing/problem-details.ts`
+- **Resultado (2026-11-24):**
+  - **`ErrorApi` con `name: 'ErrorApi'` y un `message` técnico** (`'HTTP 409 RN-39'`), además de los campos de §3.5. En Angular 22, `httpResource` entrega el error tal cual solo si tiene `name` y `message` de texto; si no, lo envuelve en un `ResourceWrappedError` y `EstadoContenido` tendría que desenvolverlo. `message` nunca se muestra (RUI-05). `esErrorApi()` lo reconoce. Anotado en §3.5 de la arquitectura.
+  - `aErrorApi()` lee el cuerpo también si llegó como texto JSON, ignora uno que no es un `ProblemDetails` (p. ej. el HTML de un proxy) y descarta los errores de campo que no son listas de textos. `Retry-After` se lee solo como segundos enteros, que es lo que envía la API.
+  - El tiempo agotado: el backend `fetch` de Angular aborta con un `DOMException` `TimeoutError` y lo entrega como `HttpErrorResponse` con `status: 0`. Cuenta como sin respuesta.
+  - `esUrlDeLaApi()` (en `api-url.ts`) la usan los dos interceptores: la URL base o algo debajo de ella, no un prefijo parecido (`.../api/v1-falsa`).
+  - `erroresInterceptor` solo convierte los errores de la API. Los íconos que descarga Material siguen como `HttpErrorResponse`.
+  - El `401` navega solo si la petición llevaba token **y la sesión sigue**. Esa sola condición cubre el login, el logout después de `cerrarSesion()` y varios `401` a la vez. Una mutación que la quita hace fallar 2 pruebas (comprobado).
+  - `tokenInterceptor` envía el token aunque haya vencido según `expiraEn`, para que la API responda `401` y se aplique RFF-03.
+  - 34 pruebas nuevas. `pnpm formato:revisar`, `pnpm lint`, `pnpm test --watch=false` (15 archivos, 127 pruebas) y `pnpm build` en verde. Carga inicial: 306,72 kB (+4,8 kB: sesión e interceptores).
 
 ### T4. Guardas e inicio por rol
 - Acceptance:
@@ -168,3 +177,4 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
 - 2026-11-24: T1 bloqueada. El primer `esquema.d.ts` trae los 9 enums como `number` sin valores (B-07), además de los números `integer | string` (B-06). Causa: en `Program.cs` del backend, `JsonStringEnumConverter` está solo en las opciones de MVC, y el OpenAPI lee las de `ConfigureHttpJsonOptions`. El usuario decide corregir ambas en la API (COR-03), y el tipo utilitario de los números se descarta.
 - 2026-11-24: COR-03 aplicada en la API (el usuario reinició la instancia de `:5022`). T1 completada, con un cambio decidido por el usuario: el adaptador de fechas y la duración de los avisos salen de la carga inicial (decisión 5 de la spec).
 - 2026-11-24: T2 completada.
+- 2026-11-24: T3 completada.

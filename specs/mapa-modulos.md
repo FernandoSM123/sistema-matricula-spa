@@ -45,7 +45,7 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 | Módulo | Spec | Plan | Tareas | Avance | Estado del módulo |
 |---|---|---|---|---|---|
 | `fundacion` | [Aprobada](SPEC-fundacion.md) | [Aprobado](../tasks/fundacion/plan.md) | [Aprobadas](../tasks/fundacion/todo.md) | 6/6 | Completado |
-| `nucleo` | [Aprobada](SPEC-nucleo.md) | [Aprobado](../tasks/nucleo/plan.md) | [Aprobadas](../tasks/nucleo/todo.md) | 2/7 | En implementación |
+| `nucleo` | [Aprobada](SPEC-nucleo.md) | [Aprobado](../tasks/nucleo/plan.md) | [Aprobadas](../tasks/nucleo/todo.md) | 3/7 | En implementación |
 | `componentes` | — | — | — | — | Sin empezar |
 | `acceso` | — | — | — | — | Sin empezar |
 | `oferta` | — | — | — | — | Sin empezar |

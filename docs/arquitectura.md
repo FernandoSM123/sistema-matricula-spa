@@ -1,6 +1,6 @@
 # Arquitectura y buenas prácticas — SPA Sistema de Matrícula
 
-> **Estado:** aprobado (2026-11-20). Modificado el 2026-11-23: B-05 resuelta en el backend (COR-02); se quita el comportamiento provisional del `429`. Modificado el 2026-11-23 en `fundacion` T1: versiones instaladas (§1), nombre del instituto (§6.6, §11.3) y commits por tarea (§10.3). Modificado el 2026-11-24 en `nucleo` T1: resultado de la primera generación de tipos (§3.2, B-06 y B-07, resueltas con COR-03) y, por la carga inicial, el adaptador de fechas y la duración de los avisos salen de `app.config.ts` (§6.1, §7.3). Spec: [SPEC-arquitectura.md](../specs/SPEC-arquitectura.md) · Tareas: [tasks/arquitectura/todo.md](../tasks/arquitectura/todo.md).
+> **Estado:** aprobado (2026-11-20). Modificado el 2026-11-23: B-05 resuelta en el backend (COR-02); se quita el comportamiento provisional del `429`. Modificado el 2026-11-23 en `fundacion` T1: versiones instaladas (§1), nombre del instituto (§6.6, §11.3) y commits por tarea (§10.3). Modificado el 2026-11-24 en `nucleo` T3: `name` y `message` en `ErrorApi` (§3.5) y `terminar()` sin motivo (§4.2). Modificado el 2026-11-24 en `nucleo` T1: resultado de la primera generación de tipos (§3.2, B-06 y B-07, resueltas con COR-03) y, por la carga inicial, el adaptador de fechas y la duración de los avisos salen de `app.config.ts` (§6.1, §7.3). Spec: [SPEC-arquitectura.md](../specs/SPEC-arquitectura.md) · Tareas: [tasks/arquitectura/todo.md](../tasks/arquitectura/todo.md).
 
 Este documento fija con qué y cómo se construye el frontend del sistema de matrícula: una SPA en Angular que consume la API de `../sistema-matricula-api`. **Qué** hace el frontend está en [`requerimientos.md`](requerimientos.md), y **cómo se ve cada vista**, en [`wireframes/`](wireframes/index.html). Aquí se citan sus códigos (`V-xx`, `RFF-xx`, `RUI-xx`) sin repetirlos.
 
@@ -270,6 +270,8 @@ export class CursosApi {
 ```ts
 // api/error-api.ts
 export interface ErrorApi {
+  name: 'ErrorApi';                 // con `message`, httpResource lo entrega tal cual, sin envolverlo (nucleo T3)
+  message: string;                   // texto técnico ('HTTP 409 RN-39'); nunca se muestra (RUI-05)
   status: number;                    // 0 si no hubo respuesta
   code?: string;                     // 'RN-05', 'RF-47', 'CONCURRENCIA'… (extensión `code` del ProblemDetails)
   detail?: string;                   // mensaje para el usuario, ya en español (RUI-01)
@@ -298,6 +300,7 @@ export interface ErrorApi {
 | `500` | `ErrorAccion` en una acción; `EstadoContenido` al cargar | "Ocurrió un error inesperado. Si el problema continúa, reporte este código: `<traceId>`", con el botón "Copiar" (RUI-03) |
 | Sin respuesta (`status: 0`, sin conexión o tiempo agotado) | `ErrorAccion` o `EstadoContenido` | "No se pudo conectar con el servidor. Revise su conexión e intente de nuevo", con "Reintentar" (RUI-03) |
 
+- **Solo los errores de la API** (`API_URL`) se convierten. Los de otras peticiones, como los íconos que descarga Material, siguen como `HttpErrorResponse`. `esErrorApi()` distingue un `ErrorApi` de otro error.
 - **Regla general (RUI-01):** el texto es el `detail` de la API. El frontend solo pone textos propios donde la tabla lo indica: `500`, sin respuesta y el `429` con N.
 - **Los errores de una acción se muestran junto a ella** (en el formulario o en la ventana) y nunca borran lo que el usuario escribió (RUI-01). Por eso los maneja el componente y no un aviso global. Los únicos que se manejan globalmente son el `401` con sesión y el `403 RN-24`, porque cambian de vista.
 
@@ -330,7 +333,7 @@ export interface ErrorApi {
 - **`tokenInterceptor`:** agrega `Authorization: Bearer <token>` **solo a las peticiones a `API_URL`**. El token nunca se envía a otro origen.
 - **`erroresInterceptor`:**
   - Convierte cada error en un `ErrorApi` (§3.5).
-  - **`401` de una petición que llevaba token:** llama a `SesionService.terminar('sesion-terminada')`, que descarta la sesión, y navega a `/iniciar-sesion?volver=<ruta actual>&aviso=sesion-terminada` (RFF-03). Un `401` sin token es una credencial inválida y lo maneja `V-02`.
+  - **`401` de una petición que llevaba token:** llama a `SesionService.terminar()`, que descarta la sesión, y navega a `/iniciar-sesion?volver=<ruta actual>&aviso=sesion-terminada` (RFF-03). Un `401` sin token es una credencial inválida y lo maneja `V-02`.
   - **`403 RN-24`:** navega a `/cambio-obligatorio`.
   - Si varias peticiones fallan con `401` a la vez, solo la primera navega.
 - **La ruta de vuelta (`volver`)** solo se acepta si es una ruta interna (empieza con `/` y no con `//`). Así nadie puede usar el enlace de inicio de sesión para redirigir a otro sitio. Después del login se usa solo si el rol puede abrir esa ruta (RFF-01).

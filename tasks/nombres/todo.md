@@ -2,7 +2,7 @@
 
 Corrección `nombres`, previa a `componentes` (ver el [mapa](../../specs/mapa-modulos.md)). Spec: [`specs/SPEC-nombres.md`](../../specs/SPEC-nombres.md) · Plan: [`plan.md`](plan.md)
 
-**Estado de la lista:** Aprobada (2026-11-24)
+**Estado de la lista:** Aprobada (2026-11-24). Completada: 7/7 tareas, con el diff revisado por el usuario
 
 Cada tarea termina con:
 - `pnpm lint`, `pnpm test --watch=false` (20 archivos y 197 pruebas) y `pnpm build` en verde;
@@ -22,7 +22,7 @@ Los nombres nuevos son los de las tablas 2.1 a 2.6 de la spec. Si aparece uno qu
 | T4. Configuración y formatos | Completada | ✅ | ✅ | ➖ | ✅ |
 | T5. Layout y páginas | Completada | ✅ | ✅ | ✅ | ✅ |
 | T6. Estilos globales | Completada | ✅ | ✅ | ✅ | ✅ |
-| T7. Verificación y cierre | Pendiente | ➖ | ⬜ | ⬜ | ⬜ |
+| T7. Verificación y cierre | Completada | ➖ | ✅ | ✅ | ✅ |
 
 **Estados de tarea:**
 - **Pendiente:** no se ha empezado.
@@ -141,3 +141,4 @@ Los nombres nuevos son los de las tablas 2.1 a 2.6 de la spec. Si aparece uno qu
   - La spec, este archivo y el mapa con su estado final.
 - Verify: revisión del usuario del diff completo de la rama antes de abrir el PR.
 - Files: `specs/SPEC-nombres.md`, `tasks/nombres/todo.md`, `tasks/nombres/plan.md`, `specs/mapa-modulos.md`
+- **Resultado (2026-11-24):**  - La búsqueda global de los nombres viejos de las tablas 2.1 a 2.6 en `src/`, `public/`, la configuración, `README.md`, `AGENTS.md`, la arquitectura, los requerimientos y el mapa solo encuentra el historial (línea 3 de la arquitectura e historial del mapa), los nombres de la API en `schema.d.ts` (`RegistrarAulaRequest`…) y la palabra "formateadores" en la prosa.  - `pnpm api:types` genera `schema.d.ts` sin diferencias.  - `pnpm audit`: 1 hallazgo moderado, el mismo que aceptaron `fundacion` y `nucleo` (`minimatch` por typescript-eslint, GHSA-g3hv-75wg-m249, solo de desarrollo). Ninguno alto ni crítico.  - Criterios de éxito de la spec:    1. ✅ `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (20 archivos y 197 pruebas) y `pnpm build` (carga inicial: 438,26 kB) en verde; `pnpm audit` sin altos ni críticos.    2. ✅ Tablas 2.1 a 2.5 aplicadas (T2 a T6), con los dos ajustes que decidió o aprobó el usuario: `heading` en `MessagePage` y las clases `active` y `hidden`. La búsqueda de nombres viejos queda como dice el punto anterior.    3. ✅ `schema.d.ts` es el `esquema.d.ts` anterior renombrado, sin cambios, y `pnpm api:types` lo regenera igual.    4. ✅ §10.1 de la arquitectura tiene la regla nueva; la arquitectura, `AGENTS.md`, el mapa, los requerimientos y `README.md` usan los nombres nuevos, incluidos los de la tabla 2.6 (T1).    5. ✅ `AGENTS.md`, en *Preguntar antes*: "El nombre o el idioma de algo, cuando la regla de `docs/arquitectura.md` §10.1 no lo deja claro."    6. ✅ El usuario revisó en el navegador, con la API en marcha, el layout, el pie y `V-10` (T5) y los estilos (T6). Las vistas con sesión, que necesitan el login de `acceso`, las cubren las pruebas.

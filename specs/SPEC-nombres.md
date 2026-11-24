@@ -4,13 +4,14 @@ Corrección transversal antes de `componentes`. No es un módulo del [mapa](mapa
 
 | Estado | Plan | Tareas | Avance |
 |---|---|---|---|
-| **Aprobada** | [Aprobado](../tasks/nombres/plan.md) | [Aprobadas](../tasks/nombres/todo.md) | 6/7 tareas completadas |
+| **Aprobada** | [Aprobado](../tasks/nombres/plan.md) | [Aprobadas](../tasks/nombres/todo.md) | 7/7 tareas completadas. Corrección completada |
 
 **Historial:**
 - 2026-11-24: v1 en revisión, en la rama `nombres`. El usuario fijó la regla (decisiones 1 a 5) al revisar el código a mano.
 - 2026-11-24: v1 aprobada por el usuario, que resolvió las preguntas abiertas: "rol" se queda en español también en los nombres técnicos (decisión 6), las secciones del menú son `section` (decisión 7) y los scripts pasan a inglés (decisión 8). Plan y tareas en revisión.
 - 2026-11-24: plan y tareas aprobados. Empieza T1.
 - 2026-11-24: T1 completada. El usuario decidió los nombres de piezas futuras que la regla no dejaba claros (decisiones 9 a 11).
+- 2026-11-24: T2 a T7 completadas. En T5, el usuario decide que `MessagePage` recibe `heading` en lugar de `title`. Los 6 criterios de éxito se cumplen (revisión en T7 del `todo.md`). Corrección completada, en la rama `nombres`; el pull request a `main` lo abre el usuario.
 
 ## Objetivo
 

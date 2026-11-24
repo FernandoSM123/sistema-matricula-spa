@@ -4,12 +4,13 @@ Corrección transversal antes de `componentes`. No es un módulo del [mapa](mapa
 
 | Estado | Plan | Tareas | Avance |
 |---|---|---|---|
-| **Aprobada** | [Aprobado](../tasks/nombres/plan.md) | [Aprobadas](../tasks/nombres/todo.md) | 0/7 tareas completadas |
+| **Aprobada** | [Aprobado](../tasks/nombres/plan.md) | [Aprobadas](../tasks/nombres/todo.md) | 1/7 tareas completadas |
 
 **Historial:**
 - 2026-11-24: v1 en revisión, en la rama `nombres`. El usuario fijó la regla (decisiones 1 a 5) al revisar el código a mano.
 - 2026-11-24: v1 aprobada por el usuario, que resolvió las preguntas abiertas: "rol" se queda en español también en los nombres técnicos (decisión 6), las secciones del menú son `section` (decisión 7) y los scripts pasan a inglés (decisión 8). Plan y tareas en revisión.
 - 2026-11-24: plan y tareas aprobados. Empieza T1.
+- 2026-11-24: T1 completada. El usuario decidió los nombres de piezas futuras que la regla no dejaba claros (decisiones 9 a 11).
 
 ## Objetivo
 
@@ -164,8 +165,14 @@ Los colores no cambian: solo los nombres de las variables. No hace falta recalcu
 | `HorarioSemanal`, `SelectorPeriodo` | `WeeklySchedule`, `PeriodoSelect` |
 | `cambiosSinGuardarGuard`, `ConCambiosSinGuardar` | `unsavedChangesGuard`, `HasUnsavedChanges` |
 | `shared/formularios/` y sus validadores | `shared/forms/`, validadores con nombres en inglés (`cedula` y los demás de dominio conservan esa parte: `cedulaValidator`) |
-| Componentes de área: `EstudiantesListado`, `CursoDetalle`, `CursoFormulario` | `EstudiantesList`, `CursoDetail`, `CursoForm` |
-| Métodos de los clientes: `listar`, `obtener`, `crear`, `editar`, `matricular`, `retirar`, `cambiarGrupo` | `list`, `get`, `create`, `update`, `enroll`, `withdraw`, `changeGrupo` |
+| Componentes de área: `EstudiantesListado`, `CursoDetalle`, `CursoFormulario`, `OfertaAcademica` | `EstudiantesList`, `CursoDetail`, `CursoForm`, `OfertaList` (decisión 9) |
+| Ventanas: `MatricularVentana` (`V-32`), Cambiar de grupo (`V-33`) | `EnrollDialog`, `ChangeGrupoDialog` (decisión 9) |
+| Métodos de los clientes: `listar`, `obtener`, `crear`, `registrar`, `editar`, `matricular`, `matricularme`, `retirar`, `cambiarGrupo`; consultas `listarRecurso` | `list`, `get`, `create`, `create`, `update`, `enroll`, `enrollMe`, `withdraw`, `changeGrupo`; `listResource` |
+| `confirmar({ titulo, mensaje, accion, reforzada })` | `confirm({ title, message, action, irreversible })` (decisión 10) |
+| `AvisosService.exito()`, el output `elegir(grupoId)` de `HorarioSemanal` | `NotificationService.success()`, el output `grupoSelect` (decisión 11) |
+| `ConCambiosSinGuardar.tieneCambios()` | `HasUnsavedChanges.hasUnsavedChanges()` |
+| Formularios: `aRequest`, `aFormulario`, `enfocarPrimerError`, `enviando`, `guardar()`, el error `servidor`, `ErrorCampo`, `ErroresFormulario`, `limites.ts`, `mensajes.ts` | `toRequest`, `toForm`, `focusFirstError`, `submitting`, `save()`, `server`, `FieldError`, `FormErrors`, `limits.ts`, `messages.ts` |
+| Validadores: `politicaContrasena`, `coinciden`, `fechaNoFutura`, `fechaMinima`, `mayorQue`, `fechasPeriodo`, `finPosterior` | `passwordPolicy`, `fieldsMatch`, `notFutureDate`, `minDate`, `greaterThan`, `periodoDates`, `endAfterStart` |
 
 ## Tech Stack
 
@@ -277,3 +284,6 @@ Los renombres se hacen con el editor o con `git mv`, para conservar la historia 
 6. **"Rol" se queda en español también en los nombres técnicos** (2026-11-24, decidido por el usuario): `rolGuard`, `rol-guard.ts`, `HOME_BY_ROL`, la clase CSS `rol` y la variante `'rol'` de `LayoutVariant`.
 7. **Las secciones del menú del administrador son `section`** (2026-11-24, decidido por el usuario): `NavItem.section` y `NavSection`. `group` se confundiría con la entidad `Grupo`.
 8. **Los scripts pasan a inglés** (2026-11-24, decidido por el usuario): `format`, `format:check` y `api:types`.
+9. **Componentes de las vistas: la entidad y un sufijo de interfaz** (2026-11-24, decidido por el usuario en T1): `OfertaList`, `CursoDetail`, `CursoForm`. Las ventanas de una acción llevan el verbo en inglés: `EnrollDialog` (`V-32`), `ChangeGrupoDialog` (`V-33`).
+10. **La confirmación reforzada es `irreversible`** (2026-11-24, decidido por el usuario en T1): `confirm({ title, message, action, irreversible })`.
+11. **Avisos y outputs** (2026-11-24, decidido por el usuario en T1): `NotificationService.success()`. Los outputs llevan la entidad y el evento: `grupoSelect`.

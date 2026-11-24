@@ -16,7 +16,7 @@ Los nombres nuevos son los de las tablas 2.1 a 2.6 de la spec. Si aparece uno qu
 
 | Tarea | Estado | Código | Pruebas unitarias | Verificación manual | Commit |
 |---|---|:---:|:---:|:---:|:---:|
-| T1. Regla, documentos y scripts | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
+| T1. Regla, documentos y scripts | Completada | ✅ | ✅ | ➖ | ✅ |
 | T2. `api/` | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T3. Sesión, guardas e interceptores | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T4. Configuración y formatos | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
@@ -57,6 +57,14 @@ Los nombres nuevos son los de las tablas 2.1 a 2.6 de la spec. Si aparece uno qu
   - `pnpm api:types` (con la API en marcha) regenera `schema.d.ts` sin diferencias en git.
   - `grep` de los nombres viejos de las tablas 2.1 a 2.6 en `AGENTS.md`, `docs/arquitectura.md`, `docs/requerimientos.md`, `README.md` y el mapa (fuera de su historial): sin resultados.
 - Files: `docs/arquitectura.md`, `AGENTS.md`, `docs/requerimientos.md`, `README.md`, `specs/mapa-modulos.md`, `package.json`, `src/app/api/schema.d.ts`, `src/app/api/modelos.ts`, `.prettierignore`, `eslint.config.js`
+- **Resultado (2026-11-24):**
+  - La arquitectura tenía más nombres de piezas futuras que los de la tabla 2.6. Los que la regla resuelve se aplicaron (`toRequest`, `passwordPolicy`, `listResource`…). Los que no estaban claros los decidió el usuario: el patrón de los componentes de las vistas, `irreversible` y `grupoSelect` (decisiones 9 a 11). Se agregaron a la tabla 2.6 de la spec.
+  - `docs/arquitectura.md`: §10.1 reescrito con la regla, y unos 250 nombres cambiados en el resto del documento. El "marco" pasa a llamarse "layout" también en el texto, salvo una mención que explica que los wireframes lo llaman "marco". La línea de estado del documento conserva los nombres de entonces, porque es su historial.
+  - `docs/requerimientos.md` no cambia: sus únicas menciones (`pnpm api:tipos` y `modelos.ts` en B-06 y B-07) son el historial de las brechas. "Marco de la aplicación" (§5.6) es el nombre del requerimiento, en prosa.
+  - `AGENTS.md`: comandos, estructura, la regla de nombres con ejemplos, la ruta de la excepción de `icons.ts` y la pregunta sobre nombres en *Preguntar antes*.
+  - `eslint.config.js`: `folder`, `restrict`, `areaRules`, `MATRICULA_IMPORTERS` y `AREAS_MESSAGE`; los mensajes siguen en español.
+  - `pnpm api:types` regenera `schema.d.ts` sin diferencias (git lo ve como renombrado al 100 %).
+  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (20 archivos y 197 pruebas) y `pnpm build` (carga inicial: 438,60 kB, igual que al cerrar `nucleo`) en verde.
 
 ### T2. `api/`
 - Acceptance (tabla 2.2 de la spec):

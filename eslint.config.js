@@ -7,28 +7,28 @@ const angular = require('angular-eslint');
 // Dependencias entre carpetas (docs/arquitectura.md §2.3, §2.4 y §10.2).
 // Los patrones solo miran imports relativos ('./' o '../'), para no confundir
 // una carpeta del SPA con un paquete como '@angular/core'.
-const carpeta = (nombre) => `^\\.{1,2}/(.*/)?${nombre}(/|$)`;
+const folder = (name) => `^\\.{1,2}/(.*/)?${name}(/|$)`;
 
 const AREAS = ['acceso', 'oferta', 'cuenta', 'personas', 'catalogos', 'grupos', 'matricula', 'sistema'];
 // Áreas que abren las ventanas o el retiro de matricula (tabla de §2.4).
-const IMPORTAN_MATRICULA = ['oferta', 'personas', 'catalogos', 'grupos'];
-const MENSAJE_AREAS = 'Entre áreas, solo el index.ts de matricula y desde las áreas de la tabla (§2.4)';
+const MATRICULA_IMPORTERS = ['oferta', 'personas', 'catalogos', 'grupos'];
+const AREAS_MESSAGE = 'Entre áreas, solo el index.ts de matricula y desde las áreas de la tabla (§2.4)';
 
-const restringir = (patterns) => ({ '@typescript-eslint/no-restricted-imports': ['error', { patterns }] });
+const restrict = (patterns) => ({ '@typescript-eslint/no-restricted-imports': ['error', { patterns }] });
 
-const reglasDeArea = (area) =>
-  restringir(
-    AREAS.filter((otra) => otra !== area).map((otra) =>
-      otra === 'matricula' && IMPORTAN_MATRICULA.includes(area)
+const areaRules = (area) =>
+  restrict(
+    AREAS.filter((other) => other !== area).map((other) =>
+      other === 'matricula' && MATRICULA_IMPORTERS.includes(area)
         ? // Solo el index.ts: '../../matricula' o '../../matricula/index'.
-          { regex: `^\\.{1,2}/(.*/)?matricula/(?!index$).+`, message: MENSAJE_AREAS }
-        : { regex: carpeta(otra), message: MENSAJE_AREAS },
+          { regex: `^\\.{1,2}/(.*/)?matricula/(?!index$).+`, message: AREAS_MESSAGE }
+        : { regex: folder(other), message: AREAS_MESSAGE },
     ),
   );
 
 module.exports = defineConfig([
-  // Generado por openapi-typescript (pnpm api:tipos): no se edita ni se revisa (§3.2).
-  { ignores: ['src/app/api/esquema.d.ts'] },
+  // Generado por openapi-typescript (pnpm api:types): no se edita ni se revisa (§3.2).
+  { ignores: ['src/app/api/schema.d.ts'] },
   {
     files: ['**/*.ts'],
     extends: [
@@ -61,22 +61,22 @@ module.exports = defineConfig([
   },
   {
     files: ['src/app/api/**/*.ts'],
-    rules: restringir([
+    rules: restrict([
       {
-        regex: carpeta('(core|shared|features)'),
+        regex: folder('(core|shared|features)'),
         message: 'api no depende del SPA (§2.3)',
       },
     ]),
   },
   {
     files: ['src/app/shared/**/*.ts'],
-    rules: restringir([
+    rules: restrict([
       {
-        regex: carpeta('(core|features)'),
+        regex: folder('(core|features)'),
         message: 'shared no conoce core ni features (§2.3)',
       },
       {
-        regex: carpeta('api'),
+        regex: folder('api'),
         allowTypeImports: true,
         message: 'shared solo importa tipos de api, con import type (§2.3)',
       },
@@ -84,16 +84,16 @@ module.exports = defineConfig([
   },
   {
     files: ['src/app/core/**/*.ts'],
-    rules: restringir([
+    rules: restrict([
       {
-        regex: carpeta('features'),
+        regex: folder('features'),
         message: 'core no conoce features (§2.3)',
       },
     ]),
   },
   ...AREAS.map((area) => ({
     files: [`src/app/features/${area}/**/*.ts`],
-    rules: reglasDeArea(area),
+    rules: areaRules(area),
   })),
   {
     files: ['**/*.html'],

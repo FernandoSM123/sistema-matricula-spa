@@ -1,6 +1,6 @@
 // Nombres legibles de los tipos generados (docs/arquitectura.md §3.2). El resto del SPA importa de
-// aquí, nunca de esquema.d.ts. Cada módulo agrega los alias que usa.
-import type { components } from './esquema';
+// aquí, nunca de schema.d.ts. Cada módulo agrega los alias que usa.
+import type { components } from './schema';
 
 type Esquemas = components['schemas'];
 

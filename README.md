@@ -38,16 +38,16 @@ La URL de la API se configura en `src/environments/` (`apiUrl`). Todo lo que va 
 | `pnpm build` | Build de producción en `dist/`, con los presupuestos de tamaño |
 | `pnpm test` | Pruebas unitarias (Vitest) en modo observador. Una sola pasada: `pnpm test --watch=false` |
 | `pnpm lint` | ESLint, incluidas las reglas de dependencias entre carpetas |
-| `pnpm formato` | Formatear con Prettier |
-| `pnpm formato:revisar` | Revisar el formato sin cambiar archivos |
+| `pnpm format` | Formatear con Prettier |
+| `pnpm format:check` | Revisar el formato sin cambiar archivos |
 | `pnpm audit` | Revisar las dependencias |
 
-`pnpm api:tipos`, que regenera los tipos de la API desde su OpenAPI, llega con el módulo `nucleo`.
+`pnpm api:types`, que regenera los tipos de la API desde su OpenAPI, llega con el módulo `nucleo`.
 
 ## Antes de cerrar un módulo
 
 ```bash
-pnpm formato:revisar && pnpm lint && pnpm test --watch=false && pnpm build
+pnpm format:check && pnpm lint && pnpm test --watch=false && pnpm build
 pnpm audit
 ```
 

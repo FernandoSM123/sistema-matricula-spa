@@ -17,7 +17,7 @@ Cada tarea termina con:
 | T2. `SesionService` | Completada | ✅ | ✅ | ➖ | ✅ |
 | T3. `ErrorApi` e interceptores | Completada | ✅ | ✅ | ➖ | ✅ |
 | T4. Guardas e inicio por rol | Completada | ✅ | ✅ | ➖ | ✅ |
-| T5. Rutas, `V-09` y `V-10` | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
+| T5. Rutas, `V-09` y `V-10` | Completada | ✅ | ✅ | ✅ | ✅ |
 | T6. Marco | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T7. Verificación con sesión real y cierre | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
 
@@ -146,6 +146,14 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
   - Pruebas: el enlace de cada página según el rol (visitante solo en `V-10`), y la redirección de `''` con cada rol y con el cambio pendiente.
   - Manual: `pnpm start`; `/una-ruta-inexistente` muestra `V-10` con "Ir a la oferta académica"; la muestra ya no existe.
 - Files: `src/app/app.routes.ts`, `src/app/core/paginas/**`, `src/app/muestra/**` (se borra)
+- **Resultado (2026-11-24):**
+  - `app.routes.ts`: `/` con `redirectTo` a una función que usa `rutaDeInicio()`; `sin-permiso` con `sesionGuard`, y `**`. Las dos páginas en diferido, con `title` para la pestaña del navegador ("Sin permiso · Sistema de Matrícula").
+  - `V-09` y `V-10` comparten un componente interno, `MensajePagina` (ícono, título, mensaje y el enlace de inicio), con los textos de los wireframes. Íconos: `aviso` en `V-09` e `informacion` en `V-10`. No llevan `<main>`: lo pone el marco alrededor del `router-outlet` (T6).
+  - `enlaceDeInicio()` en `inicio-rol.ts`: el texto del enlace por página de inicio ("Ir a Mis matrículas"…), incluido "Ir al cambio de contraseña" con un cambio pendiente.
+  - Se borró `src/app/muestra/`, con sus pruebas.
+  - Las pruebas de las páginas usan `MatIconTestingModule`, para no descargar los SVG. Las de las rutas usan `RouterTestingHarness` con las rutas reales.
+  - 13 pruebas nuevas. `pnpm formato:revisar`, `pnpm lint`, `pnpm test --watch=false` (19 archivos, 182 pruebas) y `pnpm build` en verde. **Carga inicial: 279,89 kB** (baja, porque se fue lo que compartía con la muestra); cada página, menos de 0,5 kB en diferido.
+  - Verificación manual del usuario (2026-11-24), con `pnpm start`: `V-10` en una dirección inexistente, `/` lleva a `/oferta` (que muestra `V-10` hasta que exista el área), `/sin-permiso` sin sesión lleva al inicio de sesión, el foco se ve con el teclado y la muestra ya no existe.
 
 ### T6. Marco
 - Acceptance:
@@ -188,3 +196,4 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
 - 2026-11-24: T2 completada.
 - 2026-11-24: T3 completada.
 - 2026-11-24: T4 completada.
+- 2026-11-24: T5 completada, revisada por el usuario.

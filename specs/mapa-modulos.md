@@ -9,7 +9,7 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 
 | Estado | Avance |
 |---|---|
-| **Aprobado** | 1/10 módulos completados |
+| **Aprobado** | 2/10 módulos completados |
 
 **Historial:**
 - 2026-11-23: v1 en revisión.
@@ -19,6 +19,7 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 - 2026-11-24: spec de `nucleo` aprobada; plan y tareas en revisión. Los cambios al mapa de sus decisiones (`cambiosSinGuardarGuard` a `componentes`, Firefox y Safari a `sistema`) se aplican en su T1.
 - 2026-11-24: plan y tareas de `nucleo` aprobados. T1 queda bloqueada: los tipos generados traen los enums como `number` (B-07) y los números como `number | string` (B-06). Por decisión del usuario se corrigen en la API con COR-03 (decisión 4 del mapa), y `nucleo` sigue cuando esté hecha.
 - 2026-11-24: COR-03 aplicada en la API, y `nucleo` T1 completada: los tipos generados traen `number` y uniones de textos. Además, por decisión del usuario, el adaptador de fechas y la duración de los avisos salen de la carga inicial, que baja de 500 kB a 302 kB. Se aplican los cambios de las decisiones de `nucleo`: `cambiosSinGuardarGuard` pasa a `componentes`, y Firefox y Safari a `sistema`.
+- 2026-11-24: `nucleo` completado (7/7 tareas, versión 0.2.0), en la rama `nucleo`; el pull request a `main` lo abre el usuario. Se quita la fila de Chrome, Edge y Brave, ya verificados. Lighthouse queda para `componentes` y `sistema`, medido sobre `dist/`. El `401` con un token invalidado y el cambio pendiente con una cuenta real se prueban a mano en `acceso`. Siguiente módulo: `componentes`.
 
 ## Módulos
 
@@ -45,7 +46,7 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 | Módulo | Spec | Plan | Tareas | Avance | Estado del módulo |
 |---|---|---|---|---|---|
 | `fundacion` | [Aprobada](SPEC-fundacion.md) | [Aprobado](../tasks/fundacion/plan.md) | [Aprobadas](../tasks/fundacion/todo.md) | 6/6 | Completado |
-| `nucleo` | [Aprobada](SPEC-nucleo.md) | [Aprobado](../tasks/nucleo/plan.md) | [Aprobadas](../tasks/nucleo/todo.md) | 6/7 | En implementación |
+| `nucleo` | [Aprobada](SPEC-nucleo.md) | [Aprobado](../tasks/nucleo/plan.md) | [Aprobadas](../tasks/nucleo/todo.md) | 7/7 | Completado |
 | `componentes` | — | — | — | — | Sin empezar |
 | `acceso` | — | — | — | — | Sin empezar |
 | `oferta` | — | — | — | — | Sin empezar |
@@ -75,12 +76,11 @@ Verificaciones que un módulo no puede hacer por falta de vistas o de datos. Se 
 
 | Origen | Destino | Verificación |
 |---|---|---|
-| `arquitectura` §1 | `nucleo` | La aplicación funciona en las dos últimas versiones de Chrome, Edge y Brave, en escritorio y en el modo celular de las herramientas (decisión 2 de `SPEC-nucleo`) |
 | `nucleo` | `sistema` | La aplicación funciona en las dos últimas versiones de Firefox y Safari, en escritorio y en celular. `nucleo` solo probó navegadores con Chromium (decisión 2 de `SPEC-nucleo`) |
 | `arquitectura` §1 | `grupos` | La grilla de `HorarioSemanal` (FullCalendar con `temporal-polyfill`) funciona en Chrome, Edge y Brave. Firefox y Safari, con `sistema` |
 | `nucleo` | `componentes` | `AvisosService.exito()` fija la duración de 5 s en cada aviso: el token global `MAT_SNACK_BAR_DEFAULT_OPTIONS` salió de la raíz por la carga inicial (decisión 5 de `SPEC-nucleo`, §6.1 de la arquitectura) |
-| `arquitectura` §8.3 | `nucleo`, `componentes`, `sistema` | Lighthouse al cerrar cada uno: carga inicial de 500 kB o menos sin comprimir y LCP menor a 2,5 s, con el perfil de escritorio y el build de producción |
-| `nucleo` | `acceso` | Con una sesión real: las 7 situaciones de §2.5 de los requerimientos (sin sesión, rol sin permiso, `401` que vuelve a `V-02` con el aviso y regresa a la vista, cambio pendiente…) y el cierre de sesión desde el menú de la cuenta (RFF-04) |
+| `arquitectura` §8.3 | `componentes`, `sistema` | Lighthouse al cerrar cada uno: carga inicial de 500 kB o menos sin comprimir y LCP menor a 2,5 s, con el perfil de escritorio y el build de producción. Se mide sobre `dist/` servido como estático con compresión, no sobre `ng serve`, que agrega los mapas de fuentes y no comprime (`nucleo` T7) |
+| `nucleo` | `acceso` | Con una sesión real: las 7 situaciones de §2.5 de los requerimientos (sin sesión, rol sin permiso, `401` que vuelve a `V-02` con el aviso y regresa a la vista, cambio pendiente…) y el cierre de sesión desde el menú de la cuenta (RFF-04). En `nucleo` no se probaron a mano, por decisión del usuario (2026-11-24): el `401` con un token invalidado, porque ninguna petición con sesión lo provoca todavía, y el marco del cambio pendiente con una cuenta real, porque la temporal de `estudiante2` había vencido (se revisó con una sesión ficticia). Los cubren las pruebas automáticas |
 | COR-02 (backend) | `acceso` | Desde el navegador, el `429` del inicio de sesión llena `ErrorApi.retryAfter` con el valor de `Retry-After` (RUI-03) |
 
 ## Decisiones aprobadas

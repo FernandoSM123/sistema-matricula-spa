@@ -145,6 +145,14 @@ describe('SesionService (§4.1)', () => {
   });
 
   describe('vencimiento (§4.3)', () => {
+    it('lee expiraEn como lo envía la API: 7 decimales y desfase +00:00 (nucleo T7)', () => {
+      guardar({ ...sesionGuardada, expiraEn: '2026-03-05T19:00:00.1536542+00:00' });
+      const sesion = crear();
+      expect(sesion.activa()).toBe(true);
+      ahora = Date.parse('2026-03-05T19:00:00.154Z');
+      expect(sesion.vencida()).toBe(true);
+    });
+
     it('activa() es falso cuando pasa expiraEn, y vencida() lo distingue de no tener sesión', () => {
       guardar(sesionGuardada);
       const sesion = crear();

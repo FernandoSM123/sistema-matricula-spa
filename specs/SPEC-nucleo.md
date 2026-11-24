@@ -4,7 +4,7 @@ Módulo `nucleo` del [mapa de módulos](mapa-modulos.md). Depende de `fundacion`
 
 | Estado | Plan | Tareas | Avance |
 |---|---|---|---|
-| **Aprobada** | [Aprobado](../tasks/nucleo/plan.md) | [Aprobadas](../tasks/nucleo/todo.md) | 6/7 tareas completadas |
+| **Aprobada** | [Aprobado](../tasks/nucleo/plan.md) | [Aprobadas](../tasks/nucleo/todo.md) | 7/7 tareas completadas. Módulo completado |
 
 **Historial:**
 - 2026-11-24: v1 en revisión, en la rama `nucleo`.
@@ -12,6 +12,7 @@ Módulo `nucleo` del [mapa de módulos](mapa-modulos.md). Depende de `fundacion`
 - 2026-11-24: plan y tareas aprobados, con un agregado a T1: actualizar §3.2 de la arquitectura con el resultado de la revisión de los tipos. Empieza T1.
 - 2026-11-24: T1 bloqueada. Los tipos generados traen los enums como `number` (B-07). El usuario decide corregir B-06 y B-07 en la API con COR-03 (decisión 4, que reemplaza a la 3).
 - 2026-11-24: COR-03 aplicada en la API y T1 completada. En T1, el usuario decide sacar de la carga inicial el adaptador de fechas y la duración de los avisos (decisión 5).
+- 2026-11-24: T2 a T7 completadas. Los 9 criterios de éxito se cumplen (revisión en T7 del `todo.md`). Por decisión del usuario, el `401` con un token invalidado y el marco del cambio pendiente con una cuenta real se prueban a mano en `acceso`. Lighthouse: LCP de 0,6 s y carga inicial de 438,60 kB. Módulo completado, en la versión 0.2.0.
 
 ## Objetivo
 

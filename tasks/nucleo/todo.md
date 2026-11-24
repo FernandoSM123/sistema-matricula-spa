@@ -19,7 +19,7 @@ Cada tarea termina con:
 | T4. Guardas e inicio por rol | Completada | ✅ | ✅ | ➖ | ✅ |
 | T5. Rutas, `V-09` y `V-10` | Completada | ✅ | ✅ | ✅ | ✅ |
 | T6. Marco | Completada | ✅ | ✅ | ✅ | ✅ |
-| T7. Verificación con sesión real y cierre | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
+| T7. Verificación con sesión real y cierre | Completada | ✅ | ➖ | ✅ | ✅ |
 
 **Estados de tarea:**
 - **Pendiente:** no se ha empezado.
@@ -196,6 +196,26 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
   - Comando de cierre y `pnpm audit` sin hallazgos altos ni críticos (o anotados).
   - Spec, mapa y este archivo al día: módulo completado y criterios de éxito revisados.
 - Verify: los 9 criterios de éxito de la spec, y la revisión del marco por el usuario.
+- **Resultado (2026-11-24):**
+  - Versión `0.2.0` en `package.json`; el pie la muestra.
+  - `pnpm audit`: 1 hallazgo moderado, el mismo que aceptó `fundacion` (`minimatch` por typescript-eslint, GHSA-g3hv-75wg-m249, solo de desarrollo). Ninguno alto ni crítico.
+  - La API envía `expiraEn` con 7 decimales y desfase (`2026-11-24T18:16:55.1536542+00:00`), no con la `Z` de los datos de prueba. `Date.parse` lo lee en V8; se agrega una prueba con ese formato a `sesion-service.spec.ts` (197 pruebas).
+  - Sesiones reales: un script fuera del proyecto lee `DatosPrueba:Contrasena` de los user-secrets de la API sin imprimirla, inicia sesión con cada cuenta y deja un fragmento por cuenta para la consola. Los tokens no se muestran. `admin`, `profesor1` y `estudiante1` responden; `estudiante2`, `401`, porque su temporal venció (72 h desde la siembra).
+  - **Lighthouse, perfil de escritorio, ventana de incógnito:** rendimiento 100, FCP 0,4 s, LCP 0,6 s, TBT 0 ms, CLS 0 y Speed Index 0,4 s. Carga inicial de 438,60 kB sin comprimir (107 kB con gzip). Criterio 7 cumplido.
+  - **Decisiones del usuario (2026-11-24):** el marco del cambio pendiente se da por revisado con la sesión ficticia (`debeCambiarContrasena: true`) y las pruebas automáticas; el `401` con un token invalidado queda cubierto por las pruebas de `errores-interceptor`. Las dos pruebas a mano con sesión real pasan a `acceso` (fila `nucleo` → `acceso` del mapa).
+  - **Verificación manual del usuario**, con las sesiones reales de `admin`, `profesor1` y `estudiante1`, en Chrome, Edge y Brave: el marco y el menú de cada rol a 1280 px, 800 px (menú plegable) y 360 px sin desplazamiento horizontal; el teclado con el foco visible; `V-09` con el enlace a la página de inicio del rol; y "Cerrar sesión" (`POST /auth/logout` con `204`, la clave borrada y `/oferta?aviso=sesion-cerrada`).
+  - Comando de cierre en verde: `pnpm formato:revisar`, `pnpm lint`, `pnpm test --watch=false` (20 archivos, 197 pruebas) y `pnpm build` (carga inicial de 438,60 kB, sin avisos de presupuesto).
+  - **Criterios de éxito de la spec:**
+    1. ✅ Tipos generados con COR-03, `modelos.ts` sin `any` y prueba de tipos (T1).
+    2. ✅ Comando de cierre en verde, dentro de los presupuestos, y la muestra borrada (T5).
+    3. ✅ Pruebas de cada fila de §4.3 (T4) y de cada caso de `erroresInterceptor` (T3).
+    4. ✅ El marco del visitante (T6) y de los tres roles con sesión real coincide con los wireframes, a 1280 px y 360 px, y se usa con el teclado. El del cambio pendiente, con la sesión ficticia y las pruebas (decisión del usuario).
+    5. ✅ `V-09` y `V-10` con el enlace a la página de inicio del rol. `rolGuard` con una ruta real, en `acceso`.
+    6. ✅ El cierre de sesión, a mano. El `401` con token, por las pruebas; a mano, en `acceso` (decisión del usuario).
+    7. ✅ Lighthouse: LCP de 0,6 s y carga inicial de 438,60 kB.
+    8. ✅ Chrome, Edge y Brave verificados; Firefox y Safari, anotados en el mapa para `sistema`.
+    9. ✅ `pnpm audit` sin altos ni críticos; el moderado, anotado.
+  - **Cómo medir:** sobre `dist/` servido como estático con compresión, no sobre `ng serve`. Una primera medición con `ng serve --configuration production` dio LCP 2,5 s, porque `ng serve` entrega cada archivo con el mapa de fuentes en línea y sin comprimir (`main.js` de 2,3 MB, contra 428 kB en `dist/`).
 - Files: `package.json`, `tasks/nucleo/todo.md`, `specs/SPEC-nucleo.md`, `specs/mapa-modulos.md`
 
 ## Historial
@@ -209,3 +229,4 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
 - 2026-11-24: T4 completada.
 - 2026-11-24: T5 completada, revisada por el usuario.
 - 2026-11-24: T6 completada, revisada por el usuario.
+- 2026-11-24: T7 completada, con la revisión del usuario. Módulo completado; el pull request a `main` lo abre el usuario.

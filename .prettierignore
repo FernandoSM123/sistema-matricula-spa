@@ -5,4 +5,4 @@ docs/wireframes/
 *.md
 .agents/
 .claude/
-src/app/api/esquema.d.ts
+src/app/api/schema.d.ts

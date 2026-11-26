@@ -26,19 +26,19 @@ pnpm start                       # ng serve --port 5173 (el origen que permite e
 pnpm build                       # build de producción, con presupuestos de tamaño
 pnpm test --watch=false          # pruebas unitarias (Vitest)
 pnpm lint                        # ESLint, incluidas las dependencias entre carpetas
-pnpm formato:revisar             # Prettier en modo revisión (pnpm formato para aplicar)
-pnpm api:tipos                   # regenerar src/app/api/esquema.d.ts desde el OpenAPI
+pnpm format:check                # Prettier en modo revisión (pnpm format para aplicar)
+pnpm api:types                   # regenerar src/app/api/schema.d.ts desde el OpenAPI
 pnpm audit                       # revisar las dependencias
 ```
 
-**Antes de cerrar un módulo:** `pnpm formato:revisar && pnpm lint && pnpm test --watch=false && pnpm build`, y `pnpm audit`. Después, revisar sus vistas contra los wireframes con la API en marcha (`docs/arquitectura.md` §9, §11).
+**Antes de cerrar un módulo:** `pnpm format:check && pnpm lint && pnpm test --watch=false && pnpm build`, y `pnpm audit`. Después, revisar sus vistas contra los wireframes con la API en marcha (`docs/arquitectura.md` §9, §11).
 
 ## Estructura del código
 ```
 src/app/
-  api/        Contrato con la API: esquema.d.ts (generado, no se edita), modelos.ts, paginación, ErrorApi y un cliente por recurso (*-api.ts). Es la única carpeta que usa HttpClient
-  core/       Una sola instancia: sesión (único acceso a sessionStorage), interceptores, guardas, marco, páginas V-09 y V-10, configuración
-  shared/     Sin API ni sesión: componentes de ui/, formatos/ (pipes) y formularios/ (validadores)
+  api/        Contrato con la API: schema.d.ts (generado, no se edita), models.ts, paginación, ApiError y un cliente por recurso (*-api.ts). Es la única carpeta que usa HttpClient
+  core/       Una sola instancia: sesión (único acceso a sessionStorage), interceptores, guardas, layout, páginas V-09 y V-10, configuración
+  shared/     Sin API ni sesión: componentes de ui/, formatting/ (pipes) y forms/ (validadores)
   features/   Una carpeta por área, cargada en diferido: acceso, oferta, cuenta, personas, catalogos, grupos, matricula, sistema
 src/styles/   Paleta (--sm-*), tema de Material y estilos globales
 ```
@@ -50,9 +50,13 @@ src/styles/   Paleta (--sm-*), tema de Material y estilos globales
   - Entre áreas, solo el `index.ts` de `matricula`.
 
   Las hace cumplir ESLint (`docs/arquitectura.md` §2.3, §2.4).
-- **Nombres:**
-  - Dominio en español sin tildes ni ñ, y sufijos técnicos en inglés.
-  - Archivos en kebab-case: `cursos-api.ts`, `sesion-service.ts`, `sesion-guard.ts`, `fecha-pipe.ts`. Los componentes van sin sufijo.
+- **Nombres** (`docs/arquitectura.md` §10.1):
+  - **En español, sin tildes ni ñ:**
+    - Las entidades del instituto y sus datos, con el nombre de la API: `Curso`, `Matricula`, `Rol`, `session.rol()`, `debeCambiarContrasena`. "Rol" también dentro de nombres técnicos: `rolGuard`.
+    - Las rutas de la URL y las carpetas de área.
+  - **En inglés, todo lo técnico:** componentes de interfaz, clases, funciones, verbos, constantes, carpetas técnicas, clases CSS y piezas de Angular. Por ejemplo, `Layout`, `Footer`, `SessionService`, `authGuard`, `errorInterceptor`, `AppDateAdapter`, `enroll()`.
+  - **Combinados:** entidad y parte técnica, como `CursosApi`, `CursoDetail` o `EnrollDialog`. Los pipes propios llevan el prefijo `sm` (`smDate`).
+  - Archivos en kebab-case: `cursos-api.ts`, `session-service.ts`, `auth-guard.ts`, `date-pipe.ts`. Los componentes van sin sufijo.
   - Prefijo de selectores `sm` (§10).
 
 ## Límites
@@ -63,13 +67,14 @@ src/styles/   Paleta (--sm-*), tema de Material y estilos globales
   - Componentes standalone con `OnPush`, signals e `inject()`.
   - Reactive Forms tipados.
   - `httpResource` para las consultas y `HttpClient` para las acciones, siempre desde `api/`.
-  - Errores de la API como `ErrorApi`, presentados según §3.5.
+  - Errores de la API como `ApiError`, presentados según §3.5.
   - Estado de los listados en la URL.
-- Formatos con los formateadores de `shared/formatos` (`es-CR` y zona `America/Costa_Rica`). Las fechas `DateOnly` nunca pasan por `new Date('yyyy-MM-dd')`.
+- Formatos con los formateadores de `shared/formatting` (`es-CR` y zona `America/Costa_Rica`). Las fechas `DateOnly` nunca pasan por `new Date('yyyy-MM-dd')`.
 - Escribir las pruebas de las piezas que lista `docs/arquitectura.md` §9.
 
 **Preguntar antes**
 - Interpretar un requerimiento ambiguo o una regla del backend.
+- El nombre o el idioma de algo, cuando la regla de `docs/arquitectura.md` §10.1 no lo deja claro.
 - Añadir dependencias (se fijan en `docs/arquitectura.md` §1 y §10.4) o autorizar scripts de instalación en `allowBuilds`.
 - Cambiar una decisión de `docs/arquitectura.md`, un color de la paleta (hay que recalcular el contraste) o las reglas de dependencias entre carpetas.
 - Saltar o borrar una prueba que falla.
@@ -78,8 +83,8 @@ src/styles/   Paleta (--sm-*), tema de Material y estilos globales
 - Modificar la API desde este proyecto. Las brechas con el backend se anotan en `docs/requerimientos.md` y se deciden aparte.
 - Guardar o mostrar contraseñas o temporales fuera de los campos de formulario que las piden.
 - Poner el token en la dirección, escribirlo en la consola o enviarlo a un origen que no sea la API. No usar `console.*` en el código de la aplicación.
-- Usar `innerHTML` con datos de la API o `bypassSecurityTrust*`; cargar scripts, fuentes o íconos desde un CDN. Única excepción: `bypassSecurityTrustResourceUrl` en `core/config/iconos.ts`, sobre las rutas fijas de `public/iconos/` que exige `MatIconRegistry.addSvgIcon` (decisión del usuario, 2026-11-23).
-- Editar a mano `src/app/api/esquema.d.ts`, desactivar las opciones estrictas de TypeScript o usar `any`.
+- Usar `innerHTML` con datos de la API o `bypassSecurityTrust*`; cargar scripts, fuentes o íconos desde un CDN. Única excepción: `bypassSecurityTrustResourceUrl` en `core/config/icons.ts`, sobre las rutas fijas de `public/icons/` que exige `MatIconRegistry.addSvgIcon` (decisión del usuario, 2026-11-23).
+- Editar a mano `src/app/api/schema.d.ts`, desactivar las opciones estrictas de TypeScript o usar `any`.
 - Estilar FullCalendar con selectores de sus clases internas, que llevan hash (`docs/arquitectura.md` §6.3).
 
 ## Flujo de trabajo

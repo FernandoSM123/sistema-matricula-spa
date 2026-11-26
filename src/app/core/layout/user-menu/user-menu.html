@@ -1,0 +1,17 @@
+<button mat-button type="button" class="account" [matMenuTriggerFor]="menu">
+  @if (session.nombre(); as nombre) {
+    <span class="name">{{ nombre }}</span>
+  }
+  <span class="rol">{{ session.rol() | smLabel: 'rol' }}</span>
+</button>
+
+<mat-menu #menu="matMenu" xPosition="before">
+  @for (item of items; track item.path) {
+    <a mat-menu-item [routerLink]="item.path">{{ item.label }}</a>
+  }
+  <mat-divider />
+  <button mat-menu-item type="button" (click)="logout()">
+    <mat-icon svgIcon="logout" aria-hidden="true" />
+    <span>Cerrar sesión</span>
+  </button>
+</mat-menu>

@@ -1,9 +1,0 @@
-<!-- El <main> lo pone el marco alrededor del router-outlet (T6). -->
-<div class="pagina">
-  <section class="mensaje" aria-labelledby="mensaje-titulo">
-    <mat-icon class="icono" [svgIcon]="icono()" aria-hidden="true" />
-    <h1 id="mensaje-titulo">{{ titulo() }}</h1>
-    <p>{{ mensaje() }}</p>
-    <a mat-flat-button [routerLink]="inicio().ruta">{{ inicio().etiqueta }}</a>
-  </section>
-</div>

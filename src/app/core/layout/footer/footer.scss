@@ -1,0 +1,17 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--sm-space-1) var(--sm-space-3);
+  padding: var(--sm-space-2) var(--sm-space-3);
+  background: var(--sm-surface);
+  border-top: 1px solid var(--sm-secondary-active);
+  color: var(--sm-text-secondary);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 599.98px) {
+  :host {
+    flex-direction: column;
+  }
+}

@@ -9,7 +9,7 @@ export class AuthApi {
   private readonly url = `${inject(API_URL)}/auth`;
 
   /** `POST /auth/logout` (RF-08): invalida todos los tokens de la cuenta. Responde `204`. */
-  cerrarSesion() {
+  logout() {
     return this.http.post<void>(`${this.url}/logout`, null);
   }
 }

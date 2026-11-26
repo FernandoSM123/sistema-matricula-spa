@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Marco } from './core/marco/marco';
+import { Layout } from './core/layout/layout';
 
-/** Componente raíz: el marco (§6.1) alrededor de la vista de cada ruta. */
+/** Componente raíz: el layout (§6.1) alrededor de la vista de cada ruta. */
 @Component({
   selector: 'sm-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet, Marco],
+  imports: [RouterOutlet, Layout],
   templateUrl: './app.html',
 })
 export class App {}

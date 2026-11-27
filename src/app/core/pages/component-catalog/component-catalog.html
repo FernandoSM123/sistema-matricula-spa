@@ -1,0 +1,32 @@
+<!-- El <main> lo pone el layout alrededor del router-outlet. -->
+<div class="page">
+  <header>
+    <h1>Catálogo de componentes</h1>
+    <p class="note">
+      Página de pruebas visuales: muestra las piezas reutilizables con datos de ejemplo, para compararlas con el
+      catálogo de los wireframes. No usa datos reales.
+    </p>
+    <nav aria-label="Componentes">
+      <ol class="toc">
+        @for (section of sections; track section.id) {
+          <li>
+            <a [href]="'#' + section.id" (click)="goTo($event, section.id)">{{ section.title }}</a>
+          </li>
+        }
+      </ol>
+    </nav>
+  </header>
+
+  @for (section of sections; track section.id; let n = $index) {
+    <section class="section" [id]="section.id" tabindex="-1" [attr.aria-labelledby]="section.id + '-title'">
+      <h2 [id]="section.id + '-title'">{{ n + 1 }}. {{ section.title }}</h2>
+      <p class="rules">{{ section.rules }}</p>
+
+      @switch (section.id) {
+        @default {
+          <p class="pending">Llega con {{ section.pending }}.</p>
+        }
+      }
+    </section>
+  }
+</div>

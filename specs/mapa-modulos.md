@@ -24,6 +24,9 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 - 2026-11-24: corrección [`nombres`](SPEC-nombres.md) completada (7/7 tareas), en la rama `nombres`; el pull request a `main` lo abre el usuario. Lo construido en `fundacion` y `nucleo` ya usa la regla nueva, sin cambios para quien usa la aplicación. Siguiente módulo: `componentes`.
 - 2026-11-26: corrección `nombres` integrada a `main` (PR #3). La API agregó el refresh token (su módulo `sesiones`: RF-60, RN-50 a RN-52) y renombró 32 esquemas del OpenAPI (su corrección `nombres`). Antes de `componentes`, la corrección [`sesiones`](SPEC-sesiones.md), en la rama `sesiones`, adapta la sesión y los interceptores de `nucleo`. Spec aprobada, con las decisiones recomendadas para la pestaña duplicada y el cierre de sesión. Plan y tareas aprobados. T1 a T5 completadas (5/6): tipos regenerados, `AuthApi.refresh()`, la renovación en `SessionService`, la pestaña duplicada, los interceptores, el cierre de sesión y los documentos (decisión 6).
 - 2026-11-26: corrección [`sesiones`](SPEC-sesiones.md) completada (6/6 tareas), en la rama `sesiones`; el pull request a `main` lo abre el usuario. El SPA renueva el token de acceso sin intervención del usuario y aplica RFF-03 solo cuando la sesión no se puede renovar. La prueba de punta a punta con un formulario queda en la verificación heredada de `acceso`. Siguiente módulo: `componentes`.
+- 2026-11-27: corrección `sesiones` integrada a `main` (PR #4). Empieza `componentes`, en la rama `componentes`, con su spec en revisión.
+- 2026-11-27: spec de `componentes` aprobada, con dos decisiones del usuario: un catálogo de componentes permanente en `/componentes`, sin sesión y sin enlaces, para la revisión visual; y los validadores de un solo formulario llegan con su módulo (`catalogos`, `grupos`). Plan y tareas en revisión.
+- 2026-11-27: plan y tareas de `componentes` aprobados. T1 completada: el catálogo de componentes en `/componentes` (decisión 7).
 
 ## Módulos
 
@@ -51,7 +54,7 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 |---|---|---|---|---|---|
 | `fundacion` | [Aprobada](SPEC-fundacion.md) | [Aprobado](../tasks/fundacion/plan.md) | [Aprobadas](../tasks/fundacion/todo.md) | 6/6 | Completado |
 | `nucleo` | [Aprobada](SPEC-nucleo.md) | [Aprobado](../tasks/nucleo/plan.md) | [Aprobadas](../tasks/nucleo/todo.md) | 7/7 | Completado |
-| `componentes` | — | — | — | — | Sin empezar |
+| `componentes` | [Aprobada](SPEC-componentes.md) | [Aprobado](../tasks/componentes/plan.md) | [Aprobadas](../tasks/componentes/todo.md) | 1/10 | En implementación |
 | `acceso` | — | — | — | — | Sin empezar |
 | `oferta` | — | — | — | — | Sin empezar |
 | `catalogos` | — | — | — | — | Sin empezar |
@@ -103,3 +106,4 @@ Verificaciones que un módulo no puede hacer por falta de vistas o de datos. Se 
 4. **La API no se modifica desde el SPA.** Si un módulo encuentra algo que la API no ofrece, se detiene, lo anota como brecha en `docs/requerimientos.md` §8 y se decide aparte, como B-05 (COR-02).
 5. **Un commit después de cada tarea** (2026-11-23, pedido por el usuario), que incluye el código y la actualización del `todo.md`, la spec y el mapa. En la columna "Commit" de la tabla de estado del `todo.md` se marca ✅, sin el hash (decisión del usuario, 2026-11-23: el hash obligaba a un segundo commit solo para anotarlo). Se aparta de la fase 0, que hacía un solo commit por entregable. Cada módulo se trabaja en su propia rama (`<id>`) y se integra a `main` con un pull request, como en el backend.
 6. **La sesión se renueva con el refresh token** (2026-11-26, corrección [`sesiones`](SPEC-sesiones.md), por el módulo `sesiones` de la API: RF-60, RN-50 a RN-52). El token de acceso dura 15 minutos y el SPA lo renueva sin intervención del usuario; la sesión dura hasta 8 horas desde el inicio de sesión. El refresh token se guarda con la sesión en `sessionStorage` y una pestaña duplicada empieza sin sesión. RFF-03 se aplica solo cuando la sesión no se puede renovar. La regla está en §4 de `docs/arquitectura.md`.
+7. **Catálogo de componentes** (2026-11-27, decisión 1 de [`SPEC-componentes`](SPEC-componentes.md)). Las piezas de `shared/` se revisan a mano en `/componentes`, con datos de ejemplo, contra `docs/wireframes/componentes.html`. La página no pide sesión, ningún menú ni enlace lleva a ella y está en todos los ambientes. Los módulos que agregan piezas a `shared/` (por ejemplo, `grupos` con `WeeklySchedule` y `PeriodoSelect`) les agregan su ejemplo ahí.

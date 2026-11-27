@@ -111,7 +111,7 @@ src/
 - `http/`: los interceptores funcionales. `tokenInterceptor` agrega el token (y lo renueva antes si venció), y `errorInterceptor` convierte las respuestas de error en `ApiError` y maneja el `401` (renovando) y el `403 RN-24` (RFF-03, RUI-03).
 - `guards/`: las guardas funcionales de la §2.5: sesión, invitado, rol, cambio pendiente y cambios sin guardar (§4).
 - `layout/`: el encabezado, el menú por rol de la §2.3, el menú de la cuenta y el pie de página (RUI-23). Es el `Layout`, que en los wireframes se llama "marco".
-- `pages/`: `V-09` Sin permiso y `V-10` Página no encontrada.
+- `pages/`: `V-09` Sin permiso y `V-10` Página no encontrada. Y el catálogo de componentes (`/componentes`, decisión 1 de `SPEC-componentes`): las piezas de `shared/ui` y `shared/forms` con datos de ejemplo, para revisarlas contra `docs/wireframes/componentes.html`. No pide sesión, ningún menú ni enlace lleva a él y se carga en diferido. Cada pieza nueva de `shared/` agrega ahí su ejemplo.
 - `config/`: el locale, el adaptador de fechas propio (§7) y las opciones por defecto de Material.
 
 **`shared/`**: piezas sin dependencias de la sesión ni de la API, que reciben todo por `input()` y avisan por `output()`.
@@ -160,7 +160,7 @@ Las áreas siguen las secciones del catálogo de vistas (§3 de los requerimient
 | `grupos` | `V-28`, `V-29`, `V-30` | `/grupos`, `/grupos/nuevo`, `/grupos/:id`, `/grupos/:id/editar` | `V-28` y `V-29`, administrador; `V-30`, con sesión (RN-18) | `matricula` (`V-32` y el retiro de los inscritos, en `V-30`) |
 | `matricula` | `V-31` a `V-35` | `/mis-matriculas`, `/mi-horario`, `/mis-grupos`. `V-32` y `V-33` son ventanas, sin ruta propia | Estudiante y profesor; las ventanas, también el administrador | — |
 | `sistema` | `V-36`, `V-37`, `V-38` | `/auditoria`, `/errores`, `/errores/:id` | Administrador | — |
-| `core/pages` | `V-09`, `V-10` | `/sin-permiso` y cualquier ruta desconocida (`**`) | Todos | — |
+| `core/pages` | `V-09`, `V-10` | `/sin-permiso` y cualquier ruta desconocida (`**`). Además, `/componentes`: el catálogo de componentes, que no es una vista de los requerimientos (§2.2) | Todos | — |
 
 En total son 38 vistas: 4 + 1 + 3 + 9 + 8 + 3 + 5 + 3 + 2.
 
@@ -604,7 +604,7 @@ Un color nuevo o cambiado vuelve a calcular su contraste antes de usarse (§10).
 **Cómo se aplica a Material:**
 - En `styles.scss`, `@include mat.theme(...)` define el tema claro con una paleta generada desde el acento con `ng generate @angular/material:theme-color`.
 - `@include mat.theme-overrides(...)` fija los tokens de sistema que importan (`primary`, `on-primary`, `surface`, `on-surface`, `outline`, `error`…) a las variables `--sm-*`.
-- Las variables de FullCalendar (`--fc-classic-*`) se mapean a las mismas en ese archivo, cuando se instale FullCalendar (`componentes`).
+- Las variables de FullCalendar (`--fc-classic-*`) se mapean a las mismas en ese archivo, cuando se instale FullCalendar (`grupos`, con `WeeklySchedule`).
 - Solo hay tema claro, porque el modo oscuro está fuera del alcance (§1.3 de los requerimientos).
 
 **Tipografía:** la fuente del sistema (`system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`), con la escala de tipos de Material y una base de 16 px. No se descarga ninguna fuente, así que no hay CDN ni dependencia, y la carga inicial no espera una fuente.
@@ -716,7 +716,7 @@ Como en el backend, primero lo que es puro y transversal. Las pruebas de las vis
 | `tokenInterceptor` | Agrega el token a `API_URL` y no a otro origen ni a `NO_SESSION`; con el token vencido renueva antes de enviar, y sin refresh token envía con el que hay |
 | `SessionService` | Guarda y lee de `sessionStorage`, con el refresh token; el fin de la sesión según `refreshExpiraEn`; `refresh()` (una sola a la vez, cada resultado, respuestas tardías); la pestaña duplicada; reemplaza el token; el cierre de sesión renueva antes si el token venció |
 | Guardas (§4.3) | Una prueba por fila, incluida la ruta `volver` externa rechazada |
-| Componentes de `shared/ui` | `ActionError` con cada respuesta de §3.5 (incluida la cuenta regresiva del `429`), `ContentState` con cada estado, la confirmación irreversible con el foco en "Cancelar", `PaginatedList` en tabla y en tarjetas, y `FilterBar` (Enter y "Limpiar filtros") |
+| Componentes de `shared/ui` | `ActionError` con cada respuesta de §3.5 (incluida la cuenta regresiva del `429`), `ContentState` con cada estado, la confirmación irreversible con el foco en "Cancelar", `PaginatedList` en tabla y en tarjetas, y `FilterBar` (Enter y "Limpiar filtros"). Además, cada pieza tiene su ejemplo en el catálogo de componentes (`/componentes`, §2.2), que se revisa a mano contra `componentes.html` |
 | `WeeklySchedule` | La función pura que arma la configuración de la grilla (domingo oculto o visible, el rango de horas, la traducción de los días) y la lista por día. FullCalendar no se prueba: se confía en su biblioteca |
 
 - Las pruebas no llaman a la API real ni dependen de la zona horaria de la máquina: los formateadores reciben la zona por parámetro en las pruebas que la necesitan.

@@ -41,7 +41,13 @@ describe('SessionService (§4.1)', () => {
 
   const create = () => TestBed.inject(SessionService);
   const http = () => TestBed.inject(HttpTestingController);
-  const stored = () => JSON.parse(sessionStorage.getItem(SESSION_KEY) ?? 'null');
+  const raw = () => JSON.parse(sessionStorage.getItem(SESSION_KEY) ?? 'null');
+  /** La sesión guardada, sin la marca de la pestaña (la revisan las pruebas de la pestaña duplicada). */
+  const stored = () => {
+    const value = raw();
+    if (value !== null) delete value.tabOpen;
+    return value;
+  };
   const store = (value: unknown) => sessionStorage.setItem(SESSION_KEY, JSON.stringify(value));
   const storedSession = { ...ESTUDIANTE_TOKEN, nombre: 'María Fernanda Quesada Rojas' };
 
@@ -110,6 +116,98 @@ describe('SessionService (§4.1)', () => {
       expect(create().isActive()).toBe(true);
       TestBed.tick();
       expect(stored()).toEqual({ ...storedSession, refreshToken: null, refreshExpiraEn: null });
+    });
+  });
+
+  describe('pestaña duplicada (decisión 3)', () => {
+    const pageEvent = (type: 'pagehide' | 'pageshow', persisted: boolean) => {
+      const event = new Event(type);
+      Object.defineProperty(event, 'persisted', { value: persisted });
+      window.dispatchEvent(event);
+    };
+
+    it('al arrancar marca la pestaña como abierta', () => {
+      store(storedSession);
+      create();
+      expect(raw().tabOpen).toBe(true);
+    });
+
+    it('una copia de una pestaña abierta (tabOpen: true) empieza sin sesión y sin aviso', () => {
+      store({ ...storedSession, tabOpen: true });
+      const session = create();
+
+      expect(session.isActive()).toBe(false);
+      expect(session.ended()).toBe(false);
+      expect(sessionStorage.getItem(SESSION_KEY)).toBeNull();
+    });
+
+    it('al recargar (después de pagehide) conserva la sesión', () => {
+      store(storedSession);
+      create();
+      pageEvent('pagehide', false);
+      expect(raw().tabOpen).toBe(false);
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          provideRouter([]),
+          { provide: API_URL, useValue: API },
+          { provide: CLOCK, useValue: () => now },
+        ],
+      });
+      const reloaded = create();
+      expect(reloaded.isActive()).toBe(true);
+      expect(raw().tabOpen).toBe(true);
+    });
+
+    it('al volver desde el historial (pageshow con persisted) la marca otra vez como abierta', () => {
+      store(storedSession);
+      create();
+      pageEvent('pagehide', true);
+      pageEvent('pageshow', true);
+      expect(raw().tabOpen).toBe(true);
+    });
+
+    it('pageshow sin persisted (carga normal) no cambia nada', () => {
+      store(storedSession);
+      create();
+      pageEvent('pagehide', false);
+      pageEvent('pageshow', false);
+      expect(raw().tabOpen).toBe(false);
+    });
+
+    it('la marca se conserva al guardar la sesión, por ejemplo al renovar', async () => {
+      store(storedSession);
+      const session = create();
+      await session.start(PASSWORD_CHANGE_TOKEN);
+      TestBed.tick();
+      expect(raw().tabOpen).toBe(true);
+    });
+
+    it('sin sesión, los eventos no escriben nada', () => {
+      create();
+      pageEvent('pagehide', false);
+      pageEvent('pageshow', true);
+      expect(sessionStorage.getItem(SESSION_KEY)).toBeNull();
+    });
+
+    it('un servicio destruido deja de escuchar los eventos', () => {
+      store(storedSession);
+      create();
+      TestBed.resetTestingModule();
+      sessionStorage.clear();
+      pageEvent('pagehide', false);
+      expect(sessionStorage.getItem(SESSION_KEY)).toBeNull();
+      TestBed.configureTestingModule({
+        providers: [
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          provideRouter([]),
+          { provide: API_URL, useValue: API },
+        ],
+      });
     });
   });
 

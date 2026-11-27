@@ -15,7 +15,7 @@ Cada tarea termina con:
 |---|---|:---:|:---:|:---:|:---:|
 | T1. Contrato y `AuthApi.refresh()` | Completada | ✅ | ✅ | ✅ | ✅ |
 | T2. `SessionService`: fin de la sesión y `refresh()` | Completada | ✅ | ✅ | ➖ | ✅ |
-| T3. Pestaña duplicada | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
+| T3. Pestaña duplicada | Completada | ✅ | ✅ | ➖ | ✅ |
 | T4. Interceptores | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T5. Cierre de sesión y documentos | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T6. Verificación manual y cierre | Pendiente | ➖ | ⬜ | ⬜ | ⬜ |
@@ -80,6 +80,14 @@ Ninguna del mapa va a esta corrección. T5 agrega la renovación a la verificaci
   - Una sesión guardada sin `tabOpen` (de antes de esta corrección) se trata como cerrada: se conserva.
 - Verify: pruebas: copia con `tabOpen: true` → sin sesión; recarga (tras `pagehide`) → con sesión; vuelta desde el historial (`pageshow` con `persisted`) → `tabOpen: true` otra vez; sin sesión, los eventos no escriben nada.
 - Files: `src/app/core/session/session-service.ts`, `session-service.spec.ts`
+- **Resultado (2026-11-26):**
+  - `tabOpen` se guarda en la misma clave `matricula.session`, junto a la sesión. No es parte de la sesión en memoria: lo agrega `write()`.
+  - Al arrancar, la sesión que se conserva se escribe en el acto con `tabOpen: true`, sin esperar al `effect`. Así, una pestaña duplicada justo después de abrir la original ya trae la marca. La copia se descarta con `write(null)` y sin `end()`, así que `ended()` sigue en `false` y no hay aviso.
+  - Los escuchas de `pagehide` y `pageshow` se registran sobre la ventana de `DOCUMENT` y se quitan con `DestroyRef`. En las pruebas, `TestBed` crea un servicio por prueba sobre la misma `window`, y sin quitarlos los servicios viejos escribirían sus sesiones. Hay una prueba para eso.
+  - En las pruebas, `stored()` devuelve la sesión sin la marca, y `raw()` el JSON completo, para las pruebas de la pestaña.
+  - 8 pruebas nuevas. La prueba con una pestaña duplicada de verdad queda para la verificación manual de T6.
+  - **Carga inicial:** 440,06 kB (+1,62 kB desde el punto de partida de T1).
+  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (21 archivos, 231 pruebas) y `pnpm build` en verde.
 
 ### T4. Interceptores
 - Acceptance:

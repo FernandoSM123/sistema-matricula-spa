@@ -1,4 +1,4 @@
-import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { computed, DestroyRef, DOCUMENT, effect, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { isApiError, toApiError } from '../../api/api-error';
@@ -39,6 +39,12 @@ export class SessionService {
   private readonly router = inject(Router);
   private readonly clock = inject(CLOCK);
 
+  /**
+   * Decisión 3 de SPEC-sesiones: la pestaña está abierta. Se guarda junto a la sesión, pasa a
+   * `false` en `pagehide` y vuelve a `true` en `pageshow` desde el historial. Si al arrancar ya
+   * estaba en `true`, el almacenamiento es la copia de una pestaña abierta (duplicada).
+   */
+  private tabOpen = true;
   private readonly session = signal<Session | null>(this.read());
   private readonly wasEnded = signal(false);
   /** Cambia con `start()` y `end()`, no con una renovación: distingue la sesión de una respuesta tardía. */
@@ -55,7 +61,8 @@ export class SessionService {
 
   constructor() {
     // §8.1: el único effect de la aplicación, para sincronizar la sesión con sessionStorage.
-    effect(() => write(this.session()));
+    effect(() => write(this.session(), this.tabOpen));
+    this.watchTab();
   }
 
   /**
@@ -183,14 +190,42 @@ export class SessionService {
     return Date.parse(session.refreshExpiraEn ?? session.expiraEn) <= this.clock();
   }
 
-  /** Lee la sesión guardada; descarta la terminada o la que no tiene la forma esperada. */
+  /**
+   * Lee la sesión guardada; descarta la terminada, la que no tiene la forma esperada y la copiada de
+   * una pestaña abierta, sin aviso: esa pestaña empieza como una nueva (decisión 3 de SPEC-sesiones).
+   * La conservada queda marcada en el acto como de una pestaña abierta.
+   */
   private read(): Session | null {
-    const session = toSession(readStorage());
-    if (session === null || this.hasEnded(session)) {
-      write(null);
+    const text = readStorage();
+    const session = toSession(text);
+    if (session === null || this.hasEnded(session) || wasTabOpen(text)) {
+      write(null, false);
       return null;
     }
+    write(session, true);
     return session;
+  }
+
+  /** `pagehide` (cierre, recarga, salida) y `pageshow` (vuelta desde el historial) cambian la marca. */
+  private watchTab(): void {
+    const view = inject(DOCUMENT).defaultView;
+    if (view === null) return;
+
+    const mark = (open: boolean) => {
+      this.tabOpen = open;
+      const session = this.session();
+      if (session !== null) write(session, open);
+    };
+    const onHide = () => mark(false);
+    const onShow = (event: PageTransitionEvent) => {
+      if (event.persisted) mark(true);
+    };
+    view.addEventListener('pagehide', onHide);
+    view.addEventListener('pageshow', onShow);
+    inject(DestroyRef).onDestroy(() => {
+      view.removeEventListener('pagehide', onHide);
+      view.removeEventListener('pageshow', onShow);
+    });
   }
 }
 
@@ -240,6 +275,16 @@ function isDate(value: unknown): value is string {
   return typeof value === 'string' && !Number.isNaN(Date.parse(value));
 }
 
+/** La sesión guardada traía `tabOpen: true`: la escribió una pestaña que sigue abierta. */
+function wasTabOpen(text: string | null): boolean {
+  try {
+    const value: unknown = JSON.parse(text ?? 'null');
+    return typeof value === 'object' && value !== null && (value as Record<string, unknown>)['tabOpen'] === true;
+  } catch {
+    return false;
+  }
+}
+
 function readStorage(): string | null {
   try {
     return sessionStorage.getItem(SESSION_KEY);
@@ -248,10 +293,10 @@ function readStorage(): string | null {
   }
 }
 
-function write(session: Session | null): void {
+function write(session: Session | null, tabOpen: boolean): void {
   try {
     if (session === null) sessionStorage.removeItem(SESSION_KEY);
-    else sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    else sessionStorage.setItem(SESSION_KEY, JSON.stringify({ ...session, tabOpen }));
   } catch {
     // Almacenamiento lleno o bloqueado: la sesión sigue en memoria hasta recargar.
   }

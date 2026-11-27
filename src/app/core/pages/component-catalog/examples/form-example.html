@@ -1,0 +1,85 @@
+<div class="page">
+  <p><a routerLink="/componentes">Volver al catálogo</a></p>
+  <h1>Registrar estudiante</h1>
+  <p class="note">
+    Formulario de ejemplo (sección 3 del catálogo). Los errores aparecen al salir del campo o al enviar. Salir con
+    cambios sin guardar pregunta si se descartan, y recargar la pestaña muestra el aviso del navegador. El envío es
+    simulado y tarda 1,5 s.
+  </p>
+  <mat-checkbox [checked]="fail()" (change)="fail.set($event.checked)">
+    Simular un error 400 de la API al enviar
+  </mat-checkbox>
+
+  <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+    <sm-form-errors [messages]="formErrors()" heading="No se pudo registrar el estudiante." />
+    <p class="required-note">Los campos con * son obligatorios.</p>
+
+    <fieldset>
+      <legend>Datos personales</legend>
+      <div class="grid">
+        <mat-form-field>
+          <mat-label>Cédula</mat-label>
+          <input matInput formControlName="cedula" autocomplete="off" />
+          <mat-error><sm-field-error [control]="form.controls.cedula" field="la cédula" /></mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Fecha de nacimiento</mat-label>
+          <input matInput [matDatepicker]="birthPicker" formControlName="fechaNacimiento" autocomplete="bday" />
+          <mat-datepicker-toggle matSuffix [for]="birthPicker" />
+          <mat-datepicker #birthPicker />
+          <mat-error><sm-field-error [control]="form.controls.fechaNacimiento" /></mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="nombre" autocomplete="given-name" />
+          <mat-error><sm-field-error [control]="form.controls.nombre" field="el nombre" /></mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Apellidos</mat-label>
+          <input matInput formControlName="apellidos" autocomplete="family-name" />
+          <mat-error><sm-field-error [control]="form.controls.apellidos" field="los apellidos" /></mat-error>
+        </mat-form-field>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Contacto y cuenta</legend>
+      <div class="grid">
+        <mat-form-field>
+          <mat-label>Correo</mat-label>
+          <input matInput type="email" formControlName="correo" autocomplete="email" />
+          <mat-error><sm-field-error [control]="form.controls.correo" field="el correo" /></mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Teléfono</mat-label>
+          <input matInput type="tel" formControlName="telefono" autocomplete="tel" />
+          <mat-error><sm-field-error [control]="form.controls.telefono" field="el teléfono" /></mat-error>
+        </mat-form-field>
+        <mat-form-field class="wide">
+          <mat-label>Dirección</mat-label>
+          <input matInput formControlName="direccion" autocomplete="street-address" />
+          <mat-error><sm-field-error [control]="form.controls.direccion" /></mat-error>
+        </mat-form-field>
+        <sm-password-field
+          [control]="form.controls.contrasena"
+          label="Contraseña nueva"
+          field="la nueva contraseña"
+          autocomplete="new-password"
+          hint="Al menos 8 caracteres, con una mayúscula y un número."
+        />
+        <sm-password-field
+          [control]="form.controls.confirmacion"
+          label="Confirmar contraseña"
+          field="la confirmación"
+          autocomplete="new-password"
+          groupError="fieldsMatch"
+        />
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <a mat-stroked-button routerLink="/componentes">Cancelar</a>
+      <sm-submit-button [submitting]="submitting()" working="Registrando…">Registrar estudiante</sm-submit-button>
+    </div>
+  </form>
+</div>

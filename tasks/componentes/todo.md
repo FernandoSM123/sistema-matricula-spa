@@ -17,7 +17,7 @@ Cada tarea termina con:
 | T2. Lógica de formularios | Completada | ✅ | ✅ | ➖ | ✅ |
 | T3. Mensajes y confirmaciones | Completada | ✅ | ✅ | ✅ | ✅ |
 | T4. Cambios sin guardar | Completada | ✅ | ✅ | ✅ | ✅ |
-| T5. Controles de formulario | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
+| T5. Controles de formulario | Completada | ✅ | ✅ | ✅ | ✅ |
 | T6. `ActionError` | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T7. `ContentState` | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T8. Listados | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
@@ -135,6 +135,22 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
   - Pruebas: `FieldError` con `required`, `maxlength` y `server`; `FormErrors` vacío y con mensajes; `SubmitButton` deshabilitado al enviar y al esperar, con el indicador; `PasswordField` cambia el tipo del campo y escribe el valor en el control.
   - A mano, contra la sección 3 del wireframe: los errores aparecen al salir del campo o al enviar, no al escribir; el error del servidor en su campo y el sin campo arriba; el foco al primer campo con error al enviar; "Mostrar" con el teclado.
 - Files: `src/app/shared/forms/field-error/`, `form-errors/`, `src/app/shared/ui/submit-button/`, `password-field/` (con sus `.spec.ts`), la sección 3 del catálogo
+- **Resultado (2026-11-27):**
+  - No previsto: `PasswordField` recibe el `FormControl` por `input()` y arma su propio `mat-form-field` (etiqueta, ayuda, "Mostrar" y error), en lugar de ser un `ControlValueAccessor` dentro de uno. Para eso último habría que implementar `MatFormFieldControl`, mucho más código para el mismo resultado. El botón es de solo ícono, con `aria-label` ("Mostrar contraseña nueva") y `aria-pressed`.
+  - No previsto: `groupErrorMatcher(error)` (`shared/forms/group-error-matcher.ts`) y la entrada `groupError` de `FieldError` muestran en un campo el error de su grupo (`fieldsMatch` en la confirmación), pendiente de T2. Se agrega a §5.2 de la arquitectura.
+  - `FieldError` lee `control.events` (y los del grupo), porque con `OnPush` no vería los cambios de los errores, que no son signals.
+  - `SubmitButton` recibe `working`, el texto mientras envía ("Registrando…"), como el wireframe.
+  - `FormErrors` acepta `heading` ("No se pudo registrar el estudiante.") y muestra un mensaje solo o una lista.
+  - Catálogo: `/componentes/formulario` es ahora el formulario de registrar estudiante del wireframe, con el envío simulado (1,5 s) y una casilla para que responda con un `400` (un error con campo y uno sin campo).
+  - **Ajustes pedidos por el usuario en la revisión:**
+    1. El formulario ocupa todo el ancho, con 24 px a los lados (16 px en celular), como `.wf-contenido` de los wireframes.
+    2. 16 px entre las filas de campos: con `subscriptSizing: 'dynamic'` el campo no reserva lugar para el error, y la grilla tenía 4 px entre filas.
+    3. `align-items: start` en la grilla, para que el error de un campo no estire los demás de su fila.
+    4. La etiqueta que sube al enfocar el campo: Material ya la anima, pero quita todas sus animaciones con `prefers-reduced-motion`, y en el equipo del usuario los "Efectos de animación" de Windows están desactivados (comprobado con `SystemParametersInfo`). Se le explica; no se cambia el código.
+
+    Los puntos 1 a 3 quedan como regla de los formularios en §5.1 de la arquitectura ("Disposición").
+  - Build: la carga inicial pasa de 459,99 kB a 467,06 kB. Entra `@angular/cdk/a11y` completo (4,2 kB) y crecen el foco de la CDK y `rxjs-interop`: el selector de fecha, los campos y el indicador de progreso los usan, y la carga inicial ya importaba la CDK por el menú lateral. Margen hasta los 500 kB: 33 kB.
+  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (35 archivos, 353 pruebas) y `pnpm build` en verde.
 
 ### T6. `ActionError`
 - Acceptance:
@@ -211,3 +227,4 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
 - 2026-11-27: T2 completada.
 - 2026-11-27: T3 completada, revisada por el usuario, que decide que la confirmación pueda ejecutar la acción y mostrar su error dentro de la ventana (decisión 3 de la spec, en T6).
 - 2026-11-27: T4 completada, revisada por el usuario.
+- 2026-11-27: T5 completada, revisada por el usuario, con tres ajustes a la disposición de los formularios (§5.1 de la arquitectura).

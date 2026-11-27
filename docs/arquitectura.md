@@ -408,6 +408,10 @@ Los formularios usan **Reactive Forms tipados** (§1) con los controles de Mater
   - Campos de texto: `mat-form-field` con apariencia `outline` y `mat-label` siempre visible; nunca solo un placeholder (§6 de los requerimientos).
   - Fechas: `mat-datepicker`. Horas: `mat-timepicker` con un intervalo de 15 minutos (§7).
   - Listas cortas: `mat-select`. Selectores con búsqueda: `SearchSelect` (§6).
+- **Disposición** (decidida por el usuario al revisar `componentes` T5, como en los wireframes):
+  - El formulario ocupa todo el ancho del contenido, con 24 px a los lados (16 px en celular), no una columna angosta centrada. Las vistas angostas del wireframe (`V-02`, `V-03`…) son la excepción.
+  - Los campos van en una grilla (`repeat(auto-fit, minmax(16rem, 1fr))`) con 16 px entre filas y columnas: con `subscriptSizing: 'dynamic'` el campo no reserva lugar para el error, así que la separación la da la grilla.
+  - `align-items: start` en la grilla, para que el error de un campo no estire los demás de su fila.
 
 ### 5.2 Validadores (RUI-06)
 
@@ -431,6 +435,7 @@ En `shared/forms/`. Los límites viven en un solo archivo, `limits.ts`, con un c
 
 - Cada validador devuelve un error con nombre, y los mensajes están en un solo mapa de `shared/forms/messages.ts`, con trato de usted (RUI-22) y la redacción de los validadores del backend. Por ejemplo: `passwordPolicy` → "Use al menos 8 caracteres, con una mayúscula y un número". La cédula y el teléfono usan validadores propios (`cedula`, `telefono`) en lugar de `Validators.pattern`, para que cada uno tenga su mensaje. `errorMessage(errors, field)` da el mensaje del primer error; `field` es el dato con su artículo, para "Indique la cédula." (`componentes` T2).
 - **Cuándo se muestran:** al salir del campo o al intentar enviar, no mientras se escribe (RUI-06). Es lo que hace `mat-error` por defecto (el control debe estar tocado o el formulario, enviado). Los obligatorios llevan la marca de Material en la etiqueta.
+- **Errores del grupo** (`fieldsMatch`, `endAfterStart`): el validador deja el error en el grupo, y se muestra en el campo que corresponde (la confirmación, la hora de fin) con `groupErrorMatcher(error)` como `errorStateMatcher` del campo y `groupError` en su `FieldError` (`componentes` T5).
 
 ### 5.3 Errores del servidor
 
@@ -498,7 +503,7 @@ Cada componente de `docs/wireframes/componentes.html` tiene su pieza:
 |---|---|---|---|
 | 1 | Listado paginado | `PaginatedList` (`shared/ui`): `mat-table` y `mat-paginator`. Por debajo de 600 px dibuja tarjetas con las mismas columnas: la columna principal encabeza la tarjeta y las demás llevan su rótulo. Las columnas se declaran una sola vez en la vista | RUI-10, RUI-13, RUI-14 |
 | 2 | Búsqueda y filtros | `FilterBar` (`shared/ui`): campo de búsqueda con "Buscar" y Enter, los filtros de la vista proyectados, "Incluir inactivos" (`mat-checkbox`) y "Limpiar filtros" cuando hay alguno aplicado. Avisa por `output()` y la vista navega con los nuevos parámetros (§3.4) | RUI-11, RUI-12 |
-| 3 | Formulario | `mat-form-field` y `mat-error` con `FieldError`, que traduce el error a su mensaje; `FormErrors` arriba; `SubmitButton`; `PasswordField`, con "Mostrar" (§5) | RUI-02, RUI-06, RUI-08 |
+| 3 | Formulario | `mat-form-field` y `mat-error` con `FieldError`, que traduce el error a su mensaje; `FormErrors` arriba; `SubmitButton`, con el texto de trabajo ("Registrando…"); `PasswordField`, con "Mostrar", que recibe el `FormControl` y arma su propio `mat-form-field` (§5) | RUI-02, RUI-06, RUI-08 |
 | 4 | Selectores de fecha y hora | `mat-datepicker` y `mat-timepicker` (con un intervalo de 15 minutos) con `AppDateAdapter` (§7) | RUI-15, RUI-17 |
 | 5 | Selector con búsqueda | `SearchSelect` (`shared/ui`), sobre `mat-autocomplete`. Recibe una función de búsqueda, sugiere mientras se escribe (con un retardo de 300 ms y hasta 10 opciones), guarda el id y muestra el texto | RUI-11 |
 | 6 | Ventanas de confirmación | El servicio `ConfirmService` (`shared/ui`), sobre `MatDialog`: `confirm({ title, message, action, irreversible })` devuelve `Promise<boolean>`. La irreversible (`irreversible: true`) destaca que no se puede deshacer y deja el foco inicial en "Cancelar". `MatDialog` lleva el foco a la ventana y lo devuelve al cerrarla | RUI-07, §6 |

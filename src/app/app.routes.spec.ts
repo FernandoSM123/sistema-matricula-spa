@@ -83,7 +83,7 @@ describe('rutas de la aplicación (§2.4, §2.5)', () => {
     it('/componentes/formulario abre el formulario de ejemplo, con unsavedChangesGuard', async () => {
       expect(await go('/componentes/formulario')).toEqual({
         url: '/componentes/formulario',
-        heading: 'Formulario de ejemplo',
+        heading: 'Registrar estudiante',
       });
     });
   });

@@ -1,6 +1,6 @@
 # Sistema de Matrícula — Requerimientos del frontend
 
-> **Estado:** aprobado (2026-11-17). Modificado el 2026-11-19: se agrega RUI-23 (pie de página), pedido durante los wireframes. Modificado el 2026-11-20: se agrega la brecha B-05 (`Retry-After` no expuesto por CORS), encontrada durante la arquitectura. Modificado el 2026-11-23: B-05 queda resuelta en el backend (COR-02). Modificado el 2026-11-23: el nombre del instituto en RUI-23. Modificado el 2026-11-24: se agregan las brechas B-06 y B-07 (tipos del OpenAPI), encontradas en `nucleo` y resueltas en el backend (COR-03). Spec: [SPEC-requerimientos.md](../specs/SPEC-requerimientos.md) · Tareas: [tasks/requerimientos/todo.md](../tasks/requerimientos/todo.md).
+> **Estado:** aprobado (2026-11-17). Modificado el 2026-11-19: se agrega RUI-23 (pie de página), pedido durante los wireframes. Modificado el 2026-11-20: se agrega la brecha B-05 (`Retry-After` no expuesto por CORS), encontrada durante la arquitectura. Modificado el 2026-11-23: B-05 queda resuelta en el backend (COR-02). Modificado el 2026-11-23: el nombre del instituto en RUI-23. Modificado el 2026-11-24: se agregan las brechas B-06 y B-07 (tipos del OpenAPI), encontradas en `nucleo` y resueltas en el backend (COR-03). Modificado el 2026-11-26: la sesión se renueva con el refresh token que agregó el módulo `sesiones` de la API (RF-60, RN-50 a RN-52), en RFF-03, RFF-04, §1.3, §2.5, §6 y el glosario (corrección [`sesiones`](../specs/SPEC-sesiones.md)). Spec: [SPEC-requerimientos.md](../specs/SPEC-requerimientos.md) · Tareas: [tasks/requerimientos/todo.md](../tasks/requerimientos/todo.md).
 
 Este documento define qué hace el frontend (SPA) del sistema de matrícula. Las reglas de negocio, los datos y los permisos ya están definidos e implementados en la API, y aquí **se citan, no se repiten**: `RF-xx` y `RN-xx` se refieren a los [requerimientos del backend](../../sistema-matricula-api/docs/requerimientos.md). Los códigos propios del frontend son:
 
@@ -42,7 +42,7 @@ Ofrecer a cada tipo de usuario del instituto una aplicación web para usar el si
 - Exportar listados a Excel o PDF, e imprimir el horario: la API no tiene endpoints de exportación.
 - Modo oscuro.
 - Notificaciones en tiempo real, por ejemplo cuando se libera un cupo: la API no las ofrece.
-- Aviso antes de que venza la sesión y renovación automática del token: la API no tiene refresh token.
+- Aviso antes de que termine la sesión (8 horas desde el inicio de sesión, RN-50), con la opción de guardar lo que se está escribiendo. El token de acceso sí se renueva sin intervención del usuario (RFF-03).
 - Varios idiomas: el sistema es solo en español.
 - Estadísticas o tableros con indicadores: los reportes estadísticos están fuera del alcance del backend.
 - Todo lo que el backend deja fuera de su alcance (§1.3 de sus requerimientos): calificaciones, prerrequisitos, lista de espera, pagos, asistencia, certificados, etc.
@@ -92,11 +92,11 @@ Las vistas concretas, con sus ids, se definen en la sección 3. El menú solo mu
 | Con sesión, entra al inicio de sesión, al registro o al olvido | Va a su página de inicio |
 | Con un cambio de contraseña pendiente (RN-24) | Solo puede usar el cambio obligatorio y cerrar sesión. Cualquier otra vista lo lleva al cambio obligatorio |
 | Con sesión, entra a una vista de otro rol | Ve una página de "sin permiso" con un enlace a su página de inicio. El menú nunca le ofrece esas vistas |
-| La sesión vence o se invalida mientras usa la aplicación (la API responde `401`) | Se le avisa que la sesión terminó y va al inicio de sesión. Después de iniciar sesión, vuelve a la vista donde estaba |
+| La sesión termina o se invalida mientras usa la aplicación (la API responde `401` y la sesión no se puede renovar) | Se le avisa que la sesión terminó y va al inicio de sesión. Después de iniciar sesión, vuelve a la vista donde estaba |
 | La dirección no corresponde a ninguna vista | Página de "no encontrada" con un enlace a su página de inicio |
 | El registro que pide no existe (la API responde `404`) | La vista muestra que el registro no existe, con un enlace al listado correspondiente |
 
-La sesión puede invalidarse sin que venza: al cerrar sesión en otro dispositivo, al cambiar la contraseña o al ser desactivada la cuenta (§7 de la arquitectura del backend). En todos los casos el frontend lo detecta por el `401` y aplica la misma regla.
+El token de acceso vence a los 15 minutos, pero eso no termina la sesión: el frontend lo renueva sin que el usuario lo note (RF-60). La sesión termina a las 8 horas del inicio de sesión (RN-50), y puede invalidarse antes: al cerrar sesión en otro dispositivo, al cambiar la contraseña o al ser desactivada la cuenta (RN-52, §7 de la arquitectura del backend). En todos los casos el frontend lo detecta porque la renovación responde `401`, y aplica la misma regla.
 
 ---
 
@@ -227,14 +227,16 @@ Lo que la interfaz hace además de llamar a los endpoints. Las reglas de negocio
   - Si la nueva contraseña es igual a la temporal o a la actual (`409 RN-25`), lo indica en el campo de la nueva contraseña.
   - Con un cambio correcto, reemplaza la sesión por el token nuevo que devuelve la API, informa que se envió un aviso al correo (RN-33) y abre la vista pedida o la página de inicio del rol, como en RFF-01.
 
-- **RFF-03 Sesión vencida o invalidada** (§2.5):
-  - Cuando la API responde `401` a una petición hecha con sesión, el frontend descarta la sesión, recuerda la vista actual y abre `V-02` con el aviso "Su sesión terminó. Inicie sesión de nuevo".
-  - Aplica igual si la sesión venció (60 minutos, sin renovación), si se cerró en otro dispositivo, si se cambió la contraseña o si se desactivó la cuenta.
-  - Los datos que el usuario estaba escribiendo en un formulario se pierden. No hay aviso previo al vencimiento (fuera del alcance, §1.3).
+- **RFF-03 Sesión terminada o invalidada** (§2.5):
+  - **Renovación (RF-60):** cuando el token de acceso vence (15 minutos, RN-50), el frontend lo renueva sin que el usuario lo note y repite la petición. Si la renovación no responde (sin conexión, `429` o `5xx`), la petición falla con ese error (RUI-03) y la sesión sigue.
+  - Cuando la sesión ya no se puede renovar (la API responde `401`), el frontend descarta la sesión, recuerda la vista actual y abre `V-02` con el aviso "Su sesión terminó. Inicie sesión de nuevo".
+  - Aplica igual si pasaron las 8 horas desde el inicio de sesión (RN-50), si se cerró en otro dispositivo, si se cambió la contraseña o si se desactivó la cuenta (RN-52). Una sesión iniciada con una contraseña temporal no se renueva (RN-52): termina a los 15 minutos.
+  - Los datos que el usuario estaba escribiendo en un formulario se pierden en esos casos. No hay aviso previo al fin de la sesión (fuera del alcance, §1.3).
+  - Cada pestaña tiene su propia sesión. Una pestaña duplicada empieza sin sesión, como una nueva (decisión 3 de `SPEC-sesiones`).
 
 - **RFF-04 Cierre de sesión** (RF-08):
-  - Desde el menú de la cuenta o desde `V-03`. Llama a `POST /auth/logout`, descarta la sesión y abre `V-01`.
-  - Si la llamada falla (por ejemplo, la sesión ya había vencido), igual descarta la sesión local.
+  - Desde el menú de la cuenta o desde `V-03`. Llama a `POST /auth/logout`, descarta la sesión y abre `V-01`. Si el token de acceso venció, primero lo renueva, para que el cierre llegue a la API.
+  - Si la llamada o la renovación fallan (por ejemplo, la sesión ya había terminado), igual descarta la sesión local.
   - Informa que la sesión se cerró en todos los dispositivos, porque la API invalida todos los tokens de la cuenta (supuesto 3 de `SPEC-acceso`).
 
 - **RFF-05 Olvido de contraseña** (`V-04`):
@@ -548,7 +550,7 @@ Todas las respuestas de error de la API son `ProblemDetails` (RFC 9457) con `tit
 
   | Respuesta | Presentación |
   |---|---|
-  | `401` con sesión | Sesión terminada: RFF-03 |
+  | `401` con sesión | Renueva la sesión y repite; si no se puede renovar, sesión terminada: RFF-03 |
   | `401` en el inicio de sesión | Credenciales inválidas: RFF-01 |
   | `403` con `code: "RN-24"` | Cambio de contraseña pendiente: abre `V-03` (RFF-02) |
   | `403` con `code: "RN-29"` | Cuenta desactivada, en el inicio de sesión: RFF-01 |
@@ -695,7 +697,7 @@ Todas las respuestas de error de la API son `ProblemDetails` (RFC 9457) con `tit
 
 - **Seguridad en el cliente:**
   - La API valida todos los permisos y las reglas; ocultar una acción en la interfaz es solo una ayuda (§1.2).
-  - El token de acceso nunca va en la dirección de la página ni se escribe en la consola del navegador. Se descarta al cerrar sesión y al recibir un `401` (RFF-03, RFF-04). Dónde se guarda lo decide `docs/arquitectura.md`.
+  - El token de acceso y el refresh token nunca van en la dirección de la página ni se escriben en la consola del navegador. El refresh token solo se envía en el cuerpo de la renovación. Los dos se descartan al cerrar sesión y cuando la sesión no se puede renovar (RFF-03, RFF-04). Dónde se guardan lo decide `docs/arquitectura.md`.
   - Las contraseñas solo existen en los campos que las piden: no se guardan ni se muestran después de enviarlas. Los campos de contraseña permiten mostrar lo escrito a petición del usuario.
   - En producción, el frontend y la API se sirven por HTTPS.
 
@@ -877,8 +879,8 @@ Solo los términos propios de la interfaz. Los del negocio (NRC, grupo, cupo, pe
 | **Vista** | Una pantalla de la aplicación, identificada por un id `V-xx`. Puede mostrarse como página o como ventana sobre otra vista. |
 | **Página de inicio** | La vista que se abre al iniciar sesión, distinta para cada rol (§2.2). |
 | **Menú de la cuenta** | El menú con Mi perfil, Cambiar contraseña y Cerrar sesión, disponible para cualquier rol con sesión. |
-| **Sesión** | El periodo en que el usuario está identificado ante la API con un token de acceso. Dura 60 minutos y no se renueva. |
-| **Sesión terminada** | Una sesión que venció o que la API invalidó (cierre de sesión, cambio de contraseña, desactivación). El frontend la detecta por un `401` (RFF-03). |
+| **Sesión** | El periodo en que el usuario está identificado ante la API. El token de acceso dura 15 minutos y el frontend lo renueva con el refresh token (RF-60); la sesión dura como máximo 8 horas desde el inicio de sesión (RN-50). |
+| **Sesión terminada** | Una sesión que llegó a sus 8 horas o que la API invalidó (cierre de sesión, cambio de contraseña, desactivación). El frontend la detecta porque la renovación responde `401` (RFF-03). |
 | **Cambio pendiente** | El estado de una sesión iniciada con una contraseña temporal: solo permite el cambio obligatorio y cerrar sesión (RN-24). |
 | **Listado** | Una vista con una tabla paginada de registros, búsqueda y filtros (§5.3). |
 | **Detalle** | Una vista con los datos de un registro y sus acciones. |

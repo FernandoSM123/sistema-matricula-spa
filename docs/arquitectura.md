@@ -1,6 +1,6 @@
 # Arquitectura y buenas prácticas — SPA Sistema de Matrícula
 
-> **Estado:** aprobado (2026-11-20). Modificado el 2026-11-24 en la corrección `nombres` T1: el dominio en español y lo técnico en inglés (§10.1), con los nombres nuevos en todo el documento. Modificado el 2026-11-23: B-05 resuelta en el backend (COR-02); se quita el comportamiento provisional del `429`. Modificado el 2026-11-23 en `fundacion` T1: versiones instaladas (§1), nombre del instituto (§6.6, §11.3) y commits por tarea (§10.3). Modificado el 2026-11-24 en `nucleo` T6: menú de la cuenta en diferido (§8.3). Modificado el 2026-11-24 en `nucleo` T4: precisiones de las guardas (§4.3). Modificado el 2026-11-24 en `nucleo` T3: `name` y `message` en `ErrorApi` (§3.5) y `terminar()` sin motivo (§4.2). Modificado el 2026-11-24 en `nucleo` T1: resultado de la primera generación de tipos (§3.2, B-06 y B-07, resueltas con COR-03) y, por la carga inicial, el adaptador de fechas y la duración de los avisos salen de `app.config.ts` (§6.1, §7.3). Spec: [SPEC-arquitectura.md](../specs/SPEC-arquitectura.md) · Tareas: [tasks/arquitectura/todo.md](../tasks/arquitectura/todo.md).
+> **Estado:** aprobado (2026-11-20). Modificado el 2026-11-26 en la corrección `sesiones` T5: la renovación de la sesión con el refresh token de la API (§2.2, §3.5, §4.1 a §4.3, §4.5 y §9). Modificado el 2026-11-24 en la corrección `nombres` T1: el dominio en español y lo técnico en inglés (§10.1), con los nombres nuevos en todo el documento. Modificado el 2026-11-23: B-05 resuelta en el backend (COR-02); se quita el comportamiento provisional del `429`. Modificado el 2026-11-23 en `fundacion` T1: versiones instaladas (§1), nombre del instituto (§6.6, §11.3) y commits por tarea (§10.3). Modificado el 2026-11-24 en `nucleo` T6: menú de la cuenta en diferido (§8.3). Modificado el 2026-11-24 en `nucleo` T4: precisiones de las guardas (§4.3). Modificado el 2026-11-24 en `nucleo` T3: `name` y `message` en `ErrorApi` (§3.5) y `terminar()` sin motivo (§4.2). Modificado el 2026-11-24 en `nucleo` T1: resultado de la primera generación de tipos (§3.2, B-06 y B-07, resueltas con COR-03) y, por la carga inicial, el adaptador de fechas y la duración de los avisos salen de `app.config.ts` (§6.1, §7.3). Spec: [SPEC-arquitectura.md](../specs/SPEC-arquitectura.md) · Tareas: [tasks/arquitectura/todo.md](../tasks/arquitectura/todo.md).
 
 Este documento fija con qué y cómo se construye el frontend del sistema de matrícula: una SPA en Angular que consume la API de `../sistema-matricula-api`. **Qué** hace el frontend está en [`requerimientos.md`](requerimientos.md), y **cómo se ve cada vista**, en [`wireframes/`](wireframes/index.html). Aquí se citan sus códigos (`V-xx`, `RFF-xx`, `RUI-xx`) sin repetirlos.
 
@@ -103,11 +103,12 @@ src/
 - `pagination.ts`: `Page<T>` (`{ items, page, pageSize, totalCount }`) y los parámetros comunes (`page`, `pageSize`, `search`, `incluirInactivos`).
 - `api-error.ts`: `ApiError`, el error ya interpretado: `status`, `code`, `detail`, `errors` por campo, `traceId` y `retryAfter` (§3).
 - `api-url.ts`: el `InjectionToken` con la URL base, que `app.config.ts` toma de `environments/`.
+- `http-context.ts`: `NO_SESSION`, la marca de las peticiones que no usan la sesión (la renovación, §4.2).
 - Un cliente por recurso de la API: `auth-api.ts`, `me-api.ts`, `administradores-api.ts`, `estudiantes-api.ts`, `profesores-api.ts`, `usuarios-api.ts`, `cursos-api.ts`, `periodos-api.ts`, `aulas-api.ts`, `grupos-api.ts`, `matriculas-api.ts`, `oferta-api.ts`, `auditoria-api.ts` y `errores-api.ts`. Cada uno tiene un método por endpoint y devuelve tipos de `models.ts`. No tiene lógica ni estado.
 
 **`core/`**: piezas que existen una sola vez. Las vistas usan sus servicios, pero no sus componentes.
-- `session/`: `SessionService`, con la sesión como signal (token, rol, nombre, cambio pendiente). Es el único que lee y escribe `sessionStorage` (§4).
-- `http/`: los interceptores funcionales. `tokenInterceptor` agrega el token, y `errorInterceptor` convierte las respuestas de error en `ApiError` y maneja el `401` y el `403 RN-24` (RFF-03, RUI-03).
+- `session/`: `SessionService`, con la sesión como signal (token, refresh token, rol, nombre, cambio pendiente) y su renovación. Es el único que lee y escribe `sessionStorage` (§4).
+- `http/`: los interceptores funcionales. `tokenInterceptor` agrega el token (y lo renueva antes si venció), y `errorInterceptor` convierte las respuestas de error en `ApiError` y maneja el `401` (renovando) y el `403 RN-24` (RFF-03, RUI-03).
 - `guards/`: las guardas funcionales de la §2.5: sesión, invitado, rol, cambio pendiente y cambios sin guardar (§4).
 - `layout/`: el encabezado, el menú por rol de la §2.3, el menú de la cuenta y el pie de página (RUI-23). Es el `Layout`, que en los wireframes se llama "marco".
 - `pages/`: `V-09` Sin permiso y `V-10` Página no encontrada.
@@ -286,7 +287,7 @@ export interface ApiError {
 
 | Respuesta | Quién la maneja | Presentación |
 |---|---|---|
-| `401` de una petición que llevaba token | `errorInterceptor` (global) | Sesión terminada: descarta la sesión y abre `V-02` con el aviso y la ruta de vuelta (RFF-03, §4.2) |
+| `401` de una petición que llevaba token | `errorInterceptor` (global) | Renueva la sesión y repite la petición una vez. Si no se puede renovar, sesión terminada: descarta la sesión y abre `V-02` con el aviso y la ruta de vuelta (RFF-03, §4.2) |
 | `401` sin token (inicio de sesión) | `V-02` | Mensaje genérico, el `detail` (RFF-01) |
 | `403` con `code: "RN-24"` | `errorInterceptor` | Abre `V-03` (RFF-02) |
 | `403` con `code: "RN-29"` | `V-02` | Cuenta desactivada (RFF-01) |
@@ -314,28 +315,40 @@ export interface ApiError {
 
 | Dato | De dónde sale | Para qué |
 |---|---|---|
-| `accessToken` | Respuesta del login, de `cambio-obligatorio` y de `cambiar-contrasena` (las tres devuelven un token) | El encabezado `Authorization` |
-| `expiraEn` | La misma respuesta | Saber si la sesión venció sin esperar un `401` (§4.3) |
+| `accessToken` | Respuesta del login, de `cambio-obligatorio`, de `cambiar-contrasena` y de `refresh` (las cuatro devuelven un `TokenResponse`) | El encabezado `Authorization` |
+| `expiraEn` | La misma respuesta | Saber si el token de acceso venció (15 minutos, RN-50) y renovarlo antes de enviar (§4.2) |
+| `refreshToken` | La misma respuesta. `null` en el login con temporal (RN-52) | El cuerpo de `POST /auth/refresh` (RF-60) |
+| `refreshExpiraEn` | La misma respuesta. `null` en el login con temporal. No cambia al renovar (RN-50) | El fin de la sesión: 8 horas desde el inicio de sesión (§4.3) |
 | `rol` | La misma respuesta | Menú, rutas y página de inicio (§2.2 y §2.3 de los requerimientos) |
 | `debeCambiarContrasena` | La misma respuesta | La guarda del cambio pendiente (RN-24) |
-| `nombre` | `GET /me` (`datosPersonales`), después del login | El menú de la cuenta. Con un cambio pendiente, `GET /me` responde `403 RN-24`, así que `V-03` no lo muestra |
+| `nombre` | `GET /me` (`datosPersonales`), después del login. Se conserva al renovar | El menú de la cuenta. Con un cambio pendiente, `GET /me` responde `403 RN-24`, así que `V-03` no lo muestra |
 
-- **Guardado:** una sola clave (`matricula.session`) en **`sessionStorage`**, como JSON. Al arrancar se lee, y si `expiraEn` ya pasó, se descarta.
-- **Por qué `sessionStorage`** (decisión del usuario): sobrevive a recargar la página y se borra al cerrar la pestaña. Cada pestaña inicia su propia sesión. La API no tiene refresh token (60 minutos, §1.3 de los requerimientos).
-- **Riesgo aceptado:** un script inyectado (XSS) podría leer el token. Las medidas que lo mitigan están en §4.5.
-- **Se descarta** al cerrar sesión (aunque `POST /auth/logout` falle, RFF-04), ante un `401` (RFF-03) y al arrancar con un token vencido.
-- **Se reemplaza** con el token nuevo de `cambio-obligatorio` (RFF-02) y de `cambiar-contrasena` (RFF-09).
-- **Varias pestañas:** cerrar sesión en una invalida todos los tokens de la cuenta en la API, así que las demás reciben un `401` en su siguiente petición y aplican RFF-03.
+- **Guardado:** una sola clave (`matricula.session`) en **`sessionStorage`**, como JSON, con la marca `tabOpen` (pestaña duplicada, abajo). Al arrancar se lee, y si la sesión ya terminó, se descarta.
+- **El fin de la sesión** es `refreshExpiraEn`, o `expiraEn` si no hay refresh token (temporal). Con el token de acceso vencido y la sesión vigente, la sesión sigue activa: `isActive()` es verdadero y la siguiente petición renueva el token.
+- **Por qué `sessionStorage`** (decisión del usuario): sobrevive a recargar la página y se borra al cerrar la pestaña. Cada pestaña inicia su propia sesión. El refresh token va en el cuerpo de la petición, no en una cookie, justamente para mantener ese modelo (`SPEC-sesiones` de la API).
+- **Riesgo aceptado:** un script inyectado (XSS) podría leer el token o el refresh token. Las medidas que lo mitigan están en §4.5. El refresh token solo sirve una vez (RN-51) y la sesión dura 8 horas como máximo.
+- **Renovación (RF-60):** `refresh()` cambia el refresh token por un par nuevo y devuelve `'renewed'`, `'ended'` (la API respondió `401`, o no hay nada que renovar) o, si la renovación no está disponible (sin respuesta, `429`, `5xx`), el `ApiError` de la renovación. **Una sola renovación a la vez por pestaña:** las llamadas que llegan mientras tanto reciben la misma promesa, porque usar un refresh token ya reemplazado terminaría la sesión (RN-51). `refresh()` no descarta la sesión ni navega: lo deciden los interceptores (§4.2) y el cierre de sesión. Si la sesión terminó o se reemplazó mientras tanto, la respuesta se descarta.
+- **Se descarta** al cerrar sesión (aunque `POST /auth/logout` falle, RFF-04), cuando la sesión no se puede renovar (RFF-03) y al arrancar con una sesión terminada.
+- **Se reemplaza** con el par nuevo de `cambio-obligatorio` (RFF-02), de `cambiar-contrasena` (RFF-09) y de cada renovación.
+- **Pestaña duplicada** (decisión 3 de `SPEC-sesiones`): al duplicar una pestaña, el navegador copia su `sessionStorage`, y las dos tendrían el mismo refresh token; la primera que renueva dejaría a la otra con uno ya reemplazado, y la API terminaría la sesión en las dos (RN-51). Por eso `tabOpen` vale `true` mientras la pestaña está abierta, `false` después de `pagehide` y `true` otra vez en `pageshow` desde el historial. Si al arrancar ya estaba en `true`, el almacenamiento es una copia: la pestaña empieza sin sesión y sin aviso. Una recarga pasa antes por `pagehide` y conserva la sesión.
+- **Varias pestañas:** cerrar sesión en una invalida todas las sesiones de la cuenta en la API, así que las demás no pueden renovar y aplican RFF-03 en su siguiente petición.
 - Los componentes leen la sesión con signals (`session.rol()`, `session.isActive()`), nunca de `sessionStorage`.
 
 ### 4.2 Interceptores
 
-- **`tokenInterceptor`:** agrega `Authorization: Bearer <token>` **solo a las peticiones a `API_URL`**. El token nunca se envía a otro origen.
+- **`tokenInterceptor`:**
+  - Agrega `Authorization: Bearer <token>` **solo a las peticiones a `API_URL`**. El token nunca se envía a otro origen.
+  - Las peticiones marcadas con `NO_SESSION` (`api/http-context.ts`) van sin token: la renovación es anónima y no debe esperar otra renovación.
+  - Si el token de acceso venció según `expiraEn` (con un margen de 30 segundos) y la sesión tiene refresh token, primero espera `refresh()` y envía con el token nuevo. Si la renovación falla, envía igual, y la respuesta sigue el camino de siempre.
 - **`errorInterceptor`:**
   - Convierte cada error en un `ApiError` (§3.5).
-  - **`401` de una petición que llevaba token:** llama a `SessionService.end()`, que descarta la sesión, y navega a `/iniciar-sesion?volver=<ruta actual>&aviso=sesion-terminada` (RFF-03). Un `401` sin token es una credencial inválida y lo maneja `V-02`.
+  - **`401` de una petición que llevaba token**, con la sesión todavía activa:
+    - Llama a `refresh()`. Con `'renewed'`, **repite la petición una vez** con el token nuevo. Es seguro también en un `POST`: con `401`, la API no la ejecutó. La repetición lleva una marca en una copia de su `HttpContext`, y si vuelve a dar `401`, se aplica RFF-03 sin renovar otra vez.
+    - Con `'ended'`: llama a `SessionService.end()`, que descarta la sesión, y navega a `/iniciar-sesion?volver=<ruta actual>&aviso=sesion-terminada` (RFF-03).
+    - Si la renovación no está disponible: no descarta la sesión ni navega. La petición falla con el error de la renovación, que el componente presenta según §3.5, y la siguiente petición intenta renovar de nuevo.
+  - Un `401` sin token es una credencial inválida (lo maneja `V-02`) o el rechazo de la renovación (lo resuelve `refresh()`).
   - **`403 RN-24`:** navega a `/cambio-obligatorio`.
-  - Si varias peticiones fallan con `401` a la vez, solo la primera navega.
+  - Si varias peticiones fallan con `401` a la vez, se hace una sola renovación. Si no se puede renovar, solo la primera navega.
 - **La ruta de vuelta (`volver`)** solo se acepta si es una ruta interna (empieza con `/` y no con `//`). Así nadie puede usar el enlace de inicio de sesión para redirigir a otro sitio. Después del login se usa solo si el rol puede abrir esa ruta (RFF-01).
 
 ### 4.3 Guardas (§2.5 de los requerimientos)
@@ -344,18 +357,18 @@ Funciones en `core/guards/`, una por regla:
 
 | Situación (§2.5) | Guarda | Dónde | Resultado |
 |---|---|---|---|
-| Sin sesión, o con la sesión vencida según `expiraEn`, entra a una vista protegida | `authGuard` | Todas las rutas protegidas | `/iniciar-sesion?volver=<ruta>`. Si estaba vencida, con el aviso de RFF-03 |
+| Sin sesión, o con la sesión terminada según `refreshExpiraEn` (o `expiraEn` sin refresh token), entra a una vista protegida | `authGuard` | Todas las rutas protegidas | `/iniciar-sesion?volver=<ruta>`. Si estaba terminada, con el aviso de RFF-03. Con solo el token de acceso vencido, deja pasar: la siguiente petición lo renueva |
 | Con sesión, entra al inicio de sesión, al registro o al olvido | `guestGuard` | `V-02`, `V-04`, `V-05` | Página de inicio del rol |
 | Con un cambio de contraseña pendiente (RN-24) | `authGuard` (lo revisa después de la sesión) | Todas las rutas protegidas, menos `V-03` | `/cambio-obligatorio` |
 | Entra a `V-03` sin un cambio pendiente | `passwordChangeGuard` | `V-03` | Página de inicio del rol |
 | Con sesión, entra a una vista de otro rol | `rolGuard(...roles)` | Como `canMatch` en las áreas de un solo rol (§2.5) y como `canActivate` en las vistas | `/sin-permiso` (`V-09`) |
-| La API responde `401` durante el uso | — (`errorInterceptor`) | — | RFF-03 (§4.2) |
+| La API responde `401` durante el uso | — (`errorInterceptor`) | — | Renueva y repite; si no se puede, RFF-03 (§4.2) |
 | La dirección no existe | Ruta `**` | `app.routes.ts` | `V-10` |
 | El registro no existe (`404`) | — (la vista) | — | §3.5 |
 | Sale de un formulario con cambios sin guardar (RUI-09) | `unsavedChangesGuard` | `canDeactivate` de los formularios | Confirmación "¿Descartar los cambios?" (RUI-07). No pregunta si la salida es porque la sesión terminó (RFF-03) |
 
-- **`rolGuard` aplica primero la regla de `authGuard`** (sin sesión, vencida o con un cambio pendiente), así sirve sola como `canMatch` de un área de un solo rol. Las dos toman `volver` de la navegación en curso (`router.currentNavigation()`), porque `canMatch` no recibe el `RouterStateSnapshot`, y así conservan los parámetros de la dirección (`nucleo` T4).
-- **El aviso de sesión vencida** solo aparece si la sesión vence durante el uso. Al arrancar, una sesión vencida se descarta sin aviso (§4.1).
+- **`rolGuard` aplica primero la regla de `authGuard`** (sin sesión, terminada o con un cambio pendiente), así sirve sola como `canMatch` de un área de un solo rol. Las dos toman `volver` de la navegación en curso (`router.currentNavigation()`), porque `canMatch` no recibe el `RouterStateSnapshot`, y así conservan los parámetros de la dirección (`nucleo` T4).
+- **El aviso de sesión terminada** solo aparece si la sesión termina durante el uso. Al arrancar, una sesión terminada o copiada de otra pestaña se descarta sin aviso (§4.1).
 - **Inicio (`/`):** una función de redirección envía a la página de inicio del rol, o a `/oferta` sin sesión (§2.2 de los requerimientos).
 - `unsavedChangesGuard` funciona con cualquier componente que implemente `HasUnsavedChanges` (`hasUnsavedChanges(): boolean`). Para saber si la sesión terminó, consulta `SessionService`.
 
@@ -371,7 +384,7 @@ Funciones en `core/guards/`, una por regla:
   - No se copian a signals, servicios, almacenamiento ni registros.
   - El formulario se limpia después de enviarlas.
   - Los campos usan `autocomplete="current-password"` o `"new-password"`, y el botón "Mostrar" solo cambia el `type` del campo.
-- **El token** nunca va en la dirección ni se escribe en la consola. **No hay `console.*` en el código de la aplicación** (regla de ESLint, §10).
+- **El token y el refresh token** nunca van en la dirección ni se escriben en la consola. El refresh token solo sale en el cuerpo de `POST /auth/refresh`. **No hay `console.*` en el código de la aplicación** (regla de ESLint, §10).
 - **Contra XSS:**
   - Nunca se usa `innerHTML` con datos de la API ni `bypassSecurityTrust*`. Angular escapa las interpolaciones por defecto.
   - No se cargan scripts de terceros ni de CDN (§6).
@@ -699,9 +712,9 @@ Como en el backend, primero lo que es puro y transversal. Las pruebas de las vis
 | `AppDateAdapter` | Lo verificado en T1: lee `dd/mm/aaaa` y `d/m/aaaa`, rechaza `31/02/2026` y `03/15/2026`, y lee y escribe "6:30 p. m." |
 | Validadores (§5.2) | Los límites de RUI-06 en el borde: 20 y 21 caracteres de cédula, la política de RN-26, las fechas de RN-16 y el bloque de RN-15 |
 | `applyServerErrors` | Una clave con otra capitalización, una ruta con punto, un mensaje sin campo y el mapa de `code` a campo |
-| `errorInterceptor` | Cada fila de §3.5: el `ProblemDetails` se convierte en `ApiError`; el `401` con token navega a `V-02` con `volver`; el `401` sin token no navega; el `403 RN-24` navega a `V-03`; varios `401` a la vez navegan una sola vez |
-| `tokenInterceptor` | Agrega el token a `API_URL` y no a otro origen |
-| `SessionService` | Guarda y lee de `sessionStorage`, descarta una sesión vencida al arrancar y reemplaza el token |
+| `errorInterceptor` | Cada fila de §3.5: el `ProblemDetails` se convierte en `ApiError`; el `401` con token renueva y repite una vez (también un `POST`); si la repetición da `401` o no se puede renovar, navega a `V-02` con `volver`; si la renovación no está disponible, entrega su error sin navegar; varios `401` a la vez hacen una renovación y navegan una sola vez; el `401` sin token no navega; el `403 RN-24` navega a `V-03` |
+| `tokenInterceptor` | Agrega el token a `API_URL` y no a otro origen ni a `NO_SESSION`; con el token vencido renueva antes de enviar, y sin refresh token envía con el que hay |
+| `SessionService` | Guarda y lee de `sessionStorage`, con el refresh token; el fin de la sesión según `refreshExpiraEn`; `refresh()` (una sola a la vez, cada resultado, respuestas tardías); la pestaña duplicada; reemplaza el token; el cierre de sesión renueva antes si el token venció |
 | Guardas (§4.3) | Una prueba por fila, incluida la ruta `volver` externa rechazada |
 | Componentes de `shared/ui` | `ActionError` con cada respuesta de §3.5 (incluida la cuenta regresiva del `429`), `ContentState` con cada estado, la confirmación irreversible con el foco en "Cancelar", `PaginatedList` en tabla y en tarjetas, y `FilterBar` (Enter y "Limpiar filtros") |
 | `WeeklySchedule` | La función pura que arma la configuración de la grilla (domingo oculto o visible, el rango de horas, la traducción de los días) y la lista por día. FullCalendar no se prueba: se confía en su biblioteca |

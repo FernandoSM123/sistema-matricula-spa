@@ -46,9 +46,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["RegistrarAdministradorRequest"];
-                    "text/json": components["schemas"]["RegistrarAdministradorRequest"];
-                    "application/*+json": components["schemas"]["RegistrarAdministradorRequest"];
+                    "application/json": components["schemas"]["CreateAdministradorRequest"];
+                    "text/json": components["schemas"]["CreateAdministradorRequest"];
+                    "application/*+json": components["schemas"]["CreateAdministradorRequest"];
                 };
             };
             responses: {
@@ -58,7 +58,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["AdministradorRegistradoResponse"];
+                        "application/json": components["schemas"]["AdministradorCreatedResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -154,9 +154,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["ActualizarAdministradorRequest"];
-                    "text/json": components["schemas"]["ActualizarAdministradorRequest"];
-                    "application/*+json": components["schemas"]["ActualizarAdministradorRequest"];
+                    "application/json": components["schemas"]["UpdateAdministradorRequest"];
+                    "text/json": components["schemas"]["UpdateAdministradorRequest"];
+                    "application/*+json": components["schemas"]["UpdateAdministradorRequest"];
                 };
             };
             responses: {
@@ -338,9 +338,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["RegistrarAulaRequest"];
-                    "text/json": components["schemas"]["RegistrarAulaRequest"];
-                    "application/*+json": components["schemas"]["RegistrarAulaRequest"];
+                    "application/json": components["schemas"]["CreateAulaRequest"];
+                    "text/json": components["schemas"]["CreateAulaRequest"];
+                    "application/*+json": components["schemas"]["CreateAulaRequest"];
                 };
             };
             responses: {
@@ -464,9 +464,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["ActualizarAulaRequest"];
-                    "text/json": components["schemas"]["ActualizarAulaRequest"];
-                    "application/*+json": components["schemas"]["ActualizarAulaRequest"];
+                    "application/json": components["schemas"]["UpdateAulaRequest"];
+                    "text/json": components["schemas"]["UpdateAulaRequest"];
+                    "application/*+json": components["schemas"]["UpdateAulaRequest"];
                 };
             };
             responses: {
@@ -861,6 +861,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["RefreshTokenRequest"];
+                    "text/json": components["schemas"]["RefreshTokenRequest"];
+                    "application/*+json": components["schemas"]["RefreshTokenRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TokenResponse"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ValidationProblemDetails"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description Too Many Requests */
+                429: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/olvido-contrasena": {
         parameters: {
             query?: never;
@@ -879,9 +947,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["OlvidoContrasenaRequest"];
-                    "text/json": components["schemas"]["OlvidoContrasenaRequest"];
-                    "application/*+json": components["schemas"]["OlvidoContrasenaRequest"];
+                    "application/json": components["schemas"]["ForgotPasswordRequest"];
+                    "text/json": components["schemas"]["ForgotPasswordRequest"];
+                    "application/*+json": components["schemas"]["ForgotPasswordRequest"];
                 };
             };
             responses: {
@@ -891,7 +959,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["MensajeResponse"];
+                        "application/json": components["schemas"]["MessageResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -938,9 +1006,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["CambioObligatorioRequest"];
-                    "text/json": components["schemas"]["CambioObligatorioRequest"];
-                    "application/*+json": components["schemas"]["CambioObligatorioRequest"];
+                    "application/json": components["schemas"]["RequiredPasswordChangeRequest"];
+                    "text/json": components["schemas"]["RequiredPasswordChangeRequest"];
+                    "application/*+json": components["schemas"]["RequiredPasswordChangeRequest"];
                 };
             };
             responses: {
@@ -1015,9 +1083,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["CambiarContrasenaRequest"];
-                    "text/json": components["schemas"]["CambiarContrasenaRequest"];
-                    "application/*+json": components["schemas"]["CambiarContrasenaRequest"];
+                    "application/json": components["schemas"]["ChangePasswordRequest"];
+                    "text/json": components["schemas"]["ChangePasswordRequest"];
+                    "application/*+json": components["schemas"]["ChangePasswordRequest"];
                 };
             };
             responses: {
@@ -1188,9 +1256,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["RegistrarCursoRequest"];
-                    "text/json": components["schemas"]["RegistrarCursoRequest"];
-                    "application/*+json": components["schemas"]["RegistrarCursoRequest"];
+                    "application/json": components["schemas"]["CreateCursoRequest"];
+                    "text/json": components["schemas"]["CreateCursoRequest"];
+                    "application/*+json": components["schemas"]["CreateCursoRequest"];
                 };
             };
             responses: {
@@ -1314,9 +1382,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["ActualizarCursoRequest"];
-                    "text/json": components["schemas"]["ActualizarCursoRequest"];
-                    "application/*+json": components["schemas"]["ActualizarCursoRequest"];
+                    "application/json": components["schemas"]["UpdateCursoRequest"];
+                    "text/json": components["schemas"]["UpdateCursoRequest"];
+                    "application/*+json": components["schemas"]["UpdateCursoRequest"];
                 };
             };
             responses: {
@@ -1741,7 +1809,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["RegistroErrorDetalleResponse"];
+                        "application/json": components["schemas"]["RegistroErrorDetailResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -1923,9 +1991,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["RegistrarEstudianteRequest"];
-                    "text/json": components["schemas"]["RegistrarEstudianteRequest"];
-                    "application/*+json": components["schemas"]["RegistrarEstudianteRequest"];
+                    "application/json": components["schemas"]["CreateEstudianteRequest"];
+                    "text/json": components["schemas"]["CreateEstudianteRequest"];
+                    "application/*+json": components["schemas"]["CreateEstudianteRequest"];
                 };
             };
             responses: {
@@ -1935,7 +2003,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["EstudianteRegistradoResponse"];
+                        "application/json": components["schemas"]["EstudianteCreatedResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -2000,9 +2068,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["RegistroPublicoRequest"];
-                    "text/json": components["schemas"]["RegistroPublicoRequest"];
-                    "application/*+json": components["schemas"]["RegistroPublicoRequest"];
+                    "application/json": components["schemas"]["SignUpRequest"];
+                    "text/json": components["schemas"]["SignUpRequest"];
+                    "application/*+json": components["schemas"]["SignUpRequest"];
                 };
             };
             responses: {
@@ -2012,7 +2080,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["MensajeResponse"];
+                        "application/json": components["schemas"]["MessageResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -2099,9 +2167,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["ActualizarEstudianteRequest"];
-                    "text/json": components["schemas"]["ActualizarEstudianteRequest"];
-                    "application/*+json": components["schemas"]["ActualizarEstudianteRequest"];
+                    "application/json": components["schemas"]["UpdateEstudianteRequest"];
+                    "text/json": components["schemas"]["UpdateEstudianteRequest"];
+                    "application/*+json": components["schemas"]["UpdateEstudianteRequest"];
                 };
             };
             responses: {
@@ -2363,9 +2431,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["CrearGrupoRequest"];
-                    "text/json": components["schemas"]["CrearGrupoRequest"];
-                    "application/*+json": components["schemas"]["CrearGrupoRequest"];
+                    "application/json": components["schemas"]["CreateGrupoRequest"];
+                    "text/json": components["schemas"]["CreateGrupoRequest"];
+                    "application/*+json": components["schemas"]["CreateGrupoRequest"];
                 };
             };
             responses: {
@@ -2375,7 +2443,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["GrupoDetalleResponse"];
+                        "application/json": components["schemas"]["GrupoDetailResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -2455,7 +2523,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["GrupoDetalleResponse"];
+                        "application/json": components["schemas"]["GrupoDetailResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -2498,9 +2566,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["ActualizarGrupoRequest"];
-                    "text/json": components["schemas"]["ActualizarGrupoRequest"];
-                    "application/*+json": components["schemas"]["ActualizarGrupoRequest"];
+                    "application/json": components["schemas"]["UpdateGrupoRequest"];
+                    "text/json": components["schemas"]["UpdateGrupoRequest"];
+                    "application/*+json": components["schemas"]["UpdateGrupoRequest"];
                 };
             };
             responses: {
@@ -2510,7 +2578,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["GrupoDetalleResponse"];
+                        "application/json": components["schemas"]["GrupoDetailResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -2644,9 +2712,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["CambiarEstadoRequest"];
-                    "text/json": components["schemas"]["CambiarEstadoRequest"];
-                    "application/*+json": components["schemas"]["CambiarEstadoRequest"];
+                    "application/json": components["schemas"]["ChangeEstadoRequest"];
+                    "text/json": components["schemas"]["ChangeEstadoRequest"];
+                    "application/*+json": components["schemas"]["ChangeEstadoRequest"];
                 };
             };
             responses: {
@@ -2732,9 +2800,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["AgregarHorarioRequest"];
-                    "text/json": components["schemas"]["AgregarHorarioRequest"];
-                    "application/*+json": components["schemas"]["AgregarHorarioRequest"];
+                    "application/json": components["schemas"]["AddHorarioRequest"];
+                    "text/json": components["schemas"]["AddHorarioRequest"];
+                    "application/*+json": components["schemas"]["AddHorarioRequest"];
                 };
             };
             responses: {
@@ -2744,7 +2812,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["GrupoDetalleResponse"];
+                        "application/json": components["schemas"]["GrupoDetailResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -2961,9 +3029,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["MatricularRequest"];
-                    "text/json": components["schemas"]["MatricularRequest"];
-                    "application/*+json": components["schemas"]["MatricularRequest"];
+                    "application/json": components["schemas"]["EnrollRequest"];
+                    "text/json": components["schemas"]["EnrollRequest"];
+                    "application/*+json": components["schemas"]["EnrollRequest"];
                 };
             };
             responses: {
@@ -3186,9 +3254,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["CambioGrupoRequest"];
-                    "text/json": components["schemas"]["CambioGrupoRequest"];
-                    "application/*+json": components["schemas"]["CambioGrupoRequest"];
+                    "application/json": components["schemas"]["ChangeGrupoRequest"];
+                    "text/json": components["schemas"]["ChangeGrupoRequest"];
+                    "application/*+json": components["schemas"]["ChangeGrupoRequest"];
                 };
             };
             responses: {
@@ -3315,9 +3383,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["MatricularPropioRequest"];
-                    "text/json": components["schemas"]["MatricularPropioRequest"];
-                    "application/*+json": components["schemas"]["MatricularPropioRequest"];
+                    "application/json": components["schemas"]["EnrollMeRequest"];
+                    "text/json": components["schemas"]["EnrollMeRequest"];
+                    "application/*+json": components["schemas"]["EnrollMeRequest"];
                 };
             };
             responses: {
@@ -3527,7 +3595,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PerfilResponse"];
+                        "application/json": components["schemas"]["ProfileResponse"];
                     };
                 };
                 /** @description Unauthorized */
@@ -3575,9 +3643,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["ActualizarContactoRequest"];
-                    "text/json": components["schemas"]["ActualizarContactoRequest"];
-                    "application/*+json": components["schemas"]["ActualizarContactoRequest"];
+                    "application/json": components["schemas"]["UpdateContactoRequest"];
+                    "text/json": components["schemas"]["UpdateContactoRequest"];
+                    "application/*+json": components["schemas"]["UpdateContactoRequest"];
                 };
             };
             responses: {
@@ -3587,7 +3655,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PerfilResponse"];
+                        "application/json": components["schemas"]["ProfileResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -3735,9 +3803,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["RegistrarPeriodoRequest"];
-                    "text/json": components["schemas"]["RegistrarPeriodoRequest"];
-                    "application/*+json": components["schemas"]["RegistrarPeriodoRequest"];
+                    "application/json": components["schemas"]["CreatePeriodoRequest"];
+                    "text/json": components["schemas"]["CreatePeriodoRequest"];
+                    "application/*+json": components["schemas"]["CreatePeriodoRequest"];
                 };
             };
             responses: {
@@ -3905,9 +3973,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["ActualizarPeriodoRequest"];
-                    "text/json": components["schemas"]["ActualizarPeriodoRequest"];
-                    "application/*+json": components["schemas"]["ActualizarPeriodoRequest"];
+                    "application/json": components["schemas"]["UpdatePeriodoRequest"];
+                    "text/json": components["schemas"]["UpdatePeriodoRequest"];
+                    "application/*+json": components["schemas"]["UpdatePeriodoRequest"];
                 };
             };
             responses: {
@@ -4073,9 +4141,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["RegistrarProfesorRequest"];
-                    "text/json": components["schemas"]["RegistrarProfesorRequest"];
-                    "application/*+json": components["schemas"]["RegistrarProfesorRequest"];
+                    "application/json": components["schemas"]["CreateProfesorRequest"];
+                    "text/json": components["schemas"]["CreateProfesorRequest"];
+                    "application/*+json": components["schemas"]["CreateProfesorRequest"];
                 };
             };
             responses: {
@@ -4085,7 +4153,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["ProfesorRegistradoResponse"];
+                        "application/json": components["schemas"]["ProfesorCreatedResponse"];
                     };
                 };
                 /** @description Bad Request */
@@ -4181,9 +4249,9 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["ActualizarProfesorRequest"];
-                    "text/json": components["schemas"]["ActualizarProfesorRequest"];
-                    "application/*+json": components["schemas"]["ActualizarProfesorRequest"];
+                    "application/json": components["schemas"]["UpdateProfesorRequest"];
+                    "text/json": components["schemas"]["UpdateProfesorRequest"];
+                    "application/*+json": components["schemas"]["UpdateProfesorRequest"];
                 };
             };
             responses: {
@@ -4497,7 +4565,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["ReenvioTemporalResponse"];
+                        "application/json": components["schemas"]["ResendTemporaryPasswordResponse"];
                     };
                 };
                 /** @description Not Found */
@@ -4633,81 +4701,14 @@ export interface components {
     schemas: {
         /** @enum {unknown} */
         AccionAuditoria: "Creacion" | "Modificacion" | "Eliminacion";
-        ActualizarAdministradorRequest: {
-            cedula: string;
-            nombre: string;
-            apellidos: string;
-            telefono: string;
-            correo: string;
+        AddHorarioRequest: {
+            dia: null | components["schemas"]["DiaSemana"];
+            /** Format: time */
+            horaInicio: null | string;
+            /** Format: time */
+            horaFin: null | string;
         };
-        ActualizarAulaRequest: {
-            codigo: string;
-            ubicacion: null | string;
-            /** Format: int32 */
-            capacidad: number;
-        };
-        ActualizarContactoRequest: {
-            telefono: string;
-            direccion: null | string;
-        };
-        ActualizarCursoRequest: {
-            codigo: string;
-            nombre: string;
-            descripcion: null | string;
-            /** Format: int32 */
-            duracionHoras: number;
-            /** Format: double */
-            costo: null | number;
-            nivel: null | components["schemas"]["NivelCurso"];
-        };
-        ActualizarEstudianteRequest: {
-            cedula: string;
-            nombre: string;
-            apellidos: string;
-            telefono: string;
-            correo: string;
-            /** Format: date */
-            fechaNacimiento: null | string;
-            direccion: null | string;
-        };
-        ActualizarGrupoRequest: {
-            nrc: string;
-            /** Format: int32 */
-            cursoId: null | number;
-            /** Format: int32 */
-            profesorId: null | number;
-            /** Format: int32 */
-            periodoId: null | number;
-            /** Format: int32 */
-            aulaId: null | number;
-            /** Format: int32 */
-            cupo: null | number;
-            modalidad: null | components["schemas"]["Modalidad"];
-        };
-        ActualizarPeriodoRequest: {
-            nombre: string;
-            /** Format: date */
-            inicioClases: null | string;
-            /** Format: date */
-            finClases: null | string;
-            /** Format: date */
-            inicioMatricula: null | string;
-            /** Format: date */
-            finMatricula: null | string;
-            /** Format: date */
-            fechaLimiteRetiro: null | string;
-        };
-        ActualizarProfesorRequest: {
-            cedula: string;
-            nombre: string;
-            apellidos: string;
-            telefono: string;
-            correo: string;
-            especialidad: null | string;
-            /** Format: date */
-            fechaContratacion: null | string;
-        };
-        AdministradorRegistradoResponse: {
+        AdministradorCreatedResponse: {
             administrador: components["schemas"]["AdministradorResponse"];
             correoEnviado: boolean;
         };
@@ -4726,13 +4727,6 @@ export interface components {
             fechaCreacion: string;
             /** Format: date-time */
             ultimoIngreso: null | string;
-        };
-        AgregarHorarioRequest: {
-            dia: null | components["schemas"]["DiaSemana"];
-            /** Format: time */
-            horaInicio: null | string;
-            /** Format: time */
-            horaFin: null | string;
         };
         AulaResponse: {
             /** Format: int32 */
@@ -4763,23 +4757,52 @@ export interface components {
             modalidad: components["schemas"]["Modalidad"];
             estado: components["schemas"]["EstadoGrupo"];
         };
-        CambiarContrasenaRequest: {
+        ChangeEstadoRequest: {
+            estado: null | components["schemas"]["EstadoGrupo"];
+        };
+        ChangeGrupoRequest: {
+            /** Format: int32 */
+            grupoDestinoId: null | number;
+        };
+        ChangePasswordRequest: {
             contrasenaActual: string;
             nuevaContrasena: string;
             confirmacion: string;
         };
-        CambiarEstadoRequest: {
-            estado: null | components["schemas"]["EstadoGrupo"];
+        CreateAdministradorRequest: {
+            cedula: string;
+            nombre: string;
+            apellidos: string;
+            telefono: string;
+            correo: string;
         };
-        CambioGrupoRequest: {
+        CreateAulaRequest: {
+            codigo: string;
+            ubicacion: null | string;
             /** Format: int32 */
-            grupoDestinoId: null | number;
+            capacidad: number;
         };
-        CambioObligatorioRequest: {
-            nuevaContrasena: string;
-            confirmacion: string;
+        CreateCursoRequest: {
+            codigo: string;
+            nombre: string;
+            descripcion: null | string;
+            /** Format: int32 */
+            duracionHoras: number;
+            /** Format: double */
+            costo: null | number;
+            nivel: null | components["schemas"]["NivelCurso"];
         };
-        CrearGrupoRequest: {
+        CreateEstudianteRequest: {
+            cedula: string;
+            nombre: string;
+            apellidos: string;
+            telefono: string;
+            correo: string;
+            /** Format: date */
+            fechaNacimiento: null | string;
+            direccion: null | string;
+        };
+        CreateGrupoRequest: {
             nrc: string;
             /** Format: int32 */
             cursoId: null | number;
@@ -4792,6 +4815,29 @@ export interface components {
             /** Format: int32 */
             cupo: null | number;
             modalidad: null | components["schemas"]["Modalidad"];
+        };
+        CreatePeriodoRequest: {
+            nombre: string;
+            /** Format: date */
+            inicioClases: null | string;
+            /** Format: date */
+            finClases: null | string;
+            /** Format: date */
+            inicioMatricula: null | string;
+            /** Format: date */
+            finMatricula: null | string;
+            /** Format: date */
+            fechaLimiteRetiro: null | string;
+        };
+        CreateProfesorRequest: {
+            cedula: string;
+            nombre: string;
+            apellidos: string;
+            telefono: string;
+            correo: string;
+            especialidad: null | string;
+            /** Format: date */
+            fechaContratacion: null | string;
         };
         CursoResponse: {
             /** Format: int32 */
@@ -4824,10 +4870,24 @@ export interface components {
         };
         /** @enum {unknown} */
         DiaSemana: "Lunes" | "Martes" | "Miercoles" | "Jueves" | "Viernes" | "Sabado" | "Domingo";
+        EnrollMeRequest: {
+            /** Format: int32 */
+            grupoId: null | number;
+        };
+        EnrollRequest: {
+            /** Format: int32 */
+            estudianteId: null | number;
+            /** Format: int32 */
+            grupoId: null | number;
+        };
         /** @enum {unknown} */
         EstadoGrupo: "Planificado" | "Abierto" | "Cerrado" | "EnCurso" | "Finalizado" | "Cancelado";
         /** @enum {unknown} */
         EstadoMatricula: "Activa" | "Retirada";
+        EstudianteCreatedResponse: {
+            estudiante: components["schemas"]["EstudianteResponse"];
+            correoEnviado: boolean;
+        };
         EstudianteGrupoResponse: {
             /** Format: int32 */
             matriculaId: number;
@@ -4843,10 +4903,6 @@ export interface components {
             /** Format: date */
             fechaRetiro: null | string;
             motivoRetiro: null | components["schemas"]["MotivoRetiro"];
-        };
-        EstudianteRegistradoResponse: {
-            estudiante: components["schemas"]["EstudianteResponse"];
-            correoEnviado: boolean;
         };
         EstudianteResponse: {
             /** Format: int32 */
@@ -4869,7 +4925,10 @@ export interface components {
             /** Format: date-time */
             ultimoIngreso: null | string;
         };
-        GrupoDetalleResponse: {
+        ForgotPasswordRequest: {
+            correo: string;
+        };
+        GrupoDetailResponse: {
             /** Format: int32 */
             id: number;
             nrc: string;
@@ -4965,17 +5024,7 @@ export interface components {
             fechaRetiro: null | string;
             motivoRetiro: null | components["schemas"]["MotivoRetiro"];
         };
-        MatricularPropioRequest: {
-            /** Format: int32 */
-            grupoId: null | number;
-        };
-        MatricularRequest: {
-            /** Format: int32 */
-            estudianteId: null | number;
-            /** Format: int32 */
-            grupoId: null | number;
-        };
-        MensajeResponse: {
+        MessageResponse: {
             mensaje: string;
         };
         /** @enum {unknown} */
@@ -5000,9 +5049,6 @@ export interface components {
             /** Format: int32 */
             cuposDisponibles: number;
             horarios: components["schemas"]["HorarioResponse"][];
-        };
-        OlvidoContrasenaRequest: {
-            correo: string;
         };
         /** @enum {unknown} */
         OrigenError: "Peticion" | "Correo";
@@ -5138,22 +5184,6 @@ export interface components {
             /** Format: int32 */
             totalPages?: number;
         };
-        PerfilResponse: {
-            /** Format: int32 */
-            usuarioId: number;
-            /** Format: int32 */
-            personaId: null | number;
-            correo: string;
-            rol: components["schemas"]["Rol"];
-            activo: boolean;
-            /** Format: date-time */
-            fechaCreacion: string;
-            /** Format: date-time */
-            ultimoIngreso: null | string;
-            /** Format: date-time */
-            fechaCambioContrasena: null | string;
-            datosPersonales: null | components["schemas"]["DatosPersonalesResponse"];
-        };
         PeriodoResponse: {
             /** Format: int32 */
             id: number;
@@ -5179,7 +5209,7 @@ export interface components {
             detail?: null | string;
             instance?: null | string;
         };
-        ProfesorRegistradoResponse: {
+        ProfesorCreatedResponse: {
             profesor: components["schemas"]["ProfesorResponse"];
             correoEnviado: boolean;
         };
@@ -5202,64 +5232,24 @@ export interface components {
             /** Format: date-time */
             ultimoIngreso: null | string;
         };
-        ReenvioTemporalResponse: {
-            correoEnviado: boolean;
-        };
-        RegistrarAdministradorRequest: {
-            cedula: string;
-            nombre: string;
-            apellidos: string;
-            telefono: string;
-            correo: string;
-        };
-        RegistrarAulaRequest: {
-            codigo: string;
-            ubicacion: null | string;
+        ProfileResponse: {
             /** Format: int32 */
-            capacidad: number;
-        };
-        RegistrarCursoRequest: {
-            codigo: string;
-            nombre: string;
-            descripcion: null | string;
+            usuarioId: number;
             /** Format: int32 */
-            duracionHoras: number;
-            /** Format: double */
-            costo: null | number;
-            nivel: null | components["schemas"]["NivelCurso"];
-        };
-        RegistrarEstudianteRequest: {
-            cedula: string;
-            nombre: string;
-            apellidos: string;
-            telefono: string;
+            personaId: null | number;
             correo: string;
-            /** Format: date */
-            fechaNacimiento: null | string;
-            direccion: null | string;
+            rol: components["schemas"]["Rol"];
+            activo: boolean;
+            /** Format: date-time */
+            fechaCreacion: string;
+            /** Format: date-time */
+            ultimoIngreso: null | string;
+            /** Format: date-time */
+            fechaCambioContrasena: null | string;
+            datosPersonales: null | components["schemas"]["DatosPersonalesResponse"];
         };
-        RegistrarPeriodoRequest: {
-            nombre: string;
-            /** Format: date */
-            inicioClases: null | string;
-            /** Format: date */
-            finClases: null | string;
-            /** Format: date */
-            inicioMatricula: null | string;
-            /** Format: date */
-            finMatricula: null | string;
-            /** Format: date */
-            fechaLimiteRetiro: null | string;
-        };
-        RegistrarProfesorRequest: {
-            cedula: string;
-            nombre: string;
-            apellidos: string;
-            telefono: string;
-            correo: string;
-            especialidad: null | string;
-            /** Format: date */
-            fechaContratacion: null | string;
+        RefreshTokenRequest: {
+            refreshToken: string;
         };
         RegistroAuditoriaResponse: {
             /** Format: int64 */
@@ -5277,7 +5267,7 @@ export interface components {
             operacionId: string;
             cambios: components["schemas"]["JsonElement"];
         };
-        RegistroErrorDetalleResponse: {
+        RegistroErrorDetailResponse: {
             /** Format: int64 */
             id: number;
             /** Format: date-time */
@@ -5310,7 +5300,16 @@ export interface components {
             usuarioRol: null | components["schemas"]["Rol"];
             traceId: string;
         };
-        RegistroPublicoRequest: {
+        RequiredPasswordChangeRequest: {
+            nuevaContrasena: string;
+            confirmacion: string;
+        };
+        ResendTemporaryPasswordResponse: {
+            correoEnviado: boolean;
+        };
+        /** @enum {unknown} */
+        Rol: "Administrador" | "Profesor" | "Estudiante";
+        SignUpRequest: {
             cedula: string;
             nombre: string;
             apellidos: string;
@@ -5322,14 +5321,89 @@ export interface components {
             contrasena: string;
             confirmacion: string;
         };
-        /** @enum {unknown} */
-        Rol: "Administrador" | "Profesor" | "Estudiante";
         TokenResponse: {
             accessToken: string;
             /** Format: date-time */
             expiraEn: string;
             rol: components["schemas"]["Rol"];
             debeCambiarContrasena: boolean;
+            refreshToken: null | string;
+            /** Format: date-time */
+            refreshExpiraEn: null | string;
+        };
+        UpdateAdministradorRequest: {
+            cedula: string;
+            nombre: string;
+            apellidos: string;
+            telefono: string;
+            correo: string;
+        };
+        UpdateAulaRequest: {
+            codigo: string;
+            ubicacion: null | string;
+            /** Format: int32 */
+            capacidad: number;
+        };
+        UpdateContactoRequest: {
+            telefono: string;
+            direccion: null | string;
+        };
+        UpdateCursoRequest: {
+            codigo: string;
+            nombre: string;
+            descripcion: null | string;
+            /** Format: int32 */
+            duracionHoras: number;
+            /** Format: double */
+            costo: null | number;
+            nivel: null | components["schemas"]["NivelCurso"];
+        };
+        UpdateEstudianteRequest: {
+            cedula: string;
+            nombre: string;
+            apellidos: string;
+            telefono: string;
+            correo: string;
+            /** Format: date */
+            fechaNacimiento: null | string;
+            direccion: null | string;
+        };
+        UpdateGrupoRequest: {
+            nrc: string;
+            /** Format: int32 */
+            cursoId: null | number;
+            /** Format: int32 */
+            profesorId: null | number;
+            /** Format: int32 */
+            periodoId: null | number;
+            /** Format: int32 */
+            aulaId: null | number;
+            /** Format: int32 */
+            cupo: null | number;
+            modalidad: null | components["schemas"]["Modalidad"];
+        };
+        UpdatePeriodoRequest: {
+            nombre: string;
+            /** Format: date */
+            inicioClases: null | string;
+            /** Format: date */
+            finClases: null | string;
+            /** Format: date */
+            inicioMatricula: null | string;
+            /** Format: date */
+            finMatricula: null | string;
+            /** Format: date */
+            fechaLimiteRetiro: null | string;
+        };
+        UpdateProfesorRequest: {
+            cedula: string;
+            nombre: string;
+            apellidos: string;
+            telefono: string;
+            correo: string;
+            especialidad: null | string;
+            /** Format: date */
+            fechaContratacion: null | string;
         };
         ValidationProblemDetails: {
             type?: null | string;

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { API_URL } from './api-url';
-import { PerfilResponse } from './models';
+import { ProfileResponse } from './models';
 
 /** `/me`: lo de quien inició sesión. El cliente nunca envía el id del usuario (RN-18, §3.3). */
 @Injectable({ providedIn: 'root' })
@@ -14,6 +14,6 @@ export class MeApi {
    * una vista. La consulta para `V-06` (un `httpResource`) la agrega `acceso`.
    */
   getProfile() {
-    return this.http.get<PerfilResponse>(this.url);
+    return this.http.get<ProfileResponse>(this.url);
   }
 }

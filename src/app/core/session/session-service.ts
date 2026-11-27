@@ -66,6 +66,8 @@ export class SessionService {
       expiraEn: response.expiraEn,
       rol: response.rol,
       debeCambiarContrasena: response.debeCambiarContrasena,
+      refreshToken: response.refreshToken,
+      refreshExpiraEn: response.refreshExpiraEn,
       nombre: null,
     };
     this.session.set(session);
@@ -137,15 +139,35 @@ function toSession(text: string | null): Session | null {
   if (
     typeof accessToken !== 'string' ||
     accessToken === '' ||
-    typeof expiraEn !== 'string' ||
-    Number.isNaN(Date.parse(expiraEn)) ||
+    !isDate(expiraEn) ||
     !ROLES.includes(rol as Rol) ||
     typeof debeCambiarContrasena !== 'boolean' ||
     (nombre !== null && nombre !== undefined && typeof nombre !== 'string')
   ) {
     return null;
   }
-  return { accessToken, expiraEn, rol: rol as Rol, debeCambiarContrasena, nombre: nombre ?? null };
+
+  // Sin refresh token: temporal (RN-52) o una sesión guardada antes de la renovación. Con uno, su fin es obligatorio.
+  const refresh = toRefresh(v['refreshToken'] ?? null, v['refreshExpiraEn'] ?? null);
+  if (refresh === null) return null;
+
+  return { accessToken, expiraEn, rol: rol as Rol, debeCambiarContrasena, ...refresh, nombre: nombre ?? null };
+}
+
+/** Los dos datos del refresh token: los dos con valor o los dos en `null`; si no, `null` (forma inválida). */
+function toRefresh(
+  refreshToken: unknown,
+  refreshExpiraEn: unknown,
+): Pick<Session, 'refreshToken' | 'refreshExpiraEn'> | null {
+  if (refreshToken === null && refreshExpiraEn === null) return { refreshToken: null, refreshExpiraEn: null };
+  if (typeof refreshToken === 'string' && refreshToken !== '' && isDate(refreshExpiraEn)) {
+    return { refreshToken, refreshExpiraEn };
+  }
+  return null;
+}
+
+function isDate(value: unknown): value is string {
+  return typeof value === 'string' && !Number.isNaN(Date.parse(value));
 }
 
 function readStorage(): string | null {

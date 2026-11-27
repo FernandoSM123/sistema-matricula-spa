@@ -13,7 +13,7 @@ Cada tarea termina con:
 
 | Tarea | Estado | Código | Pruebas unitarias | Verificación manual | Commit |
 |---|---|:---:|:---:|:---:|:---:|
-| T1. Contrato y `AuthApi.refresh()` | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
+| T1. Contrato y `AuthApi.refresh()` | Completada | ✅ | ✅ | ✅ | ✅ |
 | T2. `SessionService`: fin de la sesión y `refresh()` | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T3. Pestaña duplicada | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T4. Interceptores | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
@@ -47,10 +47,17 @@ Ninguna del mapa va a esta corrección. T5 agrega la renovación a la verificaci
   - Prueba de tipos: `TokenResponse['refreshToken']` es `string | null`.
   - Se anota la carga inicial del build, como punto de partida del criterio 2.
 - Files: `src/app/api/schema.d.ts`, `http-context.ts`, `auth-api.ts`, `auth-api.spec.ts`, `models.spec.ts`, `src/testing/session.ts`
+- **Resultado (2026-11-26):**
+  - `schema.d.ts` regenerado, y `pnpm api:types` genera el mismo archivo dos veces seguidas. Esquemas: 73 antes y 74 ahora. Salen los 32 nombres viejos y entran los 32 nuevos, más `RefreshTokenRequest`. Con los renombres aplicados al archivo anterior, lo único distinto es lo de RF-60: `refreshToken` y `refreshExpiraEn` (`null | string`) en `TokenResponse` y la ruta `/api/v1/auth/refresh` con sus respuestas `200`, `400`, `401` y `429`.
+  - **No previsto en la spec:** entre los 32 renombres está `PerfilResponse` → `ProfileResponse` (también `MensajeResponse` → `MessageResponse` y `ReenvioTemporalResponse` → `ResendTemporaryPasswordResponse`, que el SPA todavía no usa). El alias de `models.ts` lleva el nombre del esquema (§3.2 de la arquitectura), así que pasa a `ProfileResponse` en `models.ts`, `me-api.ts`, `models.spec.ts` y `src/testing/session.ts`. Ningún documento lo nombraba.
+  - `models.ts` agrega el alias `RefreshTokenRequest`, que usa `AuthApi.refresh()` con `satisfies`.
+  - **Adelantado de T2:** con `TokenResponse` ampliado, `SessionService` no compilaba. Por eso ya guarda `refreshToken` y `refreshExpiraEn` en `start()`, y la lectura al arrancar los acepta: los dos con valor o los dos en `null`, y una sesión guardada sin ellos se lee con `null`. Tiene 4 pruebas nuevas. El fin de la sesión, `accessExpired()` y `refresh()` siguen en T2.
+  - **Carga inicial:** 438,44 kB antes de T1 (punto de partida del criterio 2) y 438,79 kB después.
+  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (21 archivos, 204 pruebas) y `pnpm build` en verde.
 
 ### T2. `SessionService`: fin de la sesión y `refresh()`
 - Acceptance:
-  - La sesión guarda `refreshToken` y `refreshExpiraEn`; `start()` y la lectura de `sessionStorage` (`toSession`) los aceptan, y una sesión guardada sin esos campos (de antes de esta corrección) se lee con los dos en `null`.
+  - ~~La sesión guarda `refreshToken` y `refreshExpiraEn`; `start()` y la lectura de `sessionStorage` (`toSession`) los aceptan, y una sesión guardada sin esos campos (de antes de esta corrección) se lee con los dos en `null`.~~ Hecho en T1.
   - El fin de la sesión es `refreshExpiraEn ?? expiraEn`; lo usan `isActive()`, `isExpired()` y la lectura al arrancar.
   - `accessExpired()`: `expiraEn` menos 30 segundos ya pasó.
   - `refresh()` devuelve `RefreshResult` (`'renewed' | 'ended' | 'unavailable'`), con una sola renovación a la vez; reemplaza el token, `expiraEn`, `refreshToken` y `refreshExpiraEn`, y conserva el nombre; descarta la respuesta si la sesión terminó o se reemplazó mientras tanto. Reconoce el `ApiError` con `isApiError()` (riesgo del plan).

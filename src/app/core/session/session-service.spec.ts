@@ -69,10 +69,23 @@ describe('SessionService (§4.1)', () => {
       ['un rol desconocido', JSON.stringify({ ...storedSession, rol: 'Root' })],
       ['sin token', JSON.stringify({ ...storedSession, accessToken: '' })],
       ['una fecha de vencimiento inválida', JSON.stringify({ ...storedSession, expiraEn: 'mañana' })],
+      ['un refresh token sin su fin', JSON.stringify({ ...storedSession, refreshExpiraEn: null })],
+      ['un fin sin refresh token', JSON.stringify({ ...storedSession, refreshToken: null })],
+      ['un fin de sesión inválido', JSON.stringify({ ...storedSession, refreshExpiraEn: 'mañana' })],
     ])('descarta %s', (_case, value) => {
       sessionStorage.setItem(SESSION_KEY, value);
       expect(create().isActive()).toBe(false);
       expect(sessionStorage.getItem(SESSION_KEY)).toBeNull();
+    });
+
+    it('lee una sesión sin refresh token: temporal (RN-52) o guardada antes de la renovación', () => {
+      const previous: Record<string, unknown> = { ...storedSession };
+      delete previous['refreshToken'];
+      delete previous['refreshExpiraEn'];
+      store(previous);
+      expect(create().isActive()).toBe(true);
+      TestBed.tick();
+      expect(stored()).toEqual({ ...storedSession, refreshToken: null, refreshExpiraEn: null });
     });
   });
 

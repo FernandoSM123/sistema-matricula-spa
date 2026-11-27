@@ -1,7 +1,7 @@
 import { computed, DestroyRef, DOCUMENT, effect, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { isApiError, toApiError } from '../../api/api-error';
+import { ApiError, isApiError, toApiError } from '../../api/api-error';
 import { AuthApi } from '../../api/auth-api';
 import { MeApi } from '../../api/me-api';
 import { Rol, TokenResponse } from '../../api/models';
@@ -19,9 +19,10 @@ const ACCESS_MARGIN = 30_000;
  * Resultado de `refresh()` (RF-60):
  * - `renewed`: hay un token de acceso vigente (el nuevo, o el de una sesión que lo reemplazó).
  * - `ended`: la sesión ya no se puede renovar (`401`, sin refresh token o terminada): RFF-03.
- * - `unavailable`: sin respuesta, `429` o `5xx`; la sesión sigue y se puede intentar de nuevo.
+ * - un `ApiError` (no disponible): sin respuesta, `429` o `5xx`. La sesión sigue y se puede intentar
+ *   de nuevo; la petición que esperaba la renovación falla con este error (§3.5).
  */
-export type RefreshResult = 'renewed' | 'ended' | 'unavailable';
+export type RefreshResult = 'renewed' | 'ended' | ApiError;
 
 /** Lo que se guarda de la sesión: la respuesta con token y el nombre de `GET /me`. */
 interface Session extends TokenResponse {
@@ -85,6 +86,12 @@ export class SessionService {
   accessExpired(): boolean {
     const session = this.session();
     return session !== null && Date.parse(session.expiraEn) - ACCESS_MARGIN <= this.clock();
+  }
+
+  /** La sesión no terminó y tiene refresh token: sin él (temporal, RN-52) no hay nada que renovar. */
+  canRefresh(): boolean {
+    const session = this.session();
+    return session?.refreshToken != null && !this.hasEnded(session);
   }
 
   /**
@@ -166,8 +173,8 @@ export class SessionService {
     } catch (error) {
       // Llega como ApiError, ya convertido por errorInterceptor; toApiError() sobre un ApiError
       // daría status 0. Sin respuesta, 429 o 5xx no terminan la sesión (supuesto 1 de la spec).
-      const status = isApiError(error) ? error.status : toApiError(error).status;
-      return status === 401 ? 'ended' : 'unavailable';
+      const apiError = isApiError(error) ? error : toApiError(error);
+      return apiError.status === 401 ? 'ended' : apiError;
     }
 
     // La sesión pudo terminar (cierre, 401) o reemplazarse (cambio de contraseña) mientras tanto:

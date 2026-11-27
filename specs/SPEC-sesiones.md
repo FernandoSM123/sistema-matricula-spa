@@ -4,7 +4,7 @@ Corrección transversal antes de `componentes`, como [`nombres`](SPEC-nombres.md
 
 | Estado | Plan | Tareas | Avance |
 |---|---|---|---|
-| **Aprobada** | [Aprobado](../tasks/sesiones/plan.md) | [Aprobadas](../tasks/sesiones/todo.md) | 3/6 tareas |
+| **Aprobada** | [Aprobado](../tasks/sesiones/plan.md) | [Aprobadas](../tasks/sesiones/todo.md) | 4/6 tareas |
 
 **Historial:**
 - 2026-11-26: v1 en revisión, en la rama `sesiones`. Parte de la revisión de los módulos `nombres` y `sesiones` de la API, a pedido del usuario. Las decisiones 3 (pestaña duplicada) y 4 (el cierre de sesión renueva primero) son recomendaciones que el usuario pidió y que esperan su aprobación.
@@ -13,6 +13,7 @@ Corrección transversal antes de `componentes`, como [`nombres`](SPEC-nombres.md
 - 2026-11-26: T1 completada. No previsto: entre los 32 esquemas renombrados está `PerfilResponse`, que pasa a `ProfileResponse`; su alias de `models.ts` toma el nombre nuevo (§3.2 de la arquitectura). Se adelanta de T2 el guardado de `refreshToken` y `refreshExpiraEn`, sin el cual `SessionService` no compilaba.
 - 2026-11-26: T2 completada: el fin de la sesión, `accessExpired()` y `refresh()`. Detalle no previsto: un contador de la sesión (`generation`), que no cambia al renovar, reemplaza la comparación por identidad para descartar las respuestas tardías de `GET /me` y de la renovación.
 - 2026-11-26: T3 completada: la pestaña duplicada empieza sin sesión (marca `tabOpen`, decisión 3).
+- 2026-11-26: T4 completada: los dos interceptores renuevan. Cambios a la spec: cuando la renovación no está disponible, `refresh()` ya no devuelve el texto `'unavailable'` sino el `ApiError` de la renovación, que es el error que el punto 5 pide entregar (puntos 3 y 5 y la tabla de pruebas actualizados). `SessionService` agrega `canRefresh()`, para que `tokenInterceptor` envíe sin esperar cuando no hay nada que renovar.
 
 ## Objetivo
 
@@ -35,17 +36,17 @@ Hoy el token dura 60 minutos y no se renueva: al vencer, el SPA descarta la sesi
 3. **`SessionService`:**
    - Guarda `refreshToken` y `refreshExpiraEn` junto a los datos de hoy, en la misma clave `matricula.session`. `start()` los toma de la respuesta.
    - **El fin de la sesión** es `refreshExpiraEn`, o `expiraEn` si no hay refresh token (temporal). `isActive()`, `isExpired()` y la lectura al arrancar usan ese instante. Con el token de acceso vencido y la sesión vigente, la sesión sigue activa: las guardas no cambian.
-   - **`refresh()`** renueva con `AuthApi.refresh` y devuelve `'renewed'`, `'ended'` (la API respondió `401`, o no hay refresh token) o `'unavailable'` (sin respuesta, `429` o `5xx`). **Una sola renovación a la vez por pestaña:** las llamadas que llegan mientras tanto reciben la misma promesa. Con `'renewed'` reemplaza el token, `expiraEn` y el refresh token, y conserva el nombre (no vuelve a pedir `GET /me`). Si la sesión terminó o se reemplazó mientras tanto, descarta la respuesta.
+   - **`refresh()`** renueva con `AuthApi.refresh` y devuelve `'renewed'`, `'ended'` (la API respondió `401`, o no hay refresh token) o, si la renovación no está disponible (sin respuesta, `429` o `5xx`), el `ApiError` de la renovación. **Una sola renovación a la vez por pestaña:** las llamadas que llegan mientras tanto reciben la misma promesa. Con `'renewed'` reemplaza el token, `expiraEn` y el refresh token, y conserva el nombre (no vuelve a pedir `GET /me`). Si la sesión terminó o se reemplazó mientras tanto, descarta la respuesta.
    - **`accessExpired()`**: `expiraEn` ya pasó o pasa en menos de 30 segundos (margen para la latencia y una diferencia pequeña de reloj).
    - **Pestaña duplicada** (decisión 3): al duplicar una pestaña, el navegador copia su `sessionStorage`, y las dos quedarían con el mismo refresh token; la primera que renueva deja a la otra con uno ya reemplazado, y la API termina la sesión **en las dos** (RN-51). Para evitarlo, la sesión guarda la marca `tabOpen`: `true` mientras la pestaña está abierta, `false` en `pagehide` y de nuevo `true` en `pageshow`. Si al arrancar la marca ya está en `true`, el almacenamiento es una copia de una pestaña abierta: la sesión se descarta sin aviso y la pestaña empieza sin sesión, como una pestaña nueva (§4.1 de la arquitectura: cada pestaña inicia su propia sesión). La pestaña original no se ve afectada.
 
-4. **`tokenInterceptor`:** si `session.accessExpired()` y la sesión tiene refresh token, espera `session.refresh()` antes de enviar la petición, así no la envía con un token que la API va a rechazar. Con `'ended'` o `'unavailable'` la envía igual, y la respuesta sigue el camino de siempre. No toca las peticiones con `NO_SESSION`.
+4. **`tokenInterceptor`:** si `session.accessExpired()` y la sesión tiene refresh token (`canRefresh()`), espera `session.refresh()` antes de enviar la petición, así no la envía con un token que la API va a rechazar. Con `'ended'` o un error la envía igual, y la respuesta sigue el camino de siempre. No toca las peticiones con `NO_SESSION`.
 
 5. **`errorInterceptor`**, ante un `401` de una petición que llevaba token y con la sesión todavía activa:
    - Llama a `session.refresh()`.
    - Con `'renewed'`: repite la petición **una vez** con el token nuevo. Repetirla es seguro, también en un `POST`: un `401` significa que la API la rechazó antes de ejecutarla. Si la repetición vuelve a dar `401`, aplica RFF-03.
    - Con `'ended'`: RFF-03 como hoy (descarta la sesión y abre `V-02` con `volver` y el aviso), una sola navegación aunque fallen varias peticiones a la vez.
-   - Con `'unavailable'`: no descarta la sesión. La petición original falla con el error de la renovación (sin respuesta, `429` o `5xx`), que el componente presenta según §3.5. La siguiente petición intenta renovar de nuevo.
+   - Con un `ApiError` (no disponible): no descarta la sesión. La petición original falla con el error de la renovación (sin respuesta, `429` o `5xx`), que el componente presenta según §3.5. La siguiente petición intenta renovar de nuevo.
    - El `401` de la propia renovación no lo ve como petición con sesión (no lleva token): lo resuelve `refresh()`.
 
 6. **Cierre de sesión (RFF-04)** (decisión 4): si el token de acceso venció y hay refresh token, `logout()` renueva primero y luego envía `POST /auth/logout` con el token nuevo. Así el cierre llega a la API y termina las sesiones de los demás dispositivos, como promete el aviso de RFF-04. Si la renovación falla, sigue como hoy: descarta la sesión local y abre `V-01` con el aviso.
@@ -109,7 +110,7 @@ docs/requerimientos.md, docs/arquitectura.md, specs/mapa-modulos.md, AGENTS.md
 
 ```ts
 // core/session/session-service.ts
-export type RefreshResult = 'renewed' | 'ended' | 'unavailable';
+export type RefreshResult = 'renewed' | 'ended' | ApiError; // ApiError: la renovación no está disponible
 
 /** RF-60: una sola renovación a la vez por pestaña; las llamadas de mientras tanto esperan la misma. */
 refresh(): Promise<RefreshResult> {
@@ -127,7 +128,8 @@ private async renew(): Promise<RefreshResult> {
     this.session.set({ ...session, ...tokensOf(response) });
     return 'renewed';
   } catch (error) {
-    return toApiError(error).status === 401 ? 'ended' : 'unavailable';
+    const apiError = isApiError(error) ? error : toApiError(error);
+    return apiError.status === 401 ? 'ended' : apiError;
   }
 }
 ```
@@ -153,9 +155,9 @@ El código final puede diferir; lo que fija la spec es el comportamiento. Nombre
 
 | Pieza | Casos |
 |---|---|
-| `SessionService` | Guarda y lee `refreshToken` y `refreshExpiraEn`. Al arrancar, conserva una sesión con el token de acceso vencido y `refreshExpiraEn` vigente, y descarta la que pasó `refreshExpiraEn`. Sin refresh token (temporal), el fin es `expiraEn`. `refresh()`: `'renewed'` reemplaza el token y conserva el nombre; `401` da `'ended'`; sin respuesta, `429` y `500` dan `'unavailable'`; dos llamadas a la vez hacen **una** petición; si la sesión terminó durante la renovación, la respuesta se descarta. `accessExpired()` en el margen de 30 s. Pestaña duplicada: con `tabOpen` en `true` al arrancar, descarta la sesión; después de `pagehide` (recarga), la conserva |
+| `SessionService` | Guarda y lee `refreshToken` y `refreshExpiraEn`. Al arrancar, conserva una sesión con el token de acceso vencido y `refreshExpiraEn` vigente, y descarta la que pasó `refreshExpiraEn`. Sin refresh token (temporal), el fin es `expiraEn`. `refresh()`: `'renewed'` reemplaza el token y conserva el nombre; `401` da `'ended'`; sin respuesta, `429` y `500` dan su `ApiError`; dos llamadas a la vez hacen **una** petición; si la sesión terminó durante la renovación, la respuesta se descarta. `accessExpired()` en el margen de 30 s. Pestaña duplicada: con `tabOpen` en `true` al arrancar, descarta la sesión; después de `pagehide` (recarga), la conserva |
 | `tokenInterceptor` | Con el token de acceso vencido, renueva y envía con el token nuevo. Sin refresh token, envía con el viejo. No agrega el token a `NO_SESSION` ni a otro origen |
-| `errorInterceptor` | `401` → renueva → repite una vez con el token nuevo y entrega su respuesta. Repetición con `401` → RFF-03. Renovación `'ended'` → RFF-03. Tres `401` a la vez → una renovación, tres repeticiones; si falla, una navegación. Renovación `'unavailable'` → no descarta la sesión ni navega, y el error es el de la renovación. El `401` sin token sigue sin navegar; el `403 RN-24`, igual que hoy |
+| `errorInterceptor` | `401` → renueva → repite una vez con el token nuevo y entrega su respuesta. Repetición con `401` → RFF-03. Renovación `'ended'` → RFF-03. Tres `401` a la vez → una renovación, tres repeticiones; si falla, una navegación. Renovación no disponible → no descarta la sesión ni navega, y el error es el de la renovación. El `401` sin token sigue sin navegar; el `403 RN-24`, igual que hoy |
 | `logout()` | Con el token vencido, renueva y envía el logout con el token nuevo. Si la renovación falla, descarta la sesión y navega igual |
 | Guardas | Las pruebas actuales siguen en verde. Una sesión con el token de acceso vencido y la sesión vigente entra a una vista protegida |
 

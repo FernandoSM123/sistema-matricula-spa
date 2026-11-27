@@ -387,19 +387,19 @@ describe('SessionService (§4.1)', () => {
     it.each([
       ['un 429', 429],
       ['un 500', 500],
-    ])('%s da unavailable y la sesión sigue', async (_case, status) => {
+    ])('%s da su ApiError (no disponible) y la sesión sigue', async (_case, status) => {
       const session = create();
       const renewing = session.refresh();
       refreshRequest().flush(problem(status), { status, statusText: 'Error' });
-      await expect(renewing).resolves.toBe('unavailable');
+      await expect(renewing).resolves.toMatchObject({ name: 'ApiError', status });
       expect(session.isActive()).toBe(true);
     });
 
-    it('sin respuesta da unavailable', async () => {
+    it('sin respuesta da un ApiError con status 0', async () => {
       const session = create();
       const renewing = session.refresh();
       refreshRequest().error(new ProgressEvent('error'));
-      await expect(renewing).resolves.toBe('unavailable');
+      await expect(renewing).resolves.toMatchObject({ name: 'ApiError', status: 0 });
     });
 
     it('sin refresh token (temporal) da ended sin hacer la petición', async () => {
@@ -480,11 +480,11 @@ describe('SessionService (§4.1)', () => {
       await expect(renewing).resolves.toBe('ended');
     });
 
-    it('el 500 da unavailable', async () => {
+    it('el 500 da su ApiError, con el detail de la API', async () => {
       const session = create();
       const renewing = session.refresh();
       http().expectOne(`${API}/auth/refresh`).flush(problem(500), { status: 500, statusText: 'Error' });
-      await expect(renewing).resolves.toBe('unavailable');
+      await expect(renewing).resolves.toMatchObject({ status: 500, detail: 'La sesión terminó.' });
     });
   });
 

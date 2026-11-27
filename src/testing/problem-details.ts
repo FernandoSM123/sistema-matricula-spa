@@ -35,6 +35,15 @@ export const PROBLEM_401 = {
   traceId: TRACE_ID,
 };
 
+/** El 401 de `POST /auth/refresh`: el mismo para todos los rechazos (RF-60). */
+export const PROBLEM_401_RF60 = {
+  title: 'Unauthorized',
+  status: 401,
+  detail: 'La sesión terminó. Inicie sesión de nuevo.',
+  code: 'RF-60',
+  traceId: TRACE_ID,
+};
+
 export const PROBLEM_500 = {
   title: 'Error interno',
   status: 500,

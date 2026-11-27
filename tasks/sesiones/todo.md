@@ -16,7 +16,7 @@ Cada tarea termina con:
 | T1. Contrato y `AuthApi.refresh()` | Completada | ✅ | ✅ | ✅ | ✅ |
 | T2. `SessionService`: fin de la sesión y `refresh()` | Completada | ✅ | ✅ | ➖ | ✅ |
 | T3. Pestaña duplicada | Completada | ✅ | ✅ | ➖ | ✅ |
-| T4. Interceptores | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
+| T4. Interceptores | Completada | ✅ | ✅ | ➖ | ✅ |
 | T5. Cierre de sesión y documentos | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T6. Verificación manual y cierre | Pendiente | ➖ | ⬜ | ⬜ | ⬜ |
 
@@ -96,6 +96,14 @@ Ninguna del mapa va a esta corrección. T5 agrega la renovación a la verificaci
   - Lo demás de §3.5 sin cambios: el `401` sin token no navega y el `403 RN-24` abre `V-03`.
 - Verify: las pruebas de `tokenInterceptor` y `errorInterceptor` de la tabla de la spec, incluidas los tres `401` simultáneos (una renovación) y la petición con el token vencido (una sola llamada a `/auth/refresh`).
 - Files: `src/app/core/http/token-interceptor.ts`, `token-interceptor.spec.ts`, `error-interceptor.ts`, `error-interceptor.spec.ts`
+- **Resultado (2026-11-26):**
+  - **Cambio de `refresh()` (T2):** si la renovación no está disponible, devuelve el `ApiError` de la renovación en lugar del texto `'unavailable'`. El punto 5 de la spec pide que la petición falle con ese error, y así llega sin guardar estado aparte en el servicio. `RefreshResult` es `'renewed' | 'ended' | ApiError`, y se ajustaron sus 3 pruebas de T2 y la spec.
+  - **`SessionService.canRefresh()`**, no previsto: la sesión no terminó y tiene refresh token. `tokenInterceptor` lo usa para enviar en el acto, sin esperar una promesa, cuando no hay nada que renovar (temporal).
+  - `tokenInterceptor`: con `NO_SESSION` o a otro origen, pasa la petición sin tocarla. Con el token vencido y `canRefresh()`, espera `refresh()` (con `defer`, al suscribirse) y envía con el token que haya en ese momento.
+  - `errorInterceptor`: una función `handle()` que se llama a sí misma para la repetición, así el error de la repetida también pasa por `toApiError` y por RFF-03. La marca `RETRIED` (un `HttpContextToken` privado del archivo) va en una **copia** del `HttpContext`: quien hizo la petición puede reusar el mismo contexto en otras, y marcar el original impediría renovarlas. Hay una prueba para eso. La navegación de RFF-03 queda en `endSession()`, que solo navega si todavía hay sesión.
+  - Pruebas: 4 nuevas en `tokenInterceptor` (incluida la renovación sin `Authorization`, que pasó de T2) y 10 nuevas o reescritas en `errorInterceptor`. Las dos de RFF-03 que ya existían ahora responden primero la renovación con `401 RF-60`. `src/testing/problem-details.ts` agrega `PROBLEM_401_RF60`.
+  - **Carga inicial:** 440,83 kB (+2,39 kB desde el punto de partida de T1).
+  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (21 archivos, 243 pruebas) y `pnpm build` en verde.
 
 ### T5. Cierre de sesión y documentos
 - Acceptance:

@@ -66,6 +66,28 @@ describe('rutas de la aplicación (§2.4, §2.5)', () => {
     });
   });
 
+  describe('catálogo de componentes (decisión 1 de SPEC-componentes)', () => {
+    // La primera importación de sus rutas trae las opciones de Material y date-fns, y en frío
+    // tarda más que el tiempo de una prueba.
+    beforeAll(() => import('./core/pages/component-catalog/component-catalog.routes'), 30_000);
+
+    it.each<[string, () => void]>([
+      ['sin sesión', () => undefined],
+      ['con sesión', () => withSession(ESTUDIANTE_TOKEN)],
+      ['con un cambio pendiente', () => withSession(PASSWORD_CHANGE_TOKEN)],
+    ])('/componentes abre %s', async (_case, prepare) => {
+      prepare();
+      expect(await go('/componentes')).toEqual({ url: '/componentes', heading: 'Catálogo de componentes' });
+    });
+
+    it('/componentes/formulario abre el formulario de ejemplo, con unsavedChangesGuard', async () => {
+      expect(await go('/componentes/formulario')).toEqual({
+        url: '/componentes/formulario',
+        heading: 'Registrar estudiante',
+      });
+    });
+  });
+
   it('/sin-permiso sin sesión lleva al inicio de sesión', async () => {
     expect((await go('/sin-permiso')).url).toBe('/iniciar-sesion?volver=%2Fsin-permiso');
   });

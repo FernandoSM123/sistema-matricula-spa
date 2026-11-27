@@ -1,0 +1,48 @@
+@if (kind(); as kind) {
+  <div class="box" role="alert">
+    <mat-icon class="icon" [svgIcon]="kind === 'wait' ? 'clock' : 'error'" aria-hidden="true" />
+    <div class="text">
+      @switch (kind) {
+        @case ('wait') {
+          <p>{{ waitSeconds() > 0 ? text.tooManyAttempts(waitSeconds()) : text.canRetry }}</p>
+        }
+        @case ('unexpected') {
+          @if (error()?.traceId; as traceId) {
+            <p>
+              {{ text.unexpected }} <code class="trace-id">{{ traceId }}</code>
+            </p>
+          } @else {
+            <p>{{ text.unexpectedWithoutCode }}</p>
+          }
+        }
+        @case ('no-response') {
+          <p>{{ text.noResponse }}</p>
+        }
+        @default {
+          <p>{{ detail() }}</p>
+        }
+      }
+    </div>
+    <div class="actions">
+      @switch (kind) {
+        @case ('unexpected') {
+          @if (error()?.traceId; as traceId) {
+            <button mat-stroked-button type="button" (click)="copyTraceId(traceId)">
+              <mat-icon svgIcon="copy" aria-hidden="true" />
+              {{ copied() ? 'Código copiado' : 'Copiar código' }}
+            </button>
+          }
+        }
+        @case ('no-response') {
+          <button mat-stroked-button type="button" (click)="retry.emit()">Reintentar</button>
+        }
+        @default {
+          @if (concurrency()) {
+            <button mat-stroked-button type="button" (click)="retryConcurrency.emit()">Intentar de nuevo</button>
+          }
+          <ng-content select="[errorActions]" />
+        }
+      }
+    </div>
+  </div>
+}

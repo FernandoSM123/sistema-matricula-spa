@@ -1,0 +1,71 @@
+// A todo el ancho, con el margen del contenido de los wireframes (`.wf-contenido`: 24 px a los lados).
+.page {
+  padding: var(--sm-space-4) var(--sm-space-4) var(--sm-space-5);
+}
+
+h1 {
+  margin: 0 0 var(--sm-space-2);
+  font-size: 1.5rem;
+}
+
+.note,
+.required-note {
+  color: var(--sm-text-secondary);
+}
+
+form {
+  display: grid;
+  gap: var(--sm-space-3);
+  margin-top: var(--sm-space-3);
+  padding: var(--sm-space-4);
+  background: var(--sm-surface);
+  border: 1px solid var(--sm-secondary-active);
+  border-radius: var(--sm-space-2);
+}
+
+.required-note {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+legend {
+  margin-bottom: var(--sm-space-2);
+  font-weight: 600;
+}
+
+// Con `subscriptSizing: 'dynamic'` (§6.1) el campo no reserva lugar para la ayuda ni el error: la
+// separación entre filas la da el `gap`. `align-items: start` evita que un error estire los demás
+// campos de su fila.
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  align-items: start;
+  gap: var(--sm-space-3);
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--sm-space-2);
+}
+
+@media (max-width: 599.98px) {
+  .page {
+    padding: var(--sm-space-3) var(--sm-space-3) var(--sm-space-5);
+  }
+
+  form {
+    padding: var(--sm-space-3);
+  }
+}

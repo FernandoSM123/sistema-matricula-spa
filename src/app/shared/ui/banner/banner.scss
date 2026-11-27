@@ -1,0 +1,75 @@
+// Tonos de estado de §6.6: texto, fondo y borde de cada uno.
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--sm-space-2) var(--sm-space-3);
+  padding: var(--sm-space-3);
+  color: var(--tone-text);
+  background: var(--tone-bg);
+  border: 1px solid var(--tone-border);
+  border-inline-start-width: 4px;
+  border-radius: var(--sm-space-1);
+}
+
+:host(.tone-warning) {
+  --tone-text: var(--sm-warning-text);
+  --tone-bg: var(--sm-warning-bg);
+  --tone-border: var(--sm-warning-border);
+}
+
+:host(.tone-info) {
+  --tone-text: var(--sm-info-text);
+  --tone-bg: var(--sm-info-bg);
+  --tone-border: var(--sm-info-border);
+}
+
+:host(.tone-success) {
+  --tone-text: var(--sm-success-text);
+  --tone-bg: var(--sm-success-bg);
+  --tone-border: var(--sm-success-border);
+}
+
+:host(.tone-error) {
+  --tone-text: var(--sm-error-text);
+  --tone-bg: var(--sm-error-bg);
+  --tone-border: var(--sm-error-border);
+}
+
+.icon {
+  flex: none;
+  color: var(--tone-border);
+}
+
+.text {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+p {
+  margin: 0;
+}
+
+p + p {
+  margin-top: var(--sm-space-1);
+}
+
+.heading {
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sm-space-2);
+  align-items: center;
+}
+
+.actions:empty {
+  display: none;
+}
+
+// Los botones de texto heredan el tono, no el acento.
+.actions button {
+  --mat-button-text-label-text-color: var(--tone-text);
+}

@@ -1,0 +1,69 @@
+// Tonos de §6.6. "Relleno" usa el texto del tono como fondo, con texto blanco: 7,1:1 en éxito.
+:host {
+  display: inline-block;
+  padding: 1px var(--sm-space-2);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+  color: var(--badge-text);
+  background: var(--badge-bg);
+  border: 1px solid var(--badge-border);
+  border-radius: 999px;
+}
+
+:host(.tone-success) {
+  --badge-text: var(--sm-success-text);
+  --badge-bg: var(--sm-success-bg);
+  --badge-border: var(--sm-success-border);
+}
+
+:host(.tone-error) {
+  --badge-text: var(--sm-error-text);
+  --badge-bg: var(--sm-error-bg);
+  --badge-border: var(--sm-error-border);
+}
+
+:host(.tone-warning) {
+  --badge-text: var(--sm-warning-text);
+  --badge-bg: var(--sm-warning-bg);
+  --badge-border: var(--sm-warning-border);
+}
+
+:host(.tone-info) {
+  --badge-text: var(--sm-info-text);
+  --badge-bg: var(--sm-info-bg);
+  --badge-border: var(--sm-info-border);
+}
+
+:host(.tone-neutral) {
+  --badge-text: var(--sm-neutral-text);
+  --badge-bg: var(--sm-neutral-bg);
+  --badge-border: var(--sm-neutral-border);
+}
+
+// Apagado: borde discontinuo (§6.6, RUI-12) y sin relleno, para distinguirlo de "Planificado".
+:host(.tone-muted) {
+  --badge-text: var(--sm-muted-text);
+  --badge-bg: transparent;
+  --badge-border: var(--sm-muted-border);
+  border-style: dashed;
+}
+
+:host(.shape-dashed) {
+  border-style: dashed;
+}
+
+:host(.shape-filled) {
+  color: var(--sm-surface);
+  background: var(--badge-text);
+  border-color: var(--badge-text);
+}
+
+:host(.shape-double) {
+  border: 3px double var(--badge-border);
+}
+
+:host(.shape-struck) {
+  text-decoration: line-through;
+}

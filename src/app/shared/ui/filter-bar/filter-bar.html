@@ -1,0 +1,24 @@
+<form class="bar" role="search" (submit)="applySearch($event)">
+  <div class="search">
+    <mat-form-field>
+      <mat-label>Buscar</mat-label>
+      <input
+        #box
+        matInput
+        type="search"
+        name="search"
+        [placeholder]="searchPlaceholder()"
+        [value]="draft()"
+        (input)="draft.set(box.value)"
+      />
+    </mat-form-field>
+    <button mat-stroked-button type="submit">Buscar</button>
+  </div>
+  <ng-content />
+  @if (showInactive()) {
+    <mat-checkbox [checked]="inactive()" (change)="inactiveChange.emit($event.checked)">Incluir inactivos</mat-checkbox>
+  }
+  @if (filtered()) {
+    <button mat-button type="button" class="clear" (click)="clear.emit()">Limpiar filtros</button>
+  }
+</form>

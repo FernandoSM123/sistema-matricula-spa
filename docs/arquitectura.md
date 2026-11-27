@@ -111,7 +111,7 @@ src/
 - `http/`: los interceptores funcionales. `tokenInterceptor` agrega el token (y lo renueva antes si venció), y `errorInterceptor` convierte las respuestas de error en `ApiError` y maneja el `401` (renovando) y el `403 RN-24` (RFF-03, RUI-03).
 - `guards/`: las guardas funcionales de la §2.5: sesión, invitado, rol, cambio pendiente y cambios sin guardar (§4).
 - `layout/`: el encabezado, el menú por rol de la §2.3, el menú de la cuenta y el pie de página (RUI-23). Es el `Layout`, que en los wireframes se llama "marco".
-- `pages/`: `V-09` Sin permiso y `V-10` Página no encontrada.
+- `pages/`: `V-09` Sin permiso y `V-10` Página no encontrada. Y el catálogo de componentes (`/componentes`, decisión 1 de `SPEC-componentes`): las piezas de `shared/ui` y `shared/forms` con datos de ejemplo, para revisarlas contra `docs/wireframes/componentes.html`. No pide sesión, ningún menú ni enlace lleva a él y se carga en diferido. Cada pieza nueva de `shared/` agrega ahí su ejemplo.
 - `config/`: el locale, el adaptador de fechas propio (§7) y las opciones por defecto de Material.
 
 **`shared/`**: piezas sin dependencias de la sesión ni de la API, que reciben todo por `input()` y avisan por `output()`.
@@ -160,7 +160,7 @@ Las áreas siguen las secciones del catálogo de vistas (§3 de los requerimient
 | `grupos` | `V-28`, `V-29`, `V-30` | `/grupos`, `/grupos/nuevo`, `/grupos/:id`, `/grupos/:id/editar` | `V-28` y `V-29`, administrador; `V-30`, con sesión (RN-18) | `matricula` (`V-32` y el retiro de los inscritos, en `V-30`) |
 | `matricula` | `V-31` a `V-35` | `/mis-matriculas`, `/mi-horario`, `/mis-grupos`. `V-32` y `V-33` son ventanas, sin ruta propia | Estudiante y profesor; las ventanas, también el administrador | — |
 | `sistema` | `V-36`, `V-37`, `V-38` | `/auditoria`, `/errores`, `/errores/:id` | Administrador | — |
-| `core/pages` | `V-09`, `V-10` | `/sin-permiso` y cualquier ruta desconocida (`**`) | Todos | — |
+| `core/pages` | `V-09`, `V-10` | `/sin-permiso` y cualquier ruta desconocida (`**`). Además, `/componentes`: el catálogo de componentes, que no es una vista de los requerimientos (§2.2) | Todos | — |
 
 En total son 38 vistas: 4 + 1 + 3 + 9 + 8 + 3 + 5 + 3 + 2.
 
@@ -365,12 +365,12 @@ Funciones en `core/guards/`, una por regla:
 | La API responde `401` durante el uso | — (`errorInterceptor`) | — | Renueva y repite; si no se puede, RFF-03 (§4.2) |
 | La dirección no existe | Ruta `**` | `app.routes.ts` | `V-10` |
 | El registro no existe (`404`) | — (la vista) | — | §3.5 |
-| Sale de un formulario con cambios sin guardar (RUI-09) | `unsavedChangesGuard` | `canDeactivate` de los formularios | Confirmación "¿Descartar los cambios?" (RUI-07). No pregunta si la salida es porque la sesión terminó (RFF-03) |
+| Sale de un formulario con cambios sin guardar (RUI-09) | `unsavedChangesGuard` | `canDeactivate` de los formularios | Confirmación "¿Descartar los cambios?" (RUI-07). No pregunta si la salida es porque la sesión terminó (RFF-03) o se cerró (RFF-04) |
 
 - **`rolGuard` aplica primero la regla de `authGuard`** (sin sesión, terminada o con un cambio pendiente), así sirve sola como `canMatch` de un área de un solo rol. Las dos toman `volver` de la navegación en curso (`router.currentNavigation()`), porque `canMatch` no recibe el `RouterStateSnapshot`, y así conservan los parámetros de la dirección (`nucleo` T4).
 - **El aviso de sesión terminada** solo aparece si la sesión termina durante el uso. Al arrancar, una sesión terminada o copiada de otra pestaña se descarta sin aviso (§4.1).
 - **Inicio (`/`):** una función de redirección envía a la página de inicio del rol, o a `/oferta` sin sesión (§2.2 de los requerimientos).
-- `unsavedChangesGuard` funciona con cualquier componente que implemente `HasUnsavedChanges` (`hasUnsavedChanges(): boolean`). Para saber si la sesión terminó, consulta `SessionService`.
+- `unsavedChangesGuard` funciona con cualquier componente que implemente `HasUnsavedChanges` (`hasUnsavedChanges(): boolean`). Deja salir sin preguntar si `SessionService.ended()` es verdadero **y** la navegación es la del fin de la sesión (`aviso=sesion-terminada` o `aviso=sesion-cerrada`). Solo `ended()` no alcanza, porque sigue en `true` hasta el siguiente inicio de sesión, y un visitante que cerró sesión y llena el registro sí debe recibir la pregunta (`componentes` T4). El cierre de sesión tampoco pregunta: la sesión ya se descartó antes de navegar.
 
 ### 4.4 Lo que se muestra según el rol
 
@@ -408,6 +408,10 @@ Los formularios usan **Reactive Forms tipados** (§1) con los controles de Mater
   - Campos de texto: `mat-form-field` con apariencia `outline` y `mat-label` siempre visible; nunca solo un placeholder (§6 de los requerimientos).
   - Fechas: `mat-datepicker`. Horas: `mat-timepicker` con un intervalo de 15 minutos (§7).
   - Listas cortas: `mat-select`. Selectores con búsqueda: `SearchSelect` (§6).
+- **Disposición** (decidida por el usuario al revisar `componentes` T5, como en los wireframes):
+  - El formulario ocupa todo el ancho del contenido, con 24 px a los lados (16 px en celular), no una columna angosta centrada. Las vistas angostas del wireframe (`V-02`, `V-03`…) son la excepción.
+  - Los campos van en una grilla (`repeat(auto-fit, minmax(16rem, 1fr))`) con 16 px entre filas y columnas: con `subscriptSizing: 'dynamic'` el campo no reserva lugar para el error, así que la separación la da la grilla.
+  - `align-items: start` en la grilla, para que el error de un campo no estire los demás de su fila.
 
 ### 5.2 Validadores (RUI-06)
 
@@ -415,9 +419,9 @@ En `shared/forms/`. Los límites viven en un solo archivo, `limits.ts`, con un c
 
 | Dato | Validación en el cliente |
 |---|---|
-| Cédula | `required`, `maxLength(20)` y el patrón `^[A-Za-z0-9-]+$` |
+| Cédula | `required`, `maxLength(20)` y `cedula` (el patrón `^[A-Za-z0-9-]+$`) |
 | Nombre, apellidos, especialidad | `required` (salvo la especialidad) y `maxLength(100)` |
-| Teléfono | `required` y el patrón `^[0-9 +-]{8,20}$` |
+| Teléfono | `required` y `telefono` (el patrón `^[0-9 +-]{8,20}$`) |
 | Correo | `required`, `email` y `maxLength(256)` |
 | Contraseña nueva | `passwordPolicy`: al menos 8 caracteres, una mayúscula y un número (RN-26), hasta 128. Y `fieldsMatch('contrasena', 'confirmacion')` en el grupo (RN-25) |
 | Dirección | `maxLength(250)` |
@@ -429,8 +433,9 @@ En `shared/forms/`. Los límites viven en un solo archivo, `limits.ts`, con un c
 | Grupo | NRC hasta 10, `greaterThan(0)` en el cupo y el aula según la modalidad, como validador del grupo (supuesto 2 de `SPEC-grupos`) |
 | Bloque de horario | Día `required` y `endAfterStart` en el grupo (RN-15) |
 
-- Cada validador devuelve un error con nombre, y los mensajes están en un solo mapa de `shared/forms/messages.ts`, con trato de usted (RUI-22). Por ejemplo: `passwordPolicy` → "Use al menos 8 caracteres, con una mayúscula y un número".
+- Cada validador devuelve un error con nombre, y los mensajes están en un solo mapa de `shared/forms/messages.ts`, con trato de usted (RUI-22) y la redacción de los validadores del backend. Por ejemplo: `passwordPolicy` → "Use al menos 8 caracteres, con una mayúscula y un número". La cédula y el teléfono usan validadores propios (`cedula`, `telefono`) en lugar de `Validators.pattern`, para que cada uno tenga su mensaje. `errorMessage(errors, field)` da el mensaje del primer error; `field` es el dato con su artículo, para "Indique la cédula." (`componentes` T2).
 - **Cuándo se muestran:** al salir del campo o al intentar enviar, no mientras se escribe (RUI-06). Es lo que hace `mat-error` por defecto (el control debe estar tocado o el formulario, enviado). Los obligatorios llevan la marca de Material en la etiqueta.
+- **Errores del grupo** (`fieldsMatch`, `endAfterStart`): el validador deja el error en el grupo, y se muestra en el campo que corresponde (la confirmación, la hora de fin) con `groupErrorMatcher(error)` como `errorStateMatcher` del campo y `groupError` en su `FieldError` (`componentes` T5).
 
 ### 5.3 Errores del servidor
 
@@ -471,7 +476,7 @@ protected async save() {
 ### 5.5 Cambios sin guardar (RUI-09)
 
 - Los componentes de formulario implementan `HasUnsavedChanges` con `hasUnsavedChanges = () => this.form.dirty`, y su ruta usa `unsavedChangesGuard` (§4.3). Al guardar se llama a `markAsPristine()`, así que salir después no pregunta.
-- Si el usuario recarga o cierra la pestaña con cambios, el formulario activa el aviso nativo del navegador (`beforeunload`). Su texto lo pone el navegador.
+- Si el usuario recarga o cierra la pestaña con cambios, el formulario activa el aviso nativo del navegador (`beforeunload`) con `warnBeforeUnload(() => this.hasUnsavedChanges())` de `shared/forms`, en su constructor. Su texto lo pone el navegador.
 - Si la sesión terminó (RFF-03), no se pregunta: `unsavedChangesGuard` deja salir (§4.3).
 
 ---
@@ -496,17 +501,17 @@ Cada componente de `docs/wireframes/componentes.html` tiene su pieza:
 
 | # | Componente | Pieza | Reglas |
 |---|---|---|---|
-| 1 | Listado paginado | `PaginatedList` (`shared/ui`): `mat-table` y `mat-paginator`. Por debajo de 600 px dibuja tarjetas con las mismas columnas: la columna principal encabeza la tarjeta y las demás llevan su rótulo. Las columnas se declaran una sola vez en la vista | RUI-10, RUI-13, RUI-14 |
+| 1 | Listado paginado | `PaginatedList` (`shared/ui`): `mat-table` y `mat-paginator`. Por debajo de 600 px dibuja tarjetas con las mismas columnas: la columna principal encabeza la tarjeta y las demás llevan su rótulo. Las columnas se declaran una sola vez en la vista, como `<ng-template [smColumn]="page" name="nombre" header="Nombre" primary let-e>`; `rowLink` enlaza la columna principal al detalle. Recibe la página y avisa `pageChange` (`page` desde 1, `pageSize`) | RUI-10, RUI-13, RUI-14 |
 | 2 | Búsqueda y filtros | `FilterBar` (`shared/ui`): campo de búsqueda con "Buscar" y Enter, los filtros de la vista proyectados, "Incluir inactivos" (`mat-checkbox`) y "Limpiar filtros" cuando hay alguno aplicado. Avisa por `output()` y la vista navega con los nuevos parámetros (§3.4) | RUI-11, RUI-12 |
-| 3 | Formulario | `mat-form-field` y `mat-error` con `FieldError`, que traduce el error a su mensaje; `FormErrors` arriba; `SubmitButton`; `PasswordField`, con "Mostrar" (§5) | RUI-02, RUI-06, RUI-08 |
+| 3 | Formulario | `mat-form-field` y `mat-error` con `FieldError`, que traduce el error a su mensaje; `FormErrors` arriba; `SubmitButton`, con el texto de trabajo ("Registrando…"); `PasswordField`, con "Mostrar", que recibe el `FormControl` y arma su propio `mat-form-field` (§5) | RUI-02, RUI-06, RUI-08 |
 | 4 | Selectores de fecha y hora | `mat-datepicker` y `mat-timepicker` (con un intervalo de 15 minutos) con `AppDateAdapter` (§7) | RUI-15, RUI-17 |
-| 5 | Selector con búsqueda | `SearchSelect` (`shared/ui`), sobre `mat-autocomplete`. Recibe una función de búsqueda, sugiere mientras se escribe (con un retardo de 300 ms y hasta 10 opciones), guarda el id y muestra el texto | RUI-11 |
-| 6 | Ventanas de confirmación | El servicio `ConfirmService` (`shared/ui`), sobre `MatDialog`: `confirm({ title, message, action, irreversible })` devuelve `Promise<boolean>`. La irreversible (`irreversible: true`) destaca que no se puede deshacer y deja el foco inicial en "Cancelar". `MatDialog` lleva el foco a la ventana y lo devuelve al cerrarla | RUI-07, §6 |
+| 5 | Selector con búsqueda | `SearchSelect` (`shared/ui`), sobre `mat-autocomplete`. Recibe una función de búsqueda, sugiere mientras se escribe (con un retardo de 300 ms y hasta 10 opciones), guarda el id y muestra el texto. Es un control de formulario (`formControlName`) que inyecta su `NgControl` para mostrar sus errores. Cada opción (`SearchOption`) tiene `id`, `text` y un `detail` secundario opcional; `initialText` da el texto del valor en los formularios de edición, `noResults` el mensaje sin resultados, y "Quitar" borra la elección. Escribir después de elegir deja el valor en `null` | RUI-11 |
+| 6 | Ventanas de confirmación | El servicio `ConfirmService` (`shared/ui`), sobre `MatDialog`: `confirm({ title, message, action, irreversible })` devuelve `Promise<boolean>`. La irreversible (`irreversible: true`) destaca que no se puede deshacer y deja el foco inicial en "Cancelar". `MatDialog` lleva el foco a la ventana y lo devuelve al cerrarla. Con `run` (y `running`, "Eliminando…"), la ventana ejecuta la acción y, si la API la rechaza, muestra el error con `ActionError` sin cerrarse, con la acción alternativa de RUI-04 en `alternative` (decisión 3 de `SPEC-componentes`) | RUI-07, §6 |
 | 7 | Mensajes | El servicio `NotificationService` (`MatSnackBar`): `success()`, de 5 segundos, que se anuncia sin interrumpir. `Banner` (componente en línea), para lo que requiere una acción (`correoEnviado: false`). `ActionError` (con `role="alert"`) recibe un `ApiError` y las acciones de la vista, y dibuja todas las filas de §3.5: `409` con su acción, `429` con cuenta regresiva, `500` con el `traceId` y "Copiar" (`Clipboard` del CDK), y la falta de respuesta con "Reintentar" | RUI-03, RUI-04, RUI-21 |
-| 8 | Estados de contenido | `ContentState` (`shared/ui`): recibe el estado del `httpResource` y si hay filtros aplicados. Muestra cargando (solo la primera vez; las recargas mantienen el contenido con una barra de progreso), vacío, vacío con filtros, error con "Reintentar", "no existe" (`404`) y sin permiso (`403`, §3.5) | RUI-13 |
-| 9 | Etiquetas de estado | `StatusBadge` (`shared/ui`): recibe el tipo y el valor, y muestra la etiqueta de RUI-19 con el tono de §6.6 | RUI-19, RUI-20 |
+| 8 | Estados de contenido | `ContentState` (`shared/ui`): recibe el estado del `httpResource` y si hay filtros aplicados. Muestra cargando (solo la primera vez; las recargas mantienen el contenido con una barra de progreso), vacío, vacío con filtros, error con "Reintentar", "no existe" (`404`) y sin permiso (`403`, §3.5). El contenido con datos va en `<ng-template [smContent]="recurso" let-x>`: recibe el último valor, que `ContentState` conserva mientras el recurso carga otra página (un `resource` pierde su valor al cambiar los parámetros). El vacío y el "no existe" de la vista se proyectan con `smEmpty` y `smNotFound` | RUI-13 |
+| 9 | Etiquetas de estado | `StatusBadge` (`shared/ui`): recibe el tipo (`estadoGrupo`, `estadoMatricula`, `activo`, `marca`) y el valor, y muestra la etiqueta de RUI-19 con el tono de §6.6 y un refuerzo de forma: discontinuo (`Planificado`), relleno (`Abierto`, `Activa`: texto blanco sobre el texto del tono de éxito, 7,1:1), doble (`Cerrado`, "Sin cupo"), tachado (`Cancelado`) y apagado (borde discontinuo y sin fondo: `Finalizado`, `Retirada`, "Inactivo"). Un valor desconocido va en tono neutro con su texto | RUI-19, RUI-20 |
 | 10 | Grilla del horario semanal | `WeeklySchedule` (§6.3), con `PeriodoSelect` | RFF-29 |
-| 11 | Encabezado de detalle y pestañas | `DetailHeader` (`shared/ui`): título, etiqueta de estado y las acciones proyectadas. Las pestañas son `mat-tab-group`, y la pestaña activa va en la URL (`?pestana=matriculas`), para que los enlaces de RUI-04 (`RN-36`, `RN-37`) abran la pestaña correcta | RFF-16 |
+| 11 | Encabezado de detalle y pestañas | `DetailHeader` (`shared/ui`): título (`heading`, como `h1`), subtítulo opcional, migas (`detailBreadcrumb`), etiqueta de estado (`detailStatus`) y las acciones (`detailActions`), proyectadas. Las pestañas son `mat-tab-group`, y la pestaña activa va en la URL (`?pestana=matriculas`), para que los enlaces de RUI-04 (`RN-36`, `RN-37`) abran la pestaña correcta | RFF-16 |
 
 ### 6.3 `WeeklySchedule`
 
@@ -604,7 +609,7 @@ Un color nuevo o cambiado vuelve a calcular su contraste antes de usarse (§10).
 **Cómo se aplica a Material:**
 - En `styles.scss`, `@include mat.theme(...)` define el tema claro con una paleta generada desde el acento con `ng generate @angular/material:theme-color`.
 - `@include mat.theme-overrides(...)` fija los tokens de sistema que importan (`primary`, `on-primary`, `surface`, `on-surface`, `outline`, `error`…) a las variables `--sm-*`.
-- Las variables de FullCalendar (`--fc-classic-*`) se mapean a las mismas en ese archivo, cuando se instale FullCalendar (`componentes`).
+- Las variables de FullCalendar (`--fc-classic-*`) se mapean a las mismas en ese archivo, cuando se instale FullCalendar (`grupos`, con `WeeklySchedule`).
 - Solo hay tema claro, porque el modo oscuro está fuera del alcance (§1.3 de los requerimientos).
 
 **Tipografía:** la fuente del sistema (`system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`), con la escala de tipos de Material y una base de 16 px. No se descarga ninguna fuente, así que no hay CDN ni dependencia, y la carga inicial no espera una fuente.
@@ -716,7 +721,7 @@ Como en el backend, primero lo que es puro y transversal. Las pruebas de las vis
 | `tokenInterceptor` | Agrega el token a `API_URL` y no a otro origen ni a `NO_SESSION`; con el token vencido renueva antes de enviar, y sin refresh token envía con el que hay |
 | `SessionService` | Guarda y lee de `sessionStorage`, con el refresh token; el fin de la sesión según `refreshExpiraEn`; `refresh()` (una sola a la vez, cada resultado, respuestas tardías); la pestaña duplicada; reemplaza el token; el cierre de sesión renueva antes si el token venció |
 | Guardas (§4.3) | Una prueba por fila, incluida la ruta `volver` externa rechazada |
-| Componentes de `shared/ui` | `ActionError` con cada respuesta de §3.5 (incluida la cuenta regresiva del `429`), `ContentState` con cada estado, la confirmación irreversible con el foco en "Cancelar", `PaginatedList` en tabla y en tarjetas, y `FilterBar` (Enter y "Limpiar filtros") |
+| Componentes de `shared/ui` | `ActionError` con cada respuesta de §3.5 (incluida la cuenta regresiva del `429`), `ContentState` con cada estado, la confirmación irreversible con el foco en "Cancelar", `PaginatedList` en tabla y en tarjetas, y `FilterBar` (Enter y "Limpiar filtros"). Además, cada pieza tiene su ejemplo en el catálogo de componentes (`/componentes`, §2.2), que se revisa a mano contra `componentes.html` |
 | `WeeklySchedule` | La función pura que arma la configuración de la grilla (domingo oculto o visible, el rango de horas, la traducción de los días) y la lista por día. FullCalendar no se prueba: se confía en su biblioteca |
 
 - Las pruebas no llaman a la API real ni dependen de la zona horaria de la máquina: los formateadores reciben la zona por parámetro en las pruebas que la necesitan.

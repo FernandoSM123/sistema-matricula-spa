@@ -1,0 +1,17 @@
+:host {
+  display: block;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.option-text,
+.option-detail {
+  display: block;
+}
+
+.option-detail {
+  font-size: 0.8125rem;
+  color: var(--sm-text-secondary);
+}

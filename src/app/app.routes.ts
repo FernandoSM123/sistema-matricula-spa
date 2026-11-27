@@ -20,6 +20,13 @@ export const routes: Routes = [
     loadComponent: () => import('./core/pages/forbidden/forbidden').then((m) => m.Forbidden),
   },
   {
+    // Catálogo de componentes, para las pruebas visuales (decisión 1 de SPEC-componentes). Sin
+    // sesión y sin enlaces desde la aplicación: solo se abre escribiendo la dirección.
+    path: 'componentes',
+    title: `Catálogo de componentes · ${APP_NAME}`,
+    loadChildren: () => import('./core/pages/component-catalog/component-catalog.routes'),
+  },
+  {
     path: '**',
     title: `Página no encontrada · ${APP_NAME}`,
     loadComponent: () => import('./core/pages/not-found/not-found').then((m) => m.NotFound),

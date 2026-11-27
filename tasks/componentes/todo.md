@@ -19,7 +19,7 @@ Cada tarea termina con:
 | T4. Cambios sin guardar | Completada | ✅ | ✅ | ✅ | ✅ |
 | T5. Controles de formulario | Completada | ✅ | ✅ | ✅ | ✅ |
 | T6. `ActionError` | Completada | ✅ | ✅ | ✅ | ✅ |
-| T7. `ContentState` | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
+| T7. `ContentState` | Completada | ✅ | ✅ | ✅ | ✅ |
 | T8. Listados | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T9. Detalle y selección | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T10. Cierre | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
@@ -196,6 +196,15 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
   - Pruebas: cada estado con un recurso simulado, la recarga que conserva el contenido, el `403` que navega a `/sin-permiso` sin cambiar la dirección, y "Reintentar" y "Limpiar filtros".
   - A mano, contra la sección 8 del wireframe.
 - Files: `src/app/shared/ui/content-state/` (+ `.spec.ts`), la sección 8 del catálogo
+- **Resultado (2026-11-27):**
+  - El contenido con datos va en `<ng-template [smContent]="recurso" let-x>` (`ContentTemplate`), no proyectado: el contenido proyectado se crea siempre, aunque no se muestre, y leería un valor que todavía no existe. El recurso se repite en `[smContent]` solo para tipar la variable.
+  - `ContentState` conserva el último valor mientras carga otro, porque un `resource` pierde su valor al cambiar los parámetros (la página siguiente): así el cambio de página muestra la barra de progreso sobre el contenido anterior, no el indicador. Un error descarta el valor, y "Reintentar" muestra el indicador.
+  - "Reintentar" llama a `resource.reload()`; no hace falta el `output()` `retry` del plan, porque cada `ContentState` tiene su recurso.
+  - Además de los estados del plan: el `429` con la espera y "Reintentar" deshabilitado, otro rechazo con su `detail`, el `401` y el `403 RN-24` sin nada (ya los maneja `errorInterceptor`), y el `404` con un texto por defecto si la vista no proyecta `smNotFound`.
+  - `asApiError` pasa a `shared/ui/as-api-error.ts`, compartido con la confirmación de T6.
+  - Catálogo, sección 8: un recurso de ejemplo de 1,2 s con un botón por estado y "Recargar".
+  - La carga inicial pasa de 466,91 kB a 473,88 kB: entra la implementación de `resource()` de `@angular/core` (7 kB), que el ejemplo usa. Entraría igual con la primera vista que use `httpResource`. Quedan 26 kB hasta la meta.
+  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (38 archivos, 397 pruebas) y `pnpm build` en verde.
 
 ### T8. Listados
 - Acceptance:
@@ -238,3 +247,4 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
 - 2026-11-27: T4 completada, revisada por el usuario.
 - 2026-11-27: T5 completada, revisada por el usuario, con tres ajustes a la disposición de los formularios (§5.1 de la arquitectura).
 - 2026-11-27: T6 completada, revisada por el usuario.
+- 2026-11-27: T7 completada, revisada por el usuario.

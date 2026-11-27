@@ -4,7 +4,7 @@ Módulo `componentes` del [mapa de módulos](mapa-modulos.md). Depende de `nucle
 
 | Estado | Plan | Tareas | Avance |
 |---|---|---|---|
-| **Aprobada** | [Aprobado](../tasks/componentes/plan.md) | [Aprobadas](../tasks/componentes/todo.md) | 6/10 tareas completadas |
+| **Aprobada** | [Aprobado](../tasks/componentes/plan.md) | [Aprobadas](../tasks/componentes/todo.md) | 7/10 tareas completadas |
 
 **Historial:**
 - 2026-11-27: v1 en revisión, en la rama `componentes`.
@@ -15,6 +15,7 @@ Módulo `componentes` del [mapa de módulos](mapa-modulos.md). Depende de `nucle
 - 2026-11-27: T4 completada: `unsavedChangesGuard`, `HasUnsavedChanges` y `warnBeforeUnload()`, revisados por el usuario. La guarda deja salir sin preguntar solo en la navegación del fin de la sesión (`aviso=sesion-terminada` o `sesion-cerrada`), no con cualquier sesión terminada.
 - 2026-11-27: T5 completada: `FieldError`, `FormErrors`, `SubmitButton` y `PasswordField`, revisados por el usuario. Al revisar, el usuario fija la disposición de los formularios: a todo el ancho, 16 px entre filas y sin estirar los campos de una fila por un error (§5.1 de la arquitectura).
 - 2026-11-27: T6 completada: `ActionError`, `retryCountdown` y la confirmación que ejecuta la acción (decisión 3), revisados por el usuario.
+- 2026-11-27: T7 completada: `ContentState`, revisado por el usuario.
 
 ## Objetivo
 

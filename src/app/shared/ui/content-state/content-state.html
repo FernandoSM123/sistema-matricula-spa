@@ -1,0 +1,69 @@
+@switch (state()) {
+  @case ('first-load') {
+    <div class="state">
+      <mat-progress-spinner mode="indeterminate" diameter="40" [attr.aria-label]="loadingLabel()" />
+    </div>
+  }
+  @case ('content') {
+    @if (resource().isLoading()) {
+      <mat-progress-bar class="reloading" mode="indeterminate" [attr.aria-label]="loadingLabel()" />
+    }
+    @if (empty()) {
+      @if (filtered()) {
+        <div class="state">
+          <p class="title">No hay resultados para los filtros aplicados.</p>
+          <button mat-stroked-button type="button" (click)="clearFilters.emit()">Limpiar filtros</button>
+        </div>
+      } @else {
+        <div class="state">
+          <ng-content select="[smEmpty]" />
+        </div>
+      }
+    } @else if (content(); as content) {
+      @if (last(); as last) {
+        <ng-container *ngTemplateOutlet="content.template; context: { $implicit: last.data }" />
+      }
+    }
+  }
+  @case ('error') {
+    @switch (errorKind()) {
+      @case ('not-found') {
+        <div class="state">
+          <ng-content select="[smNotFound]">
+            <p class="title">El registro que busca no existe.</p>
+          </ng-content>
+        </div>
+      }
+      @case ('hidden') {}
+      @case ('forbidden') {}
+      @default {
+        <div class="state" role="alert">
+          @switch (errorKind()) {
+            @case ('wait') {
+              <p class="title">{{ waitSeconds() > 0 ? text.tooManyAttempts(waitSeconds()) : text.canRetry }}</p>
+            }
+            @case ('unexpected') {
+              @if (error()?.traceId; as traceId) {
+                <p class="title">
+                  {{ text.unexpected }} <code class="trace-id">{{ traceId }}</code>
+                </p>
+                <button mat-stroked-button type="button" (click)="copyTraceId(traceId)">
+                  {{ copied() ? 'Código copiado' : 'Copiar código' }}
+                </button>
+              } @else {
+                <p class="title">{{ text.unexpectedWithoutCode }}</p>
+              }
+            }
+            @case ('no-response') {
+              <p class="title">{{ text.noResponse }}</p>
+            }
+            @default {
+              <p class="title">{{ error()?.detail ?? text.generic }}</p>
+            }
+          }
+          <button mat-flat-button type="button" [disabled]="waitSeconds() > 0" (click)="retry()">Reintentar</button>
+        </div>
+      }
+    }
+  }
+}

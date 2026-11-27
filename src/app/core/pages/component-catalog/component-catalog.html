@@ -36,6 +36,9 @@
           <sm-messages-example />
           <sm-action-error-example />
         }
+        @case ('c-estados') {
+          <sm-content-state-example />
+        }
         @default {
           <p class="pending">Llega con {{ section.pending }}.</p>
         }

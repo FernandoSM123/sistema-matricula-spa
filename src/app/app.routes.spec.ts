@@ -79,6 +79,13 @@ describe('rutas de la aplicación (§2.4, §2.5)', () => {
       prepare();
       expect(await go('/componentes')).toEqual({ url: '/componentes', heading: 'Catálogo de componentes' });
     });
+
+    it('/componentes/formulario abre el formulario de ejemplo, con unsavedChangesGuard', async () => {
+      expect(await go('/componentes/formulario')).toEqual({
+        url: '/componentes/formulario',
+        heading: 'Formulario de ejemplo',
+      });
+    });
   });
 
   it('/sin-permiso sin sesión lleva al inicio de sesión', async () => {

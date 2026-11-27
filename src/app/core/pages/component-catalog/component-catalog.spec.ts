@@ -1,9 +1,12 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { NAV_ITEMS, USER_MENU_ITEMS } from '../../layout/nav-items';
 import { CATALOG_SECTIONS } from './catalog-sections';
 import { ComponentCatalog } from './component-catalog';
 
 describe('ComponentCatalog (decisión 1 de SPEC-componentes)', () => {
+  beforeEach(() => TestBed.configureTestingModule({ providers: [provideRouter([])] }));
+
   it('ningún menú de la aplicación lleva al catálogo', () => {
     const paths = [...NAV_ITEMS, ...USER_MENU_ITEMS].map((item) => item.path);
     expect(paths.filter((path) => path.startsWith('/componentes'))).toEqual([]);

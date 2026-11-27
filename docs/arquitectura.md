@@ -365,12 +365,12 @@ Funciones en `core/guards/`, una por regla:
 | La API responde `401` durante el uso | — (`errorInterceptor`) | — | Renueva y repite; si no se puede, RFF-03 (§4.2) |
 | La dirección no existe | Ruta `**` | `app.routes.ts` | `V-10` |
 | El registro no existe (`404`) | — (la vista) | — | §3.5 |
-| Sale de un formulario con cambios sin guardar (RUI-09) | `unsavedChangesGuard` | `canDeactivate` de los formularios | Confirmación "¿Descartar los cambios?" (RUI-07). No pregunta si la salida es porque la sesión terminó (RFF-03) |
+| Sale de un formulario con cambios sin guardar (RUI-09) | `unsavedChangesGuard` | `canDeactivate` de los formularios | Confirmación "¿Descartar los cambios?" (RUI-07). No pregunta si la salida es porque la sesión terminó (RFF-03) o se cerró (RFF-04) |
 
 - **`rolGuard` aplica primero la regla de `authGuard`** (sin sesión, terminada o con un cambio pendiente), así sirve sola como `canMatch` de un área de un solo rol. Las dos toman `volver` de la navegación en curso (`router.currentNavigation()`), porque `canMatch` no recibe el `RouterStateSnapshot`, y así conservan los parámetros de la dirección (`nucleo` T4).
 - **El aviso de sesión terminada** solo aparece si la sesión termina durante el uso. Al arrancar, una sesión terminada o copiada de otra pestaña se descarta sin aviso (§4.1).
 - **Inicio (`/`):** una función de redirección envía a la página de inicio del rol, o a `/oferta` sin sesión (§2.2 de los requerimientos).
-- `unsavedChangesGuard` funciona con cualquier componente que implemente `HasUnsavedChanges` (`hasUnsavedChanges(): boolean`). Para saber si la sesión terminó, consulta `SessionService`.
+- `unsavedChangesGuard` funciona con cualquier componente que implemente `HasUnsavedChanges` (`hasUnsavedChanges(): boolean`). Deja salir sin preguntar si `SessionService.ended()` es verdadero **y** la navegación es la del fin de la sesión (`aviso=sesion-terminada` o `aviso=sesion-cerrada`). Solo `ended()` no alcanza, porque sigue en `true` hasta el siguiente inicio de sesión, y un visitante que cerró sesión y llena el registro sí debe recibir la pregunta (`componentes` T4). El cierre de sesión tampoco pregunta: la sesión ya se descartó antes de navegar.
 
 ### 4.4 Lo que se muestra según el rol
 
@@ -471,7 +471,7 @@ protected async save() {
 ### 5.5 Cambios sin guardar (RUI-09)
 
 - Los componentes de formulario implementan `HasUnsavedChanges` con `hasUnsavedChanges = () => this.form.dirty`, y su ruta usa `unsavedChangesGuard` (§4.3). Al guardar se llama a `markAsPristine()`, así que salir después no pregunta.
-- Si el usuario recarga o cierra la pestaña con cambios, el formulario activa el aviso nativo del navegador (`beforeunload`). Su texto lo pone el navegador.
+- Si el usuario recarga o cierra la pestaña con cambios, el formulario activa el aviso nativo del navegador (`beforeunload`) con `warnBeforeUnload(() => this.hasUnsavedChanges())` de `shared/forms`, en su constructor. Su texto lo pone el navegador.
 - Si la sesión terminó (RFF-03), no se pregunta: `unsavedChangesGuard` deja salir (§4.3).
 
 ---

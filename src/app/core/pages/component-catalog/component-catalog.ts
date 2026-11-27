@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { CATALOG_SECTIONS } from './catalog-sections';
 import { ConfirmExample } from './examples/confirm-example';
 import { MessagesExample } from './examples/messages-example';
@@ -15,7 +16,7 @@ import { MessagesExample } from './examples/messages-example';
 @Component({
   selector: 'sm-component-catalog',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ConfirmExample, MessagesExample],
+  imports: [ConfirmExample, MessagesExample, RouterLink],
   templateUrl: './component-catalog.html',
   styleUrl: './component-catalog.scss',
 })

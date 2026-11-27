@@ -16,7 +16,7 @@ Cada tarea termina con:
 | T1. Catálogo de componentes | Completada | ✅ | ✅ | ✅ | ✅ |
 | T2. Lógica de formularios | Completada | ✅ | ✅ | ➖ | ✅ |
 | T3. Mensajes y confirmaciones | Completada | ✅ | ✅ | ✅ | ✅ |
-| T4. Cambios sin guardar | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
+| T4. Cambios sin guardar | Completada | ✅ | ✅ | ✅ | ✅ |
 | T5. Controles de formulario | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T6. `ActionError` | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T7. `ContentState` | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
@@ -116,6 +116,13 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
   - Pruebas: la guarda sin cambios, con cambios (confirma y cancela) y con la sesión terminada; `beforeunload` con y sin cambios, y que se quita al destruir el componente.
   - A mano: escribir en el formulario de ejemplo y salir pregunta; después de guardar no pregunta; recargar la pestaña con cambios muestra el aviso del navegador.
 - Files: `src/app/core/guards/unsaved-changes-guard.ts` (+ `.spec.ts`), `src/app/shared/forms/before-unload.ts` (+ `.spec.ts`), el formulario de ejemplo y su ruta en el catálogo
+- **Resultado (2026-11-27):**
+  - No previsto: `SessionService.ended()` sigue en `true` hasta el siguiente inicio de sesión, así que la guarda no puede mirar solo eso (un visitante que cerró sesión y llena el registro no recibiría la pregunta). Deja salir sin preguntar cuando `ended()` es verdadero y la navegación es la del fin de la sesión: `aviso=sesion-terminada` (RFF-03, el interceptor y las guardas) o `aviso=sesion-cerrada` (RFF-04). El cierre de sesión tampoco pregunta, porque la sesión ya se descartó antes de navegar. Se actualizan §4.3 y §5.5 de la arquitectura.
+  - `DISCARD_CHANGES` tiene el texto de la ventana del wireframe ("Seguir editando" y "Descartar cambios").
+  - `warnBeforeUnload(() => this.hasUnsavedChanges())` se llama en el constructor del formulario y se quita con `DestroyRef`.
+  - Catálogo: la sección 3 enlaza a `/componentes/formulario` (Nombre y Apellidos, por ahora con `mat-error` fijos; T5 lo completa), con la guarda en su ruta. Las rutas del catálogo pasan a un padre con `provideMaterialDefaults()` y dos hijas.
+  - Build: la carga inicial pasa de 452,93 kB a 459,99 kB. Crecen `@angular/core` (7,6 kB) y el router, por las exportaciones que usan `@angular/forms` y `MatInput`; el primer formulario de `acceso` las habría traído igual. Margen hasta los 500 kB: 40 kB.
+  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (31 archivos, 336 pruebas) y `pnpm build` en verde.
 
 ### T5. Controles de formulario
 - Acceptance:
@@ -203,3 +210,4 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
 - 2026-11-27: T1 completada, revisada por el usuario.
 - 2026-11-27: T2 completada.
 - 2026-11-27: T3 completada, revisada por el usuario, que decide que la confirmación pueda ejecutar la acción y mostrar su error dentro de la ventana (decisión 3 de la spec, en T6).
+- 2026-11-27: T4 completada, revisada por el usuario.

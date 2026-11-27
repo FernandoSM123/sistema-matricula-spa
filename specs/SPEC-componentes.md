@@ -4,7 +4,7 @@ Módulo `componentes` del [mapa de módulos](mapa-modulos.md). Depende de `nucle
 
 | Estado | Plan | Tareas | Avance |
 |---|---|---|---|
-| **Aprobada** | [Aprobado](../tasks/componentes/plan.md) | [Aprobadas](../tasks/componentes/todo.md) | 8/10 tareas completadas |
+| **Aprobada** | [Aprobado](../tasks/componentes/plan.md) | [Aprobadas](../tasks/componentes/todo.md) | 9/10 tareas completadas |
 
 **Historial:**
 - 2026-11-27: v1 en revisión, en la rama `componentes`.
@@ -17,6 +17,7 @@ Módulo `componentes` del [mapa de módulos](mapa-modulos.md). Depende de `nucle
 - 2026-11-27: T6 completada: `ActionError`, `retryCountdown` y la confirmación que ejecuta la acción (decisión 3), revisados por el usuario.
 - 2026-11-27: T7 completada: `ContentState`, revisado por el usuario.
 - 2026-11-27: T8 completada: `StatusBadge`, `PaginatedList` y `FilterBar`, revisados por el usuario.
+- 2026-11-27: T9 completada: `DetailHeader` y `SearchSelect`, y los selectores de fecha y hora en el catálogo, revisados por el usuario.
 
 ## Objetivo
 

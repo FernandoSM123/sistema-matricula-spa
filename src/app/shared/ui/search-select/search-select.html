@@ -1,0 +1,41 @@
+<mat-form-field>
+  <mat-label>{{ label() }}</mat-label>
+  <input
+    #box
+    matInput
+    type="text"
+    autocomplete="off"
+    [placeholder]="placeholder()"
+    [value]="text()"
+    [disabled]="disabled()"
+    [required]="required()"
+    [errorStateMatcher]="errorMatcher"
+    [matAutocomplete]="auto"
+    (input)="onInput(box.value)"
+    (blur)="blur()"
+  />
+  @if (value() !== null && !disabled()) {
+    <button matIconButton matSuffix type="button" [attr.aria-label]="clearLabel()" (click)="clear()">
+      <mat-icon svgIcon="close" aria-hidden="true" />
+    </button>
+  }
+  @if (hint(); as hint) {
+    <mat-hint>{{ hint }}</mat-hint>
+  }
+  @if (ngControl?.control; as control) {
+    <mat-error><sm-field-error [control]="control" [field]="field()" /></mat-error>
+  }
+  <mat-autocomplete #auto [displayWith]="displayOption" (optionSelected)="select($event.option.value)">
+    @for (option of options(); track option.id) {
+      <mat-option [value]="option">
+        <span class="option-text">{{ option.text }}</span>
+        @if (option.detail; as detail) {
+          <span class="option-detail">{{ detail }}</span>
+        }
+      </mat-option>
+    }
+    @if (message(); as message) {
+      <mat-option disabled class="message">{{ message }}</mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>

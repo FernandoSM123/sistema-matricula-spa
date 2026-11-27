@@ -1,0 +1,66 @@
+:host {
+  display: block;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sm-space-3);
+}
+
+.identity {
+  min-width: 0;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sm-space-1);
+  margin-bottom: var(--sm-space-1);
+  font-size: 0.875rem;
+  color: var(--sm-text-secondary);
+}
+
+// El separador lo pone el estilo, no el texto: los lectores de pantalla no lo leen.
+.breadcrumb > :not(:last-child)::after {
+  content: '/';
+  margin-inline-start: var(--sm-space-1);
+  color: var(--sm-text-secondary);
+}
+
+.title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sm-space-2) var(--sm-space-3);
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  overflow-wrap: anywhere;
+}
+
+.subtitle {
+  margin: var(--sm-space-1) 0 0;
+  color: var(--sm-text-secondary);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sm-space-2);
+}
+
+.actions:empty {
+  display: none;
+}
+
+@media (max-width: 599.98px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

@@ -6,9 +6,12 @@ import { ActionErrorExample } from './examples/action-error-example';
 import { BadgesExample } from './examples/badges-example';
 import { ConfirmExample } from './examples/confirm-example';
 import { ContentStateExample } from './examples/content-state-example';
+import { DateTimeExample } from './examples/date-time-example';
+import { DetailExample } from './examples/detail-example';
 import { FiltersExample } from './examples/filters-example';
 import { ListExample } from './examples/list-example';
 import { MessagesExample } from './examples/messages-example';
+import { SearchSelectExample } from './examples/search-select-example';
 
 /**
  * Catálogo de componentes (decisión 1 de SPEC-componentes): las piezas de `shared/` con datos de
@@ -26,10 +29,13 @@ import { MessagesExample } from './examples/messages-example';
     BadgesExample,
     ConfirmExample,
     ContentStateExample,
+    DateTimeExample,
+    DetailExample,
     FiltersExample,
     ListExample,
     MessagesExample,
     RouterLink,
+    SearchSelectExample,
   ],
   templateUrl: './component-catalog.html',
   styleUrl: './component-catalog.scss',

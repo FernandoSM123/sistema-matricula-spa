@@ -21,7 +21,7 @@ Cada tarea termina con:
 | T6. `ActionError` | Completada | ✅ | ✅ | ✅ | ✅ |
 | T7. `ContentState` | Completada | ✅ | ✅ | ✅ | ✅ |
 | T8. Listados | Completada | ✅ | ✅ | ✅ | ✅ |
-| T9. Detalle y selección | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
+| T9. Detalle y selección | Completada | ✅ | ✅ | ✅ | ✅ |
 | T10. Cierre | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
 
 **Estados de tarea:**
@@ -234,6 +234,16 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
   - Pruebas: `DetailHeader` con título, estado y acciones; `SearchSelect` con el retardo, el tope de 10, la opción elegida que guarda el id, el valor inicial con su texto y el borrado a `null`.
   - A mano, contra las secciones 4, 5 y 11 del wireframe, con el teclado (flechas y Enter en el selector).
 - Files: `src/app/shared/ui/detail-header/`, `search-select/` (con sus `.spec.ts`), las secciones 4, 5 y 11 del catálogo
+- **Resultado (2026-11-27):**
+  - `DetailHeader` usa `heading` en lugar de `title`, para no poner el atributo `title` (la ayuda del navegador) en el elemento, como `Banner`. Suma las migas del wireframe (`detailBreadcrumb`, seguidas de "Detalle"). El estado y las acciones se proyectan (`detailStatus`, `detailActions`).
+  - `SearchSelect` recibe `label` como texto, no un `mat-label` proyectado, porque arma su propio `mat-form-field` con el error (como `PasswordField`). Inyecta su `NgControl` en lugar de registrarse con `NG_VALUE_ACCESSOR`, para mostrar los errores del control con `FieldError` y el asterisco de obligatorio.
+  - Además de lo pedido, por el wireframe: el dato secundario de cada opción (`detail`), el mensaje propio sin resultados (`noResults`, "No hay profesores activos que coincidan.") y "Quitar" para borrar la elección. También "Buscando…" mientras espera y "No se pudo buscar. Intente de nuevo." si la búsqueda falla.
+  - Escribir después de elegir deja el valor en `null`: así el texto y el valor nunca dicen cosas distintas.
+  - Dos detalles técnicos: `formControlName` conecta su control después del `ngOnInit` del componente, por eso se lee en `ngAfterContentInit`; y `MatInput` solo calcula su error si tiene su propio control, por eso se recalcula con cada evento del control.
+  - Catálogo: sección 4, fecha de inicio y horas de inicio y fin con el error de RN-15 y lo que se enviaría a la API; sección 5, curso (con "pro" hay 11 y se muestran 10), profesor (sin resultados) y aula elegida, como al editar; sección 11, el encabezado del estudiante y las pestañas con `?pestana=`. El listado de la sección 1 conserva `?pestana=` y viceversa (`queryParamsHandling: 'merge'`).
+  - La prueba del catálogo agrega `provideMaterialDefaults()`, porque la sección 4 necesita el adaptador de fechas.
+  - La carga inicial pasa de 486,28 kB a 490,50 kB. Quedan 9,5 kB hasta la meta.
+  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (43 archivos, 434 pruebas) y `pnpm build` en verde.
 
 ### T10. Cierre
 - Acceptance:
@@ -257,3 +267,4 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
 - 2026-11-27: T6 completada, revisada por el usuario.
 - 2026-11-27: T7 completada, revisada por el usuario.
 - 2026-11-27: T8 completada, revisada por el usuario, con las decisiones de su resultado (apagado sin fondo, tonos de las marcas, sin fichas de filtros, el nombre como enlace).
+- 2026-11-27: T9 completada, revisada por el usuario.

@@ -1,0 +1,18 @@
+<header class="header">
+  <div class="identity">
+    <nav class="breadcrumb" aria-label="Migas de pan">
+      <ng-content select="[detailBreadcrumb]" />
+      <span aria-current="page">Detalle</span>
+    </nav>
+    <div class="title">
+      <h1>{{ heading() }}</h1>
+      <ng-content select="[detailStatus]" />
+    </div>
+    @if (subtitle(); as subtitle) {
+      <p class="subtitle">{{ subtitle }}</p>
+    }
+  </div>
+  <div class="actions">
+    <ng-content select="[detailActions]" />
+  </div>
+</header>

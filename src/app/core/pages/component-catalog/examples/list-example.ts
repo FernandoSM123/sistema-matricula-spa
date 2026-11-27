@@ -165,6 +165,7 @@ export class ListExample {
         pageSize: filters.pageSize === DEFAULT_PAGE_SIZE ? null : filters.pageSize,
         incluirInactivos: filters.incluirInactivos || null,
       },
+      queryParamsHandling: 'merge', // Conserva ?pestana= de la sección 11.
     });
   }
 }

@@ -22,7 +22,7 @@ Cada tarea termina con:
 | T7. `ContentState` | Completada | ✅ | ✅ | ✅ | ✅ |
 | T8. Listados | Completada | ✅ | ✅ | ✅ | ✅ |
 | T9. Detalle y selección | Completada | ✅ | ✅ | ✅ | ✅ |
-| T10. Cierre | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
+| T10. Cierre | Completada | ✅ | ➖ | ✅ | ✅ |
 
 **Estados de tarea:**
 - **Pendiente:** no se ha empezado.
@@ -254,6 +254,25 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
   - Spec, mapa y este archivo al día: módulo completado y criterios de éxito revisados. En el mapa se quitan las verificaciones heredadas cumplidas.
 - Verify: los 9 criterios de éxito de la spec, y la revisión del catálogo por el usuario.
 - Files: `package.json`, `tasks/componentes/todo.md`, `specs/SPEC-componentes.md`, `specs/mapa-modulos.md`
+- **Resultado (2026-11-27):**
+  - Versión `0.3.0` en `package.json`.
+  - Comando de cierre en verde: `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (43 archivos, 434 pruebas) y `pnpm build` (carga inicial de 490,50 kB sin comprimir, 119 kB con gzip, sin avisos de presupuesto).
+  - `pnpm audit`: 1 hallazgo moderado, el mismo que aceptó `fundacion` (`minimatch` por typescript-eslint, GHSA-g3hv-75wg-m249, solo de desarrollo). Ninguno alto ni crítico.
+  - **Lighthouse, perfil de escritorio, ventana de incógnito, sobre `/componentes` de `dist/` servido con gzip:** rendimiento 95, FCP 0,4 s, LCP 0,8 s, TBT 20 ms, CLS 0,124 y Speed Index 0,4 s. Criterio 7 cumplido.
+    - Una primera medición dio rendimiento 50 y LCP 16,2 s porque corrió sobre `ng serve` (puerto 5173), con el código sin minificar (ahorro estimado de 13 953 KiB), como ya había pasado en `nucleo`.
+    - El CLS de 0,124 (la meta de Lighthouse es 0,1) lo causan los ejemplos del catálogo: el listado de la sección 1 y el de la sección 8 cargan después del primer pintado y empujan lo que tienen debajo. En una vista real, `ContentState` está al final de la página o con poco debajo; se mide de nuevo en `sistema`.
+  - **Revisión del catálogo por el usuario** en Chrome, Edge y Brave, en escritorio y a 360 px, con el teclado, contra `componentes.html`: sin observaciones. Las secciones se habían revisado una por una al cerrar cada tarea (T1 a T9).
+  - **Verificaciones heredadas:** la duración de 5 s de los avisos (de `nucleo`) se cumple con `NotificationService` y su prueba (T3); Lighthouse, con la medición de arriba. Las dos se quitan del mapa. Se agregan dos para los módulos siguientes: el margen de la carga inicial (9,5 kB), para todos, y `withComponentInputBinding()`, para `oferta`.
+  - **Criterios de éxito de la spec:**
+    1. ✅ Las piezas de los puntos 1 a 6 del alcance están en `shared/ui` y `shared/forms` (y la guarda en `core/guards`), y ESLint confirma las dependencias entre carpetas.
+    2. ✅ Comando de cierre en verde, dentro de los presupuestos de §8.3.
+    3. ✅ Pruebas de cada respuesta de §3.5 en `ActionError` (T6), de cada estado de `ContentState` (T7) y de los bordes de RUI-06 en los validadores (T2).
+    4. ✅ El catálogo en `/componentes` coincide con `componentes.html` (salvo la grilla del horario), en escritorio y a 360 px, con el teclado, en Chrome, Edge y Brave.
+    5. ✅ Los avisos duran 5 s y se anuncian sin interrumpir (T3); `ActionError` usa `role="alert"` (T6).
+    6. ✅ `unsavedChangesGuard` pregunta "¿Descartar los cambios?" y no pregunta en la navegación del fin de la sesión (T4).
+    7. ✅ Lighthouse: LCP de 0,8 s y carga inicial de 490,50 kB.
+    8. ✅ `pnpm audit` sin altos ni críticos; el moderado, anotado.
+    9. ✅ Versión `0.3.0`, y §6.6 de la arquitectura dice que FullCalendar llega con `grupos` (T1).
 
 ## Historial
 
@@ -268,3 +287,4 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
 - 2026-11-27: T7 completada, revisada por el usuario.
 - 2026-11-27: T8 completada, revisada por el usuario, con las decisiones de su resultado (apagado sin fondo, tonos de las marcas, sin fichas de filtros, el nombre como enlace).
 - 2026-11-27: T9 completada, revisada por el usuario.
+- 2026-11-27: T10 completada: catálogo revisado por el usuario en Chrome, Edge y Brave. Módulo completado.

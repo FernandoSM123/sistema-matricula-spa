@@ -4,7 +4,7 @@ Módulo `componentes` del [mapa de módulos](mapa-modulos.md). Depende de `nucle
 
 | Estado | Plan | Tareas | Avance |
 |---|---|---|---|
-| **Aprobada** | [Aprobado](../tasks/componentes/plan.md) | [Aprobadas](../tasks/componentes/todo.md) | 9/10 tareas completadas |
+| **Aprobada** | [Aprobado](../tasks/componentes/plan.md) | [Aprobadas](../tasks/componentes/todo.md) | 10/10 tareas completadas. Módulo completado |
 
 **Historial:**
 - 2026-11-27: v1 en revisión, en la rama `componentes`.
@@ -18,6 +18,7 @@ Módulo `componentes` del [mapa de módulos](mapa-modulos.md). Depende de `nucle
 - 2026-11-27: T7 completada: `ContentState`, revisado por el usuario.
 - 2026-11-27: T8 completada: `StatusBadge`, `PaginatedList` y `FilterBar`, revisados por el usuario.
 - 2026-11-27: T9 completada: `DetailHeader` y `SearchSelect`, y los selectores de fecha y hora en el catálogo, revisados por el usuario.
+- 2026-11-27: T10 completada y módulo completado, versión 0.3.0. Los 9 criterios de éxito se cumplen (ver el resultado de T10 en `todo.md`). El pull request a `main` lo abre el usuario.
 
 ## Objetivo
 

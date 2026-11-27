@@ -27,6 +27,7 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 - 2026-11-27: corrección `sesiones` integrada a `main` (PR #4). Empieza `componentes`, en la rama `componentes`, con su spec en revisión.
 - 2026-11-27: spec de `componentes` aprobada, con dos decisiones del usuario: un catálogo de componentes permanente en `/componentes`, sin sesión y sin enlaces, para la revisión visual; y los validadores de un solo formulario llegan con su módulo (`catalogos`, `grupos`). Plan y tareas en revisión.
 - 2026-11-27: plan y tareas de `componentes` aprobados. T1 completada: el catálogo de componentes en `/componentes` (decisión 7). T2 completada: la lógica de los formularios. T3 completada: avisos y confirmaciones. T4 completada: cambios sin guardar. T5 completada: controles de formulario. T6 completada: errores de una acción. T7 completada: estados de contenido. T8 completada: listados. T9 completada: detalle y selección.
+- 2026-11-27: `componentes` completado (10/10 tareas, versión 0.3.0), en la rama `componentes`; el pull request a `main` lo abre el usuario. El catálogo de componentes se revisó en Chrome, Edge y Brave. Se quitan las verificaciones cumplidas: la duración de 5 s de los avisos y Lighthouse de `componentes` (LCP 0,8 s). Se agregan dos: el margen de la carga inicial (9,5 kB) para todos los módulos, y `withComponentInputBinding()` para `oferta`. Siguiente módulo: `acceso`.
 
 ## Módulos
 
@@ -54,7 +55,7 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 |---|---|---|---|---|---|
 | `fundacion` | [Aprobada](SPEC-fundacion.md) | [Aprobado](../tasks/fundacion/plan.md) | [Aprobadas](../tasks/fundacion/todo.md) | 6/6 | Completado |
 | `nucleo` | [Aprobada](SPEC-nucleo.md) | [Aprobado](../tasks/nucleo/plan.md) | [Aprobadas](../tasks/nucleo/todo.md) | 7/7 | Completado |
-| `componentes` | [Aprobada](SPEC-componentes.md) | [Aprobado](../tasks/componentes/plan.md) | [Aprobadas](../tasks/componentes/todo.md) | 9/10 | En implementación |
+| `componentes` | [Aprobada](SPEC-componentes.md) | [Aprobado](../tasks/componentes/plan.md) | [Aprobadas](../tasks/componentes/todo.md) | 10/10 | Completado |
 | `acceso` | — | — | — | — | Sin empezar |
 | `oferta` | — | — | — | — | Sin empezar |
 | `catalogos` | — | — | — | — | Sin empezar |
@@ -85,8 +86,9 @@ Verificaciones que un módulo no puede hacer por falta de vistas o de datos. Se 
 |---|---|---|
 | `nucleo` | `sistema` | La aplicación funciona en las dos últimas versiones de Firefox y Safari, en escritorio y en celular. `nucleo` solo probó navegadores con Chromium (decisión 2 de `SPEC-nucleo`) |
 | `arquitectura` §1 | `grupos` | La grilla de `WeeklySchedule` (FullCalendar con `temporal-polyfill`) funciona en Chrome, Edge y Brave. Firefox y Safari, con `sistema` |
-| `nucleo` | `componentes` | `NotificationService.success()` fija la duración de 5 s en cada aviso: el token global `MAT_SNACK_BAR_DEFAULT_OPTIONS` salió de la raíz por la carga inicial (decisión 5 de `SPEC-nucleo`, §6.1 de la arquitectura) |
-| `arquitectura` §8.3 | `componentes`, `sistema` | Lighthouse al cerrar cada uno: carga inicial de 500 kB o menos sin comprimir y LCP menor a 2,5 s, con el perfil de escritorio y el build de producción. Se mide sobre `dist/` servido como estático con compresión, no sobre `ng serve`, que agrega los mapas de fuentes y no comprime (`nucleo` T7) |
+| `arquitectura` §8.3 | `sistema` | Lighthouse al cerrar: carga inicial de 500 kB o menos sin comprimir y LCP menor a 2,5 s, con el perfil de escritorio y el build de producción. Se mide sobre `dist/` servido como estático con compresión, no sobre `ng serve`, que agrega los mapas de fuentes y no comprime (`nucleo` T7). En `componentes` dio LCP 0,8 s con un CLS de 0,124, causado por los listados de ejemplo del catálogo que cargan después del primer pintado: se mide también el CLS de una vista con listado |
+| `componentes` | todos | La carga inicial quedó en 490,50 kB, a 9,5 kB de la meta de 500 kB (§8.3): lo que usan las vistas diferidas de los módulos que ya están en la carga inicial (Angular, la CDK) queda ahí. Cada módulo mide el build al cerrar y, si pasa de 500 kB, se decide antes de seguir (por ejemplo, sacar el menú lateral de la carga inicial) |
+| `componentes` | `oferta` | El router todavía no tiene `withComponentInputBinding()`, que §3.4 pide para que los listados reciban sus parámetros de la URL como `input()`. Se agrega con la primera vista de listado (`V-01`) |
 | `nucleo`, `sesiones` | `acceso` | Con una sesión real: las 7 situaciones de §2.5 de los requerimientos (sin sesión, rol sin permiso, `401` que vuelve a `V-02` con el aviso y regresa a la vista, cambio pendiente…) y el cierre de sesión desde el menú de la cuenta (RFF-04). De la corrección `sesiones` (RF-60): un formulario sigue funcionando después de que vence el token de acceso, sin el aviso de RFF-03 (con `Jwt:AccessTokenMinutes` acortado en la API y restaurado al terminar); un `401` por una sesión invalidada desde otro dispositivo aplica RFF-03 después de intentar renovar; la renovación no aparece como `401` en la consola del navegador. En `nucleo` no se probaron a mano, por decisión del usuario (2026-11-24): el `401` con un token invalidado, porque ninguna petición con sesión lo provoca todavía, y el layout del cambio pendiente con una cuenta real, porque la temporal de `estudiante2` había vencido (se revisó con una sesión ficticia). Los cubren las pruebas automáticas |
 | COR-02 (backend) | `acceso` | Desde el navegador, el `429` del inicio de sesión llena `ApiError.retryAfter` con el valor de `Retry-After` (RUI-03) |
 

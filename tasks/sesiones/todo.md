@@ -2,7 +2,7 @@
 
 Corrección `sesiones`, previa a `componentes` (ver el [mapa](../../specs/mapa-modulos.md)). Spec: [`specs/SPEC-sesiones.md`](../../specs/SPEC-sesiones.md) · Plan: [`plan.md`](plan.md)
 
-**Estado de la lista:** Aprobada (2026-11-26)
+**Estado de la lista:** Aprobada (2026-11-26). Completada: 6/6 tareas
 
 Cada tarea termina con:
 - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` y `pnpm build` en verde;
@@ -18,7 +18,7 @@ Cada tarea termina con:
 | T3. Pestaña duplicada | Completada | ✅ | ✅ | ➖ | ✅ |
 | T4. Interceptores | Completada | ✅ | ✅ | ➖ | ✅ |
 | T5. Cierre de sesión y documentos | Completada | ✅ | ✅ | ➖ | ✅ |
-| T6. Verificación manual y cierre | Pendiente | ➖ | ⬜ | ⬜ | ⬜ |
+| T6. Verificación manual y cierre | Completada | ➖ | ✅ | ✅ | ✅ |
 
 **Estados de tarea:**
 - **Pendiente:** no se ha empezado.
@@ -135,3 +135,16 @@ Ninguna del mapa va a esta corrección. T5 agrega la renovación a la verificaci
   - Revisión de los 6 criterios de éxito, anotada aquí. Spec y mapa con la corrección completada; el pull request a `main` lo abre el usuario.
 - Verify: los resultados de cada punto, anotados en esta tarea, y la confirmación de que los user-secrets volvieron a su estado.
 - Files: `tasks/sesiones/todo.md`, `specs/SPEC-sesiones.md`, `specs/mapa-modulos.md`
+- **Resultado (2026-11-26):**
+  - **User-secrets de la API:** `Jwt:AccessTokenMinutes` y `Jwt:RefreshTokenMinutes` no existían. Se fijaron en `1` y `3` y se reinició la API. Al terminar se quitaron con `dotnet user-secrets remove`, y quedan las mismas cinco claves de antes (`AdminSeed:TemporaryPassword`, `ConnectionStrings:Matricula`, `Jwt:Key`, `TestData:Enabled`, `TestData:Password`). Con la API reiniciada, un login da 15 minutos de token de acceso y 8 horas de sesión. Ningún valor se imprimió: se listaron solo los nombres de las claves.
+  - **Contrato con las vigencias acortadas** (script fuera del proyecto, que lee `TestData:Password` sin mostrarla y no imprime tokens): el login de `estudiante1` da `200` con un refresh token de 43 caracteres y `refreshExpiraEn` = ingreso + 3 min. La renovación da `200` con el mismo `refreshExpiraEn` (RN-50; 7 decimales en el login y 6 en la renovación, el mismo instante). Reusar el anterior da `401 RF-60`, y después también el último de la familia (RN-51). Las fechas llegan con `+00:00`, que la lectura de la sesión ya acepta (prueba de T2).
+  - **Navegador:** la sesión se creó con el mismo script, que deja un fragmento para la consola en el scratchpad. El usuario revisó los cuatro puntos de la spec y no reportó problemas: el cierre con el token vencido (`/auth/refresh` y luego `/auth/logout`), la sesión descartada pasados 3 minutos, la pestaña duplicada sin sesión con la original conservándola, y el refresh token solo en el cuerpo de `/auth/refresh`, sin tokens en la consola. El fragmento se borró al terminar.
+  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (21 archivos, 249 pruebas) y `pnpm build` en verde. **Carga inicial:** 440,91 kB, +2,47 kB desde el punto de partida de T1 (438,44 kB).
+  - `pnpm audit`: 1 hallazgo moderado, el mismo que aceptaron `fundacion`, `nucleo` y `nombres` (`minimatch` por typescript-eslint, GHSA-g3hv-75wg-m249, solo de desarrollo). Ninguno alto ni crítico. Esta corrección no cambió `package.json` ni `pnpm-lock.yaml`.
+  - **Criterios de éxito de la spec:**
+    1. ✅ `schema.d.ts` regenerado: `TokenResponse` con `refreshToken` y `refreshExpiraEn` anulables y la ruta `/api/v1/auth/refresh` (T1).
+    2. ✅ Las pruebas de la tabla de la spec en verde, con los comandos de cierre. `pnpm audit`, sin altos ni críticos; el moderado, anotado. La carga inicial creció 2,47 kB (límite: 5 kB).
+    3. ✅ Con el token de acceso vencido y la sesión vigente, las guardas dejan pasar, `tokenInterceptor` renueva antes de enviar y `errorInterceptor` renueva y repite ante un `401` (T2, T4, T5). Las pruebas lo cubren, y el cierre de sesión con el token vencido se vio en el navegador.
+    4. ✅ RFF-03 solo con `'ended'` o con un `401` en la repetición, y una sola navegación con varios `401` (T4).
+    5. ✅ Los cuatro puntos manuales, revisados por el usuario.
+    6. ✅ Requerimientos, arquitectura, `AGENTS.md` y el mapa actualizados, con la verificación heredada de `acceso` (T5).

@@ -4,7 +4,7 @@ Corrección transversal antes de `componentes`, como [`nombres`](SPEC-nombres.md
 
 | Estado | Plan | Tareas | Avance |
 |---|---|---|---|
-| **Aprobada** | [Aprobado](../tasks/sesiones/plan.md) | [Aprobadas](../tasks/sesiones/todo.md) | 5/6 tareas |
+| **Aprobada** | [Aprobado](../tasks/sesiones/plan.md) | [Aprobadas](../tasks/sesiones/todo.md) | 6/6 tareas completadas. Corrección completada |
 
 **Historial:**
 - 2026-11-26: v1 en revisión, en la rama `sesiones`. Parte de la revisión de los módulos `nombres` y `sesiones` de la API, a pedido del usuario. Las decisiones 3 (pestaña duplicada) y 4 (el cierre de sesión renueva primero) son recomendaciones que el usuario pidió y que esperan su aprobación.
@@ -15,6 +15,7 @@ Corrección transversal antes de `componentes`, como [`nombres`](SPEC-nombres.md
 - 2026-11-26: T3 completada: la pestaña duplicada empieza sin sesión (marca `tabOpen`, decisión 3).
 - 2026-11-26: T4 completada: los dos interceptores renuevan. Cambios a la spec: cuando la renovación no está disponible, `refresh()` ya no devuelve el texto `'unavailable'` sino el `ApiError` de la renovación, que es el error que el punto 5 pide entregar (puntos 3 y 5 y la tabla de pruebas actualizados). `SessionService` agrega `canRefresh()`, para que `tokenInterceptor` envíe sin esperar cuando no hay nada que renovar.
 - 2026-11-26: T5 completada: el cierre de sesión renueva primero si el token venció, y si la renovación falla no llama al logout (fallaría igual); las guardas con el token vencido; requerimientos, arquitectura, `AGENTS.md` y el mapa (decisión 6 y verificación heredada de `acceso`).
+- 2026-11-26: T6 completada: la verificación manual con las vigencias acortadas en los user-secrets de la API, que quedaron como estaban, y los comandos de cierre. Los 6 criterios de éxito se cumplen (revisión en T6 del `todo.md`). Corrección completada, en la rama `sesiones`; el pull request a `main` lo abre el usuario.
 
 ## Objetivo
 

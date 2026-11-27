@@ -20,7 +20,7 @@ Cada tarea termina con:
 | T5. Controles de formulario | Completada | ✅ | ✅ | ✅ | ✅ |
 | T6. `ActionError` | Completada | ✅ | ✅ | ✅ | ✅ |
 | T7. `ContentState` | Completada | ✅ | ✅ | ✅ | ✅ |
-| T8. Listados | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
+| T8. Listados | Completada | ✅ | ✅ | ✅ | ✅ |
 | T9. Detalle y selección | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T10. Cierre | Pendiente | ⬜ | ➖ | ⬜ | ⬜ |
 
@@ -216,6 +216,14 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
   - Pruebas: `StatusBadge` con cada estado y un valor desconocido; `PaginatedList` en tabla y en tarjetas, el rango y `pageChange`; `FilterBar` con Enter y "Buscar", que no avisa mientras se escribe, la casilla y "Limpiar filtros" solo con filtros.
   - A mano, contra las secciones 1, 2 y 9 del wireframe, en escritorio y a 360 px (tarjetas, sin desplazamiento horizontal). Recargar y volver atrás conservan los filtros y la página.
 - Files: `src/app/shared/ui/status-badge/`, `paginated-list/`, `filter-bar/` (con sus `.spec.ts`), las secciones 1, 2 y 9 del catálogo
+- **Resultado (2026-11-27):**
+  - Las columnas de `PaginatedList` son `<ng-template [smColumn]="page" name header primary end let-e>` (`ColumnTemplate`); la página se repite en `[smColumn]` solo para tipar la fila, como `smContent` en T7. `rowLink` enlaza la columna principal, en la tabla y en el encabezado de la tarjeta, en lugar de una columna "Ver detalle".
+  - `StatusBadge`: el wireframe y §6.6 dan el borde discontinuo a `Planificado` y al apagado, y los dos tonos tienen el mismo fondo y borde. Para distinguirlos, el apagado va sin fondo. "Relleno" usa texto blanco sobre el texto del tono de éxito (7,1:1). Las marcas: "Vigente" en información, "Ya matriculado" en éxito, "Sin cupo" en aviso con borde doble y "Sistema" en neutro.
+  - `FilterBar` no tiene la fila "Filtros aplicados" con fichas del wireframe: no está en la tarea ni en §6.2. "Limpiar filtros" va en la misma barra.
+  - Catálogo: sección 1, un listado de 46 estudiantes en memoria con `FilterBar`, `ContentState`, `PaginatedList` y `StatusBadge`, con el estado en la URL; el enlace del nombre va a `/estudiantes/:id`, que todavía no existe. Sección 2, `FilterBar` con un filtro "Estado" proyectado. Sección 9, la tabla de etiquetas del wireframe, más un valor desconocido.
+  - El router no tiene `withComponentInputBinding()`, que §3.4 pide para los listados: el ejemplo lee `ActivatedRoute`, porque no es un componente de ruta. Se agrega con la primera vista de listado.
+  - La carga inicial pasa de 473,88 kB a 486,28 kB: partes de `@angular/core` (8,8 kB), de la CDK (tabla y desplazamiento) y los planificadores de `rxjs` que usa `mat-table`. Entrarían igual con la primera vista de listado. Quedan 14 kB hasta la meta.
+  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (41 archivos, 420 pruebas) y `pnpm build` en verde.
 
 ### T9. Detalle y selección
 - Acceptance:
@@ -248,3 +256,4 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
 - 2026-11-27: T5 completada, revisada por el usuario, con tres ajustes a la disposición de los formularios (§5.1 de la arquitectura).
 - 2026-11-27: T6 completada, revisada por el usuario.
 - 2026-11-27: T7 completada, revisada por el usuario.
+- 2026-11-27: T8 completada, revisada por el usuario, con las decisiones de su resultado (apagado sin fondo, tonos de las marcas, sin fichas de filtros, el nombre como enlace).

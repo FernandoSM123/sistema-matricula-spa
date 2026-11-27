@@ -1,0 +1,80 @@
+:host {
+  display: block;
+  background: var(--sm-surface);
+}
+
+// La tabla se desplaza dentro de su marco si no cabe, nunca la página (RUI-14).
+.table-frame {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+th {
+  font-weight: 600;
+  color: var(--sm-text);
+  background: var(--sm-secondary-soft);
+}
+
+.primary {
+  font-weight: 600;
+}
+
+.end {
+  text-align: end;
+}
+
+.row-link {
+  color: var(--sm-accent);
+}
+
+.row-link:hover {
+  color: var(--sm-accent-hover);
+}
+
+.cards {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  padding: var(--sm-space-3);
+  border-bottom: 1px solid var(--sm-secondary-active);
+}
+
+.card-title {
+  margin: 0 0 var(--sm-space-2);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+dl {
+  margin: 0;
+}
+
+.card-row {
+  display: flex;
+  gap: var(--sm-space-3);
+  padding: 2px 0;
+}
+
+dt {
+  flex: 0 0 38%;
+  font-size: 0.875rem;
+  color: var(--sm-text-secondary);
+}
+
+dd {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+mat-paginator {
+  border-top: 1px solid var(--sm-secondary-active);
+}

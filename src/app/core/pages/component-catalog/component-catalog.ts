@@ -3,8 +3,11 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CATALOG_SECTIONS } from './catalog-sections';
 import { ActionErrorExample } from './examples/action-error-example';
+import { BadgesExample } from './examples/badges-example';
 import { ConfirmExample } from './examples/confirm-example';
 import { ContentStateExample } from './examples/content-state-example';
+import { FiltersExample } from './examples/filters-example';
+import { ListExample } from './examples/list-example';
 import { MessagesExample } from './examples/messages-example';
 
 /**
@@ -18,7 +21,16 @@ import { MessagesExample } from './examples/messages-example';
 @Component({
   selector: 'sm-component-catalog',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ActionErrorExample, ConfirmExample, ContentStateExample, MessagesExample, RouterLink],
+  imports: [
+    ActionErrorExample,
+    BadgesExample,
+    ConfirmExample,
+    ContentStateExample,
+    FiltersExample,
+    ListExample,
+    MessagesExample,
+    RouterLink,
+  ],
   templateUrl: './component-catalog.html',
   styleUrl: './component-catalog.scss',
 })

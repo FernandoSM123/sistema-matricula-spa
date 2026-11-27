@@ -1,0 +1,34 @@
+// Los filtros se acomodan en filas; en pantallas angostas, uno debajo del otro (wireframe, sección 2).
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sm-space-2) var(--sm-space-3);
+}
+
+.search {
+  display: flex;
+  flex: 1 1 20rem;
+  align-items: center;
+  gap: var(--sm-space-2);
+}
+
+.search mat-form-field {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 599.98px) {
+  .bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search {
+    flex-basis: auto;
+  }
+
+  .clear {
+    align-self: flex-start;
+  }
+}

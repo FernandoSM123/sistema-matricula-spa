@@ -23,6 +23,15 @@
       <p class="rules">{{ section.rules }}</p>
 
       @switch (section.id) {
+        @case ('c-listado') {
+          <sm-list-example />
+        }
+        @case ('c-filtros') {
+          <sm-filters-example />
+        }
+        @case ('c-etiquetas') {
+          <sm-badges-example />
+        }
         @case ('c-formulario') {
           <p>
             El formulario está en su propia ruta, para probar la salida con cambios sin guardar (RUI-09):

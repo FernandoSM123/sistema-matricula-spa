@@ -48,10 +48,10 @@ describe('guardas (§4.3)', () => {
 
   const store = (token: TokenResponse, rol: Rol = token.rol) =>
     sessionStorage.setItem(SESSION_KEY, JSON.stringify({ ...token, rol, nombre: null }));
-  /** La sesión vence durante el uso: el servicio ya existe. Al arrancar, la vencida se descarta sin aviso (§4.1). */
+  /** La sesión termina durante el uso (pasa `refreshExpiraEn`): el servicio ya existe. Al arrancar, la terminada se descarta sin aviso (§4.1). */
   const expire = () => {
     TestBed.inject(SessionService);
-    now = Date.parse(ESTUDIANTE_TOKEN.expiraEn) + 1;
+    now = Date.parse(ESTUDIANTE_TOKEN.refreshExpiraEn ?? '') + 1;
   };
 
   /** Navega y devuelve la ruta y los parámetros donde quedó. */
@@ -68,7 +68,7 @@ describe('guardas (§4.3)', () => {
       expect(await go('/mi-perfil')).toEqual({ path: '/iniciar-sesion', params: { volver: '/mi-perfil' } });
     });
 
-    it('con la sesión vencida según expiraEn: además el aviso de RFF-03, y la descarta', async () => {
+    it('con la sesión terminada según refreshExpiraEn: además el aviso de RFF-03, y la descarta', async () => {
       store(ESTUDIANTE_TOKEN);
       expire();
       expect(await go('/mi-perfil')).toEqual({

@@ -47,10 +47,10 @@ describe('homeRoute (§2.2 de los requerimientos)', () => {
     expect(withSession(PASSWORD_CHANGE_TOKEN, 'Administrador')).toBe('/cambio-obligatorio');
   });
 
-  it('con la sesión vencida, la oferta', () => {
+  it('con la sesión terminada, la oferta', () => {
     sessionStorage.setItem(SESSION_KEY, JSON.stringify({ ...ESTUDIANTE_TOKEN, nombre: null }));
     const session = TestBed.inject(SessionService);
-    now = Date.parse(ESTUDIANTE_TOKEN.expiraEn);
+    now = Date.parse(ESTUDIANTE_TOKEN.refreshExpiraEn ?? '');
     expect(homeRoute(session)).toBe('/oferta');
   });
 });

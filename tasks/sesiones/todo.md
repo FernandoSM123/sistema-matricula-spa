@@ -14,7 +14,7 @@ Cada tarea termina con:
 | Tarea | Estado | Código | Pruebas unitarias | Verificación manual | Commit |
 |---|---|:---:|:---:|:---:|:---:|
 | T1. Contrato y `AuthApi.refresh()` | Completada | ✅ | ✅ | ✅ | ✅ |
-| T2. `SessionService`: fin de la sesión y `refresh()` | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
+| T2. `SessionService`: fin de la sesión y `refresh()` | Completada | ✅ | ✅ | ➖ | ✅ |
 | T3. Pestaña duplicada | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T4. Interceptores | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
 | T5. Cierre de sesión y documentos | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
@@ -64,6 +64,14 @@ Ninguna del mapa va a esta corrección. T5 agrega la renovación a la verificaci
   - `refresh()` no descarta la sesión ni navega: eso lo deciden los interceptores y `logout()`.
 - Verify: las pruebas de `SessionService` de la tabla de la spec, salvo la pestaña duplicada (T3). La del `401` pasa por los interceptores reales.
 - Files: `src/app/core/session/session-service.ts`, `session-service.spec.ts`
+- **Resultado (2026-11-26):**
+  - `isActive()`, `isExpired()` y la lectura al arrancar usan el fin de la sesión (`refreshExpiraEn ?? expiraEn`). `accessExpired()` usa `ACCESS_MARGIN` (30 s).
+  - `refresh()` devuelve `RefreshResult` y comparte una sola promesa mientras dura la renovación. Un `401` da `'ended'`; sin respuesta, `429` y `5xx` dan `'unavailable'`. Sin refresh token o con la sesión terminada, da `'ended'` sin hacer la petición.
+  - **Detalle no previsto en la spec:** para saber si la sesión "terminó o se reemplazó mientras tanto", el servicio lleva un contador `generation` que cambia con `start()` y `end()`, pero no con una renovación. Antes, `start()` comparaba la sesión por identidad: ahora usa el mismo contador. Así, una renovación que llega mientras `GET /me` está en curso no impide poner el nombre, y el nombre que llega durante una renovación no se pierde. Hay una prueba para cada caso.
+  - Pruebas de guardas y de `homeRoute`: sus casos de "sesión vencida" ahora hacen pasar `refreshExpiraEn`, que es el nuevo significado de vencida (§4.3). Se renombraron a "terminada".
+  - **Pasa a T4:** con los interceptores reales, la renovación todavía sale con el token de acceso, porque `tokenInterceptor` aún no lee `NO_SESSION`. Esa verificación queda en las pruebas de T4. La prueba de T2 con los interceptores reales comprueba que el `401` da `'ended'` y el `500`, `'unavailable'` (riesgo de `isApiError()` del plan).
+  - **Carga inicial:** 439,52 kB (+1,08 kB desde el punto de partida de T1).
+  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (21 archivos, 223 pruebas) y `pnpm build` en verde.
 
 ### T3. Pestaña duplicada
 - Acceptance:

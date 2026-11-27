@@ -4,13 +4,14 @@ Corrección transversal antes de `componentes`, como [`nombres`](SPEC-nombres.md
 
 | Estado | Plan | Tareas | Avance |
 |---|---|---|---|
-| **Aprobada** | [Aprobado](../tasks/sesiones/plan.md) | [Aprobadas](../tasks/sesiones/todo.md) | 1/6 tareas |
+| **Aprobada** | [Aprobado](../tasks/sesiones/plan.md) | [Aprobadas](../tasks/sesiones/todo.md) | 2/6 tareas |
 
 **Historial:**
 - 2026-11-26: v1 en revisión, en la rama `sesiones`. Parte de la revisión de los módulos `nombres` y `sesiones` de la API, a pedido del usuario. Las decisiones 3 (pestaña duplicada) y 4 (el cierre de sesión renueva primero) son recomendaciones que el usuario pidió y que esperan su aprobación.
 - 2026-11-26: v1 aprobada por el usuario, que aprueba las decisiones 3 y 4 y el supuesto 2 (acortar las vigencias en los user-secrets de la API para la verificación manual y dejarlas como estaban al terminar). Plan y tareas en revisión.
 - 2026-11-26: plan y tareas aprobados. Empieza T1.
 - 2026-11-26: T1 completada. No previsto: entre los 32 esquemas renombrados está `PerfilResponse`, que pasa a `ProfileResponse`; su alias de `models.ts` toma el nombre nuevo (§3.2 de la arquitectura). Se adelanta de T2 el guardado de `refreshToken` y `refreshExpiraEn`, sin el cual `SessionService` no compilaba.
+- 2026-11-26: T2 completada: el fin de la sesión, `accessExpired()` y `refresh()`. Detalle no previsto: un contador de la sesión (`generation`), que no cambia al renovar, reemplaza la comparación por identidad para descartar las respuestas tardías de `GET /me` y de la renovación.
 
 ## Objetivo
 

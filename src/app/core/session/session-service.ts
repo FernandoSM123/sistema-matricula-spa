@@ -1,6 +1,7 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { isApiError, toApiError } from '../../api/api-error';
 import { AuthApi } from '../../api/auth-api';
 import { MeApi } from '../../api/me-api';
 import { Rol, TokenResponse } from '../../api/models';
@@ -10,6 +11,17 @@ import { CLOCK } from './clock';
 export const SESSION_KEY = 'matricula.session';
 
 const ROLES: readonly Rol[] = ['Administrador', 'Profesor', 'Estudiante'];
+
+/** Margen antes de `expiraEn` para renovar: la latencia y una diferencia pequeña de reloj. */
+const ACCESS_MARGIN = 30_000;
+
+/**
+ * Resultado de `refresh()` (RF-60):
+ * - `renewed`: hay un token de acceso vigente (el nuevo, o el de una sesión que lo reemplazó).
+ * - `ended`: la sesión ya no se puede renovar (`401`, sin refresh token o terminada): RFF-03.
+ * - `unavailable`: sin respuesta, `429` o `5xx`; la sesión sigue y se puede intentar de nuevo.
+ */
+export type RefreshResult = 'renewed' | 'ended' | 'unavailable';
 
 /** Lo que se guarda de la sesión: la respuesta con token y el nombre de `GET /me`. */
 interface Session extends TokenResponse {
@@ -29,6 +41,9 @@ export class SessionService {
 
   private readonly session = signal<Session | null>(this.read());
   private readonly wasEnded = signal(false);
+  /** Cambia con `start()` y `end()`, no con una renovación: distingue la sesión de una respuesta tardía. */
+  private generation = 0;
+  private refreshing: Promise<RefreshResult> | null = null;
 
   readonly token = computed(() => this.session()?.accessToken ?? null);
   readonly rol = computed(() => this.session()?.rol ?? null);
@@ -43,16 +58,36 @@ export class SessionService {
     effect(() => write(this.session()));
   }
 
-  /** Hay sesión y no pasó `expiraEn` (§4.3). Lee el reloj, así que es un método. */
+  /**
+   * Hay sesión y no terminó (§4.3): no pasó `refreshExpiraEn`, o `expiraEn` sin refresh token.
+   * El token de acceso puede estar vencido: la siguiente petición lo renueva (RF-60). Lee el reloj,
+   * así que es un método.
+   */
   isActive(): boolean {
     const session = this.session();
-    return session !== null && !this.hasExpired(session);
+    return session !== null && !this.hasEnded(session);
   }
 
-  /** Hay sesión, pero `expiraEn` ya pasó: `authGuard` lo trata como RFF-03. */
+  /** Hay sesión, pero ya terminó: `authGuard` lo trata como RFF-03. */
   isExpired(): boolean {
     const session = this.session();
-    return session !== null && this.hasExpired(session);
+    return session !== null && this.hasEnded(session);
+  }
+
+  /** El token de acceso venció o vence en menos de `ACCESS_MARGIN`: conviene renovar antes de enviar. */
+  accessExpired(): boolean {
+    const session = this.session();
+    return session !== null && Date.parse(session.expiraEn) - ACCESS_MARGIN <= this.clock();
+  }
+
+  /**
+   * RF-60: cambia el refresh token por un par nuevo. Una sola renovación a la vez por pestaña: las
+   * llamadas que llegan mientras tanto reciben la misma promesa, porque reusar un refresh token
+   * terminaría la sesión (RN-51). No descarta la sesión ni navega: lo deciden quienes la llaman.
+   */
+  refresh(): Promise<RefreshResult> {
+    this.refreshing ??= this.renew().finally(() => (this.refreshing = null));
+    return this.refreshing;
   }
 
   /**
@@ -72,14 +107,17 @@ export class SessionService {
     };
     this.session.set(session);
     this.wasEnded.set(false);
+    const generation = ++this.generation;
     if (session.debeCambiarContrasena) return;
 
     try {
       const profile = await firstValueFrom(this.meApi.getProfile());
       const datos = profile.datosPersonales;
-      // Solo si sigue siendo la misma sesión: pudo terminar o reemplazarse mientras tanto.
-      if (datos && this.session() === session) {
-        this.session.set({ ...session, nombre: `${datos.nombre} ${datos.apellidos}` });
+      // Solo si sigue siendo la misma sesión: pudo terminar o reemplazarse mientras tanto. Una
+      // renovación no la cambia: conserva el token renovado.
+      const current = this.session();
+      if (datos && current !== null && this.generation === generation) {
+        this.session.set({ ...current, nombre: `${datos.nombre} ${datos.apellidos}` });
       }
     } catch {
       // Sin nombre: el menú de la cuenta muestra solo el rol.
@@ -90,6 +128,7 @@ export class SessionService {
   end(): void {
     this.session.set(null);
     this.wasEnded.set(true);
+    this.generation++;
   }
 
   /**
@@ -109,14 +148,45 @@ export class SessionService {
     await this.router.navigateByUrl('/oferta?aviso=sesion-cerrada');
   }
 
-  private hasExpired(session: Session): boolean {
-    return Date.parse(session.expiraEn) <= this.clock();
+  private async renew(): Promise<RefreshResult> {
+    const session = this.session();
+    if (session?.refreshToken == null || this.hasEnded(session)) return 'ended';
+    const generation = this.generation;
+
+    let response: TokenResponse;
+    try {
+      response = await firstValueFrom(this.authApi.refresh(session.refreshToken));
+    } catch (error) {
+      // Llega como ApiError, ya convertido por errorInterceptor; toApiError() sobre un ApiError
+      // daría status 0. Sin respuesta, 429 o 5xx no terminan la sesión (supuesto 1 de la spec).
+      const status = isApiError(error) ? error.status : toApiError(error).status;
+      return status === 401 ? 'ended' : 'unavailable';
+    }
+
+    // La sesión pudo terminar (cierre, 401) o reemplazarse (cambio de contraseña) mientras tanto:
+    // la respuesta se descarta y vale lo que haya ahora.
+    const current = this.session();
+    if (current === null) return 'ended';
+    if (this.generation !== generation) return 'renewed';
+    this.session.set({
+      ...current,
+      accessToken: response.accessToken,
+      expiraEn: response.expiraEn,
+      refreshToken: response.refreshToken,
+      refreshExpiraEn: response.refreshExpiraEn,
+    });
+    return 'renewed';
   }
 
-  /** Lee la sesión guardada; descarta la vencida o la que no tiene la forma esperada. */
+  /** El fin de la sesión: `refreshExpiraEn`, o `expiraEn` si no hay refresh token (temporal, RN-52). */
+  private hasEnded(session: Session): boolean {
+    return Date.parse(session.refreshExpiraEn ?? session.expiraEn) <= this.clock();
+  }
+
+  /** Lee la sesión guardada; descarta la terminada o la que no tiene la forma esperada. */
   private read(): Session | null {
     const session = toSession(readStorage());
-    if (session === null || this.hasExpired(session)) {
+    if (session === null || this.hasEnded(session)) {
       write(null);
       return null;
     }

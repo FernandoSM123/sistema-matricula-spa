@@ -14,7 +14,7 @@ Cada tarea termina con:
 | Tarea | Estado | Código | Pruebas unitarias | Verificación manual | Commit |
 |---|---|:---:|:---:|:---:|:---:|
 | T1. Catálogo de componentes | Completada | ✅ | ✅ | ✅ | ✅ |
-| T2. Lógica de formularios | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
+| T2. Lógica de formularios | Completada | ✅ | ✅ | ➖ | ✅ |
 | T3. Mensajes y confirmaciones | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T4. Cambios sin guardar | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T5. Controles de formulario | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
@@ -77,6 +77,14 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
   - Pruebas de `applyServerErrors`: `Cedula` ↔ `cedula`, `Horarios.HoraFin` en un grupo anidado, un mensaje sin campo devuelto, el mapa `RF-09` → `contrasenaActual`, y los valores escritos sin cambios.
   - Prueba de `focusFirstError` con un formulario de dos campos inválidos.
 - Files: `src/app/shared/forms/limits.ts`, `validators.ts`, `messages.ts`, `server-errors.ts`, `focus-first-error.ts` (con sus `.spec.ts`), `src/testing/api-errors.ts`
+- **Resultado (2026-11-27):**
+  - Límites y mensajes tomados de los validadores del backend (`DatosPersonalesRules`, `NewPasswordRules`, `PasswordPolicy`, `HorarioRules`, `CursoRules`, `AulaRules`, `PeriodoDataValidator`, `GrupoDataValidator`).
+  - No previsto: la cédula y el teléfono usan validadores con nombre (`cedula`, `telefono`) en lugar de `Validators.pattern`, porque el error `pattern` no dice de qué campo es y cada uno tiene su mensaje. `errorMessage(errors, field)` recibe el dato con su artículo para el mensaje de `required` ("Indique la cédula."), como el backend. Se actualiza §5.2 de la arquitectura.
+  - `passwordPolicy` acepta cualquier mayúscula (`Ñ`, `É`) y solo los dígitos del 0 al 9, como `char.IsUpper` y `char.IsAsciiDigit` del backend.
+  - Las fechas se comparan como `yyyy-MM-dd`: el `Date` del selector por sus campos locales y hoy con `Intl` en `America/Costa_Rica`, así la prueba de las 23:30 en Costa Rica (ya el 28 en UTC) pasa en cualquier zona.
+  - `applyServerErrors` también sigue las rutas con índice (`Horarios[0].HoraFin`), que es como las envía la API (`src/testing/problem-details.ts`).
+  - `fieldsMatch` y `endAfterStart` dejan el error en el grupo, no en el campo. Cómo se muestra debajo de la confirmación o de la hora de fin se resuelve en T5, con `FieldError`.
+  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (26 archivos, 313 pruebas) y `pnpm build` en verde. La carga inicial no cambia (444,02 kB).
 
 ### T3. Mensajes y confirmaciones
 - Acceptance:
@@ -181,3 +189,4 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
 - 2026-11-27: lista en revisión.
 - 2026-11-27: lista aprobada por el usuario. Empieza T1.
 - 2026-11-27: T1 completada, revisada por el usuario.
+- 2026-11-27: T2 completada.

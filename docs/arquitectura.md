@@ -415,9 +415,9 @@ En `shared/forms/`. Los límites viven en un solo archivo, `limits.ts`, con un c
 
 | Dato | Validación en el cliente |
 |---|---|
-| Cédula | `required`, `maxLength(20)` y el patrón `^[A-Za-z0-9-]+$` |
+| Cédula | `required`, `maxLength(20)` y `cedula` (el patrón `^[A-Za-z0-9-]+$`) |
 | Nombre, apellidos, especialidad | `required` (salvo la especialidad) y `maxLength(100)` |
-| Teléfono | `required` y el patrón `^[0-9 +-]{8,20}$` |
+| Teléfono | `required` y `telefono` (el patrón `^[0-9 +-]{8,20}$`) |
 | Correo | `required`, `email` y `maxLength(256)` |
 | Contraseña nueva | `passwordPolicy`: al menos 8 caracteres, una mayúscula y un número (RN-26), hasta 128. Y `fieldsMatch('contrasena', 'confirmacion')` en el grupo (RN-25) |
 | Dirección | `maxLength(250)` |
@@ -429,7 +429,7 @@ En `shared/forms/`. Los límites viven en un solo archivo, `limits.ts`, con un c
 | Grupo | NRC hasta 10, `greaterThan(0)` en el cupo y el aula según la modalidad, como validador del grupo (supuesto 2 de `SPEC-grupos`) |
 | Bloque de horario | Día `required` y `endAfterStart` en el grupo (RN-15) |
 
-- Cada validador devuelve un error con nombre, y los mensajes están en un solo mapa de `shared/forms/messages.ts`, con trato de usted (RUI-22). Por ejemplo: `passwordPolicy` → "Use al menos 8 caracteres, con una mayúscula y un número".
+- Cada validador devuelve un error con nombre, y los mensajes están en un solo mapa de `shared/forms/messages.ts`, con trato de usted (RUI-22) y la redacción de los validadores del backend. Por ejemplo: `passwordPolicy` → "Use al menos 8 caracteres, con una mayúscula y un número". La cédula y el teléfono usan validadores propios (`cedula`, `telefono`) en lugar de `Validators.pattern`, para que cada uno tenga su mensaje. `errorMessage(errors, field)` da el mensaje del primer error; `field` es el dato con su artículo, para "Indique la cédula." (`componentes` T2).
 - **Cuándo se muestran:** al salir del campo o al intentar enviar, no mientras se escribe (RUI-06). Es lo que hace `mat-error` por defecto (el control debe estar tocado o el formulario, enviado). Los obligatorios llevan la marca de Material en la etiqueta.
 
 ### 5.3 Errores del servidor

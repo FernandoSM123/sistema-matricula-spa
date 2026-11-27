@@ -4,12 +4,13 @@ Módulo `componentes` del [mapa de módulos](mapa-modulos.md). Depende de `nucle
 
 | Estado | Plan | Tareas | Avance |
 |---|---|---|---|
-| **Aprobada** | [Aprobado](../tasks/componentes/plan.md) | [Aprobadas](../tasks/componentes/todo.md) | 1/10 tareas completadas |
+| **Aprobada** | [Aprobado](../tasks/componentes/plan.md) | [Aprobadas](../tasks/componentes/todo.md) | 2/10 tareas completadas |
 
 **Historial:**
 - 2026-11-27: v1 en revisión, en la rama `componentes`.
 - 2026-11-27: v1 aprobada por el usuario, que resolvió las preguntas abiertas: el catálogo de componentes queda en `/componentes`, en cualquier ambiente, sin sesión y sin enlaces (decisión 1), y los validadores de un solo formulario llegan con su módulo (decisión 2, antes supuesto 4). Plan y tareas en revisión.
 - 2026-11-27: plan y tareas aprobados. T1 completada: el catálogo en `/componentes`, revisado por el usuario.
+- 2026-11-27: T2 completada: límites, validadores, mensajes, `applyServerErrors` y `focusFirstError`.
 
 ## Objetivo
 

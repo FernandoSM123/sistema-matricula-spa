@@ -26,7 +26,7 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 - 2026-11-26: corrección [`sesiones`](SPEC-sesiones.md) completada (6/6 tareas), en la rama `sesiones`; el pull request a `main` lo abre el usuario. El SPA renueva el token de acceso sin intervención del usuario y aplica RFF-03 solo cuando la sesión no se puede renovar. La prueba de punta a punta con un formulario queda en la verificación heredada de `acceso`. Siguiente módulo: `componentes`.
 - 2026-11-27: corrección `sesiones` integrada a `main` (PR #4). Empieza `componentes`, en la rama `componentes`, con su spec en revisión.
 - 2026-11-27: spec de `componentes` aprobada, con dos decisiones del usuario: un catálogo de componentes permanente en `/componentes`, sin sesión y sin enlaces, para la revisión visual; y los validadores de un solo formulario llegan con su módulo (`catalogos`, `grupos`). Plan y tareas en revisión.
-- 2026-11-27: plan y tareas de `componentes` aprobados. T1 completada: el catálogo de componentes en `/componentes` (decisión 7).
+- 2026-11-27: plan y tareas de `componentes` aprobados. T1 completada: el catálogo de componentes en `/componentes` (decisión 7). T2 completada: la lógica de los formularios.
 
 ## Módulos
 
@@ -54,7 +54,7 @@ Se arma con los tres documentos de la [fase 0](fase-0.md):
 |---|---|---|---|---|---|
 | `fundacion` | [Aprobada](SPEC-fundacion.md) | [Aprobado](../tasks/fundacion/plan.md) | [Aprobadas](../tasks/fundacion/todo.md) | 6/6 | Completado |
 | `nucleo` | [Aprobada](SPEC-nucleo.md) | [Aprobado](../tasks/nucleo/plan.md) | [Aprobadas](../tasks/nucleo/todo.md) | 7/7 | Completado |
-| `componentes` | [Aprobada](SPEC-componentes.md) | [Aprobado](../tasks/componentes/plan.md) | [Aprobadas](../tasks/componentes/todo.md) | 1/10 | En implementación |
+| `componentes` | [Aprobada](SPEC-componentes.md) | [Aprobado](../tasks/componentes/plan.md) | [Aprobadas](../tasks/componentes/todo.md) | 2/10 | En implementación |
 | `acceso` | — | — | — | — | Sin empezar |
 | `oferta` | — | — | — | — | Sin empezar |
 | `catalogos` | — | — | — | — | Sin empezar |

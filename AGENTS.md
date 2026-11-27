@@ -82,7 +82,7 @@ src/styles/   Paleta (--sm-*), tema de Material y estilos globales
 **Nunca**
 - Modificar la API desde este proyecto. Las brechas con el backend se anotan en `docs/requerimientos.md` y se deciden aparte.
 - Guardar o mostrar contraseñas o temporales fuera de los campos de formulario que las piden.
-- Poner el token en la dirección, escribirlo en la consola o enviarlo a un origen que no sea la API. No usar `console.*` en el código de la aplicación.
+- Poner el token o el refresh token en la dirección, escribirlos en la consola o enviarlos a un origen que no sea la API. El refresh token solo va en el cuerpo de `POST /auth/refresh`. No usar `console.*` en el código de la aplicación.
 - Usar `innerHTML` con datos de la API o `bypassSecurityTrust*`; cargar scripts, fuentes o íconos desde un CDN. Única excepción: `bypassSecurityTrustResourceUrl` en `core/config/icons.ts`, sobre las rutas fijas de `public/icons/` que exige `MatIconRegistry.addSvgIcon` (decisión del usuario, 2026-11-23).
 - Editar a mano `src/app/api/schema.d.ts`, desactivar las opciones estrictas de TypeScript o usar `any`.
 - Estilar FullCalendar con selectores de sus clases internas, que llevan hash (`docs/arquitectura.md` §6.3).

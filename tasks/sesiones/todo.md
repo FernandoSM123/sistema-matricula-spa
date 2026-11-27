@@ -17,7 +17,7 @@ Cada tarea termina con:
 | T2. `SessionService`: fin de la sesión y `refresh()` | Completada | ✅ | ✅ | ➖ | ✅ |
 | T3. Pestaña duplicada | Completada | ✅ | ✅ | ➖ | ✅ |
 | T4. Interceptores | Completada | ✅ | ✅ | ➖ | ✅ |
-| T5. Cierre de sesión y documentos | Pendiente | ⬜ | ⬜ | ➖ | ⬜ |
+| T5. Cierre de sesión y documentos | Completada | ✅ | ✅ | ➖ | ✅ |
 | T6. Verificación manual y cierre | Pendiente | ➖ | ⬜ | ⬜ | ⬜ |
 
 **Estados de tarea:**
@@ -116,6 +116,16 @@ Ninguna del mapa va a esta corrección. T5 agrega la renovación a la verificaci
     - `specs/mapa-modulos.md`: una decisión nueva (la sesión se renueva con el refresh token, de la API `sesiones`) y la fila heredada de `acceso` (con una sesión real: un formulario sigue funcionando después de que vence el token de acceso, sin el aviso de RFF-03; el `401` con un token invalidado desde otro dispositivo aplica RFF-03 después de intentar renovar).
 - Verify: pruebas de `logout()` (renueva y luego cierra con el token nuevo; si la renovación falla, igual descarta y navega) y de las guardas. Lectura de los documentos: ninguno dice ya que la API no tiene refresh token ni que el token dura 60 minutos.
 - Files: `src/app/core/session/session-service.ts`, `session-service.spec.ts`, `src/app/core/guards/guards.spec.ts`, `docs/requerimientos.md`, `docs/arquitectura.md`, `AGENTS.md`, `specs/mapa-modulos.md`
+- **Resultado (2026-11-26):**
+  - `logout()`: con `accessExpired()` y `canRefresh()`, espera `refresh()`. **Detalle no previsto:** si la renovación no da `'renewed'`, no envía `POST /auth/logout`. Fallaría igual con el token vencido, y además `tokenInterceptor` intentaría renovar otra vez antes de enviarlo (otros 30 s de espera si la API no responde). En todos los casos descarta la sesión y abre `/oferta?aviso=sesion-cerrada`, como pide la spec. Hay 4 pruebas nuevas: renueva y cierra con el token nuevo, la renovación falla, temporal sin renovar y token vigente sin renovar.
+  - Guardas: `authGuard` deja pasar a `/mi-perfil` con el token de acceso vencido y la sesión vigente, sin el aviso; `guestGuard` manda a la página de inicio del rol.
+  - Documentos:
+    - `docs/requerimientos.md`: línea de estado, §1.3, §2.5 (la fila y el párrafo de la sesión invalidada), RFF-03 (renovación, temporal y pestaña duplicada), RFF-04, la fila del `401` de RUI-03, §6 y el glosario.
+    - `docs/arquitectura.md`: línea de estado, §2.2 (`http-context.ts`, `session/` y `http/`), la fila del `401` de §3.5, §4.1 (reescrita: los datos, el fin de la sesión, la renovación y la pestaña duplicada), §4.2 (reescrita), §4.3, §4.5 y la tabla de §9.
+    - `AGENTS.md`: el refresh token en *Nunca*.
+    - Mapa: la decisión 6 y la verificación heredada de `acceso` con la renovación.
+  - Búsqueda: ni los requerimientos ni la arquitectura dicen ya que la API no tiene refresh token o que la sesión dura 60 minutos. Solo los conservan los documentos históricos (specs y tareas de `fundacion`, `nucleo` y la fase 0).
+  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (21 archivos, 249 pruebas) y `pnpm build` en verde.
 
 ### T6. Verificación manual y cierre
 - Acceptance:

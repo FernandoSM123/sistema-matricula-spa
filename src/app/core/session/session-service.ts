@@ -146,13 +146,19 @@ export class SessionService {
   }
 
   /**
-   * RFF-04: envía `POST /auth/logout`, descarta la sesión aunque la llamada falle y abre la
-   * oferta con el aviso de sesión cerrada (supuesto 3 de SPEC-nucleo).
+   * RFF-04: envía `POST /auth/logout` (renovando antes si el token venció), descarta la sesión
+   * aunque la llamada falle y abre la oferta con el aviso de sesión cerrada (supuesto 3 de
+   * SPEC-nucleo).
    */
   async logout(): Promise<void> {
+    // Decisión 4 de SPEC-sesiones: con el token vencido, renueva primero, así el cierre llega a la
+    // API y termina también las sesiones de los demás dispositivos. Si no se puede renovar, el
+    // logout fallaría igual: solo se descarta la sesión local.
+    const renewed = !this.accessExpired() || !this.canRefresh() || (await this.refresh()) === 'renewed';
+
     // La petición sale al suscribirse, con el token todavía en la sesión. Se descarta antes de
     // la respuesta, así un 401 (sesión ya vencida) no dispara además la navegación de RFF-03.
-    const request = firstValueFrom(this.authApi.logout());
+    const request = renewed ? firstValueFrom(this.authApi.logout()) : null;
     this.end();
     try {
       await request;

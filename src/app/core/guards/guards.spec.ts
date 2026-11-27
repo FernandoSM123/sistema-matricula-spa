@@ -54,6 +54,12 @@ describe('guardas (§4.3)', () => {
     now = Date.parse(ESTUDIANTE_TOKEN.refreshExpiraEn ?? '') + 1;
   };
 
+  /** Solo venció el token de acceso: la sesión sigue y la siguiente petición lo renueva (RF-60). */
+  const expireAccess = () => {
+    TestBed.inject(SessionService);
+    now = Date.parse(ESTUDIANTE_TOKEN.expiraEn) + 1;
+  };
+
   /** Navega y devuelve la ruta y los parámetros donde quedó. */
   async function go(url: string) {
     const router = TestBed.inject(Router);
@@ -66,6 +72,13 @@ describe('guardas (§4.3)', () => {
   describe('authGuard', () => {
     it('sin sesión: al inicio de sesión, con la ruta pedida en volver', async () => {
       expect(await go('/mi-perfil')).toEqual({ path: '/iniciar-sesion', params: { volver: '/mi-perfil' } });
+    });
+
+    it('con el token de acceso vencido y la sesión vigente: deja pasar, sin el aviso (RF-60)', async () => {
+      store(ESTUDIANTE_TOKEN);
+      expireAccess();
+      expect(await go('/mi-perfil')).toEqual({ path: '/mi-perfil', params: {} });
+      expect(TestBed.inject(SessionService).ended()).toBe(false);
     });
 
     it('con la sesión terminada según refreshExpiraEn: además el aviso de RFF-03, y la descarta', async () => {
@@ -139,6 +152,12 @@ describe('guardas (§4.3)', () => {
 
     it('con sesión: a la página de inicio del rol', async () => {
       store(ESTUDIANTE_TOKEN);
+      expect((await go('/iniciar-sesion')).path).toBe('/mis-matriculas');
+    });
+
+    it('con el token de acceso vencido y la sesión vigente: a la página de inicio del rol', async () => {
+      store(ESTUDIANTE_TOKEN);
+      expireAccess();
       expect((await go('/iniciar-sesion')).path).toBe('/mis-matriculas');
     });
 

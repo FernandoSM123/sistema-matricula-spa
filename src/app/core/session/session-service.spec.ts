@@ -16,6 +16,7 @@ const ACCESS_END = Date.parse(ESTUDIANTE_TOKEN.expiraEn);
 /** Termina la sesión de `ESTUDIANTE_TOKEN` (RN-50). */
 const SESSION_END = Date.parse(ESTUDIANTE_TOKEN.refreshExpiraEn ?? '');
 
+const tick = () => new Promise((resolve) => setTimeout(resolve));
 const problem = (status: number, code?: string) => ({ status, title: 'Error', detail: 'La sesión terminó.', code });
 
 describe('SessionService (§4.1)', () => {
@@ -528,6 +529,66 @@ describe('SessionService (§4.1)', () => {
 
       expect(session.isActive()).toBe(false);
       expect(navigate).toHaveBeenCalledWith('/oferta?aviso=sesion-cerrada');
+    });
+
+    describe('con el token de acceso vencido (decisión 4)', () => {
+      const RENEWED = { ...ESTUDIANTE_TOKEN, accessToken: 'token-renovado', expiraEn: '2026-03-05T19:15:00Z' };
+
+      it('renueva primero y cierra con el token nuevo', async () => {
+        store(storedSession);
+        now = ACCESS_END;
+        const session = create();
+        const closing = session.logout();
+
+        http()
+          .expectOne({ method: 'POST', url: `${API}/auth/refresh` })
+          .flush(RENEWED);
+        await tick();
+        const logout = http().expectOne({ method: 'POST', url: `${API}/auth/logout` });
+        expect(session.isActive()).toBe(false);
+        logout.flush(null, { status: 204, statusText: 'No Content' });
+        await closing;
+
+        expect(navigate).toHaveBeenCalledWith('/oferta?aviso=sesion-cerrada');
+      });
+
+      it('si la renovación falla, descarta la sesión y navega sin llamar al logout', async () => {
+        store(storedSession);
+        now = ACCESS_END;
+        const session = create();
+        const closing = session.logout();
+
+        http()
+          .expectOne(`${API}/auth/refresh`)
+          .flush(problem(401, 'RF-60'), { status: 401, statusText: 'Unauthorized' });
+        await closing;
+
+        http().expectNone(`${API}/auth/logout`);
+        expect(session.isActive()).toBe(false);
+        expect(session.ended()).toBe(true);
+        expect(navigate).toHaveBeenCalledWith('/oferta?aviso=sesion-cerrada');
+      });
+
+      it('sin refresh token (temporal), cierra sin renovar', async () => {
+        const session = create();
+        await session.start(PASSWORD_CHANGE_TOKEN);
+        now = ACCESS_END - 1000;
+        const closing = session.logout();
+
+        http().expectNone(`${API}/auth/refresh`);
+        http().expectOne(`${API}/auth/logout`).flush(null, { status: 204, statusText: 'No Content' });
+        await closing;
+        expect(navigate).toHaveBeenCalledWith('/oferta?aviso=sesion-cerrada');
+      });
+    });
+
+    it('con el token vigente, no renueva', async () => {
+      store(storedSession);
+      const session = create();
+      const closing = session.logout();
+      http().expectNone(`${API}/auth/refresh`);
+      http().expectOne(`${API}/auth/logout`).flush(null, { status: 204, statusText: 'No Content' });
+      await closing;
     });
 
     it('si no hay respuesta, igual cierra y navega', async () => {

@@ -4,13 +4,14 @@ Módulo `componentes` del [mapa de módulos](mapa-modulos.md). Depende de `nucle
 
 | Estado | Plan | Tareas | Avance |
 |---|---|---|---|
-| **Aprobada** | [Aprobado](../tasks/componentes/plan.md) | [Aprobadas](../tasks/componentes/todo.md) | 2/10 tareas completadas |
+| **Aprobada** | [Aprobado](../tasks/componentes/plan.md) | [Aprobadas](../tasks/componentes/todo.md) | 3/10 tareas completadas |
 
 **Historial:**
 - 2026-11-27: v1 en revisión, en la rama `componentes`.
 - 2026-11-27: v1 aprobada por el usuario, que resolvió las preguntas abiertas: el catálogo de componentes queda en `/componentes`, en cualquier ambiente, sin sesión y sin enlaces (decisión 1), y los validadores de un solo formulario llegan con su módulo (decisión 2, antes supuesto 4). Plan y tareas en revisión.
 - 2026-11-27: plan y tareas aprobados. T1 completada: el catálogo en `/componentes`, revisado por el usuario.
 - 2026-11-27: T2 completada: límites, validadores, mensajes, `applyServerErrors` y `focusFirstError`.
+- 2026-11-27: T3 completada: avisos, `Banner` y `ConfirmService`, revisados por el usuario. Decisión 3: la confirmación puede ejecutar la acción y mostrar su error dentro de la ventana (en T6).
 
 ## Objetivo
 
@@ -31,7 +32,7 @@ Este módulo no agrega vistas. Las áreas siguientes (`acceso` es la primera) so
 1. **Mensajes y confirmaciones** (`shared/ui`, §6.2 filas 6 y 7):
    - `NotificationService.success(mensaje)`: `MatSnackBar` de 5 segundos, fijados en cada aviso (verificación heredada de `nucleo`), que se anuncia sin interrumpir (`politeness: 'polite'`). RUI-21.
    - `Banner`: aviso fijo en línea con tono (aviso, información, éxito, error), texto proyectado y "Cerrar" opcional (`correoEnviado: false`). RUI-21.
-   - `ConfirmService.confirm({ title, message, action, irreversible })` → `Promise<boolean>`, sobre `MatDialog`. El botón de confirmar lleva el texto de `action` (RUI-07). La irreversible destaca que no se puede deshacer y deja el foco inicial en "Cancelar". El foco vuelve al cerrar (§6.5).
+   - `ConfirmService.confirm({ title, message, action, irreversible })` → `Promise<boolean>`, sobre `MatDialog`. El botón de confirmar lleva el texto de `action` (RUI-07). La irreversible destaca que no se puede deshacer y deja el foco inicial en "Cancelar". El foco vuelve al cerrar (§6.5). Con `run`, la ventana ejecuta la acción y muestra su error sin cerrarse (decisión 3).
 2. **Errores de la API** (§3.5):
    - `ActionError`: recibe un `ApiError` y dibuja cada fila de §3.5 que corresponde a una acción, con `role="alert"`:
      - `403`, `409` y un `code` desconocido: el `detail` (RUI-01, RUI-04). Las acciones adicionales de RUI-04 ("Reactivar", la alternativa a eliminar, los enlaces de `RN-36`, `RN-37` y `RN-21`) las proyecta la vista, que conoce el registro (supuesto 2). Con `CONCURRENCIA`, "Intentar de nuevo" (avisa por `output()`).
@@ -206,6 +207,7 @@ Y su mensaje, en `messages.ts`: `passwordPolicy: () => 'Use al menos 8 caractere
 
 1. **Catálogo de componentes permanente** (2026-11-27, decidido por el usuario): las piezas se revisan a mano en una página con datos de ejemplo que no pide sesión y a la que solo se llega escribiendo la dirección, sin enlaces desde la aplicación. No se borra al cerrar el módulo. La ruta es `/componentes` y está en todos los ambientes, también en producción: es solo para pruebas visuales y no muestra datos reales.
 2. **Los validadores crecen por módulo** (2026-11-27, decidido por el usuario), como los clientes de `api/` en `nucleo` (supuesto 1 de `SPEC-nucleo`). `componentes` hace los que usan varios formularios y `limits.ts` completo (son datos de RUI-06). `periodoDates` (RN-16) y el validador del grupo según la modalidad, que usa un solo formulario cada uno, llegan con `catalogos` y `grupos`, junto con sus pruebas (la de RN-16 que pide §9 la hace `catalogos`).
+3. **La confirmación ejecuta la acción** (2026-11-27, decidido por el usuario en T3). Como en el wireframe, la confirmación puede quedar abierta mientras se envía la acción ("Eliminando…", RUI-08) y, si la API la rechaza, mostrar el error con `ActionError` dentro de la ventana, con la acción alternativa de RUI-04 ("Desactivar curso" ante `409 RN-34`). Así el error queda junto a la acción (RUI-01). `confirm()` recibe la acción en `run` y la alternativa en `alternative`, opcionales; sin ellas, solo pregunta. Se construye en T6, junto con `ActionError`.
 
 ## Preguntas abiertas
 

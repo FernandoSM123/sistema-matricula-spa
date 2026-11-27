@@ -1,6 +1,8 @@
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CATALOG_SECTIONS } from './catalog-sections';
+import { ConfirmExample } from './examples/confirm-example';
+import { MessagesExample } from './examples/messages-example';
 
 /**
  * Catálogo de componentes (decisión 1 de SPEC-componentes): las piezas de `shared/` con datos de
@@ -13,6 +15,7 @@ import { CATALOG_SECTIONS } from './catalog-sections';
 @Component({
   selector: 'sm-component-catalog',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ConfirmExample, MessagesExample],
   templateUrl: './component-catalog.html',
   styleUrl: './component-catalog.scss',
 })

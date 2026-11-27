@@ -1,0 +1,31 @@
+// La reforzada: franja superior gruesa y el botón de confirmar en el tono de error (wireframe).
+:host {
+  display: block;
+  border-top: 6px solid transparent;
+}
+
+:host(.irreversible) {
+  border-top-color: var(--sm-error-border);
+}
+
+p {
+  margin: 0;
+}
+
+p + p {
+  margin-top: var(--sm-space-2);
+}
+
+.warning {
+  color: var(--sm-error-text);
+}
+
+:host(.irreversible) .confirm {
+  --mat-button-filled-container-color: var(--sm-error-text);
+  --mat-button-filled-label-text-color: var(--sm-surface);
+}
+
+mat-dialog-actions {
+  flex-wrap: wrap;
+  gap: var(--sm-space-2);
+}

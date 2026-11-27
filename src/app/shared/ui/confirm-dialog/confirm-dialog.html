@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>{{ options.title }}</h2>
+<mat-dialog-content>
+  @if (options.irreversible) {
+    <p class="warning"><strong>Esta acción no se puede deshacer.</strong></p>
+  }
+  <p>{{ options.message }}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button type="button" class="cancel" mat-dialog-close>{{ options.cancel ?? 'Cancelar' }}</button>
+  <button mat-flat-button type="button" class="confirm" [mat-dialog-close]="true">{{ options.action }}</button>
+</mat-dialog-actions>

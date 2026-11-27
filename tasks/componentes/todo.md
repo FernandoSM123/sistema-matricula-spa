@@ -15,7 +15,7 @@ Cada tarea termina con:
 |---|---|:---:|:---:|:---:|:---:|
 | T1. Catálogo de componentes | Completada | ✅ | ✅ | ✅ | ✅ |
 | T2. Lógica de formularios | Completada | ✅ | ✅ | ➖ | ✅ |
-| T3. Mensajes y confirmaciones | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
+| T3. Mensajes y confirmaciones | Completada | ✅ | ✅ | ✅ | ✅ |
 | T4. Cambios sin guardar | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T5. Controles de formulario | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T6. `ActionError` | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
@@ -90,13 +90,22 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
 - Acceptance:
   - `shared/ui/notification-service.ts`: `success(mensaje)` con `duration: 5000` en cada llamada y `politeness: 'polite'`; sin botón de cerrar.
   - `shared/ui/banner/`: `Banner` con `tone` (`warning`, `info`, `success`, `error`) y los colores de §6.6, ícono decorativo, contenido proyectado y `closable` con `output()` `closed`. `role="status"` (o `alert` con `tone="error"`).
-  - `shared/ui/confirm-service.ts` y `confirm-dialog/`: `confirm({ title, message, action, irreversible })` → `Promise<boolean>`. Botones "Cancelar" y `action` (el principal en acento; en la irreversible, destacado en tono de error, con la nota "Esta acción no se puede deshacer"). `autoFocus` en "Cancelar" si es irreversible, en el botón de la acción si no. Cerrar con Escape da `false`.
+  - `shared/ui/confirm-service.ts` y `confirm-dialog/`: `confirm({ title, message, action, irreversible })` → `Promise<boolean>`. Botones "Cancelar" y `action` (el principal en acento; en la irreversible, destacado en tono de error, con la nota "Esta acción no se puede deshacer"). `autoFocus` en "Cancelar" si es irreversible; si no, el primer elemento enfocable, como en el wireframe (ver el resultado). Cerrar con Escape da `false`.
   - Sección 6 (confirmaciones simple y reforzada) y sección 7 (éxito y aviso fijo) del catálogo, con botones que abren cada una.
 - Verify:
   - Pruebas: la duración de 5 s y la cortesía del aviso; `Banner` con cada tono y el cierre; `ConfirmService` con el texto de la acción en el botón, `true` al confirmar, `false` al cancelar y con Escape, y el foco inicial en "Cancelar" en la irreversible.
   - `pnpm build`: la carga inicial no crece.
   - A mano en el catálogo, contra las secciones 6 y 7 del wireframe: el aviso desaparece a los 5 s; las ventanas con el teclado, el foco inicial y el foco devuelto al botón que las abrió.
 - Files: `src/app/shared/ui/notification-service.ts`, `banner/`, `confirm-service.ts`, `confirm-dialog/` (con sus `.spec.ts`), secciones 6 y 7 del catálogo
+- **Resultado (2026-11-27):**
+  - `NotificationService.success()` fija 5 s y `politeness: 'polite'` en cada aviso, con el tono de éxito de §6.6 (`.sm-success-notification` en `src/styles/_theme.scss`, porque `MatSnackBar` dibuja el aviso fuera de quien lo abre). Verificación heredada de `nucleo` cumplida: una prueba comprueba las opciones y otra, con reloj falso, que el aviso se cierra solo.
+  - No previsto: `Banner` recibe el texto por `heading` (la línea destacada) y `message`, en lugar de contenido proyectado, porque §8.1 prohíbe `::ng-deep` y sin él no se pueden quitar los márgenes de los `<p>` de la vista. Las acciones sí van proyectadas (`bannerActions`). Rol `status`, o `alert` con `tone="error"`.
+  - No previsto: `ConfirmOptions` agrega `cancel`, el texto de "Cancelar", porque la ventana de cambios sin guardar del wireframe dice "Seguir editando". La firma de `confirm()` no cambia.
+  - Foco inicial: en la reforzada, "Cancelar" (selector `.cancel`); en la simple, el primer elemento enfocable, que también es "Cancelar", como en el wireframe.
+  - El wireframe muestra la reforzada con el rechazo de la API (`409 RN-34`) dentro de la ventana, y el botón con "Eliminando…" mientras se envía; `confirm()` solo pregunta y se cierra. El usuario decide que la ventana pueda ejecutar la acción y mostrar el error (decisión 3 de la spec), en T6.
+  - Pruebas: en jsdom la ventana toma el foco al terminar su animación, que nunca termina; las pruebas la desactivan con `MATERIAL_ANIMATIONS`. El Escape se envía al documento con `keyCode: 27`, que es lo que compara la CDK.
+  - Build: la carga inicial pasa de 444,02 kB a 452,93 kB. No entra ningún módulo nuevo: crecen módulos que ya estaban (`button`, el módulo de accesibilidad de la CDK, `layout`), porque las piezas diferidas usan exportaciones suyas que el build deja en el chunk donde vive el módulo. Medido con `ng build --stats-json`.
+  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (29 archivos, 327 pruebas) y `pnpm build` en verde.
 
 ### T4. Cambios sin guardar
 - Acceptance:
@@ -130,12 +139,15 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
     - `status: 0`: "No se pudo conectar con el servidor. Revise su conexión e intente de nuevo" con "Reintentar".
     - `400`: no dibuja nada (lo muestran los campos y `FormErrors`).
     - Nunca muestra `message`. Sin `detail` en un `403`/`409`, un texto genérico ("No se pudo completar la acción").
+  - **La confirmación ejecuta la acción** (decisión 3 de la spec): `ConfirmOptions` agrega `run?: () => Promise<unknown>` y `running?` (el texto mientras trabaja, "Eliminando…"). Con `run`, confirmar no cierra la ventana: deshabilita los botones, muestra `running` en el de la acción (RUI-08) y espera. Si `run` se resuelve, la ventana se cierra y `confirm()` da `true`. Si falla con un `ApiError`, la ventana queda abierta con `ActionError` arriba de los botones, la acción se puede intentar de nuevo y "Cancelar" pasa a decir "Cerrar". Las acciones adicionales de RUI-04 ("Desactivar curso") llegan en `alternative?: { label, run }`, que también cierra la ventana al terminar. Sin `run`, todo sigue como en T3.
+  - Sección 6 del catálogo: la "Reforzada con rechazo (409 RN-34)" del wireframe, con una acción simulada que falla.
   - Sección 7 del catálogo, "Error de una acción", "409 con acción adicional" y "Respuestas con texto fijo": cada caso con un botón que lo simula, y el `429` con `SubmitButton` deshabilitado durante la cuenta regresiva.
 - Verify:
   - Pruebas de `retryCountdown` con temporizadores falsos (de 3 a 0, y un `429` nuevo que reinicia).
   - Pruebas de `ActionError`, una por fila de §3.5 de las acciones, más el contenido proyectado en un `409 RN-39`, `CONCURRENCIA` con su `output()`, "Copiar" con el `traceId`, y que `message` nunca aparece.
-  - A mano, contra la sección 7 del wireframe.
-- Files: `src/app/shared/forms/retry-countdown.ts` (+ `.spec.ts`), `src/app/shared/ui/action-error/` (+ `.spec.ts`), la sección 7 del catálogo
+  - Pruebas de la confirmación con `run`: muestra `running` y deshabilita los botones mientras espera; se cierra con `true` si `run` termina; queda abierta con el error si falla, sin cerrarse con el clic; la alternativa ejecuta su acción y cierra.
+  - A mano, contra la sección 7 del wireframe y la ventana "Reforzada con rechazo" de la sección 6.
+- Files: `src/app/shared/forms/retry-countdown.ts` (+ `.spec.ts`), `src/app/shared/ui/action-error/` (+ `.spec.ts`), `confirm-dialog/` y `confirm-service.ts` (+ `.spec.ts`), las secciones 6 y 7 del catálogo
 
 ### T7. `ContentState`
 - Acceptance:
@@ -190,3 +202,4 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
 - 2026-11-27: lista aprobada por el usuario. Empieza T1.
 - 2026-11-27: T1 completada, revisada por el usuario.
 - 2026-11-27: T2 completada.
+- 2026-11-27: T3 completada, revisada por el usuario, que decide que la confirmación pueda ejecutar la acción y mostrar su error dentro de la ventana (decisión 3 de la spec, en T6).

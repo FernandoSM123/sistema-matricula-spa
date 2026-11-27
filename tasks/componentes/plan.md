@@ -50,6 +50,7 @@ Nada se hace en paralelo: el proyecto lo construye una sola persona.
 | `ContentState` necesita distinguir la primera carga de las recargas, y `httpResource` no lo dice directamente | Recuerda si ya tuvo un valor (`hasValue()` alguna vez) con un signal propio. Prueba con un recurso simulado que pasa de cargando a valor y otra vez a cargando |
 | `SearchSelect` como control de formulario (`ControlValueAccessor`) con texto mostrado distinto del valor guardado | `displayWith` de `mat-autocomplete` y una entrada para el texto del valor inicial. Pruebas con `fakeAsync` o el reloj de Vitest para el retardo |
 | La cuenta regresiva del `429` depende del reloj | El `CLOCK` de `core/session/` no se puede usar desde `shared/`. La función usa `setInterval` y se prueba con los temporizadores falsos de Vitest |
+| La carga inicial crece aunque las piezas sean diferidas: si una pieza usa una exportación de un módulo que ya está en la carga inicial (`button`, la CDK), el build la deja ahí (T3: 9 kB) | Se mide en cada tarea con `ng build --stats-json`. Margen hasta la meta de 500 kB: 47 kB después de T3. Si se acerca, se revisa qué pieza lo causa antes de seguir |
 | Una pieza necesita un ícono que no está en `public/icons/` | Se pregunta antes de copiarlo (Boundaries de la spec) |
 
 ## Puntos de verificación

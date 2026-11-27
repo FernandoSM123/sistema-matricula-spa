@@ -1,0 +1,15 @@
+<mat-icon class="icon" [svgIcon]="icon()" aria-hidden="true" />
+<div class="text">
+  @if (heading(); as heading) {
+    <p class="heading">{{ heading }}</p>
+  }
+  @if (message(); as message) {
+    <p>{{ message }}</p>
+  }
+</div>
+<div class="actions">
+  <ng-content select="[bannerActions]" />
+  @if (closable()) {
+    <button mat-button type="button" (click)="closed.emit()">Cerrar</button>
+  }
+</div>

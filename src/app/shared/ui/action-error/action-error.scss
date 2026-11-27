@@ -1,0 +1,46 @@
+// Tono de error de §6.6. El tipo se distingue por el ícono y el borde, no solo por el color.
+:host {
+  display: block;
+}
+
+.box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--sm-space-2) var(--sm-space-3);
+  padding: var(--sm-space-3);
+  color: var(--sm-error-text);
+  background: var(--sm-error-bg);
+  border: 1px solid var(--sm-error-border);
+  border-inline-start-width: 4px;
+  border-radius: var(--sm-space-1);
+}
+
+.icon {
+  flex: none;
+}
+
+.text {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+p {
+  margin: 0;
+}
+
+// El código del 500 es largo y sin espacios: se parte para no desbordar a 360 px.
+.trace-id {
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sm-space-2);
+}
+
+.actions:empty {
+  display: none;
+}

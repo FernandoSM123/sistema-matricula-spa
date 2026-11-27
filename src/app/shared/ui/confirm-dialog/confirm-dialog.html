@@ -4,8 +4,41 @@
     <p class="warning"><strong>Esta acción no se puede deshacer.</strong></p>
   }
   <p>{{ options.message }}</p>
+  @if (error() !== null) {
+    <sm-action-error
+      class="error"
+      [error]="error()"
+      [waitSeconds]="waitSeconds()"
+      (retry)="confirm()"
+      (retryConcurrency)="confirm()"
+    >
+      @if (alternative(); as alternative) {
+        <button
+          errorActions
+          mat-stroked-button
+          type="button"
+          [disabled]="busy() !== null"
+          (click)="runAlternative(alternative)"
+        >
+          {{ alternative.label }}
+        </button>
+      }
+    </sm-action-error>
+  }
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-stroked-button type="button" class="cancel" mat-dialog-close>{{ options.cancel ?? 'Cancelar' }}</button>
-  <button mat-flat-button type="button" class="confirm" [mat-dialog-close]="true">{{ options.action }}</button>
+  <button mat-stroked-button type="button" class="cancel" mat-dialog-close [disabled]="busy() !== null">
+    {{ cancelLabel() }}
+  </button>
+  @if (!final()) {
+    <button
+      mat-flat-button
+      type="button"
+      class="confirm"
+      [disabled]="busy() !== null || waitSeconds() > 0"
+      (click)="confirm()"
+    >
+      {{ busy() === 'action' ? (options.running ?? options.action) : options.action }}
+    </button>
+  }
 </mat-dialog-actions>

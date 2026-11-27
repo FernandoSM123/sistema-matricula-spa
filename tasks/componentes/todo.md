@@ -18,7 +18,7 @@ Cada tarea termina con:
 | T3. Mensajes y confirmaciones | Completada | ✅ | ✅ | ✅ | ✅ |
 | T4. Cambios sin guardar | Completada | ✅ | ✅ | ✅ | ✅ |
 | T5. Controles de formulario | Completada | ✅ | ✅ | ✅ | ✅ |
-| T6. `ActionError` | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
+| T6. `ActionError` | Completada | ✅ | ✅ | ✅ | ✅ |
 | T7. `ContentState` | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T8. Listados | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
 | T9. Detalle y selección | Pendiente | ⬜ | ⬜ | ⬜ | ⬜ |
@@ -171,6 +171,15 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
   - Pruebas de la confirmación con `run`: muestra `running` y deshabilita los botones mientras espera; se cierra con `true` si `run` termina; queda abierta con el error si falla, sin cerrarse con el clic; la alternativa ejecuta su acción y cierra.
   - A mano, contra la sección 7 del wireframe y la ventana "Reforzada con rechazo" de la sección 6.
 - Files: `src/app/shared/forms/retry-countdown.ts` (+ `.spec.ts`), `src/app/shared/ui/action-error/` (+ `.spec.ts`), `confirm-dialog/` y `confirm-service.ts` (+ `.spec.ts`), las secciones 6 y 7 del catálogo
+- **Resultado (2026-11-27):**
+  - `ActionError` no muestra los códigos (`RN-39`, `429`) que el wireframe pone como notas: son anotaciones del wireframe y RUI-05 prohíbe mostrar detalles técnicos. El `429` lleva el ícono del reloj; los demás, el de error.
+  - El `429` dice "1 segundo" en singular, y al llegar a 0, "Ya puede intentar de nuevo.". Un `5xx` sin `traceId` dice "Intente de nuevo más tarde." sin "Copiar código". Un `400` sin errores por campo muestra su `detail`.
+  - "Copiar código" pasa a "Código copiado" hasta el siguiente error (`linkedSignal`).
+  - `retryCountdown` empieza en N al instante con `startWith`: `timer(0, 1000)` emitía en el siguiente ciclo y el contador arrancaba en 0.
+  - La confirmación con `run` (decisión 3): mientras trabaja, los botones se deshabilitan y la ventana no se cierra con Escape ni con un clic fuera (`disableClose`). Tras un rechazo de regla o de permiso (`403`, `404`, `409`) queda solo "Cerrar", como en el wireframe, porque repetir daría lo mismo; tras un `500`, un `429` (después de la espera) o la falta de respuesta, la acción se puede repetir. La alternativa aparece solo con su `code` y, al terminar, cierra con `false`. Un error que no es de la API se muestra como inesperado, sin detalles.
+  - Catálogo: la sección 6 suma "Reforzada con rechazo (409 RN-34)" y "Simple que se ejecuta"; la sección 7, los errores del wireframe y un `429` de 10 s con `SubmitButton`.
+  - La carga inicial no cambia (466,91 kB).
+  - `pnpm format:check`, `pnpm lint`, `pnpm test --watch=false` (37 archivos, 379 pruebas) y `pnpm build` en verde.
 
 ### T7. `ContentState`
 - Acceptance:
@@ -228,3 +237,4 @@ Copiadas del [mapa](../../specs/mapa-modulos.md) al crear esta lista:
 - 2026-11-27: T3 completada, revisada por el usuario, que decide que la confirmación pueda ejecutar la acción y mostrar su error dentro de la ventana (decisión 3 de la spec, en T6).
 - 2026-11-27: T4 completada, revisada por el usuario.
 - 2026-11-27: T5 completada, revisada por el usuario, con tres ajustes a la disposición de los formularios (§5.1 de la arquitectura).
+- 2026-11-27: T6 completada, revisada por el usuario.

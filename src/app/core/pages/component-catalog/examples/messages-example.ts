@@ -3,7 +3,7 @@ import { MatButton } from '@angular/material/button';
 import { Banner, BannerTone } from '../../../../shared/ui/banner/banner';
 import { NotificationService } from '../../../../shared/ui/notification-service';
 
-/** Sección 7 del catálogo: el aviso de éxito y el aviso fijo (RUI-21). Los errores llegan en T6. */
+/** Sección 7 del catálogo: el aviso de éxito y el aviso fijo (RUI-21). Los errores, en `ActionErrorExample`. */
 @Component({
   selector: 'sm-messages-example',
   changeDetection: ChangeDetectionStrategy.OnPush,

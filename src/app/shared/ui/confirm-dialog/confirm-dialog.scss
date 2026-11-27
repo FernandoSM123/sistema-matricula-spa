@@ -16,6 +16,10 @@ p + p {
   margin-top: var(--sm-space-2);
 }
 
+.error {
+  margin-top: var(--sm-space-3);
+}
+
 .warning {
   color: var(--sm-error-text);
 }
